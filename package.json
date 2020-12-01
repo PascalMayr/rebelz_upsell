@@ -1,7 +1,7 @@
 {
-  "name": "shopify-app-node",
+  "name": "salestorm-shopify-app-node",
   "version": "1.0.0",
-  "description": "Shopify's node app for CLI tool",
+  "description": "A Shopify app to create urgency.",
   "scripts": {
     "test": "jest",
     "dev": "cross-env NODE_ENV=development nodemon ./server/index.js --watch ./server/index.js",
