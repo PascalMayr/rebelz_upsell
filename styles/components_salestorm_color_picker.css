@@ -1,0 +1,11 @@
+.salestorm-color-picker .Polaris-ColorPicker {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.salestorm-picked-color {
+  width: 100%;
+  border-radius: 0.25em;
+  text-align: center;
+  padding: 1em;
+}
