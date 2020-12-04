@@ -1,0 +1,25 @@
+.salestorm-banner-formatter-colors {
+  display: flex;
+}
+
+.salestorm-banner-formatter-colors > div:not(:first-child) {
+  margin-left: 1em;
+}
+
+.salestorm-banner-formatter-styles > div:not(:first-child) {
+  margin-top: 1em;
+}
+
+.salestorm-banner-formatter-styles-height-width {
+  display: flex;
+  justify-content: space-between;
+}
+
+.salestorm-banner-formatter-styles-height-width > div {
+  width: calc(50% - 0.5em);
+}
+
+.salestorm-banner-formatter-colors > div:first-child {
+  margin-right: 1em;
+}
+
