@@ -4,8 +4,12 @@ This project was bootstrapped using the Shopify App Node Boilerplate to create a
 
 ## Getting started
 1. Clone the repository.
-2. Install the [Shopify-App-CLI](https://github.com/Shopify/shopify-app-cli).
 2. Run:
+```sh
+~/ $ npm install
+```
+3. Install the [Shopify-App-CLI](https://github.com/Shopify/shopify-app-cli).
+4. Run:
 ```sh
 ~/ $ shopify serve
 ```
