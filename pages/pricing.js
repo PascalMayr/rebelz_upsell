@@ -1,6 +1,6 @@
 import { Page, Layout, Button } from '@shopify/polaris';
 import SalestormPricingCard from '../components/salestorm_pricing_card';
-import '../styles/pricing.css';
+import '../styles/pages_pricing.css';
 
 const Pricing = () => {
   return(
@@ -9,7 +9,7 @@ const Pricing = () => {
       subtitle="Choose the best plan for your needs"
       breadcrumbs={[{content: 'Campaigns', url: '/'}]}
   >
-    <div className='pricing'>
+    <div>
       <Layout>
         <Layout.Section oneThird>
           <SalestormPricingCard

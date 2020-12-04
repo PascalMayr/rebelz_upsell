@@ -1,0 +1,30 @@
+.salestorm-pricing-card .Polaris-Heading {
+  text-align: center;
+  font-size: 2rem;
+  padding-top: 2rem;
+}
+
+.salestorm-pricing-card .Polaris-List {
+  list-style: none;
+  margin-top: 1rem;
+  min-height: 240px;
+}
+
+.salestorm-pricing-card .Polaris-List__Item {
+  font-size: 1.5rem;
+}
+
+.salestorm-pricing-card .salestorm-pricing-card-checkmark {
+  color: rgb(0, 128, 96);
+  margin-right: 0.5em;
+  font-weight: bold;
+}
+
+.salestorm-pricing-card .salestorm-pricing-card-button-container {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.salestorm-pricing-card .Polaris-Card__Section {
+  min-height: 350px;
+}
