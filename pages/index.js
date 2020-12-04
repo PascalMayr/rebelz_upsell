@@ -6,7 +6,7 @@ import {
   CapitalMajor
 } from '@shopify/polaris-icons';
 import Image from 'next/image';
-import '../styles/index_page.css';
+import '../styles/pages_index.css';
 import Link from 'next/Link';
 
 const Index = ({rows = []}) => {
