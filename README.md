@@ -28,3 +28,19 @@ This repository is used by [Shopify-App-CLI](https://github.com/Shopify/shopify-
 ## License
 
 This respository is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## Troubleshooting authentication problems
+
+1. Stop the shopify tunnel with shopify tunnel stop
+
+```
+shopify tunnel stop
+```
+
+2. Run the server again and choose 'Yes' when the cli asks to update the Application URL
+
+```
+shopify serve
+```
+
+
