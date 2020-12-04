@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import "@shopify/polaris/dist/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
 import '../styles/global.css';
+import Head from 'next/head';
 
 const client = new ApolloClient({
   fetch: fetch,
@@ -35,6 +36,16 @@ class MyApp extends App {
           }}
         >
           <ApolloProvider client={client}>
+            <Head>
+              <script type="text/javascript" async defer>
+                window.$crisp=[];
+                window.CRISP_WEBSITE_ID="be5b7d93-53ac-4217-98ef-b5720a4d304c";
+                d=document;
+                s=d.createElement("script");
+                s.src="https://client.crisp.chat/l.js";
+                s.async=1;d.getElementsByTagName("head")[0].appendChild(s);
+              </script>
+            </Head>
             <Component {...pageProps} />
           </ApolloProvider>
         </Provider>
