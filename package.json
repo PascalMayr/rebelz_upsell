@@ -1,7 +1,7 @@
 {
-  "name": "salestorm-shopify-app-node",
+  "name": "salestorm-announcement-bar",
   "version": "1.0.0",
-  "description": "A Shopify app to create urgency.",
+  "description": "A Shopify app to boost sales.",
   "scripts": {
     "test": "jest",
     "dev": "cross-env NODE_ENV=development nodemon ./server/index.js --watch ./server/index.js",
