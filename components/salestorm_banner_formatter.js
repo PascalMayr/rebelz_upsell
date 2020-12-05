@@ -3,12 +3,10 @@ import { RangeSlider, Layout, Card, ChoiceList, TextField, Checkbox } from '@sho
 import SalestormColorPicker from './salestorm_color_picker';
 import '../styles/components_salestorm_banner_formatter.css';
 
-const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
+const SaleStormBannerFormatter = ({ campaign, setCampaignProperty }) => {
 
-  const handleStyleChange = useCallback(
-    (value, id) => {
-      handleCampaignChange({...campaign.styles, [id]: value}, 'styles')
-    },
+  const setStyleProperty = useCallback(
+    (value, id) => setCampaignProperty({...campaign.styles, [id]: value}, 'styles'),
     [campaign],
   );
 
@@ -75,8 +73,8 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
               />
             </div>
             <SalestormColorPicker
-              onChange={(value) => handleStyleChange(value, color.value)}
-              onTextChange={(value) => handleStyleChange(value, color.value)}
+              onChange={value => setStyleProperty(value, color.value)}
+              onTextChange={value => setStyleProperty(value, color.value)}
               color={campaign.styles[color.value]}
               allowAlpha
             />
@@ -91,19 +89,19 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
             <RangeSlider
               label="Margin in px"
               value={parseInt(campaign.styles.margin)}
-              onChange={(value) => handleStyleChange(`${value}px`, 'margin')}
+              onChange={(value) => setStyleProperty(`${value}px`, 'margin')}
               output
             />
             <RangeSlider
               label="Padding in px"
               value={parseInt(campaign.styles.padding)}
-              onChange={(value) => handleStyleChange(`${value}px`, 'padding')}
+              onChange={(value) => setStyleProperty(`${value}px`, 'padding')}
               output
             />
             <RangeSlider
               label="Border Radius in px"
               value={parseInt(campaign.styles.borderRadius)}
-              onChange={(value) => handleStyleChange(`${value}px`, 'borderRadius')}
+              onChange={(value) => setStyleProperty(`${value}px`, 'borderRadius')}
               output
             />
             <div className='salestorm-banner-formatter-styles-height-width'>

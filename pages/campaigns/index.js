@@ -23,10 +23,8 @@ const Index = () => {
     message: 'This is the banner preview 🔥',
     published: false
   })
-  const handleCampaignChange = useCallback(
-    (value, id) => {
-      setCampaign({...campaign, [id]: value });
-    },
+  const setCampaignProperty = useCallback(
+    (value, id) => setCampaign({...campaign, [id]: value }),
     [campaign],
   );
   const [publishLoading, setPublishLoading] = useState(false);
@@ -111,14 +109,14 @@ const Index = () => {
                 statusbar: false,
               }}
               initialValue={campaign.message}
-              onEditorChange={value => handleCampaignChange(value, 'message')}
+              onEditorChange={value => setCampaignProperty(value, 'message')}
             />
           </Card>
         </Card.Section>
         <Card.Section>
           <SaleStormBannerFormatter
            campaign={campaign}
-           handleCampaignChange={handleCampaignChange}
+           setCampaignProperty={setCampaignProperty}
           />
         </Card.Section>
       </Card>
