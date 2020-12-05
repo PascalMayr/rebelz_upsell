@@ -28,8 +28,6 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
 
   return (
   <Layout>
-    {
-    /*
     <Layout.Section>
       <Card>
         <Card.Section title="Pick which side of the banner you want to edit.">
