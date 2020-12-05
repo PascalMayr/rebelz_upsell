@@ -48,7 +48,7 @@ const Index = () => {
                 placeholder: 'Your campaign message.',
                 draggable_modal: true,
                 setup: function (editor) {
-
+                  /* Countdown timers
                   editor.ui.registry.addButton('countdownTimerButton', {
                     icon: 'insert-time',
                     text: 'Countdowns',
@@ -60,6 +60,7 @@ const Index = () => {
                      });
                     }
                   });
+                  */
                 },
                 toolbar_mode: 'wrap',
                 statusbar: false
