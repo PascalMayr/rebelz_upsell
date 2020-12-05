@@ -1,34 +1,52 @@
-import { useState, useCallback } from 'react'
-import { RangeSlider, Layout, Card, ChoiceList, TextField, Checkbox } from '@shopify/polaris';
-import SalestormColorPicker from './salestorm_color_picker';
-import '../styles/components_salestorm_banner_formatter.css';
+import { useState, useCallback } from "react";
+import {
+  RangeSlider,
+  Layout,
+  Card,
+  ChoiceList,
+  TextField,
+  Checkbox,
+} from "@shopify/polaris";
+import SalestormColorPicker from "./salestorm_color_picker";
+import "../styles/components_salestorm_banner_formatter.css";
 
 const SaleStormBannerFormatter = ({ campaign, setCampaignProperty }) => {
-
   const setStyleProperty = useCallback(
-    (value, id) => setCampaignProperty({...campaign.styles, [id]: value}, 'styles'),
-    [campaign],
+    (value, id) => {
+      if (id === "boxShadow") {
+        let boxShadow = campaign.styles.boxShadow.split(" ").slice(0, 3);
+        setCampaignProperty(
+          { ...campaign.styles, [id]: `${boxShadow.join(" ")} ${value}` },
+          "styles"
+        );
+      } else {
+        setCampaignProperty({ ...campaign.styles, [id]: value }, "styles");
+      }
+    },
+    [campaign]
   );
 
-  const [color, setColor] = useState({label: 'Background color', value: 'backgroundColor'});
+  const [color, setColor] = useState({
+    label: "Background color",
+    value: "backgroundColor",
+  });
 
   const colorChoices = [
-    {label: 'Background color', value: 'backgroundColor'},
-    {label: 'Border color', value: 'borderColor'},
-    {label: 'Box Shadow color', value: 'shadowColor'},
+    { label: "Background color", value: "backgroundColor" },
+    { label: "Border color", value: "borderColor" },
+    { label: "Box Shadow color", value: "boxShadow" },
   ];
 
   const [sides, setSides] = useState({
     left: true,
     right: true,
     top: true,
-    bottom: true
+    bottom: true,
   });
 
   return (
-  <Layout>
-    {
-    /*
+    <Layout>
+      {/*
     <Layout.Section>
       <Card>
         <Card.Section title="Pick which side of the banner you want to edit.">
@@ -57,62 +75,83 @@ const SaleStormBannerFormatter = ({ campaign, setCampaignProperty }) => {
           </Card.Section>
         </Card>
       </Layout.Section>
-      */
-    }
-    <Layout.Section>
-      <Card>
-        <Card.Section title="Pick your colors">
-          <div className="salestorm-banner-formatter-colors">
-            <div>
-              <ChoiceList
-                choices={colorChoices}
-                selected={color.value}
-                onChange={(option) => {
-                  setColor(colorChoices.find(choice => choice.value === option[0]))
-                }}
+      */}
+      <Layout.Section>
+        <Card>
+          <Card.Section title="Pick Background and set colors">
+            <div className="salestorm-banner-formatter-colors">
+              <div>
+                <ChoiceList
+                  choices={colorChoices}
+                  selected={color.value}
+                  onChange={(option) => {
+                    setColor(
+                      colorChoices.find((choice) => choice.value === option[0])
+                    );
+                  }}
+                />
+              </div>
+              <SalestormColorPicker
+                onChange={(value) => setStyleProperty(value, color.value)}
+                onTextChange={(value) => setStyleProperty(value, color.value)}
+                color={campaign.styles[color.value]}
+                allowAlpha
               />
             </div>
-            <SalestormColorPicker
-              onChange={value => setStyleProperty(value, color.value)}
-              onTextChange={value => setStyleProperty(value, color.value)}
-              color={campaign.styles[color.value]}
-              allowAlpha
-            />
-          </div>
-        </Card.Section>
-      </Card>
-    </Layout.Section>
-    <Layout.Section>
-      <Card>
-        <Card.Section title="Set styles">
-          <div className="salestorm-banner-formatter-styles">
-            <RangeSlider
-              label="Margin in px"
-              value={parseInt(campaign.styles.margin)}
-              onChange={(value) => setStyleProperty(`${value}px`, 'margin')}
-              output
-            />
-            <RangeSlider
-              label="Padding in px"
-              value={parseInt(campaign.styles.padding)}
-              onChange={(value) => setStyleProperty(`${value}px`, 'padding')}
-              output
-            />
-            <RangeSlider
-              label="Border Radius in px"
-              value={parseInt(campaign.styles.borderRadius)}
-              onChange={(value) => setStyleProperty(`${value}px`, 'borderRadius')}
-              output
-            />
-            <div className='salestorm-banner-formatter-styles-height-width'>
-              <TextField placeholder='width' />
-              <TextField placeholder='height' />
+          </Card.Section>
+        </Card>
+      </Layout.Section>
+      <Layout.Section>
+        <Card>
+          <Card.Section title="Set styles">
+            <div className="salestorm-banner-formatter-styles">
+              <RangeSlider
+                label="Margin in px"
+                value={parseInt(campaign.styles.margin)}
+                onChange={(value) => setStyleProperty(`${value}px`, "margin")}
+                output
+              />
+              <RangeSlider
+                label="Padding in px"
+                value={parseInt(campaign.styles.padding)}
+                onChange={(value) => setStyleProperty(`${value}px`, "padding")}
+                output
+              />
+              <RangeSlider
+                label="Border Radius in px"
+                value={parseInt(campaign.styles.borderRadius)}
+                onChange={(value) =>
+                  setStyleProperty(`${value}px`, "borderRadius")
+                }
+                output
+              />
+              <RangeSlider
+                label="Border width in px"
+                value={parseInt(campaign.styles.borderWidth)}
+                onChange={(value) =>
+                  handleStyleChange(`${value}px`, "borderWidth")
+                }
+                output
+              />
+              {console.log(campaign)}
+              <div className="salestorm-banner-formatter-styles-height-width">
+                <TextField
+                  placeholder="width"
+                  value={campaign.styles.width}
+                  onChange={(value) => handleStyleChange(value, "width")}
+                />
+                <TextField
+                  placeholder="height"
+                  value={campaign.styles.height}
+                  onChange={(value) => handleStyleChange(value, "height")}
+                />
+              </div>
             </div>
-          </div>
-        </Card.Section>
-      </Card>
-    </Layout.Section>
-  </Layout>
-)}
+          </Card.Section>
+        </Card>
+      </Layout.Section>
+    </Layout>
+  );
+};
 
-export default SaleStormBannerFormatter
+export default SaleStormBannerFormatter;
