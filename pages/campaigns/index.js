@@ -1,11 +1,13 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useContext } from 'react'
 import { Page, Card, Layout } from '@shopify/polaris';
 import SaleStormBannerFormatter from '../../components/salestorm_banner_formatter';
 import { Editor } from '@tinymce/tinymce-react';
 import '../../styles/pages_campaigns_index.css';
-import publishCampaign from "../../services/publish_campaign";
+import publishCampaign from '../../services/publish_campaign';
+import { AppContext } from '../_app'
 
 const Index = () => {
+  const context = useContext(AppContext);
   const [campaign, setCampaign] = useState({
     styles: {
       margin: '0px',
@@ -33,7 +35,14 @@ const Index = () => {
       primaryAction={{
         content: "Publish campaign",
         onAction: async () => {
-          const response = await publishCampaign();
+          try {
+            const response = await publishCampaign(campaign);
+            context.setToast({shown: true, content: 'Successfully published campaign', isError: false})
+            setCampaign({...campaign, published: true})
+          } catch(e) {
+            context.setToast({shown: true, content: 'Campaign publishing failed', isError: true})
+            setCampaign({...campaign, published: false})
+          }
         },
       }}
     >
