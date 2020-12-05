@@ -64,7 +64,13 @@ class MyApp extends App {
               </Head>
               <Frame>
                 <Component {...pageProps} />
-                {this.state.toast.shown && <Toast content={this.state.toast.content} onDismiss={() => this.state.setToast({...this.state.toast, shown: false})} />}
+                {this.state.toast.shown &&
+                  <Toast
+                    error={this.state.toast.isError}
+                    content={this.state.toast.content}
+                    onDismiss={() => this.state.setToast({...this.state.toast, shown: false})}
+                  />
+                }
               </Frame>
             </ApolloProvider>
           </AppContext.Provider>
