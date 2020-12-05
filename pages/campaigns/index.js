@@ -29,20 +29,25 @@ const Index = () => {
     },
     [campaign],
   );
+  const [publishLoading, setPublishLoading] = useState(false);
   return (
     <Page
       title="Create a new campaign"
       breadcrumbs={[{ content: "Campaigns", url: "/" }]}
       primaryAction={{
         content: campaign.published ? "Unpublish campaign" : "Publish campaign",
+        loading: publishLoading,
         onAction: async () => {
           try {
+            setPublishLoading(true);
             const response = await publishCampaign(campaign);
             context.setToast({shown: true, content: 'Successfully published campaign', isError: false})
             setCampaign({...campaign, published: true})
           } catch(e) {
             context.setToast({shown: true, content: 'Campaign publishing failed', isError: true})
             setCampaign({...campaign, published: false})
+          } finally {
+            setPublishLoading(false);
           }
         },
       }}
