@@ -3,6 +3,7 @@ import { Page, Card, Layout } from '@shopify/polaris';
 import SaleStormBannerFormatter from '../../components/salestorm_banner_formatter';
 import { Editor } from '@tinymce/tinymce-react';
 import '../../styles/pages_campaigns_index.css';
+import publishCampaign from "../../services/publish_campaign";
 
 const Index = () => {
   const [campaign, setCampaign] = useState({
@@ -28,7 +29,13 @@ const Index = () => {
   return (
     <Page
       title="Create a new campaign"
-      breadcrumbs={[{content: 'Campaigns', url: '/'}]}
+      breadcrumbs={[{ content: "Campaigns", url: "/" }]}
+      primaryAction={{
+        content: "Publish campaign",
+        onAction: async () => {
+          const response = await publishCampaign();
+        },
+      }}
     >
       <Card>
         <Card.Section>
@@ -51,14 +58,14 @@ const Index = () => {
         <Card.Section>
           <Card>
             <Editor
-              apiKey='efp6k3qsyo4fsxytwgehvnjhlq5dqdbcbt95o2dfny7fj721'
+              apiKey="efp6k3qsyo4fsxytwgehvnjhlq5dqdbcbt95o2dfny7fj721"
               init={{
                 height: 200,
                 menubar: false,
                 plugins: [
-                  'advlist autolink lists link charmap print preview anchor textcolor',
-                  'searchreplace visualblocks code fullscreen',
-                  'insertdatetime media table paste code emoticons link'
+                  "advlist autolink lists link charmap print preview anchor textcolor",
+                  "searchreplace visualblocks code fullscreen",
+                  "insertdatetime media table paste code emoticons link",
                 ],
                 toolbar:
                   'undo redo | fontselect | fontsizeselect | countdownTimerButton | emoticons | bold italic | forecolor backcolor | link | \
@@ -68,7 +75,7 @@ const Index = () => {
                 color_cols: 5,
                 branding: false,
                 elementpath: false,
-                placeholder: 'Your campaign message.',
+                placeholder: "Your campaign message.",
                 draggable_modal: true,
                 setup: function (editor) {
                   /* Countdown timers
@@ -78,15 +85,15 @@ const Index = () => {
                     tooltip: 'Insert Countdown Timer',
                     onAction: function (_) {
                       editor.notificationManager.open({
-                        text: 'An error occurred.',
-                        type: 'error',
-                     });
-                    }
+                        text: "An error occurred.",
+                        type: "error",
+                      });
+                    },
                   });
                   */
                 },
-                toolbar_mode: 'wrap',
-                statusbar: false
+                toolbar_mode: "wrap",
+                statusbar: false,
               }}
               initialValue={campaign.message}
               onEditorChange={value => handleCampaignChange(value, 'message')}
@@ -100,11 +107,9 @@ const Index = () => {
           />
         </Card.Section>
       </Card>
-      <Card>
-
-      </Card>
+      <Card></Card>
     </Page>
-  )
-}
+  );
+};
 
-export default Index
+export default Index;
