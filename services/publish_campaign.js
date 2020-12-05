@@ -1,5 +1,7 @@
-const publishCampaign = async () => {
-  return fetch("/api/publish-campaign", {
+const publishCampaign = async (campaign) => {
+  return fetch('/api/publish-campaign', {
+    method: 'POST',
+    body: JSON.stringify(campaign),
     headers: {
       "Content-Type": "application/json",
     },

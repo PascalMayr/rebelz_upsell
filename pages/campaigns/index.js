@@ -44,7 +44,7 @@ const Index = () => {
         onAction: async () => {
           try {
             setPublishLoading(true);
-            const response = await publishCampaign(campaign);
+            await publishCampaign(campaign);
             context.setToast({
               shown: true,
               content: "Successfully published campaign",
