@@ -1,18 +1,26 @@
-import { useState, useCallback, Fragment } from 'react'
-import { RangeSlider, Layout, Card, ChoiceList, TextField, Checkbox } from '@shopify/polaris';
-import SalestormColorPicker from './salestorm_color_picker';
-import '../styles/components_salestorm_banner_formatter.css';
+import { useState, useCallback, Fragment } from "react";
+import {
+  RangeSlider,
+  Layout,
+  Card,
+  ChoiceList,
+  TextField,
+  Checkbox,
+} from "@shopify/polaris";
+import SalestormColorPicker from "./salestorm_color_picker";
+import "../styles/components_salestorm_banner_formatter.css";
 
-const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
-
-  const handleStyleChange = useCallback(
+const SaleStormBannerFormatter = ({ campaign, setCampaignProperty }) => {
+  const setStyleProperty = useCallback(
     (value, id) => {
-      if (id === 'boxShadow') {
-        let boxShadow = campaign.styles.boxShadow.split(' ').slice(0,3);
-        handleCampaignChange({...campaign.styles, [id]: `${boxShadow.join(' ')} ${value}`}, 'styles')
-      }
-      else {
-        handleCampaignChange({...campaign.styles, [id]: value}, 'styles')
+      if (id === "boxShadow") {
+        let boxShadow = campaign.styles.boxShadow.split(" ").slice(0, 3);
+        setCampaignProperty(
+          { ...campaign.styles, [id]: `${boxShadow.join(" ")} ${value}` },
+          "styles"
+        );
+      } else {
+        setCampaignProperty({ ...campaign.styles, [id]: value }, "styles");
       }
     },
     [campaign]
@@ -42,8 +50,8 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
               />
             </div>
             <SalestormColorPicker
-              onChange={(value) => handleStyleChange(value, styleChoice.value === 'boxShadow' ? styleChoice.value : `${styleChoice.value}Color`)}
-              onTextChange={(value) => handleStyleChange(value, styleChoice.value === 'boxShadow' ? styleChoice.value : `${styleChoice.value}Color`)}
+              onChange={(value) => setStyleProperty(value, styleChoice.value === 'boxShadow' ? styleChoice.value : `${styleChoice.value}Color`)}
+              onTextChange={(value) => setStyleProperty(value, styleChoice.value === 'boxShadow' ? styleChoice.value : `${styleChoice.value}Color`)}
               color={styleChoice.value === 'boxShadow' ? campaign.styles[styleChoice.value].split(' ').slice(3).join(' ') : campaign.styles[`${styleChoice.value}Color`]}
               allowAlpha
             />
@@ -57,14 +65,14 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
                         label="Apply styles to the leftside"
                         checked={campaign.styles.borderLeftWidth !== '0px'}
                         onChange={(value) => {
-                          handleStyleChange(value ? campaign.styles.borderWidth : '0px', 'borderLeftWidth')
+                          setStyleProperty(value ? campaign.styles.borderWidth : '0px', 'borderLeftWidth')
                         }}
                       />
                       <Checkbox
                         label="Apply styles to the rightside"
                         checked={campaign.styles.borderRightWidth !== '0px'}
                         onChange={(value) => {
-                          handleStyleChange(value ? campaign.styles.borderWidth : '0px', 'borderRightWidth')
+                          setStyleProperty(value ? campaign.styles.borderWidth : '0px', 'borderRightWidth')
                         }}
                       />
                     </div>
@@ -73,14 +81,14 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
                         label="Apply styles to the topside"
                         checked={campaign.styles.borderTopWidth !== '0px'}
                         onChange={(value) => {
-                          handleStyleChange(value ? campaign.styles.borderWidth : '0px', 'borderTopWidth')
+                          setStyleProperty(value ? campaign.styles.borderWidth : '0px', 'borderTopWidth')
                         }}
                       />
                       <Checkbox
                         label="Apply styles to the bottomside"
                         checked={campaign.styles.borderBottomWidth !== '0px'}
                         onChange={(value) => {
-                          handleStyleChange(value ? campaign.styles.borderWidth : '0px', 'borderBottomWidth')
+                          setStyleProperty(value ? campaign.styles.borderWidth : '0px', 'borderBottomWidth')
                         }}
                       />
                     </div>
@@ -89,7 +97,7 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
                     <RangeSlider
                       label="Border Radius in px"
                       value={parseInt(campaign.styles.borderRadius)}
-                      onChange={(value) => handleStyleChange(`${value}px`, 'borderRadius')}
+                      onChange={(value) => setStyleProperty(`${value}px`, 'borderRadius')}
                       output
                     />
                   </div>
@@ -98,7 +106,7 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
                       label="Border width in px"
                       value={parseInt(campaign.styles.borderWidth)}
                       onChange={(value) => {
-                        handleStyleChange(`${value}px`, 'borderWidth');
+                        setStyleProperty(`${value}px`, 'borderWidth');
                       }}
                       output
                     />
@@ -148,7 +156,7 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
             <RangeSlider
               label="Margin in px"
               value={parseInt(campaign.styles.margin)}
-              onChange={(value) => handleStyleChange(`${value}px`, 'margin')}
+              onChange={(value) => setStyleProperty(`${value}px`, 'margin')}
               output
             />
           </div>
@@ -156,7 +164,7 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
             <RangeSlider
               label="Padding in px"
               value={parseInt(campaign.styles.padding)}
-              onChange={(value) => handleStyleChange(`${value}px`, 'padding')}
+              onChange={(value) => setStyleProperty(`${value}px`, 'padding')}
               output
             />
           </div>
@@ -164,12 +172,12 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
             <TextField
               placeholder='width'
               value={campaign.styles.width}
-              onChange={(value) => handleStyleChange(value, 'width')}
+              onChange={(value) => setStyleProperty(value, 'width')}
             />
             <TextField
               placeholder='height'
               value={campaign.styles.height}
-              onChange={(value) => handleStyleChange(value, 'height')}
+              onChange={(value) => setStyleProperty(value, 'height')}
             />
           </div>
         </Card.Section>
@@ -178,4 +186,4 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
   </Layout>
 )}
 
-export default SaleStormBannerFormatter
+export default SaleStormBannerFormatter;
