@@ -20,7 +20,8 @@ const Index = () => {
       minHeight: '50px',
       color: '#000'
     },
-    message: 'This is the banner preview 🔥'
+    message: 'This is the banner preview 🔥',
+    published: false
   })
   const handleCampaignChange = useCallback(
     (value, id) => {
@@ -33,7 +34,7 @@ const Index = () => {
       title="Create a new campaign"
       breadcrumbs={[{ content: "Campaigns", url: "/" }]}
       primaryAction={{
-        content: "Publish campaign",
+        content: campaign.published ? "Unpublish campaign" : "Publish campaign",
         onAction: async () => {
           try {
             const response = await publishCampaign(campaign);
