@@ -53,11 +53,14 @@ app.prepare().then(() => {
       version: ApiVersion.October19,
     })
   );
-  router.get("(.*)", verifyRequest(), async (ctx) => {
+  const allRoutesMatch = '(.*)';
+  const proxyToNext = async (ctx) => {
     await handle(ctx.req, ctx.res);
     ctx.respond = false;
     ctx.res.statusCode = 200;
-  });
+  };
+  router.get(allRoutesMatch, verifyRequest(), proxyToNext);
+  router.post(allRoutesMatch, verifyRequest(), proxyToNext)
   server.use(router.allowedMethods());
   server.use(router.routes());
   server.listen(port, () => {
