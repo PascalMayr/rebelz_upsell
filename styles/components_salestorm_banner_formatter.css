@@ -1,18 +1,28 @@
 .salestorm-banner-formatter-colors {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .salestorm-banner-formatter-colors > div:not(:first-child) {
-  margin-left: 1em;
+  margin-left: 2em;
 }
 
-.salestorm-banner-formatter-styles > div:not(:first-child) {
+.salestorm-banner-formatter-styles {
+  flex: 4
+}
+
+.salestormm-banner-formatter-border-sides {
+  display: flex;
+}
+
+.salestorm-banner-formatter-range:not(:first-child) {
   margin-top: 1em;
 }
 
 .salestorm-banner-formatter-styles-height-width {
   display: flex;
   justify-content: space-between;
+  margin-top: 1em;
 }
 
 .salestorm-banner-formatter-styles-height-width > div {

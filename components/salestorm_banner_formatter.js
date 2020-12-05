@@ -26,13 +26,6 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
     {label: 'Box Shadow color', value: 'boxShadow'},
   ];
 
-  const [sides, setSides] = useState({
-    left: true,
-    right: true,
-    top: true,
-    bottom: true
-  });
-
   return (
   <Layout>
     {
