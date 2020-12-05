@@ -10,9 +10,11 @@ const Index = () => {
       margin: '0px',
       padding: '15px',
       borderRadius: '5px',
+      borderWidth: '1px',
+      borderStyle: 'solid',
       backgroundColor: 'red',
       borderColor: 'red',
-      boxShadow: '1px 2px 5px',
+      boxShadow: '1px 2px 5px #000',
       width: '100%',
       minHeight: '50px',
       color: '#000'
@@ -23,7 +25,7 @@ const Index = () => {
     (value, id) => {
       setCampaign({...campaign, [id]: value });
     },
-    [campaign],
+    [campaign]
   );
   return (
     <Page

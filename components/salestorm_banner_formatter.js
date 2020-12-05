@@ -7,9 +7,15 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
 
   const handleStyleChange = useCallback(
     (value, id) => {
-      handleCampaignChange({...campaign.styles, [id]: value}, 'styles')
+      if (id === 'boxShadow') {
+        let boxShadow = campaign.styles.boxShadow.split(' ').slice(0,3);
+        handleCampaignChange({...campaign.styles, [id]: `${boxShadow.join(' ')} ${value}`}, 'styles')
+      }
+      else {
+        handleCampaignChange({...campaign.styles, [id]: value}, 'styles')
+      }
     },
-    [campaign],
+    [campaign]
   );
 
   const [color, setColor] = useState({label: 'Background color', value: 'backgroundColor'});
@@ -17,7 +23,7 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
   const colorChoices = [
     {label: 'Background color', value: 'backgroundColor'},
     {label: 'Border color', value: 'borderColor'},
-    {label: 'Box Shadow color', value: 'shadowColor'},
+    {label: 'Box Shadow color', value: 'boxShadow'},
   ];
 
   const [sides, setSides] = useState({
@@ -63,7 +69,7 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
     }
     <Layout.Section>
       <Card>
-        <Card.Section title="Pick your colors">
+        <Card.Section title="Pick Background and set colors">
           <div className="salestorm-banner-formatter-colors">
             <div>
               <ChoiceList
@@ -106,9 +112,26 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
               onChange={(value) => handleStyleChange(`${value}px`, 'borderRadius')}
               output
             />
+            <RangeSlider
+              label="Border width in px"
+              value={parseInt(campaign.styles.borderWidth)}
+              onChange={(value) => handleStyleChange(`${value}px`, 'borderWidth')}
+              output
+            />
+            {
+              console.log(campaign)
+            }
             <div className='salestorm-banner-formatter-styles-height-width'>
-              <TextField placeholder='width' />
-              <TextField placeholder='height' />
+              <TextField
+                placeholder='width'
+                value={campaign.styles.width}
+                onChange={(value) => handleStyleChange(value, 'width')}
+              />
+              <TextField
+                placeholder='height'
+                value={campaign.styles.height}
+                onChange={(value) => handleStyleChange(value, 'height')}
+              />
             </div>
           </div>
         </Card.Section>
