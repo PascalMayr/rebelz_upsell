@@ -1,9 +1,30 @@
+import { useState, useCallback } from 'react'
 import { Page, Card, Layout } from '@shopify/polaris';
 import SaleStormBannerFormatter from '../../components/salestorm_banner_formatter';
 import { Editor } from '@tinymce/tinymce-react';
 import '../../styles/pages_campaigns_index.css';
 
 const Index = () => {
+  const [campaign, setCampaign] = useState({
+    styles: {
+      margin: '0px',
+      padding: '15px',
+      borderRadius: '5px',
+      backgroundColor: 'red',
+      borderColor: 'red',
+      boxShadow: '1px 2px 5px',
+      width: '100%',
+      minHeight: '50px',
+      color: '#000'
+    },
+    message: 'This is the banner preview 🔥'
+  })
+  const handleCampaignChange = useCallback(
+    (value, id) => {
+      setCampaign({...campaign, [id]: value });
+    },
+    [campaign],
+  );
   return (
     <Page
       title="Create a new campaign"
@@ -16,9 +37,11 @@ const Index = () => {
               <Card>
                 <Card.Section title="Preview">
                   <div className='salestorm-banner-preview-container'>
-                    <div className='salestorm-banner-preview'>
-                      This is the banner preview 🔥
-                    </div>
+                    <div
+                      className='salestorm-banner-preview'
+                      dangerouslySetInnerHTML={{__html: campaign.message}}
+                      style={campaign.styles}
+                    />
                   </div>
                 </Card.Section>
               </Card>
@@ -65,12 +88,16 @@ const Index = () => {
                 toolbar_mode: 'wrap',
                 statusbar: false
               }}
-              onEditorChange={value => console.log(value)}
+              initialValue={campaign.message}
+              onEditorChange={value => handleCampaignChange(value, 'message')}
             />
           </Card>
         </Card.Section>
         <Card.Section>
-          <SaleStormBannerFormatter />
+          <SaleStormBannerFormatter
+           campaign={campaign}
+           handleCampaignChange={handleCampaignChange}
+          />
         </Card.Section>
       </Card>
       <Card>
