@@ -18,12 +18,12 @@ const SaleStormBannerFormatter = ({ campaign, handleCampaignChange }) => {
     [campaign]
   );
 
-  const [color, setColor] = useState({label: 'Background color', value: 'backgroundColor'});
+  const [styleChoice, setStyleChoice] = useState({label: 'Background', value: 'background'});
 
-  const colorChoices = [
-    {label: 'Background color', value: 'backgroundColor'},
-    {label: 'Border color', value: 'borderColor'},
-    {label: 'Box Shadow color', value: 'boxShadow'},
+  const styleChoices = [
+    {label: 'Background', value: 'background'},
+    {label: 'Border', value: 'border'},
+    {label: 'Box Shadow', value: 'boxShadow'},
   ];
 
   return (
