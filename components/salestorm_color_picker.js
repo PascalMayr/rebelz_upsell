@@ -23,10 +23,8 @@ const SalestormColorPicker = ({onChange, color, allowAlpha = false, id, onTextCh
         style={{backgroundColor: getColorFromColorPicker(colorForPicker, colorMode)}}
       >
         <TextField
-          value={getColorFromColorPicker(colorForPicker, colorMode)}
-          onChange={value => {
-            onTextChange(value);
-          }}
+          value={color}
+          onChange={value => onTextChange(value)}
         />
       </div>
     </div>
