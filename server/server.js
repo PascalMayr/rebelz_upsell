@@ -18,6 +18,18 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES } = process.env;
+const setupShopifyAPI = async (ctx, next) => {
+  ctx.shopifyAPI = axios.create({
+    baseURL: `https://${ctx.session.shop}/admin/api/2020-10/`,
+    headers: {
+      'X-Shopify-Access-Token': ctx.session.accessToken,
+      'Content-Type': 'application/json',
+    },
+    timeout: 30000
+  })
+  await next();
+}
+
 app.prepare().then(() => {
   const server = new Koa();
   const router = new Router();
