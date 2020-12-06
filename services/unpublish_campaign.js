@@ -1,6 +1,7 @@
-const unpublishCampaign = async (html) => {
-  return fetch('/api/unpublish-campaign', {
-    method: 'DELETE',
+import axios from 'axios'
+
+const unpublishCampaign = async () => {
+  return axios.delete('/api/unpublish-campaign', {
     headers: {
       "Content-Type": "application/json",
     },

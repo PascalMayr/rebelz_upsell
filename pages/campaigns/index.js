@@ -4,7 +4,7 @@ import SaleStormBannerFormatter from "../../components/salestorm_banner_formatte
 import { Editor } from "@tinymce/tinymce-react";
 import "../../styles/pages_campaigns_index.css";
 import publishCampaign from "../../services/publish_campaign";
-import unpublishCampaign from "../../services/publish_campaign";
+import unpublishCampaign from "../../services/unpublish_campaign";
 import { AppContext } from "../_app";
 
 const Index = () => {

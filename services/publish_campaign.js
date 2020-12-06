@@ -1,11 +1,7 @@
+import axios from 'axios'
+
 const publishCampaign = async (html) => {
-  return fetch('/api/publish-campaign', {
-    method: 'POST',
-    body: JSON.stringify({ html }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  return axios.post('/api/publish-campaign', { html });
 };
 
 export default publishCampaign;

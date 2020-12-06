@@ -105,7 +105,7 @@ app.prepare().then(() => {
     ctx.status = 200
   });
 
-  router.del('/api/unpublish-campaign', verifyRequest(), setupShopifyAPI, async (ctx) => {
+  router.delete('/api/unpublish-campaign', verifyRequest(), setupShopifyAPI, async (ctx) => {
     const themeResponse = await ctx.shopifyAPI.get('themes.json');
     const activeThemeID = themeResponse.data.themes.find(theme => theme.role === 'main').id;
 
@@ -115,6 +115,8 @@ app.prepare().then(() => {
         value: ''
       }
     })
+
+    ctx.status = 200
   });
   server.use(router.allowedMethods());
   server.use(router.routes());
