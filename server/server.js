@@ -1,3 +1,4 @@
+import axios from "axios"
 import "@babel/polyfill";
 import dotenv from "dotenv";
 import "isomorphic-fetch";
@@ -5,6 +6,7 @@ import createShopifyAuth, { verifyRequest } from "@shopify/koa-shopify-auth";
 import graphQLProxy, { ApiVersion } from "@shopify/koa-shopify-graphql-proxy";
 import Koa from "koa";
 import next from "next";
+import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import session from "koa-session";
 import * as handlers from "./handlers/index";
