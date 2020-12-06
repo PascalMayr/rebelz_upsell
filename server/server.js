@@ -104,6 +104,18 @@ app.prepare().then(() => {
 
     ctx.status = 200
   });
+
+  router.del('/api/unpublish-campaign', verifyRequest(), setupShopifyAPI, async (ctx) => {
+    const themeResponse = await ctx.shopifyAPI.get('themes.json');
+    const activeThemeID = themeResponse.data.themes.find(theme => theme.role === 'main').id;
+
+    await ctx.shopifyAPI.put(`themes/${activeThemeID}/assets.json`, {
+      asset: {
+        key: 'snippets/salestorm.liquid',
+        value: ''
+      }
+    })
+  });
   server.use(router.allowedMethods());
   server.use(router.routes());
   server.listen(port, () => {
