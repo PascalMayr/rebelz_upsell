@@ -7,7 +7,7 @@ import {
 } from '@shopify/polaris-icons';
 import Image from 'next/image';
 import '../styles/pages_index.css';
-import Link from 'next/Link';
+import NextLink from 'next/link';
 
 const Index = ({rows = []}) => {
   return (
@@ -16,9 +16,9 @@ const Index = ({rows = []}) => {
     title="All Campaigns"
     subtitle="Create new campaigns and boost your sales."
     primaryAction={
-      <Link href='/campaigns'>
+      <NextLink href='/campaigns'>
         <Button primary><span className='salestorm-add-campaign'>+</span> New Campaign</Button>
-      </Link>
+      </NextLink>
     }
     secondaryActions={[
       {content: 'Upgrade', disabled: false, url: '/pricing'},
