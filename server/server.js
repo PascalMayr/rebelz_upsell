@@ -67,14 +67,43 @@ app.prepare().then(() => {
       version: ApiVersion.October19,
     })
   );
-  const allRoutesMatch = '(.*)';
-  const proxyToNext = async (ctx) => {
+  server.use(bodyParser());
+  router.get('(.*)', verifyRequest(), async (ctx) => {
     await handle(ctx.req, ctx.res);
     ctx.respond = false;
     ctx.res.statusCode = 200;
-  };
-  router.get(allRoutesMatch, verifyRequest(), proxyToNext);
-  router.post(allRoutesMatch, verifyRequest(), proxyToNext)
+  });
+  router.post('/api/publish-campaign', verifyRequest(), setupShopifyAPI, async (ctx) => {
+    const themeResponse = await ctx.shopifyAPI.get('themes.json');
+    const activeThemeID = themeResponse.data.themes.find(theme => theme.role === 'main').id;
+
+    await ctx.shopifyAPI.put(`themes/${activeThemeID}/assets.json`, {
+      asset: {
+        key: 'snippets/salestorm.liquid',
+        value: ctx.request.body.html
+      }
+    })
+
+    const themeTemplateResponse = await ctx.shopifyAPI.get(`themes/${activeThemeID}/assets.json`, {
+      params: {
+        'asset[key]': 'layout/theme.liquid'
+      }
+    })
+    const themeCode = themeTemplateResponse.data.asset.value;
+    const renderSnippet = "\n{% capture salestorm_content %}{% render 'salestorm' %}{% endcapture %}\n{% unless salestorm_content contains 'Liquid error' %}\n{{ salestorm_content }}\n{% endunless %}\n";
+    if(!themeCode.includes(renderSnippet)) {
+      const sectionHeader = "{% section 'header' %}"
+      const newThemeCode = themeCode.replace(sectionHeader, `${sectionHeader}${renderSnippet}`);
+      await ctx.shopifyAPI.put(`themes/${activeThemeID}/assets.json`, {
+        asset: {
+          key: 'layout/theme.liquid',
+          value: newThemeCode
+        }
+      })
+    }
+
+    ctx.status = 200
+  });
   server.use(router.allowedMethods());
   server.use(router.routes());
   server.listen(port, () => {
