@@ -1,9 +1,7 @@
-const publishCampaign = async () => {
-  return fetch("/api/publish-campaign", {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }).then((data) => data.json());
+import axios from 'axios'
+
+const publishCampaign = async (html) => {
+  return axios.post('/api/publish-campaign', { html });
 };
 
 export default publishCampaign;

@@ -1,9 +1,10 @@
-import { useState, useCallback, useContext } from "react";
+import { useState, useCallback, useContext, useRef } from "react";
 import { Page, Card, Layout } from "@shopify/polaris";
 import SaleStormBannerFormatter from "../../components/salestorm_banner_formatter";
 import { Editor } from "@tinymce/tinymce-react";
 import "../../styles/pages_campaigns_index.css";
 import publishCampaign from "../../services/publish_campaign";
+import unpublishCampaign from "../../services/unpublish_campaign";
 import { AppContext } from "../_app";
 
 const Index = () => {
@@ -33,6 +34,7 @@ const Index = () => {
     (value, id) => setCampaign({ ...campaign, [id]: value }),
     [campaign]
   );
+  const bannerPreviewRef = useRef(null);
   const [publishLoading, setPublishLoading] = useState(false);
   return (
     <Page
@@ -42,24 +44,46 @@ const Index = () => {
         content: campaign.published ? "Unpublish campaign" : "Publish campaign",
         loading: publishLoading,
         onAction: async () => {
-          try {
-            setPublishLoading(true);
-            const response = await publishCampaign(campaign);
-            context.setToast({
-              shown: true,
-              content: "Successfully published campaign",
-              isError: false,
-            });
-            setCampaign({ ...campaign, published: true });
-          } catch (e) {
-            context.setToast({
-              shown: true,
-              content: "Campaign publishing failed",
-              isError: true,
-            });
-            setCampaign({ ...campaign, published: false });
-          } finally {
-            setPublishLoading(false);
+          if(campaign.published) {
+            try {
+              setPublishLoading(true);
+              await unpublishCampaign();
+              context.setToast({
+                shown: true,
+                content: "Successfully unpublished campaign",
+                isError: false,
+              });
+              setCampaign({ ...campaign, published: false });
+            } catch(e) {
+              context.setToast({
+                shown: true,
+                content: "Campaign unpublishing failed",
+                isError: true,
+              });
+              setCampaign({ ...campaign, published: true });
+            } finally {
+              setPublishLoading(false);
+            }
+          } else {
+            try {
+              setPublishLoading(true);
+              await publishCampaign(bannerPreviewRef.current.outerHTML);
+              context.setToast({
+                shown: true,
+                content: "Successfully published campaign",
+                isError: false,
+              });
+              setCampaign({ ...campaign, published: true });
+            } catch (e) {
+              context.setToast({
+                shown: true,
+                content: "Campaign publishing failed",
+                isError: true,
+              });
+              setCampaign({ ...campaign, published: false });
+            } finally {
+              setPublishLoading(false);
+            }
           }
         },
       }}
@@ -75,6 +99,7 @@ const Index = () => {
                       className="salestorm-banner-preview"
                       dangerouslySetInnerHTML={{ __html: campaign.message }}
                       style={campaign.styles}
+                      ref={bannerPreviewRef}
                     />
                   </div>
                 </Card.Section>
