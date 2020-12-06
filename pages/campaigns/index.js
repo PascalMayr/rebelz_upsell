@@ -4,6 +4,7 @@ import SaleStormBannerFormatter from "../../components/salestorm_banner_formatte
 import { Editor } from "@tinymce/tinymce-react";
 import "../../styles/pages_campaigns_index.css";
 import publishCampaign from "../../services/publish_campaign";
+import unpublishCampaign from "../../services/publish_campaign";
 import { AppContext } from "../_app";
 
 const Index = () => {
@@ -43,24 +44,46 @@ const Index = () => {
         content: campaign.published ? "Unpublish campaign" : "Publish campaign",
         loading: publishLoading,
         onAction: async () => {
-          try {
-            setPublishLoading(true);
-            await publishCampaign(bannerPreviewRef.current.outerHTML);
-            context.setToast({
-              shown: true,
-              content: "Successfully published campaign",
-              isError: false,
-            });
-            setCampaign({ ...campaign, published: true });
-          } catch (e) {
-            context.setToast({
-              shown: true,
-              content: "Campaign publishing failed",
-              isError: true,
-            });
-            setCampaign({ ...campaign, published: false });
-          } finally {
-            setPublishLoading(false);
+          if(campaign.published) {
+            try {
+              setPublishLoading(true);
+              await unpublishCampaign();
+              context.setToast({
+                shown: true,
+                content: "Successfully unpublished campaign",
+                isError: false,
+              });
+              setCampaign({ ...campaign, published: false });
+            } catch(e) {
+              context.setToast({
+                shown: true,
+                content: "Campaign unpublishing failed",
+                isError: true,
+              });
+              setCampaign({ ...campaign, published: true });
+            } finally {
+              setPublishLoading(false);
+            }
+          } else {
+            try {
+              setPublishLoading(true);
+              await publishCampaign(bannerPreviewRef.current.outerHTML);
+              context.setToast({
+                shown: true,
+                content: "Successfully published campaign",
+                isError: false,
+              });
+              setCampaign({ ...campaign, published: true });
+            } catch (e) {
+              context.setToast({
+                shown: true,
+                content: "Campaign publishing failed",
+                isError: true,
+              });
+              setCampaign({ ...campaign, published: false });
+            } finally {
+              setPublishLoading(false);
+            }
           }
         },
       }}
