@@ -1,11 +1,11 @@
-const publishCampaign = async (campaign) => {
+const publishCampaign = async (html) => {
   return fetch('/api/publish-campaign', {
     method: 'POST',
-    body: JSON.stringify(campaign),
+    body: JSON.stringify({ html }),
     headers: {
       "Content-Type": "application/json",
     },
-  }).then((data) => data.json());
+  });
 };
 
 export default publishCampaign;

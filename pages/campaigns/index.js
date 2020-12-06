@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext } from "react";
+import { useState, useCallback, useContext, useRef } from "react";
 import { Page, Card, Layout } from "@shopify/polaris";
 import SaleStormBannerFormatter from "../../components/salestorm_banner_formatter";
 import { Editor } from "@tinymce/tinymce-react";
@@ -33,6 +33,7 @@ const Index = () => {
     (value, id) => setCampaign({ ...campaign, [id]: value }),
     [campaign]
   );
+  const bannerPreviewRef = useRef(null);
   const [publishLoading, setPublishLoading] = useState(false);
   return (
     <Page
@@ -44,7 +45,7 @@ const Index = () => {
         onAction: async () => {
           try {
             setPublishLoading(true);
-            await publishCampaign(campaign);
+            await publishCampaign(bannerPreviewRef.current.outerHTML);
             context.setToast({
               shown: true,
               content: "Successfully published campaign",
@@ -75,6 +76,7 @@ const Index = () => {
                       className="salestorm-banner-preview"
                       dangerouslySetInnerHTML={{ __html: campaign.message }}
                       style={campaign.styles}
+                      ref={bannerPreviewRef}
                     />
                   </div>
                 </Card.Section>
