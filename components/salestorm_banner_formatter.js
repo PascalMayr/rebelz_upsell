@@ -13,15 +13,7 @@ import "../styles/components_salestorm_banner_formatter.css";
 const SaleStormBannerFormatter = ({ campaign, setCampaignProperty }) => {
   const setStyleProperty = useCallback(
     (value, id) => {
-      if (id === "boxShadow") {
-        let boxShadow = campaign.styles.boxShadow.split(" ").slice(0, 3);
-        setCampaignProperty(
-          { ...campaign.styles, [id]: `${boxShadow.join(" ")} ${value}` },
-          "styles"
-        );
-      } else {
-        setCampaignProperty({ ...campaign.styles, [id]: value }, "styles");
-      }
+      setCampaignProperty({ ...campaign.styles, [id]: value }, "styles");
     },
     [campaign]
   );
@@ -31,8 +23,20 @@ const SaleStormBannerFormatter = ({ campaign, setCampaignProperty }) => {
   const styleChoices = [
     {label: 'Background', value: 'background'},
     {label: 'Border', value: 'border'},
-    {label: 'Box Shadow', value: 'boxShadow'},
+    {label: 'Box Shadow', value: 'boxShadow'}
   ];
+
+  const _setColor = (value) => {
+    if (styleChoice.value === 'boxShadow') {
+      let boxShadow = campaign.styles.boxShadow.split(' ').slice(0, 3);
+      setStyleProperty(`${boxShadow.join(' ')} ${value}`, styleChoice.value);
+    }
+    else {
+      setStyleProperty(value, `${styleChoice.value}Color`);
+    }
+  }
+
+  const _getColor = (value) => styleChoice.value === 'boxShadow' ? campaign.styles[styleChoice.value].split(' ').slice(3).join(' ') : campaign.styles[`${styleChoice.value}Color`];
 
   return (
   <Layout>
@@ -49,12 +53,15 @@ const SaleStormBannerFormatter = ({ campaign, setCampaignProperty }) => {
                 }}
               />
             </div>
-            <SalestormColorPicker
-              onChange={(value) => setStyleProperty(value, styleChoice.value === 'boxShadow' ? styleChoice.value : `${styleChoice.value}Color`)}
-              onTextChange={(value) => setStyleProperty(value, styleChoice.value === 'boxShadow' ? styleChoice.value : `${styleChoice.value}Color`)}
-              color={styleChoice.value === 'boxShadow' ? campaign.styles[styleChoice.value].split(' ').slice(3).join(' ') : campaign.styles[`${styleChoice.value}Color`]}
-              allowAlpha
-            />
+            {
+              ['border', 'background', 'boxShadow'].includes(styleChoice.value) &&
+              <SalestormColorPicker
+                onChange={_setColor}
+                onTextChange={_setColor}
+                color={_getColor()}
+                allowAlpha
+              />
+            }
             <div className="salestorm-banner-formatter-styles">
               {
                 styleChoice.value === 'border' &&
@@ -121,7 +128,9 @@ const SaleStormBannerFormatter = ({ campaign, setCampaignProperty }) => {
                       label="Shadow H offset"
                       value={parseInt(campaign.styles.boxShadow.split(' ')[0])}
                       onChange={(value) => {
-
+                        let currentBoxShadow = campaign.styles.boxShadow.split(' ');
+                        currentBoxShadow[0] = `${value}px`;
+                        setStyleProperty(currentBoxShadow.join(' '), 'boxShadow');
                       }}
                       output
                     />
@@ -131,7 +140,9 @@ const SaleStormBannerFormatter = ({ campaign, setCampaignProperty }) => {
                       label="Shadow V offset"
                       value={parseInt(campaign.styles.boxShadow.split(' ')[1])}
                       onChange={(value) => {
-
+                        let currentBoxShadow = campaign.styles.boxShadow.split(' ');
+                        currentBoxShadow[1] = `${value}px`;
+                        setStyleProperty(currentBoxShadow.join(' '), 'boxShadow');
                       }}
                       output
                     />
@@ -141,7 +152,9 @@ const SaleStormBannerFormatter = ({ campaign, setCampaignProperty }) => {
                       label="Shadow spread"
                       value={parseInt(campaign.styles.boxShadow.split(' ')[2])}
                       onChange={(value) => {
-
+                        let currentBoxShadow = campaign.styles.boxShadow.split(' ');
+                        currentBoxShadow[2] = `${value}px`;
+                        setStyleProperty(currentBoxShadow.join(' '), 'boxShadow');
                       }}
                       output
                     />
