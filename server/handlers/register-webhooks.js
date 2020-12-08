@@ -1,4 +1,4 @@
-import { registerWebhook } from "@shopify/koa-shopify-webhooks";
+import { registerWebhook } from '@shopify/koa-shopify-webhooks';
 
 export const registerWebhooks = async (
   shop,
@@ -12,14 +12,14 @@ export const registerWebhooks = async (
     topic: type,
     accessToken,
     shop,
-    apiVersion
+    apiVersion,
   });
 
   if (registration.success) {
-    console.log("Successfully registered webhook!");
+    console.log('Successfully registered webhook!');
   } else {
     console.log(
-      "Failed to register webhook",
+      'Failed to register webhook',
       registration.result.data.webhookSubscriptionCreate
     );
   }

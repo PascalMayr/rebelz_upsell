@@ -1,5 +1,5 @@
-import "isomorphic-fetch";
-import { gql } from "apollo-boost";
+import 'isomorphic-fetch';
+import { gql } from 'apollo-boost';
 
 export function ONETIME_CREATE(url) {
   return gql`

@@ -8,7 +8,7 @@
 }
 
 .salestorm-banner-formatter-styles {
-  flex: 4
+  flex: 4;
 }
 
 .salestormm-banner-formatter-border-sides {
@@ -36,4 +36,3 @@
 .salestorm-banner-formatter-sides .Polaris-Choice:not(:first-child) {
   margin-left: 1em;
 }
-

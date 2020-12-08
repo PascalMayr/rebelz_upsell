@@ -3,13 +3,17 @@
 This project was bootstrapped using the Shopify App Node Boilerplate to create an embedded Shopify app made with Node, [Next.js](https://nextjs.org/), [Shopify-koa-auth](https://github.com/Shopify/quilt/tree/master/packages/koa-shopify-auth), [Polaris](https://github.com/Shopify/polaris-react), and [App Bridge React](https://shopify.dev/tools/app-bridge/react-components).
 
 ## Getting started
+
 1. Clone the repository.
 2. Run:
+
 ```sh
 ~/ $ npm install
 ```
+
 3. Install the [Shopify-App-CLI](https://github.com/Shopify/shopify-app-cli).
 4. Run:
+
 ```sh
 ~/ $ shopify serve
 ```
@@ -37,5 +41,3 @@ shopify tunnel stop
 ```
 shopify serve
 ```
-
-
