@@ -70,32 +70,44 @@ const SaleStormBannerFormatter = ({ campaign, setCampaignProperty }) => {
                     <div>
                       <Checkbox
                         label="Apply styles to the leftside"
-                        checked={campaign.styles.borderLeftWidth !== '0px'}
+                        checked={campaign.styles.borderWidth.split(' ')[3] !== '0px'}
                         onChange={(value) => {
-                          setStyleProperty(value ? campaign.styles.borderWidth : '0px', 'borderLeftWidth')
+                          let borderWidth = campaign.styles.borderWidth.split(' ')
+                          const leftWidth = value ? borderWidth.find(width => width !== '0px') : '0px';
+                          borderWidth[3] = leftWidth;
+                          setStyleProperty(borderWidth.join(' '), 'borderWidth');
                         }}
                       />
                       <Checkbox
                         label="Apply styles to the rightside"
-                        checked={campaign.styles.borderRightWidth !== '0px'}
+                        checked={campaign.styles.borderWidth.split(' ')[1] !== '0px'}
                         onChange={(value) => {
-                          setStyleProperty(value ? campaign.styles.borderWidth : '0px', 'borderRightWidth')
+                          let borderWidth = campaign.styles.borderWidth.split(' ')
+                          const rightWidth = value ? borderWidth.find(width => width !== '0px') : '0px';
+                          borderWidth[1] = rightWidth;
+                          setStyleProperty(borderWidth.join(' '), 'borderWidth');
                         }}
                       />
                     </div>
                     <div>
                       <Checkbox
                         label="Apply styles to the topside"
-                        checked={campaign.styles.borderTopWidth !== '0px'}
+                        checked={campaign.styles.borderWidth.split(' ')[0] !== '0px'}
                         onChange={(value) => {
-                          setStyleProperty(value ? campaign.styles.borderWidth : '0px', 'borderTopWidth')
+                          let borderWidth = campaign.styles.borderWidth.split(' ')
+                          const topWidth = value ? borderWidth.find(width => width !== '0px') : '0px';
+                          borderWidth[0] = topWidth;
+                          setStyleProperty(borderWidth.join(' '), 'borderWidth');
                         }}
                       />
                       <Checkbox
                         label="Apply styles to the bottomside"
-                        checked={campaign.styles.borderBottomWidth !== '0px'}
+                        checked={campaign.styles.borderWidth.split(' ')[2] !== '0px'}
                         onChange={(value) => {
-                          setStyleProperty(value ? campaign.styles.borderWidth : '0px', 'borderBottomWidth')
+                          let borderWidth = campaign.styles.borderWidth.split(' ')
+                          const bottomWidth = value ? borderWidth.find(width => width !== '0px') : '0px';
+                          borderWidth[2] = bottomWidth;
+                          setStyleProperty(borderWidth.join(' '), 'borderWidth');
                         }}
                       />
                     </div>
@@ -111,9 +123,14 @@ const SaleStormBannerFormatter = ({ campaign, setCampaignProperty }) => {
                   <div className='salestorm-banner-formatter-range'>
                     <RangeSlider
                       label="Border width in px"
-                      value={parseInt(campaign.styles.borderWidth)}
+                      value={parseInt(campaign.styles.borderWidth.split(' ').find(width => width !== '0px') ? campaign.styles.borderWidth.split(' ').find(width => width !== '0px') : 0 )}
                       onChange={(value) => {
-                        setStyleProperty(`${value}px`, 'borderWidth');
+                        let borderWidth = campaign.styles.borderWidth.split(' ');
+                        borderWidth = borderWidth.map(width => width !== '0px' ? `${value}px` : '0px');
+                        if (!borderWidth.find(width => width !== '0px')) {
+                          borderWidth = [`${value}px`, `${value}px`, `${value}px`, `${value}px`];
+                        }
+                        setStyleProperty(borderWidth.join(' '), 'borderWidth');
                       }}
                       output
                     />
