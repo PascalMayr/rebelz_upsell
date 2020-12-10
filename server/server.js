@@ -43,36 +43,47 @@ app.prepare().then(() => {
     )
   );
   server.keys = [SHOPIFY_API_SECRET];
-  server.use(
-    createShopifyAuth({
-      apiKey: SHOPIFY_API_KEY,
-      secret: SHOPIFY_API_SECRET,
-      scopes: [SCOPES],
+  if (process.env.NODE_ENV !== 'localdevelopment') {
+    server.use(
+      createShopifyAuth({
+        apiKey: SHOPIFY_API_KEY,
+        secret: SHOPIFY_API_SECRET,
+        scopes: [SCOPES],
 
-      async afterAuth(ctx) {
-        //Auth token and shop available in session
-        //Redirect to shop upon auth
-        const { shop, accessToken } = ctx.session;
-        ctx.cookies.set('shopOrigin', shop, {
-          httpOnly: false,
-          secure: true,
-          sameSite: 'none',
-        });
-        ctx.redirect('/');
-      },
-    })
-  );
+        async afterAuth(ctx) {
+          //Auth token and shop available in session
+          //Redirect to shop upon auth
+          const { shop, accessToken } = ctx.session;
+          ctx.cookies.set('shopOrigin', shop, {
+            httpOnly: false,
+            secure: true,
+            sameSite: 'none',
+          });
+          ctx.redirect('/');
+        },
+      })
+    );
+  }
   server.use(
     graphQLProxy({
       version: ApiVersion.October19,
     })
   );
   server.use(bodyParser());
-  router.get('(.*)', verifyRequest(), async (ctx) => {
-    await handle(ctx.req, ctx.res);
-    ctx.respond = false;
-    ctx.res.statusCode = 200;
-  });
+  if (process.env.NODE_ENV !== 'localdevelopment') {
+    router.get('(.*)', verifyRequest(), async (ctx) => {
+      await handle(ctx.req, ctx.res);
+      ctx.respond = false;
+      ctx.res.statusCode = 200;
+    });
+  }
+  else {
+    router.get('(.*)', async (ctx) => {
+      await handle(ctx.req, ctx.res);
+      ctx.respond = false;
+      ctx.res.statusCode = 200;
+    });
+  }
   router.post(
     '/api/publish-campaign',
     verifyRequest(),

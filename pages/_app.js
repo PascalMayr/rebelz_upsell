@@ -34,7 +34,8 @@ class MyApp extends App {
   }
   render() {
     const { Component, pageProps } = this.props;
-    const shopOrigin = Cookies.get('shopOrigin');
+    const shopOrigin = NODE_ENV !== 'localdevelopment' ? Cookies.get('shopOrigin') : 'prestige-google-review-test.myshopify.com';
+    const BridgeProvider = NODE_ENV !== 'localdevelopment' ? Provider : ({children}) => <div>{children}</div>;
     return (
       <AppProvider
         i18n={translations}
@@ -43,7 +44,7 @@ class MyApp extends App {
           colorScheme: 'light',
         }}
       >
-        <Provider
+        <BridgeProvider
           config={{
             apiKey: API_KEY,
             shopOrigin: shopOrigin,
@@ -75,7 +76,7 @@ class MyApp extends App {
               </Frame>
             </ApolloProvider>
           </AppContext.Provider>
-        </Provider>
+        </BridgeProvider>
       </AppProvider>
     );
   }
