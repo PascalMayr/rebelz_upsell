@@ -37,9 +37,28 @@ const Index = ({ rows = [] }) => {
         rows={rows}
       />
       {rows.length === 0 && (
-        <div id="no-campaigns-image">
-          <Image src="/imagination.svg" alt="me" width="250" height="250" />
-          You have no campaigns yet.
+        <div className="no-campaigns-container">
+          <div className='no-campaigns-image-section'>
+            <Image src="/imagination.svg" alt="me" width="250" height="250" />
+            <p>Follow the steps below to get started.</p>
+            <br />
+          </div>
+          <div className='no-camapaigns-stepper-section'>
+            <div className='stepper-container'>
+              <div className='stepper stepper-checked'>
+                <CircleTickOutlineMinor alt='stepper-checkmark' className='stepper-checkmark stepper-checked' />
+                <p>1. Install the app</p>
+              </div>
+              <div className='stepper'>
+                <CircleTickOutlineMinor alt='stepper-checkmark' className='stepper-checkmark' />
+                <p>2. Enable the app</p>
+              </div>
+              <div className='stepper'>
+                <CircleTickOutlineMinor alt='stepper-checkmark' className='stepper-checkmark' />
+                <p id='stepper-new-cammpaign-link'><NextLink href='/campaigns'>3. Create a campaign</NextLink></p>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </Page>
