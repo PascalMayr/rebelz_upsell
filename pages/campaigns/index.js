@@ -6,6 +6,7 @@ import '../../styles/pages_campaigns_index.css';
 import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';
 import { AppContext } from '../_app';
+import SalestormTriggers from '../../components/salestorm_triggers';
 
 const Index = () => {
   const context = useContext(AppContext);
@@ -151,7 +152,17 @@ const Index = () => {
         </Card.Section>
           */
         }
+        <Card.Section>
           <Card>
+        <Card.Section>
+          <Card>
+            <Card.Section title='Set Triggers'>
+              <SalestormTriggers
+                trigger={campaign.trigger}
+                setCampaignProperty={setCampaignProperty} />
+            </Card.Section>
+          </Card>
+        </Card.Section>
             <Editor
               apiKey="efp6k3qsyo4fsxytwgehvnjhlq5dqdbcbt95o2dfny7fj721"
               init={{
