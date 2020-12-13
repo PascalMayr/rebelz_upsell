@@ -10,13 +10,7 @@ import {
 import SalestormColorPicker from './salestorm_color_picker';
 import '../styles/components_salestorm_banner_formatter.css';
 
-const SaleStormBannerFormatter = ({ campaign, setCampaignProperty }) => {
-  const setStyleProperty = useCallback(
-    (value, id) => {
-      setCampaignProperty({ ...campaign.styles, [id]: value }, 'styles');
-    },
-    [campaign]
-  );
+const SaleStormBannerFormatter = ({ campaign, setStyleProperty }) => {
 
   const [styleChoice, setStyleChoice] = useState({
     label: 'Background',

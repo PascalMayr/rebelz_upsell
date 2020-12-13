@@ -34,6 +34,12 @@ const Index = () => {
     (value, id) => setCampaign({ ...campaign, [id]: value }),
     [campaign]
   );
+  const setStyleProperty = useCallback(
+    (value, id) => {
+      setCampaignProperty({ ...campaign.styles, [id]: value }, 'styles');
+    },
+    [campaign]
+  );
   const bannerPreviewRef = useRef(null);
   const [publishLoading, setPublishLoading] = useState(false);
   return (
@@ -100,6 +106,23 @@ const Index = () => {
                       dangerouslySetInnerHTML={{ __html: campaign.message }}
                       style={campaign.styles}
                       ref={bannerPreviewRef}
+                    >
+                    </div>
+                  </div>
+                </Card.Section>
+                <Card.Section>
+                  <div className='salestorm-banner-formatter-styles-height-width'>
+                    <TextField
+                      label="Popup width"
+                      value={campaign.styles.width}
+                      onChange={(value) => setStyleProperty(value, 'width')}
+                      placeholder='width'
+                    />
+                    <TextField
+                      label="Popup height"
+                      value={campaign.styles.height}
+                      onChange={(value) => setStyleProperty(value, 'height')}
+                      placeholder='height'
                     />
                   </div>
                 </Card.Section>
@@ -108,6 +131,11 @@ const Index = () => {
           </Layout>
         </Card.Section>
         <Card.Section>
+          <SaleStormBannerFormatter
+            campaign={campaign}
+            setStyleProperty={setStyleProperty}
+          />
+        </Card.Section>
           <Card>
             <Editor
               apiKey="efp6k3qsyo4fsxytwgehvnjhlq5dqdbcbt95o2dfny7fj721"
