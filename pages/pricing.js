@@ -9,7 +9,7 @@ const Pricing = () => {
       subtitle="Choose the best plan for your needs"
       breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
     >
-      <div>
+      <div className='plans-container'>
         <Layout>
           <Layout.Section oneThird>
             <SalestormPricingCard
