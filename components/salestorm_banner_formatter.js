@@ -65,6 +65,22 @@ const SaleStormBannerFormatter = ({ campaign, setStyleProperty }) => {
                 />
               )}
               <div className="salestorm-banner-formatter-styles">
+                {
+                  styleChoice.value === 'background' &&
+                  <TextField label="Background Image URL"
+                    value={campaign.styles.backgroundImage.match(/\((.*?)\)/)[1]}
+                    onChange={(value) => {
+                    let backgroundImage = campaign.styles.backgroundImage;
+                    const backgroundImageUrl = backgroundImage.match(/\((.*?)\)/)[1];
+                    if (backgroundImageUrl === '') {
+                      backgroundImage = backgroundImage.replace(backgroundImage, `url(${value})`);
+                    }
+                    else {
+                      backgroundImage = backgroundImage.replace(backgroundImageUrl, value);
+                    }
+                    setStyleProperty(backgroundImage, 'backgroundImage');
+                  }} />
+                }
                 {styleChoice.value === 'border' && (
                   <Fragment>
                     <div className="salestormm-banner-formatter-border-sides">
