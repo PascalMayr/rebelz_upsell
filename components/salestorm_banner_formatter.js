@@ -41,7 +41,7 @@ const SaleStormBannerFormatter = ({ campaign, setStyleProperty }) => {
     <Layout>
       <Layout.Section>
         <Card>
-          <Card.Section title="Set Banner Styles">
+          <Card.Section title="Set Popup Styles">
             <div className="salestorm-banner-formatter-colors">
               <div>
                 <ChoiceList
