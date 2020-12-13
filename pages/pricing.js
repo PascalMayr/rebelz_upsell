@@ -43,7 +43,7 @@ const Pricing = () => {
                 'Countdown Timers',
                 'Page Targeting',
               ]}
-              button={<Button primary>Start 7 days FREE Trial</Button>}
+              button={<Button primary>Start 30 days FREE Trial</Button>}
             />
           </Layout.Section>
           <Layout.Section oneThird>
@@ -56,7 +56,7 @@ const Pricing = () => {
                 'Geotargeting',
                 'Device Targeting',
               ]}
-              button={<Button primary>Start 7 days FREE Trial</Button>}
+              button={<Button primary>Start 30 days FREE Trial</Button>}
             />
           </Layout.Section>
         </Layout>
