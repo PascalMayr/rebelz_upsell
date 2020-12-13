@@ -260,36 +260,6 @@ const SaleStormBannerFormatter = ({ campaign, setStyleProperty }) => {
               </div>
             </div>
           </Card.Section>
-          <Card.Section>
-            <div className="salestorm-banner-formatter-range">
-              <RangeSlider
-                label="Margin in px"
-                value={parseInt(campaign.styles.margin)}
-                onChange={(value) => setStyleProperty(`${value}px`, 'margin')}
-                output
-              />
-            </div>
-            <div className="salestorm-banner-formatter-range">
-              <RangeSlider
-                label="Padding in px"
-                value={parseInt(campaign.styles.padding)}
-                onChange={(value) => setStyleProperty(`${value}px`, 'padding')}
-                output
-              />
-            </div>
-            <div className="salestorm-banner-formatter-styles-height-width">
-              <TextField
-                placeholder="width"
-                value={campaign.styles.width}
-                onChange={(value) => setStyleProperty(value, 'width')}
-              />
-              <TextField
-                placeholder="height"
-                value={campaign.styles.height}
-                onChange={(value) => setStyleProperty(value, 'height')}
-              />
-            </div>
-          </Card.Section>
         </Card>
       </Layout.Section>
     </Layout>
