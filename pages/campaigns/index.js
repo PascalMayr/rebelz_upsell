@@ -136,6 +136,21 @@ const Index = () => {
             setStyleProperty={setStyleProperty}
           />
         </Card.Section>
+        {
+          // Not MVP
+          /*
+        <Card.Section>
+          <Card>
+            <Card.Section title='Would you like to cross - or upsell products?'>
+              <SalestormSellType
+                sell_type={campaign.sell_type}
+                setCampaignProperty={setCampaignProperty}
+              />
+            </Card.Section>
+          </Card>
+        </Card.Section>
+          */
+        }
           <Card>
             <Editor
               apiKey="efp6k3qsyo4fsxytwgehvnjhlq5dqdbcbt95o2dfny7fj721"
