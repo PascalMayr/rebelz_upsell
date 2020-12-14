@@ -4,7 +4,8 @@ import Image from 'next/image';
 import '../styles/pages_index.css';
 import NextLink from 'next/link';
 
-const Index = ({ rows = [] }) => {
+  const [enabled, setEnabled] = useState(false);
+  const handleEnableDisable = useCallback(() => setEnabled((active) => !active), []);
   return (
     <Page
       fullWidth
@@ -22,6 +23,20 @@ const Index = ({ rows = [] }) => {
         { content: 'Free plan', disabled: true, icon: CapitalMajor },
       ]}
     >
+      <div className='enabled-satus-container'>
+        <h2 id='total-revenue'>Total Revenue: {totalRevenue}</h2>
+        <div>
+          <span className='enabled-status'>{appName} is <strong style={{color: enabled ? '#50b83c' : 'red'}}>{ enabled ? 'enabled' : 'disabled'}</strong></span>
+          <Button
+            onClick={handleEnableDisable}
+            primary={!enabled}
+          >
+            {
+              enabled ? 'Disable' : 'Enable'
+            }
+          </Button>
+        </div>
+      </div>
       <DataTable
         columnContentTypes={['text', 'text', 'text', 'text', 'text', 'text']}
         headings={[
@@ -50,8 +65,8 @@ const Index = ({ rows = [] }) => {
                 <CircleTickOutlineMinor alt='stepper-checkmark' className='stepper-checkmark stepper-checked' />
                 <p>1. Install the app</p>
               </div>
-              <div className='stepper'>
-                <CircleTickOutlineMinor alt='stepper-checkmark' className='stepper-checkmark' />
+              <div className={`stepper ${enabled ? 'stepper-checked' : ''}`}>
+                <CircleTickOutlineMinor alt='stepper-checkmark' className={`stepper-checkmark ${enabled ? 'stepper-checked' : ''}`} />
                 <p>2. Enable the app</p>
               </div>
               <div className='stepper'>
