@@ -26,14 +26,15 @@ const Index = ({ rows = [] }) => {
         columnContentTypes={['text', 'text', 'text', 'text', 'text', 'text']}
         headings={[
           'Campaign',
-          'Type',
-          'Position',
-          'Status',
-          'Starts',
-          'Ends',
-          '',
+          'Active',
+          'Targets',
+          'Views',
+          'Revenue',
+          'Sales',
+          'Impressions',
+          'Conversion Rate',
+          'Actions'
         ]}
-        sortable={[true, true, true, true, true, true, false]}
         rows={rows}
       />
       {rows.length === 0 && (
