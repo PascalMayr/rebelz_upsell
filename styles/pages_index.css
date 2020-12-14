@@ -1,3 +1,7 @@
+.no-camapaigns-stepper-section {
+  display: flex;
+  justify-content: center;
+}
 
 .stepper-container {
   display: flex;
