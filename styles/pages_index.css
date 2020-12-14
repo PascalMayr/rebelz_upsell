@@ -9,4 +9,10 @@
 
 .salestorm-add-campaign {
   font-weight: bold;
+#pricing-button {
+  background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(255,121,0,1) 0%, rgba(255,147,0,1) 100%) !important;
+  color: #ffffff !important;
+}
+
 }

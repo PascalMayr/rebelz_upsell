@@ -22,8 +22,7 @@ import { useCallback, useState } from 'react';
         </NextLink>
       }
       secondaryActions={[
-        { content: 'Upgrade', disabled: false, url: '/pricing' },
-        { content: 'Free plan', disabled: true, icon: CapitalMajor },
+        { content: 'Upgrade', disabled: false, url: '/pricing', id: 'pricing-button' }
       ]}
     >
       <div className='enabled-satus-container'>
