@@ -106,11 +106,41 @@ const Index = () => {
                 <Card.Section title="Preview">
                   <div className="salestorm-banner-preview-container">
                     <div
-                      className="salestorm-banner-preview"
-                      dangerouslySetInnerHTML={{ __html: campaign.message }}
+                      id="salestorm-popup"
                       style={campaign.styles}
                       ref={bannerPreviewRef}
                     >
+                      <div style={{position: 'absolute', right: '10px', fill: '#fff', cursor: 'pointer'}}>
+                        <Icon source={MobileCancelMajor} width="30px" height="30px" />
+                      </div>
+                      <Editor
+                        apiKey="efp6k3qsyo4fsxytwgehvnjhlq5dqdbcbt95o2dfny7fj721"
+                        init={{
+                          inline: true,
+                          height: 200,
+                          menubar: false,
+                          plugins: [
+                            'advlist autolink lists link charmap print preview anchor textcolor',
+                            'searchreplace visualblocks code fullscreen',
+                            'insertdatetime media table paste code emoticons link',
+                          ],
+                          toolbar:
+                            'undo redo | fontselect | fontsizeselect | countdownTimerButton | emoticons | bold italic | forecolor backcolor | link | \
+                            alignleft aligncenter alignright | \
+                            removeformat',
+                          font_formats:
+                            'Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats',
+                          color_cols: 5,
+                          branding: false,
+                          elementpath: false,
+                          placeholder: 'Tap to insert your campaign message.',
+                          draggable_modal: true,
+                          toolbar_mode: 'wrap',
+                          statusbar: false,
+                        }}
+                        initialValue={campaign.message}
+                        onEditorChange={(value) => setCampaignProperty(value, 'message')}
+                      />
                     </div>
                   </div>
                 </Card.Section>
@@ -165,56 +195,6 @@ const Index = () => {
                 setCampaignProperty={setCampaignProperty} />
             </Card.Section>
           </Card>
-        </Card.Section>
-            <Editor
-              apiKey="efp6k3qsyo4fsxytwgehvnjhlq5dqdbcbt95o2dfny7fj721"
-              init={{
-                height: 200,
-                menubar: false,
-                plugins: [
-                  'advlist autolink lists link charmap print preview anchor textcolor',
-                  'searchreplace visualblocks code fullscreen',
-                  'insertdatetime media table paste code emoticons link',
-                ],
-                toolbar:
-                  'undo redo | fontselect | fontsizeselect | countdownTimerButton | emoticons | bold italic | forecolor backcolor | link | \
-                  alignleft aligncenter alignright | \
-                  removeformat',
-                font_formats:
-                  'Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats',
-                color_cols: 5,
-                branding: false,
-                elementpath: false,
-                placeholder: 'Your campaign message.',
-                draggable_modal: true,
-                setup: function (editor) {
-                  /* Countdown timers
-                  editor.ui.registry.addButton('countdownTimerButton', {
-                    icon: 'insert-time',
-                    text: 'Countdowns',
-                    tooltip: 'Insert Countdown Timer',
-                    onAction: function (_) {
-                      editor.notificationManager.open({
-                        text: "An error occurred.",
-                        type: "error",
-                      });
-                    },
-                  });
-                  */
-                },
-                toolbar_mode: 'wrap',
-                statusbar: false,
-              }}
-              initialValue={campaign.message}
-              onEditorChange={(value) => setCampaignProperty(value, 'message')}
-            />
-          </Card>
-        </Card.Section>
-        <Card.Section>
-          <SaleStormBannerFormatter
-            campaign={campaign}
-            setCampaignProperty={setCampaignProperty}
-          />
         </Card.Section>
       </Card>
     </Page>
