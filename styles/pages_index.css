@@ -1,3 +1,9 @@
+.no-campaigns-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: 3em;
+}
 
 .salestorm-add-campaign {
   font-weight: bold;
