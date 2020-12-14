@@ -1,3 +1,19 @@
 .salestorm-banner-preview-container {
-  padding: 5em;
+  padding: 2em;
+  display: flex;
+  justify-content: center;
+}
+
+.salestorm-choose-targets {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 2em;
+}
+
+.salestorm-choose-selling-products {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 2em;
 }
