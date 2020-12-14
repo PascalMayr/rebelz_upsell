@@ -1,4 +1,4 @@
-# Salestorm Announcement Bar
+# Salestorm Upsell
 
 This project was bootstrapped using the Shopify App Node Boilerplate to create an embedded Shopify app made with Node, [Next.js](https://nextjs.org/), [Shopify-koa-auth](https://github.com/Shopify/quilt/tree/master/packages/koa-shopify-auth), [Polaris](https://github.com/Shopify/polaris-react), and [App Bridge React](https://shopify.dev/tools/app-bridge/react-components).
 
@@ -17,6 +17,15 @@ This project was bootstrapped using the Shopify App Node Boilerplate to create a
 ```sh
 ~/ $ shopify serve
 ```
+
+## Developing the Frontend locally
+
+Run:
+```sh
+~/ $ npm run localdev
+```
+
+to develope the Frontend locally.
 
 ## Requirements
 
