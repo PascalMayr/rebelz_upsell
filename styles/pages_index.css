@@ -3,8 +3,9 @@
   margin-top: 5em;
 }
 
-#no-campaigns-image {
-  text-align: center;
+#stepper-new-cammpaign-link > a {
+  text-decoration: none;
+  color: #006fbb;
 }
 
 #total-revenue {
