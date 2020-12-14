@@ -1,3 +1,4 @@
+import { Page, DataTable, Button, Badge } from '@shopify/polaris';
 import { Page, DataTable, Button } from '@shopify/polaris';
 import { CapitalMajor } from '@shopify/polaris-icons';
 import Image from 'next/image';
@@ -12,6 +13,7 @@ import { useCallback, useState } from 'react';
       fullWidth
       title="All Campaigns"
       subtitle="Create new campaigns and boost your sales."
+      titleMetadata={<Badge status={plan === 'free_plan' ? 'new' : 'success'} progress={plan === 'free_plan' ? 'incomplete' : 'complete'}>{plan.replace('_', ' ').toUpperCase()}</Badge>}
       primaryAction={
         <NextLink href="/campaigns">
           <Button primary>
