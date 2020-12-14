@@ -7,8 +7,11 @@
   text-align: center;
 }
 
-.salestorm-add-campaign {
+#total-revenue {
+  font-size: 1.6rem;
   font-weight: bold;
+  margin-bottom: 1em;
+}
 
 .enabled-status {
   margin-right: 1em;
