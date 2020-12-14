@@ -31,7 +31,7 @@ const Index = () => {
       height: '350px',
       position: 'relative'
     },
-    message: 'This is the banner preview 🔥',
+    message: '<div bis_skin_checked="1" class="mce-content-body" contenteditable="true" style="position: relative;" spellcheck="false"><p style="text-align: center; color: #fff;" data-mce-style="text-align: center; color: #fff;"><span style="color: rgb(236, 240, 241); font-size: 18pt;" data-mce-style="color: #ecf0f1; font-size: 18pt;"><br data-mce-bogus="1"></span></p><p style="text-align: center; color: #fff;" data-mce-style="text-align: center; color: #fff;"><span style="color: rgb(236, 240, 241); font-size: 18pt;" data-mce-style="color: #ecf0f1; font-size: 18pt;">Tap the text to insert your </span></p><p style="text-align: center; color: #fff;" data-mce-style="text-align: center; color: #fff;"><span style="color: rgb(236, 240, 241); font-size: 18pt;" data-mce-style="color: #ecf0f1; font-size: 18pt;">campaign message 🤠</span></p></div>',
     published: false,
   });
   const setCampaignProperty = useCallback(
