@@ -1,6 +1,5 @@
 import { Page, DataTable, Button, Badge } from '@shopify/polaris';
-import { Page, DataTable, Button } from '@shopify/polaris';
-import { CapitalMajor } from '@shopify/polaris-icons';
+import { CircleTickOutlineMinor } from '@shopify/polaris-icons';
 import Image from 'next/image';
 import '../styles/pages_index.css';
 import NextLink from 'next/link';
