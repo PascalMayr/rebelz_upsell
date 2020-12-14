@@ -6,6 +6,7 @@ import '../styles/pages_index.css';
 import NextLink from 'next/link';
 import { useCallback, useState } from 'react';
 
+const Index = ({ rows = [], totalRevenue = '$0', appName = 'Salestorm Upsell', plan = 'free_plan' }) => {
   const [enabled, setEnabled] = useState(false);
   const handleEnableDisable = useCallback(() => setEnabled((active) => !active), []);
   return (
