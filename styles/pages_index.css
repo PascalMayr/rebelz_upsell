@@ -1,6 +1,25 @@
-#no-campaigns-image > div {
-  margin: 0 auto;
-  margin-top: 5em;
+
+.stepper-container {
+  display: flex;
+  justify-content: space-between;
+  width: 500px;
+}
+
+.stepper {
+  flex: 1;
+}
+
+.stepper-checkmark {
+  height: 2em;
+  width: 2em;
+  fill: rgb(109, 113, 117);
+  color: rgb(109, 113, 117);
+}
+
+.stepper-checked {
+  fill: #50b83c;
+  color: #50b83c;
+  font-weight: bold;
 }
 
 #stepper-new-cammpaign-link > a {
