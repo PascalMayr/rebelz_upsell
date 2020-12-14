@@ -9,10 +9,32 @@
 
 .salestorm-add-campaign {
   font-weight: bold;
+
+.enabled-status {
+  margin-right: 1em;
+}
+
+.enabled-satus-container {
+  margin-bottom: 1em;
+  display: flex;
+  justify-content: space-between;
+}
+
 #pricing-button {
   background: rgb(2,0,36);
   background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(255,121,0,1) 0%, rgba(255,147,0,1) 100%) !important;
   color: #ffffff !important;
 }
 
+@media only screen and (max-width: 600px) {
+  .enabled-satus-container {
+    justify-content: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 490px) {
+  .enabled-satus-container {
+    padding: 1.6rem 1.6rem 0;
+  }
 }
