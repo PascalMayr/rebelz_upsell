@@ -86,7 +86,7 @@ const SaleStormBannerFormatter = ({ campaign, setStyleProperty }) => {
                     <div className="salestormm-banner-formatter-border-sides">
                       <div>
                         <Checkbox
-                          label="Apply styles to the leftside"
+                          label="Apply to the left"
                           checked={
                             campaign.styles.borderWidth.split(' ')[3] !== '0px'
                           }
@@ -105,7 +105,7 @@ const SaleStormBannerFormatter = ({ campaign, setStyleProperty }) => {
                           }}
                         />
                         <Checkbox
-                          label="Apply styles to the rightside"
+                          label="Apply to the right"
                           checked={
                             campaign.styles.borderWidth.split(' ')[1] !== '0px'
                           }
@@ -126,7 +126,7 @@ const SaleStormBannerFormatter = ({ campaign, setStyleProperty }) => {
                       </div>
                       <div>
                         <Checkbox
-                          label="Apply styles to the topside"
+                          label="Apply to the top"
                           checked={
                             campaign.styles.borderWidth.split(' ')[0] !== '0px'
                           }
@@ -145,7 +145,7 @@ const SaleStormBannerFormatter = ({ campaign, setStyleProperty }) => {
                           }}
                         />
                         <Checkbox
-                          label="Apply styles to the bottomside"
+                          label="Apply to the bottom"
                           checked={
                             campaign.styles.borderWidth.split(' ')[2] !== '0px'
                           }
