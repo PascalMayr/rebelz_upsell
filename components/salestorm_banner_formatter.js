@@ -21,6 +21,7 @@ const SaleStormBannerFormatter = ({ campaign, setStyleProperty }) => {
     { label: 'Background', value: 'background' },
     { label: 'Border', value: 'border' },
     { label: 'Box Shadow', value: 'boxShadow' },
+    { label: 'Secondary', value: 'secondary' }
   ];
 
   const _setColor = (value) => {
@@ -67,7 +68,7 @@ const SaleStormBannerFormatter = ({ campaign, setStyleProperty }) => {
                   }}
                 />
               </div>
-              {['border', 'background', 'boxShadow'].includes(
+              {['border', 'background', 'boxShadow', 'secondary'].includes(
                 styleChoice.value
               ) && (
                 <SalestormColorPicker
