@@ -17,10 +17,10 @@ const Pricing = () => {
               subtitle="$0.00 / month"
               list={[
                 'Unlimited Impressions',
-                '2 Active Announcements',
-                'Click Action',
-                'Choose different positions',
-                'Show Bar on Specific Pages',
+                '2 Active Campaigns',
+                'Popup styling',
+                '100% Responsive',
+                'No Branding',
                 'Custom Background Images',
                 'Customize Font & Styles',
               ]}
@@ -37,11 +37,10 @@ const Pricing = () => {
               subtitle="$4.99 / month"
               list={[
                 'Everything from FREE plan',
-                '20 Active Announcements',
-                'Rotating Messages',
+                '20 Active Campaigns',
+                'Rotating Products',
                 'Low in stock progress bar',
-                'Countdown Timers',
-                'Page Targeting',
+                'Countdown Timers'
               ]}
               button={<Button primary>Start 14 days FREE Trial</Button>}
             />
@@ -52,7 +51,7 @@ const Pricing = () => {
               subtitle="$7.99 / month"
               list={[
                 'Everything in FREE & PRO plan',
-                'Unlimited Active Bars',
+                'Unlimited Campaigns',
                 'Geotargeting',
                 'Device Targeting',
               ]}
