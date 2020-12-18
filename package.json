@@ -1,5 +1,5 @@
 {
-  "name": "salestorm-announcement-bar",
+  "name": "salestorm-upsell",
   "version": "1.0.0",
   "description": "A Shopify app to boost sales.",
   "scripts": {
@@ -39,6 +39,7 @@
     "axios": "^0.21.0",
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
+    "eslint-plugin-shopify": "^35.1.0",
     "graphql": "^14.5.8",
     "isomorphic-fetch": "^3.0.0",
     "js-cookie": "^2.2.1",
