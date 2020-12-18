@@ -21,13 +21,13 @@
 
 .salestorm-banner-formatter-styles-height-width {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  margin-bottom: 1em;
 }
 
-.salestorm-banner-formatter-styles-height-width > div {
-  width: 20%;
-  margin: 1em;
+.salestorm-banner-formatter-styles-height-width > div:not(:first-child) {
+  margin-left: 1em;
 }
 
 .salestorm-banner-formatter-colors > div:first-child {
