@@ -126,7 +126,23 @@ const Index = () => {
           <Layout>
             <Layout.Section>
               <Card>
-                <Card.Section title="Preview">
+                <Card.Section
+                  title={
+                    <Fragment>
+                      <Subheading element='h3'>PREVIEW</Subheading>
+                      <div className='campaign-preview-link-container'>
+                        <a href={`/preview`} target="_blank" className='campaign-preview-link'>
+                          <div className='campaign-preview-container'>
+                            <div>
+                              <Icon source={ExternalMinor} color='greenLighter' />
+                            </div>
+                            See the popup in action
+                          </div>
+                        </a>
+                      </div>
+                    </Fragment>
+                  }
+                >
                   <div className="salestorm-banner-preview-container">
                     <div
                       id="salestorm-popup"
