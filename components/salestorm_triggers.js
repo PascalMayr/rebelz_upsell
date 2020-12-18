@@ -18,7 +18,7 @@ const SalestormTriggers = ({trigger, setCampaignProperty}) => {
     <div className='salestorm-triggers-option'>
       <Image src="/before_checkout.svg" alt="me" width="250" height="250" />
       <RadioButton
-        label="Show on checkout"
+        label="Show before checkout"
         id="checkout"
         checked={trigger === 'checkout'}
         name="triggers"
