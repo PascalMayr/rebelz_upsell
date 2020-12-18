@@ -192,9 +192,11 @@ const Index = () => {
         }
         <Card.Section>
           <Card>
+            <Card.Section title='2.) Set Target Products'>
+            <Card.Section title={`3.) Set campaign products`}>
         <Card.Section>
           <Card>
-            <Card.Section title='Set Triggers'>
+            <Card.Section title='4.) Set Popup Triggers'>
               <SalestormTriggers
                 trigger={campaign.trigger}
                 setCampaignProperty={setCampaignProperty} />

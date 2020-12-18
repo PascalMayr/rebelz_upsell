@@ -42,6 +42,7 @@ const SaleStormBannerFormatter = ({ campaign, setStyleProperty }) => {
     <Layout>
       <Layout.Section>
         <Card>
+          <Card.Section title="1.) Set Popup Styles">
             <div className='salestorm-banner-formatter-styles-height-width'>
               <TextField
                 label="Popup width"
