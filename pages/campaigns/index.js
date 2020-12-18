@@ -217,7 +217,7 @@ const Index = () => {
                   NODE_ENV !== 'localdevelopment' &&
                   <ResourcePicker
                     resourceType='Product'
-                    open={camapaign.targetProducts.open}
+                    open={campaign.targetProducts.open}
                     selectMultiple
                     onCancel={() => setCampaignProperty({...campaign.targetProducts, open: false})}
                   />

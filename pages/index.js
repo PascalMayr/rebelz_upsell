@@ -61,7 +61,7 @@ const Index = ({ rows = [], totalRevenue = '$0', appName = 'Salestorm Upsell', p
             <p>Follow the steps below to get started.</p>
             <br />
           </div>
-          <div className='no-camapaigns-stepper-section'>
+          <div className='no-campaigns-stepper-section'>
             <div className='stepper-container'>
               <div className='stepper stepper-checked'>
                 <CircleTickOutlineMinor alt='stepper-checkmark' className='stepper-checkmark stepper-checked' />
