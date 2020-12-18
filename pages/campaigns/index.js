@@ -1,5 +1,6 @@
 import { useState, useCallback, useContext, useRef } from 'react';
-import { Page, Card, Layout } from '@shopify/polaris';
+import { Page, Card, Layout, Button, Icon, Subheading, TextField } from '@shopify/polaris';
+import { ResourcePicker } from '@shopify/app-bridge-react';
 import SaleStormBannerFormatter from '../../components/salestorm_banner_formatter';
 import { Editor } from '@tinymce/tinymce-react';
 import '../../styles/pages_campaigns_index.css';
@@ -7,6 +8,10 @@ import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';
 import { AppContext } from '../_app';
 import SalestormTriggers from '../../components/salestorm_triggers';
+import {
+  MobilePlusMajor,
+  ExternalMinor
+} from '@shopify/polaris-icons';
 import { Fragment } from 'react';
 
 const Index = () => {
@@ -36,7 +41,15 @@ const Index = () => {
     published: false,
     trigger: 'add_to_cart',
     sell_type: 'up-sell',
-    name: ''
+    name: '',
+    targetProducts: {
+      open: false,
+      resources: []
+    },
+    sellingProducts: {
+      open: false,
+      resources: []
+    }
   });
   const setCampaignProperty = useCallback(
     (value, id) => setCampaign({ ...campaign, [id]: value }),
@@ -193,7 +206,64 @@ const Index = () => {
         <Card.Section>
           <Card>
             <Card.Section title='2.) Set Target Products'>
+              <div className='salestorm-choose-targets'>
+                {
+                  NODE_ENV !== 'localdevelopment' &&
+                  <ResourcePicker
+                    resourceType='Product'
+                    open={targetProducts.open}
+                    selectMultiple
+                    onCancel={() => setCampaignProperty({...campaign.targetProducts, open: false})}
+                  />
+                }
+                <Button
+                  primary
+                  icon={MobilePlusMajor}
+                  onClick={() => {
+                    setCampaignProperty({...campaign.targetProducts, open: true});
+                  }}
+                >
+                  Choose target products
+                </Button>
+              </div>
+            </Card.Section>
+          </Card>
+        </Card.Section>
+        <Card.Section>
+          <Card>
             <Card.Section title={`3.) Set campaign products`}>
+              <div className='salestorm-choose-selling-products'>
+                <div>
+                  {
+                    NODE_ENV !== 'localdevelopment' &&
+                    <ResourcePicker
+                      resourceType='Product'
+                      open={sellingProducts.open}
+                      selectMultiple
+                      onCancel={() => {
+                        setCampaignProperty({...campaign.sellingProducts, open: false})
+                      }}
+                      onSelection={(selectPayload) => {
+                        setCampaignProperty({ ...campaign.sellingProducts, open: false, resources: selectPayload.selection });
+                        console.log(selectPayload)
+                      }}
+                      showVariants={false}
+                    />
+                  }
+                  <Button
+                    primary
+                    icon={MobilePlusMajor}
+                    onClick={() => {
+                      setCampaignProperty({...campaign.sellingProducts, open: true})
+                    }}
+                  >
+                    Choose products
+                  </Button>
+                </div>
+              </div>
+            </Card.Section>
+          </Card>
+        </Card.Section>
         <Card.Section>
           <Card>
             <Card.Section title='4.) Set Popup Triggers'>
