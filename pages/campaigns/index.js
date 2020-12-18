@@ -12,6 +12,7 @@ import {
   MobilePlusMajor,
   ExternalMinor
 } from '@shopify/polaris-icons';
+import PreviewSwitch from '../../components/preview_switch';
 import { Fragment } from 'react';
 
 const Index = () => {
@@ -175,8 +176,13 @@ const Index = () => {
                         initialValue={campaign.message}
                         onEditorChange={(value) => setCampaignProperty(value, 'message')}
                       />
+                      <br />
+                      <div id='salestorm-popup-product'>
+
+                      </div>
                     </div>
                   </div>
+                  <PreviewSwitch />
                 </Card.Section>
               </Card>
             </Layout.Section>
