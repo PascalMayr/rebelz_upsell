@@ -142,22 +142,6 @@ const Index = () => {
                     </div>
                   </div>
                 </Card.Section>
-                <Card.Section>
-                  <div className='salestorm-banner-formatter-styles-height-width'>
-                    <TextField
-                      label="Popup width"
-                      value={campaign.styles.width}
-                      onChange={(value) => setStyleProperty(value, 'width')}
-                      placeholder='width'
-                    />
-                    <TextField
-                      label="Popup height"
-                      value={campaign.styles.height}
-                      onChange={(value) => setStyleProperty(value, 'height')}
-                      placeholder='height'
-                    />
-                  </div>
-                </Card.Section>
               </Card>
             </Layout.Section>
           </Layout>
