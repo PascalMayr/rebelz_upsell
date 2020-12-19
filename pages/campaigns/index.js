@@ -7,7 +7,7 @@ import '../../styles/pages_campaigns_index.css';
 import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';
 import { AppContext } from '../_app';
-import SalestormTriggers from '../../components/salestorm_triggers';
+import SalestormTriggers from '../../components/campaign_triggers';
 import {
   MobilePlusMajor,
   ExternalMinor
