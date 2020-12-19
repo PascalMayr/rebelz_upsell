@@ -1,5 +1,5 @@
 import { Page, Layout, Button } from '@shopify/polaris';
-import SalestormPricingCard from '../components/salestorm_pricing_card';
+import PricingCard from '../components/pricing_card';
 import '../styles/pages_pricing.css';
 
 const Pricing = () => {
@@ -12,7 +12,7 @@ const Pricing = () => {
       <div className='plans-container'>
         <Layout>
           <Layout.Section oneThird>
-            <SalestormPricingCard
+            <PricingCard
               title="FREE Plan"
               subtitle="$0.00 / month"
               list={[
@@ -32,7 +32,7 @@ const Pricing = () => {
             />
           </Layout.Section>
           <Layout.Section oneThird>
-            <SalestormPricingCard
+            <PricingCard
               title="PRO Plan"
               subtitle="$4.99 / month"
               list={[
@@ -46,7 +46,7 @@ const Pricing = () => {
             />
           </Layout.Section>
           <Layout.Section oneThird>
-            <SalestormPricingCard
+            <PricingCard
               title="BUSINESS Plan"
               subtitle="$7.99 / month"
               list={[
