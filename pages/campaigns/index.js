@@ -151,8 +151,9 @@ const Index = () => {
           </Layout>
         </Card.Section>
         <Card.Section>
-          <SaleStormBannerFormatter
+          <PopupFormatter
             campaign={campaign}
+            preview={preview}
             setStyleProperty={setStyleProperty}
           />
         </Card.Section>
