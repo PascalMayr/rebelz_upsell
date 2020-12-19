@@ -2,11 +2,11 @@ import Image from 'next/image';
 import { RadioButton } from '@shopify/polaris';
 import '../styles/components_salestorm_triggers.css';
 
-const SalestormSellType = ({sell_type, setCampaignProperty}) => {
+const CampaignSellType = ({sell_type, setCampaignProperty}) => {
   return (
     <div className='salestorm-triggers'>
     <div className='salestorm-triggers-option'>
-      <Image src="/upsell.svg" alt="me" width="250" height="250" />
+      <Image src="/upsell.svg" alt="up-sell" width="250" height="250" />
         <RadioButton
           label="Up-sell products"
           id="up-sell"
@@ -16,7 +16,7 @@ const SalestormSellType = ({sell_type, setCampaignProperty}) => {
         />
       </div>
     <div className='salestorm-triggers-option'>
-      <Image src="/cross-sell.svg" alt="me" width="250" height="250" />
+      <Image src="/cross-sell.svg" alt="cross-sell" width="250" height="250" />
       <RadioButton
         label="Cross-sell products"
         id="cross-sel"
@@ -29,4 +29,4 @@ const SalestormSellType = ({sell_type, setCampaignProperty}) => {
   )
 }
 
-export default SalestormSellType
+export default CampaignSellType
