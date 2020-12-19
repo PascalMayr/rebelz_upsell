@@ -1,8 +1,7 @@
 import { useState, useCallback, useContext, useRef } from 'react';
 import { Page, Card, Layout, Button, Icon, Subheading, TextField } from '@shopify/polaris';
 import { ResourcePicker } from '@shopify/app-bridge-react';
-import SaleStormBannerFormatter from '../../components/salestorm_banner_formatter';
-import { Editor } from '@tinymce/tinymce-react';
+import PopupFormatter from '../../components/popup_formatter';
 import '../../styles/pages_campaigns_index.css';
 import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';
