@@ -1,5 +1,5 @@
 import { useState, useCallback, useContext, useRef } from 'react';
-import { Page, Card, Layout Subheading, TextField, Tag } from '@shopify/polaris';
+import { Page, Card, Layout, Subheading, TextField, Tag } from '@shopify/polaris';
 import PopupFormatter from '../../components/popup_formatter';
 import '../../styles/pages_campaigns_index.css';
 import publishCampaign from '../../services/publish_campaign';
