@@ -1,6 +1,5 @@
 import { useState, useCallback, useContext, useRef } from 'react';
-import { Page, Card, Layout, Button, Icon, Subheading, TextField } from '@shopify/polaris';
-import { ResourcePicker } from '@shopify/app-bridge-react';
+import { Page, Card, Layout Subheading, TextField, Tag } from '@shopify/polaris';
 import PopupFormatter from '../../components/popup_formatter';
 import '../../styles/pages_campaigns_index.css';
 import publishCampaign from '../../services/publish_campaign';
@@ -14,6 +13,7 @@ import {
 import CampaignPreviewSwitch from '../../components/campaign_preview_switch';
 import CampaignPreview from '../../components/campaign_preview';
 import { Fragment } from 'react';
+import CampaignResourceSelection from '../../components/campaign_resource_selection';
 
 const Index = () => {
   const context = useContext(AppContext);
@@ -174,61 +174,41 @@ const Index = () => {
         <Card.Section>
           <Card>
             <Card.Section title='2.) Set Target Products'>
-              <div className='salestorm-choose-targets'>
-                {
-                  NODE_ENV !== 'localdevelopment' &&
-                  <ResourcePicker
-                    resourceType='Product'
-                    open={campaign.targetProducts.open}
-                    selectMultiple
-                    onCancel={() => setCampaignProperty({...campaign.targetProducts, open: false})}
-                  />
-                }
-                <Button
-                  primary
-                  icon={MobilePlusMajor}
-                  onClick={() => {
-                    setCampaignProperty({...campaign.targetProducts, open: true});
-                  }}
-                >
-                  Choose target products
-                </Button>
-              </div>
+              <CampaignResourceSelection
+                resourcePickerProps={{
+                  resourceType: 'Product',
+                  selectMultiple: true,
+                  initialSelectionIds: campaign.targetProducts.resources
+                }}
+                buttonProps={{
+                  primary: true,
+                  icon: MobilePlusMajor,
+                  label: 'Choose target Products'
+                }}
+                onResourceMutation={(resources) => { setCampaignProperty({...campaign.targetProducts, resources }, 'targetProducts') }}
+                resources={campaign.targetProducts.resources}
+              />
             </Card.Section>
           </Card>
         </Card.Section>
         <Card.Section>
           <Card>
             <Card.Section title={`3.) Set campaign products`}>
-              <div className='salestorm-choose-selling-products'>
-                <div>
-                  {
-                    NODE_ENV !== 'localdevelopment' &&
-                    <ResourcePicker
-                      resourceType='Product'
-                      open={campaign.sellingProducts.open}
-                      selectMultiple
-                      onCancel={() => {
-                        setCampaignProperty({...campaign.sellingProducts, open: false})
-                      }}
-                      onSelection={(selectPayload) => {
-                        setCampaignProperty({ ...campaign.sellingProducts, open: false, resources: selectPayload.selection });
-                        console.log(selectPayload)
-                      }}
-                      showVariants={false}
-                    />
-                  }
-                  <Button
-                    primary
-                    icon={MobilePlusMajor}
-                    onClick={() => {
-                      setCampaignProperty({...campaign.sellingProducts, open: true})
-                    }}
-                  >
-                    Choose products
-                  </Button>
-                </div>
-              </div>
+              <CampaignResourceSelection
+                resourcePickerProps={{
+                  resourceType: 'Product',
+                  // PRICING SWITCH
+                  selectMultiple: false,
+                  initialSelectionIds: campaign.sellingProducts.resources
+                }}
+                buttonProps={{
+                  primary: true,
+                  icon: MobilePlusMajor,
+                  label: 'Choose selling Products'
+                }}
+                onResourceMutation={(resources) => { setCampaignProperty({...campaign.sellingProducts, resources }, 'sellingProducts') }}
+                resources={campaign.sellingProducts.resources}
+              />
             </Card.Section>
           </Card>
         </Card.Section>
