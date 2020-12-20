@@ -129,6 +129,9 @@ const Index = () => {
                   title={
                     <Fragment>
                       <Subheading element='h3'>PREVIEW</Subheading>
+                      {
+                        /*
+                        Not MVP
                       <div className='campaign-preview-link-container'>
                         <a href={`/preview`} target="_blank" className='campaign-preview-link'>
                           <div className='campaign-preview-container'>
@@ -139,6 +142,8 @@ const Index = () => {
                           </div>
                         </a>
                       </div>
+                        */
+                      }
                     </Fragment>
                   }
                 >
