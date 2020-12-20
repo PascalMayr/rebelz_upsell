@@ -1,6 +1,8 @@
 import { Editor } from '@tinymce/tinymce-react';
+import { Fragment } from 'react';
+import '../styles/components_campaign_preview.css';
 
-const CampaignPreview = ({campaign, preview, ref}) => {
+const CampaignPreview = ({campaign, preview, popupRef}) => {
   const inlineEditorConfig = {
     inline: true,
     height: 200,
@@ -24,25 +26,40 @@ const CampaignPreview = ({campaign, preview, ref}) => {
     toolbar_mode: 'wrap',
     statusbar: false,
   };
-  return (
-    <div className="salestorm-banner-preview-container">
-      <div
-        id="salestorm-popup"
-        style={preview === 'desktop' ? campaign.styles : {...campaign.styles, ...campaign.mobileStyles}}
-        ref={ref}
-      >
-        <Editor
-          apiKey={TINY_MCE_API_KEY}
-          init={inlineEditorConfig}
-          initialValue={campaign.message}
-          onEditorChange={(value) => setCampaignProperty(value, 'message')}
-        />
-        <br />
-        <div id='salestorm-popup-product'>
+  const Preview = () =>
+  (
+    <div
+      id="salestorm-popup"
+      style={preview === 'desktop' ? campaign.styles : {...campaign.styles, ...campaign.mobileStyles}}
+      ref={popupRef}
+    >
+      <Editor
+        apiKey={TINY_MCE_API_KEY}
+        init={inlineEditorConfig}
+        initialValue={campaign.message}
+        onEditorChange={(value) => setCampaignProperty(value, 'message')}
+      />
+      <br />
+      <div id='salestorm-popup-product'>
 
-        </div>
       </div>
     </div>
+  )
+  return (
+    <Fragment>
+      {
+        preview === 'desktop' ?
+        <div className="salestorm-banner-preview-container">
+          <Preview />
+        </div>
+        :
+        <div className="salestorm-banner-preview-container">
+          <div className='salestorm-mobile-preview-container'>
+            <Preview />
+          </div>
+        </div>
+      }
+    </Fragment>
   )
 }
 

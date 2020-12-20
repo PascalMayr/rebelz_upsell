@@ -62,7 +62,7 @@ const Index = () => {
     },
     [campaign]
   );
-  const bannerPreviewRef = useRef(null);
+  const popupRef = useRef(null);
   const [publishLoading, setPublishLoading] = useState(false);
   const [preview, setPreview] = useState('desktop');
   return (
@@ -96,7 +96,7 @@ const Index = () => {
           } else {
             try {
               setPublishLoading(true);
-              await publishCampaign(bannerPreviewRef.current.outerHTML);
+              await publishCampaign(popupRef.current.outerHTML);
               context.setToast({
                 shown: true,
                 content: 'Successfully published campaign',
@@ -142,7 +142,7 @@ const Index = () => {
                     </Fragment>
                   }
                 >
-                  <CampaignPreview campaign={campaign} preview={preview} ref={bannerPreviewRef}/>
+                  <CampaignPreview campaign={campaign} preview={preview} popupRef={popupRef}/>
                   <CampaignPreviewSwitch onSwitch={(value) => setPreview(value)} />
                 </Card.Section>
               </Card>
