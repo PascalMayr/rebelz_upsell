@@ -7,7 +7,8 @@
     "dev": "cross-env NODE_ENV=development nodemon ./server/index.js --watch ./server/index.js",
     "localdev": "cross-env NODE_ENV=localdevelopment nodemon ./server/index.js --watch ./server/index.js",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build",
-    "start": "cross-env NODE_ENV=production node ./server/index.js"
+    "start": "cross-env NODE_ENV=production node ./server/index.js",
+    "graphile": "cd server && DOTENV_CONFIG_PATH=../.env node -r dotenv/config ../node_modules/graphile-migrate/dist/cli.js"
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,6 @@
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "eslint-plugin-shopify": "^35.1.0",
-    "graphile-migrate": "^1.0.2",
     "graphql": "^14.5.8",
     "isomorphic-fetch": "^3.0.0",
     "js-cookie": "^2.2.1",
@@ -66,6 +66,7 @@
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.5",
     "eslint": "^7.15.0",
+    "graphile-migrate": "^1.0.2",
     "husky": "^4.0.7",
     "jest": "26.6.2",
     "lint-staged": "^10.0.1",

@@ -13,7 +13,7 @@ This project was bootstrapped using the Shopify App Node Boilerplate to create a
 
 3. Install the [Shopify-App-CLI](https://github.com/Shopify/shopify-app-cli).
 4. Install PostgreSQL
-5. Run `createdb salestorm` to create your development database
+5. Run `createdb salestorm && createdb salestorm_shadow` to create your development databases
 6. Ask a developer for the `.env` file and how to configure it
 7. Run:
 
