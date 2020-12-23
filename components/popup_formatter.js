@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import {
   RangeSlider,
   Layout,
