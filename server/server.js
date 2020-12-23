@@ -166,6 +166,7 @@ app.prepare().then(() => {
           },
         });
       }
+      await db.query('UPDATE campaigns SET published = true WHERE domain = $1', [ctx.session.shop]);
 
       ctx.status = 200;
     }
@@ -187,6 +188,7 @@ app.prepare().then(() => {
           value: '',
         },
       });
+      await db.query('UPDATE campaigns SET published = false WHERE domain = $1', [ctx.session.shop]);
 
       ctx.status = 200;
     }
