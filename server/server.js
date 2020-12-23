@@ -9,8 +9,10 @@ import next from 'next';
 import bodyParser from 'koa-bodyparser';
 import Router from 'koa-router';
 import session from 'koa-session';
-import * as handlers from './handlers/index';
+
 dotenv.config();
+import db from './db';
+
 const port = parseInt(process.env.PORT, 10) || 8081;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({
@@ -53,7 +55,22 @@ app.prepare().then(() => {
         async afterAuth(ctx) {
           //Auth token and shop available in session
           //Redirect to shop upon auth
-          const { shop, accessToken } = ctx.session;
+          const { shop, accessToken, associatedUserScope, associatedUser } = ctx.session;
+          const { id, first_name, last_name, email, account_owner, locale } = associatedUser;
+          await db.query('INSERT INTO stores(domain) VALUES($1) ON CONFLICT DO NOTHING', [shop]);
+          await db.query(`
+            INSERT INTO users(id, domain, associated_user_scope, first_name, last_name, email, account_owner, locale)
+            VALUES($1, $2, $3, $4, $5, $6, $7, $8)
+            ON CONFLICT (id) DO UPDATE SET
+            associated_user_scope = $3,
+            first_name = $4,
+            last_name = $5,
+            email = $6,
+            account_owner = $7,
+            locale = $8
+          `,
+            [id, shop, associatedUserScope, first_name, last_name, email, account_owner, locale]
+          )
           ctx.cookies.set('shopOrigin', shop, {
             httpOnly: false,
             secure: true,
