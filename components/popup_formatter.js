@@ -97,7 +97,7 @@ const PopupFormatter = ({ campaign, setStyleProperty, preview }) => {
                     <div className="salestormm-banner-formatter-border-sides">
                       <div>
                         <Checkbox
-                          label="Apply to the left"
+                          label='Apply to the left'
                           checked={
                             campaign.styles.borderWidth.split(' ')[3] !== '0px'
                           }
@@ -116,7 +116,7 @@ const PopupFormatter = ({ campaign, setStyleProperty, preview }) => {
                           }}
                         />
                         <Checkbox
-                          label="Apply to the right"
+                          label='Apply to the right'
                           checked={
                             campaign.styles.borderWidth.split(' ')[1] !== '0px'
                           }
@@ -137,7 +137,7 @@ const PopupFormatter = ({ campaign, setStyleProperty, preview }) => {
                       </div>
                       <div>
                         <Checkbox
-                          label="Apply to the top"
+                          label='Apply to the top'
                           checked={
                             campaign.styles.borderWidth.split(' ')[0] !== '0px'
                           }
@@ -156,7 +156,7 @@ const PopupFormatter = ({ campaign, setStyleProperty, preview }) => {
                           }}
                         />
                         <Checkbox
-                          label="Apply to the bottom"
+                          label='Apply to the bottom'
                           checked={
                             campaign.styles.borderWidth.split(' ')[2] !== '0px'
                           }
@@ -176,9 +176,9 @@ const PopupFormatter = ({ campaign, setStyleProperty, preview }) => {
                         />
                       </div>
                     </div>
-                    <div className="salestorm-banner-formatter-range">
+                    <div className='salestorm-banner-formatter-range'>
                       <RangeSlider
-                        label="Border Radius in px"
+                        label='Border Radius in px'
                         value={parseInt(campaign.styles.borderRadius)}
                         onChange={(value) =>
                           setStyleProperty(`${value}px`, 'borderRadius')
@@ -186,9 +186,9 @@ const PopupFormatter = ({ campaign, setStyleProperty, preview }) => {
                         output
                       />
                     </div>
-                    <div className="salestorm-banner-formatter-range">
+                    <div className='salestorm-banner-formatter-range'>
                       <RangeSlider
-                        label="Border width in px"
+                        label='Border width in px'
                         value={parseInt(
                           campaign.styles.borderWidth
                             .split(' ')
@@ -225,9 +225,9 @@ const PopupFormatter = ({ campaign, setStyleProperty, preview }) => {
                 )}
                 {styleChoice.value === 'boxShadow' && (
                   <Fragment>
-                    <div className="salestorm-banner-formatter-range">
+                    <div className='salestorm-banner-formatter-range'>
                       <RangeSlider
-                        label="Shadow H offset"
+                        label='Shadow H offset'
                         value={parseInt(
                           campaign.styles.boxShadow.split(' ')[0]
                         )}
@@ -244,9 +244,9 @@ const PopupFormatter = ({ campaign, setStyleProperty, preview }) => {
                         output
                       />
                     </div>
-                    <div className="salestorm-banner-formatter-range">
+                    <div className='salestorm-banner-formatter-range'>
                       <RangeSlider
-                        label="Shadow V offset"
+                        label='Shadow V offset'
                         value={parseInt(
                           campaign.styles.boxShadow.split(' ')[1]
                         )}
@@ -263,9 +263,9 @@ const PopupFormatter = ({ campaign, setStyleProperty, preview }) => {
                         output
                       />
                     </div>
-                    <div className="salestorm-banner-formatter-range">
+                    <div className='salestorm-banner-formatter-range'>
                       <RangeSlider
-                        label="Shadow spread"
+                        label='Shadow spread'
                         value={parseInt(
                           campaign.styles.boxShadow.split(' ')[2]
                         )}
