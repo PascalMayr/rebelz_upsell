@@ -12,17 +12,13 @@ import '../styles/components_salestorm_banner_formatter.css';
 
 const PopupFormatter = ({ campaign, setStyleProperty, preview }) => {
 
-  const [styleChoice, setStyleChoice] = useState({
-    label: 'Background',
-    value: 'background',
-  });
-
   const styleChoices = [
-    { label: 'Background', value: 'background' },
+    { label: 'Background', value: 'background', default: true },
     { label: 'Border', value: 'border' },
-    { label: 'Box Shadow', value: 'boxShadow' },
-    { label: 'Secondary', value: 'secondary' }
+    { label: 'Box Shadow', value: 'boxShadow' }
   ];
+
+  const [styleChoice, setStyleChoice] = useState(styleChoices.find(styleChoice => styleChoice.default));
 
   const _setColor = (value) => {
     if (styleChoice.value === 'boxShadow') {
