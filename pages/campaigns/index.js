@@ -4,6 +4,7 @@ import { ResourcePicker } from '@shopify/app-bridge-react';
 import SaleStormBannerFormatter from '../../components/salestorm_banner_formatter';
 import { Editor } from '@tinymce/tinymce-react';
 import '../../styles/pages_campaigns_index.css';
+import saveCampaign from '../../services/save_campaign';
 import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';
 import { AppContext } from '../_app';
@@ -64,6 +65,7 @@ const Index = () => {
   );
   const bannerPreviewRef = useRef(null);
   const [publishLoading, setPublishLoading] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
   const inlineEditorConfig = {
     inline: true,
     height: 200,
@@ -138,6 +140,32 @@ const Index = () => {
           }
         },
       }}
+      secondaryActions={[
+        {
+          content: 'Save draft',
+          loading: saveLoading,
+          onAction: async () => {
+            try {
+              setSaveLoading(true);
+              const savedCampaign = await saveCampaign(campaign);
+              context.setToast({
+                shown: true,
+                content: 'Successfully saved draft campaign',
+                isError: false,
+              });
+              setCampaign({ ...campaign, ...savedCampaign.data });
+            } catch (e) {
+              context.setToast({
+                shown: true,
+                content: 'Draft campaign saving failed',
+                isError: true,
+              });
+            } finally {
+              setSaveLoading(false);
+            }
+          }
+        }
+      ]}
     >
       <Card>
         <Card.Section>
