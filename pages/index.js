@@ -4,8 +4,9 @@ import Image from 'next/image';
 import '../styles/pages_index.css';
 import NextLink from 'next/link';
 import { useCallback, useState } from 'react';
+import db from '../server/db';
 
-const Index = ({ rows = [], totalRevenue = '$0', appName = 'Salestorm Upsell', plan = 'free_plan' }) => {
+const Index = ({ campaigns, totalRevenue = '$0', appName = 'Salestorm Upsell', plan = 'free_plan' }) => {
   const [enabled, setEnabled] = useState(false);
   const handleEnableDisable = useCallback(() => setEnabled((active) => !active), []);
   return (
@@ -52,9 +53,9 @@ const Index = ({ rows = [], totalRevenue = '$0', appName = 'Salestorm Upsell', p
           'Conversion Rate',
           'Actions'
         ]}
-        rows={rows}
+        rows={campaigns}
       />
-      {rows.length === 0 && (
+      {campaigns.length === 0 && (
         <div className="no-campaigns-container">
           <div className='no-campaigns-image-section'>
             <Image src="/imagination.svg" alt="me" width="250" height="250" />
@@ -82,5 +83,14 @@ const Index = ({ rows = [], totalRevenue = '$0', appName = 'Salestorm Upsell', p
     </Page>
   );
 };
+
+export async function getServerSideProps(ctx) {
+  const data = await db.query({
+    text: 'SELECT * FROM campaigns WHERE domain = $1',
+    values: [ctx.req.cookies.shopOrigin],
+    rowMode: 'array'
+  });
+  return { props: { campaigns: data.rows } }
+}
 
 export default Index;
