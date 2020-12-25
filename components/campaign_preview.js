@@ -1,11 +1,15 @@
+import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import { Fragment } from 'react';
 import '../styles/components_campaign_preview.css';
+import { gql } from 'apollo-boost';
+import { Query } from 'react-apollo';
+import CampaignProduct from './campaign_product';
+import ErrorMessage from './error_message';
+import { Spinner } from '@shopify/polaris';
 
-const CampaignPreview = ({campaign, preview, popupRef}) => {
+const CampaignPreview = ({campaign, isPreviewDesktop, popupRef, setCampaignProperty}) => {
   const inlineEditorConfig = {
     inline: true,
-    height: 200,
     menubar: false,
     plugins: [
       'advlist autolink lists link charmap print preview anchor textcolor',
@@ -26,40 +30,65 @@ const CampaignPreview = ({campaign, preview, popupRef}) => {
     toolbar_mode: 'wrap',
     statusbar: false,
   };
-  const Preview = () =>
-  (
-    <div
-      id="salestorm-popup"
-      style={preview === 'desktop' ? campaign.styles : {...campaign.styles, ...campaign.mobileStyles}}
-      ref={popupRef}
-    >
-      <Editor
-        apiKey={TINY_MCE_API_KEY}
-        init={inlineEditorConfig}
-        initialValue={campaign.message}
-        onEditorChange={(value) => setCampaignProperty(value, 'message')}
-      />
-      <br />
-      <div id='salestorm-popup-product'>
-
-      </div>
-    </div>
-  )
+  const GET_PRODUCT_DETAILS = (id) => gql`
+    query {
+      product(id: "${id}") {
+        title
+        descriptionHtml
+        priceRange {
+          maxVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+        images(first: 3) {
+          edges {
+            node {
+              transformedSrc(maxWidth: ${campaign.styles.width.replace('px', '')})
+              altText
+            }
+          }
+        }
+      }
+    }
+  `;
+  const styles = isPreviewDesktop ? campaign.styles : campaign.mobileStyles;
+  const mobileContainerClass = !isPreviewDesktop ? 'salestorm-mobile-preview-container' : '';
   return (
-    <Fragment>
-      {
-        preview === 'desktop' ?
-        <div className="salestorm-banner-preview-container">
-          <Preview />
-        </div>
-        :
-        <div className="salestorm-banner-preview-container">
-          <div className='salestorm-mobile-preview-container'>
-            <Preview />
+    <>
+      <div className='salestorm-popup-preview-container'>
+        <div className={mobileContainerClass}>
+          <div id='salestorm-popup-overlay'>
+            <div
+              id="salestorm-popup"
+              style={styles.popup}
+              ref={popupRef}
+            >
+              <Editor
+                apiKey={TINY_MCE_API_KEY}
+                init={inlineEditorConfig}
+                initialValue={campaign.message}
+                onEditorChange={(value) => setCampaignProperty(value, 'message')}
+              />
+              <br />
+              {
+                campaign.sellingProducts.map((product, index) => (
+                  <div className='popup-product-container' key={`product-container=${key}`}>
+                    <Query query={GET_PRODUCT_DETAILS(product.id)}>
+                      {({ loading, error, data }) => {
+                        if (loading) return <div id='product-loading-container'><Spinner accessibilityLabel="Small spinner" size="small" color="teal" /></div>;
+                        if (error) return <ErrorMessage whileMessage='while loading the products.'/>;
+                        return <CampaignProduct data={data} productKey={`product-${index}`} campaign={campaign} />
+                      }}
+                    </Query>
+                  </div>
+                ))
+              }
+            </div>
           </div>
         </div>
-      }
-    </Fragment>
+      </div>
+    </>
   )
 }
 
