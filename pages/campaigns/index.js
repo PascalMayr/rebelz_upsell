@@ -1,18 +1,16 @@
 import { useState, useCallback, useContext, useRef } from 'react';
-import { Page, Card, Layout, Subheading, TextField, Tag } from '@shopify/polaris';
-import PopupFormatter from '../../components/popup_formatter';
+import { Page, Card, Layout, TextField } from '@shopify/polaris';
+import CampaignFormatter from '../../components/campaign_formatter.js';
 import '../../styles/pages_campaigns_index.css';
 import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';
 import { AppContext } from '../_app';
 import SalestormTriggers from '../../components/campaign_triggers';
 import {
-  MobilePlusMajor,
-  ExternalMinor
+  MobilePlusMajor
 } from '@shopify/polaris-icons';
 import CampaignPreviewSwitch from '../../components/campaign_preview_switch';
 import CampaignPreview from '../../components/campaign_preview';
-import { Fragment } from 'react';
 import CampaignResourceSelection from '../../components/campaign_resource_selection';
 
 const Index = () => {
@@ -79,12 +77,6 @@ const Index = () => {
   const isPreviewDesktop = preview === 'desktop';
   const setCampaignProperty = useCallback(
     (value, id) => setCampaign({ ...campaign, [id]: value }),
-    [campaign]
-  );
-  const setStyleProperty = useCallback(
-    (value, id) => {
-      setCampaignProperty({ ...campaign.styles, [id]: value }, 'styles');
-    },
     [campaign]
   );
   const popupRef = useRef(null);
@@ -167,10 +159,10 @@ const Index = () => {
           </Layout>
         </Card.Section>
         <Card.Section>
-          <PopupFormatter
+          <CampaignFormatter
             campaign={campaign}
-            preview={preview}
-            setStyleProperty={setStyleProperty}
+            isPreviewDesktop={isPreviewDesktop}
+            setCampaignProperty={setCampaignProperty}
           />
         </Card.Section>
         <Card.Section>
