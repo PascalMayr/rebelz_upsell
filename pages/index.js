@@ -85,11 +85,7 @@ const Index = ({ campaigns, totalRevenue = '$0', appName = 'Salestorm Upsell', p
 };
 
 export async function getServerSideProps(ctx) {
-  const data = await db.query({
-    text: 'SELECT * FROM campaigns WHERE domain = $1',
-    values: [ctx.req.cookies.shopOrigin],
-    rowMode: 'array'
-  });
+  const data = await db.query('SELECT * FROM campaigns WHERE domain = $1', [ctx.req.cookies.shopOrigin]);
   return { props: { campaigns: data.rows } }
 }
 
