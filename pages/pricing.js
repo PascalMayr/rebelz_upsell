@@ -18,11 +18,11 @@ const Pricing = () => {
               list={[
                 'Unlimited Impressions',
                 '2 Active Campaigns',
-                'Popup styling',
                 '100% Responsive',
                 'No Branding',
                 'Custom Background Images',
-                'Customize Font & Styles',
+                'Customize all Fonts and Styles',
+                'Discount offers'
               ]}
               button={
                 <Button primary disabled>
@@ -34,13 +34,10 @@ const Pricing = () => {
           <Layout.Section oneThird>
             <PricingCard
               title="PRO Plan"
-              subtitle="$4.99 / month"
+              subtitle="$14.99 / month"
               list={[
                 'Everything from FREE plan',
-                '20 Active Campaigns',
-                'Rotating Products',
-                'Low in stock progress bar',
-                'Countdown Timers'
+                '20 Active Campaigns'
               ]}
               button={<Button primary>Start 14 days FREE Trial</Button>}
             />
@@ -48,12 +45,10 @@ const Pricing = () => {
           <Layout.Section oneThird>
             <PricingCard
               title="BUSINESS Plan"
-              subtitle="$7.99 / month"
+              subtitle="$29.99 / month"
               list={[
                 'Everything in FREE & PRO plan',
-                'Unlimited Campaigns',
-                'Geotargeting',
-                'Device Targeting',
+                'Unlimited Campaigns'
               ]}
               button={<Button primary>Start 14 days FREE Trial</Button>}
             />
