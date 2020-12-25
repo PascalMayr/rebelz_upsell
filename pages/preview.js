@@ -1,10 +1,10 @@
 import '../styles/pages_preview.css';
-import PreviewSwitch from '../components/preview_switch';
+import CampaignPreviewSwitch from '../components/campaign_preview_switch';
 
 const Preview = () => {
   return (
     <div>
-      <PreviewSwitch onSwitch={() => {}} />
+      <CampaignPreviewSwitch onSwitch={() => {}} />
     </div>
   );
 };

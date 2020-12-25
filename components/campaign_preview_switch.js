@@ -1,19 +1,16 @@
 import '../styles/components_preview_switch.css';
 import { Button } from '@shopify/polaris';
-import {
-  DesktopMajor,
-  MobileMajor
-} from '@shopify/polaris-icons';
+import { DesktopMajor, MobileMajor } from '@shopify/polaris-icons';
 import { useState } from 'react';
 
-const PreviewSwitch = ({onSwitch = () => {}}) => {
+const CampaignPreviewSwitch = ({ onSwitch = () => {} }) => {
   const [selected, setSelected] = useState('desktop');
   const handleSwitch = (value) => {
     setSelected(value);
     onSwitch(value);
-  }
+  };
   return (
-    <div className='salestorm-preview-switch'>
+    <div className="salestorm-preview-switch">
       <Button
         icon={DesktopMajor}
         primary={selected === 'desktop'}
@@ -29,7 +26,7 @@ const PreviewSwitch = ({onSwitch = () => {}}) => {
         Mobile
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default PreviewSwitch
+export default CampaignPreviewSwitch;
