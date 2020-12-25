@@ -10,6 +10,8 @@ import '@shopify/polaris/dist/styles.css';
 import translations from '@shopify/polaris/locales/en.json';
 import '../styles/_app.css';
 import Head from 'next/head';
+import { withErrorBoundary } from 'react-error-boundary';
+import ErrorCommonFallBack from '../components/error/error_common_fallback';
 
 const client = new ApolloClient({
   fetch: fetch,
@@ -82,5 +84,7 @@ class MyApp extends App {
   }
 }
 
-export default MyApp;
+export default withErrorBoundary(MyApp, {
+  FallbackComponent: ErrorCommonFallBack
+});
 export { AppContext };

@@ -2,14 +2,14 @@ import React from 'react';
 
 const ErrorMessage = ({whileMessage = 'while loading', suggestions = []}) => (
   <div className='text-center'>
-    <h4 >Looks like an <b>error occured</b> {whileMessage}.</h4>
+    <h2 >Looks like an <b>error occured</b> {whileMessage}.</h2>
     {
       suggestions.map(suggestion => (
         <p key={suggestion}><span className='text-decoration-underline'><strong>{suggestion}</strong></span></p>
       ))
     }
     <br />
-    <p className='text-decoration-underline'><strong>Reach out to our Support in the right corner below.</strong></p>
+    <p className='text-decoration-underline'><strong>Please reach out to our Support in the right corner below.</strong></p>
     <br />
     <p><b>We are sorry for this and we will try to help you ASAP.</b></p>
     <br />
