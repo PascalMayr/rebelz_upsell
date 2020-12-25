@@ -1,6 +1,6 @@
 import { ColorPicker, TextField } from '@shopify/polaris';
-import getColorFromColorPicker from '../utils/get_color_from_color_picker';
-import '../styles/components_salestorm_color_picker.css';
+import getColorFromColorPicker from '../../utils/get_color_from_color_picker';
+import '../../styles/components_salestorm_color_picker.css';
 import tinycolor from 'tinycolor2';
 
 const SalestormColorPicker = ({

@@ -1,0 +1,10 @@
+.salestorm-selected-resources {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1em;
+}
+
+.salestorm-resource-tag {
+  margin-right: 1em;
+  margin-top: 1em;
+}

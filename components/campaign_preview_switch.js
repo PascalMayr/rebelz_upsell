@@ -6,7 +6,7 @@ import {
 } from '@shopify/polaris-icons';
 import { useState } from 'react';
 
-const PreviewSwitch = ({onSwitch = () => {}}) => {
+const CampaignPreviewSwitch = ({onSwitch = () => {}}) => {
   const [selected, setSelected] = useState('desktop');
   const handleSwitch = (value) => {
     setSelected(value);
@@ -32,4 +32,4 @@ const PreviewSwitch = ({onSwitch = () => {}}) => {
   )
 }
 
-export default PreviewSwitch
+export default CampaignPreviewSwitch

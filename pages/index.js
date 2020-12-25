@@ -1,3 +1,4 @@
+import React from 'react';
 import { Page, DataTable, Button, Badge } from '@shopify/polaris';
 import { CircleTickOutlineMinor } from '@shopify/polaris-icons';
 import Image from 'next/image';
@@ -8,12 +9,28 @@ import { useCallback, useState } from 'react';
 const Index = ({ rows = [], totalRevenue = '$0', appName = 'Salestorm Upsell', plan = 'free_plan' }) => {
   const [enabled, setEnabled] = useState(false);
   const handleEnableDisable = useCallback(() => setEnabled((active) => !active), []);
+  const enabledStatus = enabled ? 'enabled' : 'disabled';
+  const enabledButtonStatus = enabled ? 'Disable' : 'Enable';
+  const priceStatus = plan === 'free_plan' ? 'new' : 'success';
+  const priceProgress = plan === 'free_plan' ? 'incomplete' : 'complete';
+  const headings = [
+    'Campaign',
+    'Active',
+    'Targets',
+    'Views',
+    'Revenue',
+    'Sales',
+    'Impressions',
+    'Conversion Rate',
+    'Actions'
+  ];
+  const columnContentTypes = ['text', 'text', 'text', 'text', 'text', 'text'];
   return (
     <Page
       fullWidth
       title="All Campaigns"
       subtitle="Create new campaigns and boost your sales."
-      titleMetadata={<Badge status={plan === 'free_plan' ? 'new' : 'success'} progress={plan === 'free_plan' ? 'incomplete' : 'complete'}>{plan.replace('_', ' ').toUpperCase()}</Badge>}
+      titleMetadata={<Badge status={priceStatus} progress={priceProgress}>{plan.replace('_', ' ').toUpperCase()}</Badge>}
       primaryAction={
         <NextLink href="/campaigns">
           <Button primary>
@@ -27,31 +44,21 @@ const Index = ({ rows = [], totalRevenue = '$0', appName = 'Salestorm Upsell', p
     >
       <div className='enabled-satus-container'>
         <h2 id='total-revenue'>Total Revenue: {totalRevenue}</h2>
-        <div>
-          <span className='enabled-status'>{appName} is <strong style={{color: enabled ? '#50b83c' : 'red'}}>{ enabled ? 'enabled' : 'disabled'}</strong></span>
+        <div id='enabled-status-inner-container'>
+          <span className='enabled-status'>{appName} is <strong style={{color: enabled ? '#50b83c' : 'red'}}>{ enabledStatus }</strong></span>
           <Button
             onClick={handleEnableDisable}
             primary={!enabled}
           >
             {
-              enabled ? 'Disable' : 'Enable'
+              enabledButtonStatus
             }
           </Button>
         </div>
       </div>
       <DataTable
-        columnContentTypes={['text', 'text', 'text', 'text', 'text', 'text']}
-        headings={[
-          'Campaign',
-          'Active',
-          'Targets',
-          'Views',
-          'Revenue',
-          'Sales',
-          'Impressions',
-          'Conversion Rate',
-          'Actions'
-        ]}
+        columnContentTypes={columnContentTypes}
+        headings={headings}
         rows={rows}
       />
       {rows.length === 0 && (

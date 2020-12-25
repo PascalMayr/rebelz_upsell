@@ -1,7 +1,7 @@
 import { Card, List, Button, Heading } from '@shopify/polaris';
 import '../styles/components_salestorm_pricing_card.css';
 
-const SalestormPricingCard = ({
+const PricingCard = ({
   title = '',
   list = [],
   button = () => <Button primary>Choose this plan</Button>,
@@ -29,4 +29,4 @@ const SalestormPricingCard = ({
   );
 };
 
-export default SalestormPricingCard;
+export default PricingCard;
