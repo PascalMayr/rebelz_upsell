@@ -4,7 +4,7 @@ import '../styles/components_campaign_preview.css';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
 import CampaignProduct from './campaign_product';
-import ErrorMessage from './error_message';
+import ErrorMessage from './error/error_message';
 import { Spinner } from '@shopify/polaris';
 
 const CampaignPreview = ({campaign, isPreviewDesktop, popupRef, setCampaignProperty}) => {

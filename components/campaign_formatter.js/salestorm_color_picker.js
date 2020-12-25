@@ -1,7 +1,19 @@
 import { ColorPicker, TextField } from '@shopify/polaris';
-import getColorFromColorPicker from '../../utils/get_color_from_color_picker';
 import '../../styles/components_salestorm_color_picker.css';
 import tinycolor from 'tinycolor2';
+
+const getColorFromColorPicker = (pickedColor, colorModel) => {
+  const { hue, saturation, brightness, alpha } = pickedColor;
+  const color = tinycolor({ h: hue, s: saturation, l: brightness, a: alpha });
+  switch (colorModel) {
+    case 'rgb':
+      return color.toRgbString();
+    case 'hsl':
+      return color.toHslString();
+    default:
+      return color.toHex8String();
+  }
+};
 
 const SalestormColorPicker = ({
   onChange,
