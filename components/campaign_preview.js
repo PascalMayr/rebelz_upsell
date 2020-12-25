@@ -72,13 +72,13 @@ const CampaignPreview = ({campaign, isPreviewDesktop, popupRef, setCampaignPrope
               />
               <br />
               {
-                campaign.sellingProducts.map((product, index) => (
-                  <div className='popup-product-container' key={`product-container=${key}`}>
+                campaign.sellingProducts.map(product => (
+                  <div className='popup-product-container' key={product.id}>
                     <Query query={GET_PRODUCT_DETAILS(product.id)}>
                       {({ loading, error, data }) => {
                         if (loading) return <div id='product-loading-container'><Spinner accessibilityLabel="Small spinner" size="small" color="teal" /></div>;
-                        if (error) return <ErrorMessage whileMessage='while loading the products.'/>;
-                        return <CampaignProduct data={data} productKey={`product-${index}`} campaign={campaign} />
+                        if (error) return <ErrorMessage whileMessage='while loading the products.' />;
+                        return <CampaignProduct data={data} productKey={product.id} campaign={campaign} />
                       }}
                     </Query>
                   </div>
