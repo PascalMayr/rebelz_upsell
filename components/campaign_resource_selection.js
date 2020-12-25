@@ -15,8 +15,8 @@ const CampaignResourceSelection = ({
     <>
       <div className='salestorm-selected-resources'>
         {
-          resources.map((resource, index) => (
-            <div className='salestorm-resource-tag' key={`tag-${resourcePickerProps.resourceType}-${index}`}>
+          resources.map(resource => (
+            <div className='salestorm-resource-tag' key={`${resourcePickerProps.resourceType}-${resource.id}`}>
               <Tag
                 onRemove={() => {
                   onResourceMutation(resources.filter(findResource => findResource.id !== resource.id))
