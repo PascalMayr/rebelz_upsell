@@ -16,7 +16,7 @@ import CampaignResourceSelection from '../../components/campaign_resource_select
 const Index = () => {
   const context = useContext(AppContext);
   const initialStyles = (screen) => {
-    const isPreviewDesktop = screen === 'desktop';
+    const isDesktop = screen === 'desktop';
     return {
       popup: {
         margin: '0px',
@@ -29,9 +29,9 @@ const Index = () => {
         backgroundRepeat: 'repeat',
         backgroundOrigin: 'padding-box',
         borderColor: 'rgb(0, 128, 96)',
-        boxShadow: isPreviewDesktop ? '1px 5px 30px rgb(0, 0, 0)' : '0px 0px 0px rgb(0, 0, 0)',
-        width: isPreviewDesktop ? '550px' : '100%',
-        height: isPreviewDesktop ? '450px' : '100%',
+        boxShadow: isDesktop ? '1px 5px 30px rgb(0, 0, 0)' : '0px 0px 0px rgb(0, 0, 0)',
+        width: isDesktop ? '550px' : '100%',
+        height: isDesktop ? '450px' : '100%',
         position: 'relative'
       },
       overlay: {
