@@ -10,6 +10,8 @@ import '@shopify/polaris/dist/styles.css';
 import translations from '@shopify/polaris/locales/en.json';
 import '../styles/_app.css';
 import Head from 'next/head';
+import { withErrorBoundary } from 'react-error-boundary';
+import ErrorCommonFallBack from '../components/error/error_common_fallback';
 
 const client = new ApolloClient({
   fetch: fetch,
@@ -34,8 +36,14 @@ class MyApp extends App {
   }
   render() {
     const { Component, pageProps } = this.props;
-    const shopOrigin = NODE_ENV !== 'localdevelopment' ? Cookies.get('shopOrigin') : 'prestige-google-review-test.myshopify.com';
-    const BridgeProvider = NODE_ENV !== 'localdevelopment' ? Provider : ({children}) => <div>{children}</div>;
+    const shopOrigin =
+      NODE_ENV !== 'localdevelopment'
+        ? Cookies.get('shopOrigin')
+        : 'prestige-google-review-test.myshopify.com';
+    const BridgeProvider =
+      NODE_ENV !== 'localdevelopment'
+        ? Provider
+        : ({ children }) => <div>{children}</div>;
     return (
       <AppProvider
         i18n={translations}
@@ -82,5 +90,7 @@ class MyApp extends App {
   }
 }
 
-export default MyApp;
+export default withErrorBoundary(MyApp, {
+  FallbackComponent: ErrorCommonFallBack,
+});
 export { AppContext };

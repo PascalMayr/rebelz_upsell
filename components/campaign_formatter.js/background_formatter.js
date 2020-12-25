@@ -19,8 +19,7 @@ const BackgroundFormatter = ({ styles, setStyleProperty }) => {
       />
       <br />
       <h4>
-        <strong>ⓘ</strong>
-        Please use the free and reliable service of
+        <strong>ⓘ&nbsp;</strong>Please use the free and reliable service of
         <strong>
           <a
             href="https://postimages.org/"
@@ -28,7 +27,7 @@ const BackgroundFormatter = ({ styles, setStyleProperty }) => {
             rel="noopener noreferrer"
             className="postimages-link text-decoration-underline"
           >
-            Postimages
+            &nbsp;Postimages&nbsp;
           </a>
         </strong>
         to upload your own background image and copy the{' '}
