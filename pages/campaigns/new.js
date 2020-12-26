@@ -1,6 +1,6 @@
 import { useState, useCallback, useContext, useRef } from 'react';
 import { Page, Card, Layout, TextField } from '@shopify/polaris';
-import CampaignFormatter from '../../components/campaign_formatter.js';
+import CampaignFormatter from '../../components/campaign_formatter.js/index.js';
 import '../../styles/pages_campaigns_index.css';
 import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';
@@ -13,7 +13,7 @@ import CampaignPreviewSwitch from '../../components/campaign_preview_switch';
 import CampaignPreview from '../../components/campaign_preview';
 import CampaignResourceSelection from '../../components/campaign_resource_selection';
 
-const Index = () => {
+const New = (props) => {
   const context = useContext(AppContext);
   const initialStyles = (screen) => {
     const isDesktop = screen === 'desktop';
@@ -72,7 +72,7 @@ const Index = () => {
     name: '',
     targetProducts: [],
     sellingProducts: []
-  });
+  , ...props.campaign});
   const [preview, setPreview] = useState('desktop');
   const isPreviewDesktop = preview === 'desktop';
   const setCampaignProperty = useCallback(
@@ -221,4 +221,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default New;
