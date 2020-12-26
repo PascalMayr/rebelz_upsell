@@ -106,17 +106,17 @@ app.prepare().then(() => {
     '/api/save-campaign',
     verifyRequest(),
     async (ctx) => {
-      const { styles, message, trigger, sell_type, name } = ctx.request.body;
+      const { styles, mobileStyles, message, trigger, sell_type, name, products } = ctx.request.body;
       let campaign;
       if(ctx.request.body.id) {
         campaign = await db.query(
-          'UPDATE campaigns SET styles = $1, message = $2, trigger = $3, sell_type = $4, name = $5 WHERE id = $6 RETURNING *',
-          [styles, message, trigger, sell_type, name, ctx.request.body.id]
+          'UPDATE campaigns SET styles = $1, message = $2, trigger = $3, sell_type = $4, name = $5, "mobileStyles" = $6, products = $7 WHERE id = $8 RETURNING *',
+          [styles, message, trigger, sell_type, name, mobileStyles, products, ctx.request.body.id]
         );
       } else {
         campaign = await db.query(
-          'INSERT INTO campaigns(domain, styles, message, trigger, sell_type, name) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
-          [ctx.session.shop, styles, message, trigger, sell_type, name]
+          'INSERT INTO campaigns(domain, styles, message, trigger, sell_type, name, "mobileStyles", products) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+          [ctx.session.shop, styles, message, trigger, sell_type, name, mobileStyles, products]
         );
       }
 
