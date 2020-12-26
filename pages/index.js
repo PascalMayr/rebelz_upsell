@@ -6,6 +6,13 @@ import NextLink from 'next/link';
 import { useCallback, useState } from 'react';
 import db from '../server/db';
 
+export async function getServerSideProps(ctx) {
+  const data = await db.query('SELECT * FROM campaigns WHERE domain = $1', [
+    ctx.req.cookies.shopOrigin,
+  ]);
+  return { props: { campaigns: data.rows } };
+}
+
 const Index = ({
   campaigns,
   totalRevenue = '$0',
@@ -128,12 +135,5 @@ const Index = ({
     </Page>
   );
 };
-
-export async function getServerSideProps(ctx) {
-  const data = await db.query('SELECT * FROM campaigns WHERE domain = $1', [
-    ctx.req.cookies.shopOrigin,
-  ]);
-  return { props: { campaigns: data.rows } };
-}
 
 export default Index;
