@@ -1,4 +1,12 @@
-import { Page, Button, Badge, Card, ResourceList, ResourceItem, TextStyle } from '@shopify/polaris';
+import {
+  Page,
+  Button,
+  Badge,
+  Card,
+  ResourceList,
+  ResourceItem,
+  TextStyle,
+} from '@shopify/polaris';
 import { CircleTickOutlineMinor } from '@shopify/polaris-icons';
 import Image from 'next/image';
 import '../styles/pages_index.css';
@@ -110,11 +118,11 @@ const Index = ({
       </div>
       <Card>
         <ResourceList
-          resourceName={{singular: 'campaign', plural: 'campaigns'}}
+          resourceName={{ singular: 'campaign', plural: 'campaigns' }}
           emptyState={emptyStateMarkup}
           items={campaigns}
           renderItem={(campaign) => {
-            const {id, name, published} = campaign;
+            const { id, name, published } = campaign;
             const url = `/campaigns/${id}`;
 
             return (
@@ -123,10 +131,12 @@ const Index = ({
                 url={url}
                 accessibilityLabel={`View details for ${name}`}
               >
-                <h3 className='campaign-title'>
-                  <TextStyle variation='strong'>{name}</TextStyle>
+                <h3 className="campaign-title">
+                  <TextStyle variation="strong">{name}</TextStyle>
                 </h3>
-                <Badge status={published? 'info' : 'attention'}>{published ? 'Published' : 'Unpublished'}</Badge>
+                <Badge status={published ? 'info' : 'attention'}>
+                  {published ? 'Published' : 'Unpublished'}
+                </Badge>
               </ResourceItem>
             );
           }}
