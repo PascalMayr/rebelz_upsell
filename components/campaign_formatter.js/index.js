@@ -75,7 +75,6 @@ const CampaignFormatter = ({ campaign, setCampaignProperty, isPreviewDesktop }) 
 
   const styles = isPreviewDesktop ? campaign.styles[id] : campaign.mobileStyles[id];
 
-
   const _setColor = (value) => {
     if (styleChoice.value === 'boxShadow') {
       let boxShadow = styles.boxShadow.split(' ').slice(0, 3);
