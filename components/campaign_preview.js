@@ -54,37 +54,36 @@ const CampaignPreview = ({campaign, isPreviewDesktop, popupRef, setCampaignPrope
   `;
   const styles = isPreviewDesktop ? campaign.styles : campaign.mobileStyles;
   const mobileContainerClass = !isPreviewDesktop ? 'salestorm-mobile-preview-container' : '';
+  const campaignMessageKey = isPreviewDesktop ? 'message' : 'mobileMessage';
   return (
     <>
       <div className='salestorm-popup-preview-container'>
         <div className={mobileContainerClass}>
-          <div id='salestorm-popup-overlay'>
-            <div
-              id="salestorm-popup"
-              style={styles.popup}
-              ref={popupRef}
-            >
-              <Editor
-                apiKey={TINY_MCE_API_KEY}
-                init={inlineEditorConfig}
-                initialValue={campaign.message}
-                onEditorChange={(value) => setCampaignProperty(value, 'message')}
-              />
-              <br />
-              {
-                campaign.sellingProducts.map(product => (
-                  <div className='popup-product-container' key={product.id}>
-                    <Query query={GET_PRODUCT_DETAILS(product.id)}>
-                      {({ loading, error, data }) => {
-                        if (loading) return <div id='product-loading-container'><Spinner accessibilityLabel="Small spinner" size="small" color="teal" /></div>;
-                        if (error) return <ErrorMessage whileMessage='while loading the products.' />;
-                        return <CampaignProduct data={data} productKey={product.id} campaign={campaign} />
-                      }}
-                    </Query>
-                  </div>
-                ))
-              }
-            </div>
+          <div
+            id="salestorm-popup"
+            style={styles.popup}
+            ref={popupRef}
+          >
+            <Editor
+              apiKey={TINY_MCE_API_KEY}
+              init={inlineEditorConfig}
+              value={campaign[campaignMessageKey]}
+              onEditorChange={(value) => setCampaignProperty(value, campaignMessageKey)}
+            />
+            <br />
+            {
+              campaign.sellingProducts.map(product => (
+                <div className='popup-product-container' key={product.id}>
+                  <Query query={GET_PRODUCT_DETAILS(product.id)}>
+                    {({ loading, error, data }) => {
+                      if (loading) return <div id='product-loading-container'><Spinner accessibilityLabel="Small spinner" size="small" color="teal" /></div>;
+                      if (error) return <ErrorMessage whileMessage='while loading the products.' />;
+                      return <CampaignProduct data={data} productKey={product.id} campaign={campaign} />
+                    }}
+                  </Query>
+                </div>
+              ))
+            }
           </div>
         </div>
       </div>
