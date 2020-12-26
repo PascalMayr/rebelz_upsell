@@ -3,7 +3,7 @@ import React from 'react';
 const ErrorMessage = ({ whileMessage = 'while loading', suggestions = [] }) => (
   <div className="text-center">
     <h2>
-      Looks like an <b>error occured</b> {whileMessage}.
+      It looks like an <b>error occurred</b> {whileMessage}.
     </h2>
     {suggestions.map((suggestion) => (
       <p key={suggestion}>
@@ -20,7 +20,7 @@ const ErrorMessage = ({ whileMessage = 'while loading', suggestions = [] }) => (
     </p>
     <br />
     <p>
-      <b>We are sorry for this and we will try to help you ASAP.</b>
+      <b>We are sorry about this, and we will try to help you ASAP.</b>
     </p>
     <br />
     <p>
