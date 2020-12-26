@@ -1,6 +1,6 @@
 import { useState, useCallback, useContext, useRef } from 'react';
 import { Page, Card, Layout, TextField } from '@shopify/polaris';
-import CampaignFormatter from '../../components/campaign_formatter.js/index.js';
+import CampaignFormatter from '../../components/campaign_formatter.js';
 import '../../styles/pages_campaigns_index.css';
 import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';
