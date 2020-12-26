@@ -45,7 +45,7 @@ const Index = ({
         </Badge>
       }
       primaryAction={
-        <NextLink href="/campaigns">
+        <NextLink href="/campaigns/new">
           <Button primary>
             <span className="salestorm-add-campaign">+</span> New Campaign
           </Button>
