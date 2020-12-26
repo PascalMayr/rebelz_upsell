@@ -36,8 +36,14 @@ class MyApp extends App {
   }
   render() {
     const { Component, pageProps } = this.props;
-    const shopOrigin = NODE_ENV !== 'localdevelopment' ? Cookies.get('shopOrigin') : 'prestige-google-review-test.myshopify.com';
-    const BridgeProvider = NODE_ENV !== 'localdevelopment' ? Provider : ({children}) => <div>{children}</div>;
+    const shopOrigin =
+      NODE_ENV !== 'localdevelopment'
+        ? Cookies.get('shopOrigin')
+        : 'prestige-google-review-test.myshopify.com';
+    const BridgeProvider =
+      NODE_ENV !== 'localdevelopment'
+        ? Provider
+        : ({ children }) => <div>{children}</div>;
     return (
       <AppProvider
         i18n={translations}
@@ -85,6 +91,6 @@ class MyApp extends App {
 }
 
 export default withErrorBoundary(MyApp, {
-  FallbackComponent: ErrorCommonFallBack
+  FallbackComponent: ErrorCommonFallBack,
 });
 export { AppContext };

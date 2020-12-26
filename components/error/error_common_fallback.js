@@ -8,9 +8,9 @@ const ErrorCommonFallBack = (error) => {
       <br />
       <br />
       <br />
-      <ErrorMessage whileMessage='while working with our Shopify App' />
+      <ErrorMessage whileMessage="while working with our Shopify App" />
     </>
-  )
-}
+  );
+};
 
-export default ErrorCommonFallBack
+export default ErrorCommonFallBack;

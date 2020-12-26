@@ -1,8 +1,6 @@
 .no-campaigns-container {
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  margin-top: 3em;
+  padding: 1.5em 0 3em 0;
 }
 
 .salestorm-add-campaign {
@@ -75,4 +73,9 @@
   .enabled-satus-container {
     padding: 1.6rem 1.6rem 0;
   }
+}
+
+.campaign-title {
+  display: inline-block;
+  margin-right: 1em;
 }

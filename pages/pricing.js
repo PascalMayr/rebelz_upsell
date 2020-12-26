@@ -9,7 +9,7 @@ const Pricing = () => {
       subtitle="Choose the best plan for your needs"
       breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
     >
-      <div className='plans-container'>
+      <div className="plans-container">
         <Layout>
           <Layout.Section oneThird>
             <PricingCard
@@ -22,7 +22,7 @@ const Pricing = () => {
                 'No Branding',
                 'Custom Background Images',
                 'Customize all Fonts and Styles',
-                'Discount offers'
+                'Discount offers',
               ]}
               button={
                 <Button primary disabled>
@@ -35,10 +35,7 @@ const Pricing = () => {
             <PricingCard
               title="PRO Plan"
               subtitle="$14.99 / month"
-              list={[
-                'Everything from FREE plan',
-                '20 Active Campaigns'
-              ]}
+              list={['Everything from FREE plan', '20 Active Campaigns']}
               button={<Button primary>Start 14 days FREE Trial</Button>}
             />
           </Layout.Section>
@@ -46,10 +43,7 @@ const Pricing = () => {
             <PricingCard
               title="BUSINESS Plan"
               subtitle="$29.99 / month"
-              list={[
-                'Everything in FREE & PRO plan',
-                'Unlimited Campaigns'
-              ]}
+              list={['Everything in FREE & PRO plan', 'Unlimited Campaigns']}
               button={<Button primary>Start 14 days FREE Trial</Button>}
             />
           </Layout.Section>

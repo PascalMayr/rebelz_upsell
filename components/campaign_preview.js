@@ -7,7 +7,12 @@ import CampaignProduct from './campaign_product';
 import ErrorMessage from './error/error_message';
 import { Spinner } from '@shopify/polaris';
 
-const CampaignPreview = ({campaign, isPreviewDesktop, popupRef, setCampaignProperty}) => {
+const CampaignPreview = ({
+  campaign,
+  isPreviewDesktop,
+  popupRef,
+  setCampaignProperty,
+}) => {
   const inlineEditorConfig = {
     inline: true,
     menubar: false,
@@ -44,7 +49,10 @@ const CampaignPreview = ({campaign, isPreviewDesktop, popupRef, setCampaignPrope
         images(first: 3) {
           edges {
             node {
-              transformedSrc(maxWidth: ${campaign.styles.width.replace('px', '')})
+              transformedSrc(maxWidth: ${campaign.styles.width.replace(
+                'px',
+                ''
+              )})
               altText
             }
           }
@@ -53,43 +61,59 @@ const CampaignPreview = ({campaign, isPreviewDesktop, popupRef, setCampaignPrope
     }
   `;
   const styles = isPreviewDesktop ? campaign.styles : campaign.mobileStyles;
-  const mobileContainerClass = !isPreviewDesktop ? 'salestorm-mobile-preview-container' : '';
+  const mobileContainerClass = !isPreviewDesktop
+    ? 'salestorm-mobile-preview-container'
+    : '';
   return (
     <>
-      <div className='salestorm-popup-preview-container'>
+      <div className="salestorm-popup-preview-container">
         <div className={mobileContainerClass}>
-          <div id='salestorm-popup-overlay'>
-            <div
-              id="salestorm-popup"
-              style={styles.popup}
-              ref={popupRef}
-            >
+          <div id="salestorm-popup-overlay">
+            <div id="salestorm-popup" style={styles.popup} ref={popupRef}>
               <Editor
                 apiKey={TINY_MCE_API_KEY}
                 init={inlineEditorConfig}
                 initialValue={campaign.message}
-                onEditorChange={(value) => setCampaignProperty(value, 'message')}
+                onEditorChange={(value) =>
+                  setCampaignProperty(value, 'message')
+                }
               />
               <br />
-              {
-                campaign.sellingProducts.map(product => (
-                  <div className='popup-product-container' key={product.id}>
-                    <Query query={GET_PRODUCT_DETAILS(product.id)}>
-                      {({ loading, error, data }) => {
-                        if (loading) return <div id='product-loading-container'><Spinner accessibilityLabel="Small spinner" size="small" color="teal" /></div>;
-                        if (error) return <ErrorMessage whileMessage='while loading the products.' />;
-                        return <CampaignProduct data={data} productKey={product.id} campaign={campaign} />
-                      }}
-                    </Query>
-                  </div>
-                ))
-              }
+              {campaign.products.selling.map((product) => (
+                <div className="popup-product-container" key={product.id}>
+                  <Query query={GET_PRODUCT_DETAILS(product.id)}>
+                    {({ loading, error, data }) => {
+                      if (loading)
+                        return (
+                          <div id="product-loading-container">
+                            <Spinner
+                              accessibilityLabel="Small spinner"
+                              size="small"
+                              color="teal"
+                            />
+                          </div>
+                        );
+                      if (error)
+                        return (
+                          <ErrorMessage whileMessage="while loading the products." />
+                        );
+                      return (
+                        <CampaignProduct
+                          data={data}
+                          productKey={product.id}
+                          campaign={campaign}
+                        />
+                      );
+                    }}
+                  </Query>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CampaignPreview
+export default CampaignPreview;
