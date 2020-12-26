@@ -27,14 +27,33 @@ CREATE EXTENSION citext;
 ~/ $ shopify serve
 ```
 
-## Developing the Frontend locally
+## Development guides
+
+### Developing with the DB
+
+1. Write your test SQL statement into the file 'current.sql'
+
+2. To test the SQL statement run:
+```sh
+~/ $ npm run graphile watch
+```
+
+3. When finished testing your SQL statement you need to create a migration file with this command:
+```sh
+~/ $ npm run graphile commit
+```
+
+4. Run the migrations and test on shopify with:
+```sh
+~/ $ shopify serve
+```
+
+### Developing locally
 
 Run:
 ```sh
 ~/ $ npm run localdev
 ```
-
-to develope the Frontend locally.
 
 ## Requirements
 
