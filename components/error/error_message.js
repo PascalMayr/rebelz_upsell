@@ -34,22 +34,6 @@ const ErrorMessage = ({ whileMessage = 'while loading', suggestions = [] }) => (
         <b>support@salestorm.cc</b>
       </a>
     </p>
-    <br />
-    <p>
-      <b>
-        <span className="text-decoration-underline">
-          Every customer has the right of a functioning product
-        </span>{' '}
-        and we will refund you immediately if you wish so.
-      </b>
-    </p>
-    <p>
-      <b>
-        <a href="mailto:refund@salestorm.cc">
-          <b>refund@salestorm.cc</b>
-        </a>
-      </b>
-    </p>
   </div>
 );
 
