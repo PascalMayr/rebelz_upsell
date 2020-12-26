@@ -13,8 +13,8 @@ const PricingCard = ({
         <Heading element="h3">{subtitle}</Heading>
         <Card.Section>
           <List className="pricing-list" style={{ listStyle: 'none' }}>
-            {list.map((listItem, index) => (
-              <List.Item key={`list-item-${index}`}>
+            {list.map(listItem => (
+              <List.Item key={listItem}>
                 <span className="salestorm-pricing-card-checkmark">✓</span>
                 {listItem}
               </List.Item>
