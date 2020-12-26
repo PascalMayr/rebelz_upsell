@@ -79,7 +79,7 @@ const CampaignPreview = ({
                 }
               />
               <br />
-              {campaign.sellingProducts.map((product) => (
+              {campaign.products.selling.map((product) => (
                 <div className="popup-product-container" key={product.id}>
                   <Query query={GET_PRODUCT_DETAILS(product.id)}>
                     {({ loading, error, data }) => {

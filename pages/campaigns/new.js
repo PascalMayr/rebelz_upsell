@@ -72,8 +72,10 @@ const New = (props) => {
     trigger: 'add_to_cart',
     sell_type: 'up-sell',
     name: '',
-    targetProducts: [],
-    sellingProducts: [],
+    products: {
+      targets: [],
+      selling: []
+    },
     ...props.campaign,
   });
   const [preview, setPreview] = useState('desktop');
@@ -204,7 +206,7 @@ const New = (props) => {
                 resourcePickerProps={{
                   resourceType: 'Product',
                   selectMultiple: false,
-                  initialSelectionIds: campaign.targetProducts,
+                  initialSelectionIds: campaign.products.targets,
                   showVariants: false,
                 }}
                 buttonProps={{
@@ -213,9 +215,9 @@ const New = (props) => {
                   label: 'Choose target Products',
                 }}
                 onResourceMutation={(resources) =>
-                  setCampaignProperty(resources, 'targetProducts')
+                  setCampaignProperty({ ...campaign.products, targets: resources }, 'products')
                 }
-                resources={campaign.targetProducts}
+                resources={campaign.products.targets}
               />
             </Card.Section>
           </Card>
@@ -227,7 +229,7 @@ const New = (props) => {
                 resourcePickerProps={{
                   resourceType: 'Product',
                   selectMultiple: false,
-                  initialSelectionIds: campaign.sellingProducts,
+                  initialSelectionIds: campaign.products.selling,
                   showVariants: false,
                 }}
                 buttonProps={{
@@ -236,9 +238,9 @@ const New = (props) => {
                   label: 'Choose selling Products',
                 }}
                 onResourceMutation={(resources) =>
-                  setCampaignProperty(resources, 'sellingProducts')
+                  setCampaignProperty({ ...campaign.products, selling: resources }, 'products')
                 }
-                resources={campaign.sellingProducts}
+                resources={campaign.products.selling}
               />
             </Card.Section>
           </Card>
