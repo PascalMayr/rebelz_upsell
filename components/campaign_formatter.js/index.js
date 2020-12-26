@@ -55,8 +55,11 @@ const CampaignFormatter = ({
   );
 
   const handleTabChange = useCallback(
-    (selectedTabIndex) => setTab(selectedTabIndex),
-    [styleChoice]
+    (selectedTabIndex) => {
+      setStyleChoice(tabs[selectedTabIndex].styleChoices[0]);
+      setTab(selectedTabIndex);
+    },
+    []
   );
 
   const setStyleProperty = useCallback(
