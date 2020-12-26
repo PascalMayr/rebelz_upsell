@@ -13,7 +13,7 @@ import CampaignPreviewSwitch from '../../components/campaign_preview_switch';
 import CampaignPreview from '../../components/campaign_preview';
 import CampaignResourceSelection from '../../components/campaign_resource_selection';
 
-const Index = () => {
+const New = (props) => {
   const context = useContext(AppContext);
   const initialStyles = (screen) => {
     const isDesktop = screen === 'desktop';
@@ -72,7 +72,7 @@ const Index = () => {
     name: '',
     targetProducts: [],
     sellingProducts: []
-  });
+  , ...props.campaign});
   const [preview, setPreview] = useState('desktop');
   const isPreviewDesktop = preview === 'desktop';
   const setCampaignProperty = useCallback(
@@ -221,4 +221,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default New;

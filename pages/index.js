@@ -28,13 +28,13 @@ const Index = ({ rows = [], totalRevenue = '$0', appName = 'Salestorm Upsell', p
   return (
     <Page
       fullWidth
-      title="All Campaigns"
-      subtitle="Create new campaigns and boost your sales."
+      title='All Campaigns'
+      subtitle='Create new campaigns and boost your sales.'
       titleMetadata={<Badge status={priceStatus} progress={priceProgress}>{plan.replace('_', ' ').toUpperCase()}</Badge>}
       primaryAction={
-        <NextLink href="/campaigns">
+        <NextLink href='/campaigns/new'>
           <Button primary>
-            <span className="salestorm-add-campaign">+</span> New Campaign
+            <span className='salestorm-add-campaign'>+</span> New Campaign
           </Button>
         </NextLink>
       }
