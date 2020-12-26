@@ -2,13 +2,12 @@ import { useState, useCallback, useContext, useRef } from 'react';
 import { Page, Card, Layout, TextField } from '@shopify/polaris';
 import CampaignFormatter from '../../components/campaign_formatter.js';
 import '../../styles/pages_campaigns_index.css';
+import saveCampaign from '../../services/save_campaign';
 import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';
 import { AppContext } from '../_app';
 import SalestormTriggers from '../../components/campaign_triggers';
-import {
-  MobilePlusMajor
-} from '@shopify/polaris-icons';
+import { MobilePlusMajor } from '@shopify/polaris-icons';
 import CampaignPreviewSwitch from '../../components/campaign_preview_switch';
 import CampaignPreview from '../../components/campaign_preview';
 import CampaignResourceSelection from '../../components/campaign_resource_selection';
@@ -29,10 +28,12 @@ const New = (props) => {
         backgroundRepeat: 'repeat',
         backgroundOrigin: 'padding-box',
         borderColor: 'rgb(0, 128, 96)',
-        boxShadow: isDesktop ? '1px 5px 30px rgb(0, 0, 0)' : '0px 0px 0px rgb(0, 0, 0)',
+        boxShadow: isDesktop
+          ? '1px 5px 30px rgb(0, 0, 0)'
+          : '0px 0px 0px rgb(0, 0, 0)',
         width: isDesktop ? '550px' : '100%',
         height: isDesktop ? '450px' : '100%',
-        position: 'relative'
+        position: 'relative',
       },
       overlay: {
         margin: '0px',
@@ -44,7 +45,7 @@ const New = (props) => {
         backgroundImage: 'url()',
         backgroundRepeat: 'repeat',
         backgroundOrigin: 'padding-box',
-        borderColor: 'rgb(0, 128, 96)'
+        borderColor: 'rgb(0, 128, 96)',
       },
       actionButton: {
         margin: '1em',
@@ -58,10 +59,10 @@ const New = (props) => {
         backgroundOrigin: 'padding-box',
         borderColor: 'rgb(0, 128, 96)',
         boxShadow: '1px 5px 30px rgb(0, 0, 0)',
-        position: 'relative'
-      }
-    }
-  }
+        position: 'relative',
+      },
+    };
+  };
   const [campaign, setCampaign] = useState({
     styles: initialStyles('desktop'),
     mobileStyles: initialStyles('mobile'),
@@ -71,9 +72,12 @@ const New = (props) => {
     trigger: 'add_to_cart',
     sell_type: 'up-sell',
     name: '',
-    targetProducts: [],
-    sellingProducts: []
-  , ...props.campaign});
+    products: {
+      targets: [],
+      selling: []
+    },
+    ...props.campaign,
+  });
   const [preview, setPreview] = useState('desktop');
   const isPreviewDesktop = preview === 'desktop';
   const setCampaignProperty = useCallback(
@@ -82,6 +86,7 @@ const New = (props) => {
   );
   const popupRef = useRef(null);
   const [publishLoading, setPublishLoading] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
   return (
     <Page
       title="Create a new campaign"
@@ -133,12 +138,38 @@ const New = (props) => {
           }
         },
       }}
+      secondaryActions={[
+        {
+          content: 'Save draft',
+          loading: saveLoading,
+          onAction: async () => {
+            try {
+              setSaveLoading(true);
+              const savedCampaign = await saveCampaign(campaign);
+              context.setToast({
+                shown: true,
+                content: 'Successfully saved draft campaign',
+                isError: false,
+              });
+              setCampaign({ ...campaign, ...savedCampaign.data });
+            } catch (e) {
+              context.setToast({
+                shown: true,
+                content: 'Draft campaign saving failed',
+                isError: true,
+              });
+            } finally {
+              setSaveLoading(false);
+            }
+          },
+        },
+      ]}
     >
       <Card>
         <Card.Section>
           <TextField
-            placeholder='Campaign name'
-            onChange={value => setCampaignProperty(value, 'name')}
+            placeholder="Campaign name"
+            onChange={(value) => setCampaignProperty(value, 'name')}
             value={campaign.name}
           />
         </Card.Section>
@@ -146,14 +177,16 @@ const New = (props) => {
           <Layout>
             <Layout.Section>
               <Card>
-                <Card.Section title='PREVIEW'>
+                <Card.Section title="PREVIEW">
                   <CampaignPreview
                     campaign={campaign}
                     isPreviewDesktop={isPreviewDesktop}
                     popupRef={popupRef}
                     setCampaignProperty={setCampaignProperty}
                   />
-                  <CampaignPreviewSwitch onSwitch={(value) => setPreview(value)} />
+                  <CampaignPreviewSwitch
+                    onSwitch={(value) => setPreview(value)}
+                  />
                 </Card.Section>
               </Card>
             </Layout.Section>
@@ -168,21 +201,23 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title='2.) Set Target Products'>
+            <Card.Section title="2.) Set Target Products">
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',
                   selectMultiple: false,
-                  initialSelectionIds: campaign.targetProducts,
-                  showVariants: false
+                  initialSelectionIds: campaign.products.targets,
+                  showVariants: false,
                 }}
                 buttonProps={{
                   primary: true,
                   icon: MobilePlusMajor,
-                  label: 'Choose target Products'
+                  label: 'Choose target Products',
                 }}
-                onResourceMutation={(resources) => setCampaignProperty(resources, 'targetProducts') }
-                resources={campaign.targetProducts}
+                onResourceMutation={(resources) =>
+                  setCampaignProperty({ ...campaign.products, targets: resources }, 'products')
+                }
+                resources={campaign.products.targets}
               />
             </Card.Section>
           </Card>
@@ -194,26 +229,29 @@ const New = (props) => {
                 resourcePickerProps={{
                   resourceType: 'Product',
                   selectMultiple: false,
-                  initialSelectionIds: campaign.sellingProducts,
-                  showVariants: false
+                  initialSelectionIds: campaign.products.selling,
+                  showVariants: false,
                 }}
                 buttonProps={{
                   primary: true,
                   icon: MobilePlusMajor,
-                  label: 'Choose selling Products'
+                  label: 'Choose selling Products',
                 }}
-                onResourceMutation={(resources) => setCampaignProperty(resources, 'sellingProducts') }
-                resources={campaign.sellingProducts}
+                onResourceMutation={(resources) =>
+                  setCampaignProperty({ ...campaign.products, selling: resources }, 'products')
+                }
+                resources={campaign.products.selling}
               />
             </Card.Section>
           </Card>
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title='4.) Set Popup Triggers'>
+            <Card.Section title="4.) Set Popup Triggers">
               <SalestormTriggers
                 trigger={campaign.trigger}
-                setCampaignProperty={setCampaignProperty} />
+                setCampaignProperty={setCampaignProperty}
+              />
             </Card.Section>
           </Card>
         </Card.Section>

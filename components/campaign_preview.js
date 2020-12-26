@@ -7,7 +7,12 @@ import CampaignProduct from './campaign_product';
 import ErrorMessage from './error/error_message';
 import { Spinner } from '@shopify/polaris';
 
-const CampaignPreview = ({campaign, isPreviewDesktop, popupRef, setCampaignProperty}) => {
+const CampaignPreview = ({
+  campaign,
+  isPreviewDesktop,
+  popupRef,
+  setCampaignProperty,
+}) => {
   const inlineEditorConfig = {
     inline: true,
     menubar: false,
@@ -44,7 +49,10 @@ const CampaignPreview = ({campaign, isPreviewDesktop, popupRef, setCampaignPrope
         images(first: 3) {
           edges {
             node {
-              transformedSrc(maxWidth: ${campaign.styles.width.replace('px', '')})
+              transformedSrc(maxWidth: ${campaign.styles.width.replace(
+                'px',
+                ''
+              )})
               altText
             }
           }
@@ -57,7 +65,7 @@ const CampaignPreview = ({campaign, isPreviewDesktop, popupRef, setCampaignPrope
   const campaignMessageKey = isPreviewDesktop ? 'message' : 'mobileMessage';
   return (
     <>
-      <div className='salestorm-popup-preview-container'>
+      <div className="salestorm-popup-preview-container">
         <div className={mobileContainerClass}>
           <div
             id="salestorm-popup"
@@ -88,7 +96,7 @@ const CampaignPreview = ({campaign, isPreviewDesktop, popupRef, setCampaignPrope
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CampaignPreview
+export default CampaignPreview;

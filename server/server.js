@@ -101,6 +101,30 @@ app.prepare().then(() => {
       ctx.res.statusCode = 200;
     });
   }
+
+  router.post(
+    '/api/save-campaign',
+    verifyRequest(),
+    async (ctx) => {
+      const { styles, mobileStyles, message, trigger, sell_type, name, products } = ctx.request.body;
+      let campaign;
+      if(ctx.request.body.id) {
+        campaign = await db.query(
+          'UPDATE campaigns SET styles = $1, message = $2, trigger = $3, sell_type = $4, name = $5, "mobileStyles" = $6, products = $7 WHERE id = $8 RETURNING *',
+          [styles, message, trigger, sell_type, name, mobileStyles, products, ctx.request.body.id]
+        );
+      } else {
+        campaign = await db.query(
+          'INSERT INTO campaigns(domain, styles, message, trigger, sell_type, name, "mobileStyles", products) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+          [ctx.session.shop, styles, message, trigger, sell_type, name, mobileStyles, products]
+        );
+      }
+
+      ctx.body = campaign.rows[0];
+      ctx.status = 200;
+    }
+  );
+
   router.post(
     '/api/publish-campaign',
     verifyRequest(),
@@ -142,6 +166,7 @@ app.prepare().then(() => {
           },
         });
       }
+      await db.query('UPDATE campaigns SET published = true WHERE domain = $1', [ctx.session.shop]);
 
       ctx.status = 200;
     }
@@ -163,6 +188,7 @@ app.prepare().then(() => {
           value: '',
         },
       });
+      await db.query('UPDATE campaigns SET published = false WHERE domain = $1', [ctx.session.shop]);
 
       ctx.status = 200;
     }
