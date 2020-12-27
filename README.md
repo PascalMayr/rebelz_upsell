@@ -55,6 +55,8 @@ Run:
 ~/ $ npm run localdev
 ```
 
+Note: You need to ***run at least once shopify serve*** before you can develope locally.
+
 ## Requirements
 
 - Ask to be added to the shopify partner account.
