@@ -19,8 +19,9 @@ import CampaignDeleteModal from '../components/campaign_delete_modal';
 import db from '../server/db';
 
 export async function getServerSideProps(ctx) {
-  const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [ctx.req.cookies.shopOrigin]);
-  const campaigns = await db.query('SELECT * FROM campaigns WHERE domain = $1', [ctx.req.cookies.shopOrigin]);
+  const domain = NODE_ENV !== 'localdevelopment' ? ctx.req.cookies.shopOrigin : process.env.SHOP;
+  const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [domain]);
+  const campaigns = await db.query('SELECT * FROM campaigns WHERE domain = $1', [domain]);
   return { props: { campaigns: campaigns.rows, store: stores.rows[0] } };
 }
 
