@@ -11,10 +11,11 @@ import translations from '@shopify/polaris/locales/en.json';
 import '../styles/_app.css';
 import Head from 'next/head';
 import { withErrorBoundary } from 'react-error-boundary';
+
 import ErrorCommonFallBack from '../components/error/error_common_fallback';
 
 const client = new ApolloClient({
-  fetch: fetch,
+  fetch,
   fetchOptions: {
     credentials: 'include',
   },
@@ -34,16 +35,19 @@ class MyApp extends App {
       setToast: (toast) => this.setState((state) => ({ ...state, toast })),
     };
   }
+
   render() {
     const { Component, pageProps } = this.props;
     const shopOrigin =
-      NODE_ENV !== 'localdevelopment'
-        ? Cookies.get('shopOrigin')
-        : 'prestige-google-review-test.myshopify.com';
+      // eslint-disable-next-line no-undef
+      NODE_ENV === 'localdevelopment'
+        ? 'prestige-google-review-test.myshopify.com'
+        : Cookies.get('shopOrigin');
     const BridgeProvider =
-      NODE_ENV !== 'localdevelopment'
-        ? Provider
-        : ({ children }) => <div>{children}</div>;
+      // eslint-disable-next-line no-undef
+      NODE_ENV === 'localdevelopment'
+        ? ({ children }) => <div>{children}</div>
+        : Provider;
     return (
       <AppProvider
         i18n={translations}
@@ -54,8 +58,9 @@ class MyApp extends App {
       >
         <BridgeProvider
           config={{
+            // eslint-disable-next-line no-undef
             apiKey: API_KEY,
-            shopOrigin: shopOrigin,
+            shopOrigin,
             forceRedirect: true,
           }}
         >

@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react';
+import { useState } from 'react';
 import { ResourcePicker } from '@shopify/app-bridge-react';
 import { Button, Tag } from '@shopify/polaris';
 import '../styles/components_resource_selection.css';

@@ -12,7 +12,7 @@ const CampaignPreviewProduct = ({ data, productKey, campaign }) => {
           <img
             src={transformedSrc}
             alt={alt}
-            width={parseInt(campaign.styles.width) / 2.5}
+            width={parseInt(campaign.styles.width, 10) / 2.5}
           />
         )}
       </div>

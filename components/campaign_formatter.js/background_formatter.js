@@ -18,7 +18,8 @@ const BackgroundFormatter = ({ styles, setStyleProperty }) => {
       />
       <br />
       <h4>
-        <strong>ⓘ&nbsp;</strong>Please use the free and reliable service of
+        <strong>ⓘ&nbsp;</strong>
+        <span>Please use the free and reliable service of</span>
         <strong>
           <a
             href="https://postimages.org/"

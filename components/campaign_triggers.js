@@ -8,7 +8,6 @@ const CampaignTriggers = ({ trigger, setCampaignProperty }) => {
       <div
         className="salestorm-triggers-option"
         onClick={() => setCampaignProperty('add_to_cart', 'trigger')}
-        onKeyDown={() => {}}
       >
         <Image
           src="/add_to_cart.svg"

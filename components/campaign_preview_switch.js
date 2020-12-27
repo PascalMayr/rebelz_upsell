@@ -3,7 +3,7 @@ import { Button } from '@shopify/polaris';
 import { DesktopMajor, MobileMajor } from '@shopify/polaris-icons';
 import { useState } from 'react';
 
-const CampaignPreviewSwitch = ({ onSwitch = () => {} }) => {
+const CampaignPreviewSwitch = ({ onSwitch }) => {
   const [selected, setSelected] = useState('desktop');
   const handleSwitch = (value) => {
     setSelected(value);

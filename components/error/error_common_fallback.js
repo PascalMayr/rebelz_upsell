@@ -1,6 +1,6 @@
 import ErrorMessage from './error_message';
 
-const ErrorCommonFallBack = (error) => {
+const ErrorCommonFallBack = () => {
   return (
     <>
       <br />

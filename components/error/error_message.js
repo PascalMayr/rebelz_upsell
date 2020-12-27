@@ -12,12 +12,16 @@ const ErrorMessage = ({ whileMessage = 'while loading', suggestions = [] }) => (
     ))}
     <br />
     <p>
-      We are sorry about this, and we will try to help you ASAP. <strong>Please reach out to our Support chat in the right corner below.</strong>
+      We are sorry about this, and we will try to help you ASAP.{' '}
+      <strong>
+        Please reach out to our Support chat in the right corner below.
+      </strong>
     </p>
     <br />
     <p>
       <b>
-        If your issue remains unresolved or if you are unable to chat with our Support please reach out to:
+        If your issue remains unresolved or if you are unable to chat with our
+        Support please reach out to:
       </b>
     </p>
     <p>
