@@ -23,7 +23,7 @@
     "node": ">=15.3.0"
   },
   "dependencies": {
-    "@babel/core": "7.12.3",
+    "@babel/core": "^7.12.3",
     "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.2",
     "@babel/register": "^7.6.2",
