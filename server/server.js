@@ -125,6 +125,16 @@ app.prepare().then(() => {
     }
   );
 
+  router.delete(
+    '/api/delete-campaign/:id',
+    verifyRequest(),
+    async (ctx) => {
+      await db.query('DELETE FROM campaigns WHERE id = $1', [ctx.params.id]);
+
+      ctx.status = 200;
+    }
+  );
+
   router.post(
     '/api/publish-campaign',
     verifyRequest(),
