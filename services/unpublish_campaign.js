@@ -1,11 +1,5 @@
-import axios from 'axios';
+import api from './api';
 
-const unpublishCampaign = async () => {
-  return axios.delete('/api/unpublish-campaign', {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-};
+const unpublishCampaign = async () => api.delete('/api/unpublish-campaign');
 
 export default unpublishCampaign;

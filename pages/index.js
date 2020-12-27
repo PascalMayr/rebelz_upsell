@@ -11,35 +11,56 @@ import { CircleTickOutlineMinor } from '@shopify/polaris-icons';
 import Image from 'next/image';
 import '../styles/pages_index.css';
 import NextLink from 'next/link';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useContext } from 'react';
 
+import { AppContext } from './_app';
+import toggleStoreEnabled from '../services/toggle_store_enabled';
 import CampaignDeleteModal from '../components/campaign_delete_modal';
 import db from '../server/db';
 
 export async function getServerSideProps(ctx) {
-  const data = await db.query('SELECT * FROM campaigns WHERE domain = $1', [ctx.req.cookies.shopOrigin]);
-  return { props: { campaigns: data.rows } };
+  const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [ctx.req.cookies.shopOrigin]);
+  const campaigns = await db.query('SELECT * FROM campaigns WHERE domain = $1', [ctx.req.cookies.shopOrigin]);
+  return { props: { campaigns: campaigns.rows, store: stores.rows[0] } };
 }
 
 const Index = ({
   campaigns,
+  store,
   totalRevenue = '$0',
   appName = 'Salestorm Upsell',
   plan = 'free_plan',
 }) => {
-  const [persistedCampaigns, setPersistedCampaigns] = useState(campaigns);
-  const [enabled, setEnabled] = useState(false);
-  const handleEnableDisable = useCallback(
-    () => setEnabled((active) => !active),
-    []
-  );
-  const enabledStatus = enabled ? 'enabled' : 'disabled';
-  const enabledButtonStatus = enabled ? 'Disable' : 'Enable';
-  const priceStatus = plan === 'free_plan' ? 'new' : 'success';
-  const priceProgress = plan === 'free_plan' ? 'incomplete' : 'complete';
+  const context = useContext(AppContext);
 
+  const [persistedCampaigns, setPersistedCampaigns] = useState(campaigns);
   const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
   const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
+
+  const [enabled, setEnabled] = useState(store.enabled);
+  const [toggleEnableLoading, setToggleEnableLoading] = useState(false);
+  const toggleEnabled = async () => {
+    const nowEnabled = !enabled;
+    setToggleEnableLoading(true);
+    try {
+      await toggleStoreEnabled(nowEnabled);
+      setEnabled(nowEnabled);
+    } catch(e)
+    {
+      context.setToast({
+        shown: true,
+        content: nowEnabled ? 'Enabling failed' : 'Disabling failed',
+        isError: true,
+      });
+    } finally {
+      setToggleEnableLoading(false);
+    }
+  };
+  const enabledStatus = enabled ? 'enabled' : 'disabled';
+  const enabledButtonStatus = enabled ? 'Disable' : 'Enable';
+
+  const priceStatus = plan === 'free_plan' ? 'new' : 'success';
+  const priceProgress = plan === 'free_plan' ? 'incomplete' : 'complete';
 
   const emptyStateMarkup = (
     <div className="no-campaigns-container">
@@ -115,7 +136,7 @@ const Index = ({
               {enabledStatus}
             </strong>
           </span>
-          <Button onClick={handleEnableDisable} primary={!enabled}>
+          <Button onClick={toggleEnabled} primary={!enabled} loading={toggleEnableLoading}>
             {enabledButtonStatus}
           </Button>
         </div>

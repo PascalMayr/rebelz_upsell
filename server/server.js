@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from './api';
 import '@babel/polyfill';
 import dotenv from 'dotenv';
 import 'isomorphic-fetch';
@@ -203,6 +203,17 @@ app.prepare().then(() => {
       ctx.status = 200;
     }
   );
+
+  router.patch(
+    '/api/store/enable',
+    verifyRequest(),
+    async (ctx) => {
+      await db.query('UPDATE stores SET enabled = $1 WHERE domain = $2', [ctx.request.body.enabled, ctx.session.shop]);
+
+      ctx.status = 200;
+    }
+  );
+
   server.use(router.allowedMethods());
   server.use(router.routes());
   server.listen(port, () => {
