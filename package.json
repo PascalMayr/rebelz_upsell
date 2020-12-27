@@ -1,6 +1,6 @@
 {
-  "name": "salestorm-upsell",
-  "version": "1.0.0",
+  "name": "Salestorm Upsell & Cross-sell Popup",
+  "version": "1.0.1",
   "description": "A Shopify app to boost sales.",
   "scripts": {
     "test": "snyk test",
@@ -12,13 +12,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Shopify/shopify-app-node.git"
+    "url": "git+https://github.com/PascalMayr/salestorm_upsell.git"
   },
-  "author": "Shopify Inc.",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/shopify/shopify-app-node/issues"
-  },
+  "author": "Pascal Mayr, Sascha Mayr",
   "engines": {
     "node": ">=15.3.0"
   },
