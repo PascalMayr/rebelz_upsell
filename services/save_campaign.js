@@ -1,7 +1,5 @@
-import axios from 'axios';
+import api from './api';
 
-const saveCampaign = async (props) => {
-  return axios.post('/api/save-campaign', props);
-};
+const saveCampaign = async (props) => api.post('/api/save-campaign', props);
 
 export default saveCampaign;

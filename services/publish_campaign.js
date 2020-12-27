@@ -1,7 +1,5 @@
-import axios from 'axios';
+import api from './api';
 
-const publishCampaign = async (html) => {
-  return axios.post('/api/publish-campaign', { html });
-};
+const publishCampaign = async (html) => api.post('/api/publish-campaign', { html });
 
 export default publishCampaign;

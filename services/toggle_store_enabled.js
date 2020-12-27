@@ -1,5 +1,5 @@
-import axios from 'axios';
+import api from './api';
 
-const deleteCampaign = async (enabled) => axios.patch('/api/store/enable', { enabled });
+const deleteCampaign = async (enabled) => api.patch('/api/store/enable', { enabled });
 
 export default deleteCampaign;
