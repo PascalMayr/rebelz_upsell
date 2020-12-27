@@ -106,21 +106,31 @@ app.prepare().then(() => {
     '/api/save-campaign',
     verifyRequest(),
     async (ctx) => {
-      const { styles, mobileStyles, message, trigger, sell_type, name, products } = ctx.request.body;
+      const { styles, mobileStyles, message, mobileMessage, trigger, sell_type, name, products } = ctx.request.body;
       let campaign;
       if(ctx.request.body.id) {
         campaign = await db.query(
-          'UPDATE campaigns SET styles = $1, message = $2, trigger = $3, sell_type = $4, name = $5, "mobileStyles" = $6, products = $7 WHERE id = $8 RETURNING *',
-          [styles, message, trigger, sell_type, name, mobileStyles, products, ctx.request.body.id]
+          'UPDATE campaigns SET styles = $1, message = $2, "mobileMessage" = $3, trigger = $4, sell_type = $5, name = $6, "mobileStyles" = $7, products = $8 WHERE id = $9 RETURNING *',
+          [styles, message, mobileMessage, trigger, sell_type, name, mobileStyles, products, ctx.request.body.id]
         );
       } else {
         campaign = await db.query(
-          'INSERT INTO campaigns(domain, styles, message, trigger, sell_type, name, "mobileStyles", products) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
-          [ctx.session.shop, styles, message, trigger, sell_type, name, mobileStyles, products]
+          'INSERT INTO campaigns(domain, styles, message, "mobileMessage", trigger, sell_type, name, "mobileStyles", products) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+          [ctx.session.shop, styles, message, mobileMessage, trigger, sell_type, name, mobileStyles, products]
         );
       }
 
       ctx.body = campaign.rows[0];
+      ctx.status = 200;
+    }
+  );
+
+  router.delete(
+    '/api/delete-campaign/:id',
+    verifyRequest(),
+    async (ctx) => {
+      await db.query('DELETE FROM campaigns WHERE id = $1 AND domain = $2', [ctx.params.id, ctx.session.shop]);
+
       ctx.status = 200;
     }
   );
