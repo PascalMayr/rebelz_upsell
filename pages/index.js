@@ -12,12 +12,12 @@ import Image from 'next/image';
 import '../styles/pages_index.css';
 import NextLink from 'next/link';
 import { useCallback, useState } from 'react';
+
+import CampaignDeleteModal from '../components/campaign_delete_modal';
 import db from '../server/db';
 
 export async function getServerSideProps(ctx) {
-  const data = await db.query('SELECT * FROM campaigns WHERE domain = $1', [
-    ctx.req.cookies.shopOrigin,
-  ]);
+  const data = await db.query('SELECT * FROM campaigns WHERE domain = $1', [ctx.req.cookies.shopOrigin]);
   return { props: { campaigns: data.rows } };
 }
 
@@ -27,6 +27,7 @@ const Index = ({
   appName = 'Salestorm Upsell',
   plan = 'free_plan',
 }) => {
+  const [persistedCampaigns, setPersistedCampaigns] = useState(campaigns);
   const [enabled, setEnabled] = useState(false);
   const handleEnableDisable = useCallback(
     () => setEnabled((active) => !active),
@@ -36,6 +37,9 @@ const Index = ({
   const enabledButtonStatus = enabled ? 'Disable' : 'Enable';
   const priceStatus = plan === 'free_plan' ? 'new' : 'success';
   const priceProgress = plan === 'free_plan' ? 'incomplete' : 'complete';
+
+  const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
+  const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
 
   const emptyStateMarkup = (
     <div className="no-campaigns-container">
@@ -120,7 +124,7 @@ const Index = ({
         <ResourceList
           resourceName={{ singular: 'campaign', plural: 'campaigns' }}
           emptyState={emptyStateMarkup}
-          items={campaigns}
+          items={persistedCampaigns}
           renderItem={(campaign) => {
             const { id, name, published } = campaign;
             const url = `/campaigns/${id}`;
@@ -130,9 +134,17 @@ const Index = ({
                 id={id}
                 url={url}
                 accessibilityLabel={`View details for ${name}`}
+                shortcutActions={[
+                  {
+                    content: 'Delete campaign',
+                    destructive: true,
+                    onAction: () => setDeleteModalCampaign(campaign),
+                    size: 'slim'
+                  }
+                ]}
               >
-                <h3 className="campaign-title">
-                  <TextStyle variation="strong">{name}</TextStyle>
+                <h3 className='campaign-title'>
+                  <TextStyle variation='strong'>{name}</TextStyle>
                 </h3>
                 <Badge status={published ? 'info' : 'attention'}>
                   {published ? 'Published' : 'Unpublished'}
@@ -141,6 +153,13 @@ const Index = ({
             );
           }}
         />
+        { deleteModalCampaign &&
+          <CampaignDeleteModal
+            campaign={deleteModalCampaign}
+            onClose={closeDeleteModal}
+            removeFromList={(deletedCampaign) => setPersistedCampaigns(persistedCampaigns.filter(persistedCampaign => persistedCampaign.id !== deletedCampaign.id))}
+          />
+        }
       </Card>
     </Page>
   );
