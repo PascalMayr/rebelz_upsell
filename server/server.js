@@ -1,4 +1,3 @@
-import api from './api';
 import '@babel/polyfill';
 import dotenv from 'dotenv';
 import 'isomorphic-fetch';
