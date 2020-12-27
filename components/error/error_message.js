@@ -1,5 +1,3 @@
-import React from 'react';
-
 const ErrorMessage = ({ whileMessage = 'while loading', suggestions = [] }) => (
   <div className="text-center">
     <h2>

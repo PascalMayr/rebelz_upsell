@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Layout, Card, ChoiceList, TextField, Tabs } from '@shopify/polaris';
 import SalestormColorPicker from './salestorm_color_picker';
 import '../../styles/components_salestorm_campaign_formatter.css';

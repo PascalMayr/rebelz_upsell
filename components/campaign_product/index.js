@@ -1,4 +1,3 @@
-import React from 'react';
 import '../../styles/components_campaign_product.css';
 
 const CampaignPreviewProduct = ({ data, productKey, campaign }) => {

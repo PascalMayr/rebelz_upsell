@@ -1,4 +1,3 @@
-import React from 'react';
 import { TextField } from '@shopify/polaris';
 
 const BackgroundFormatter = ({ styles, setStyleProperty }) => {

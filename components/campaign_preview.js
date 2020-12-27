@@ -1,4 +1,3 @@
-import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import '../styles/components_campaign_preview.css';
 import { gql } from 'apollo-boost';

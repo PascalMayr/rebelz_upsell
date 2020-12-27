@@ -1,4 +1,3 @@
-import React from 'react';
 import { Checkbox, RangeSlider } from '@shopify/polaris';
 
 const BorderFormatter = ({ setStyleProperty, styles }) => {

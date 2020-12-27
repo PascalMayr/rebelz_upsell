@@ -1,4 +1,3 @@
-import React from 'react';
 import ErrorMessage from './error_message';
 
 const ErrorCommonFallBack = (error) => {
