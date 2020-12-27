@@ -109,7 +109,7 @@ app.prepare().then(() => {
   }
   server.use(
     graphQLProxy({
-      version: ApiVersion.October19,
+      version: ApiVersion.October20,
     })
   );
   server.use(bodyParser());
