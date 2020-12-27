@@ -1,4 +1,5 @@
 import React from 'react';
+import { kebabCasify } from 'casify';
 import { Editor } from '@tinymce/tinymce-react';
 import '../styles/components_campaign_preview.css';
 import { gql } from 'apollo-boost';
@@ -63,13 +64,30 @@ const CampaignPreview = ({
   const styles = isPreviewDesktop ? campaign.styles : campaign.mobileStyles;
   const mobileContainerClass = !isPreviewDesktop ? 'salestorm-mobile-preview-container' : '';
   const campaignMessageKey = isPreviewDesktop ? 'message' : 'mobileMessage';
+  const styleObjectToStyleString = (styleObject) => {
+    const kebabCaseStyles = kebabCasify(styleObject);
+    return Object.keys(kebabCaseStyles).map(styleKey => `${styleKey}: ${kebabCaseStyles[styleKey]}`).join(';');
+  }
+  const campaignCSS = `
+    #salestorm-popup {
+      ${styleObjectToStyleString(styles.popup)}
+    }
+  `;
+  const campaignJavascript = () => {
+    // Javascript which will be execuded in the Theme if the campaign HTML is loaded into the Theme HTML
+  };
+  const campaignJavascriptNativeCodeString = `${campaignJavascript.toString()}; campaignJavascript();`;
   return (
     <>
       <div className="salestorm-popup-preview-container">
         <div className={mobileContainerClass}>
+          <style>
+            {
+              campaignCSS
+            }
+          </style>
           <div
             id="salestorm-popup"
-            style={styles.popup}
             ref={popupRef}
           >
             <Editor
@@ -93,6 +111,15 @@ const CampaignPreview = ({
               ))
             }
           </div>
+          <script>
+            {
+              // used to try in React Preview
+              campaignJavascript()
+            }
+            {
+              campaignJavascriptNativeCodeString
+            }
+          </script>
         </div>
       </div>
     </>
