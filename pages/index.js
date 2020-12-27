@@ -68,7 +68,7 @@ const Index = ({
               className="stepper-checkmark"
             />
             <p id="stepper-new-cammpaign-link">
-              <NextLink href="/campaigns">3. Create a campaign</NextLink>
+              <NextLink href="/campaigns/new">3. Create a campaign</NextLink>
             </p>
           </div>
         </div>
