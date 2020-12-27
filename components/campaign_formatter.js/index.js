@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Layout, Card, ChoiceList, TextField, Tabs } from '@shopify/polaris';
+
 import SalestormColorPicker from './salestorm_color_picker';
 import '../../styles/components_salestorm_campaign_formatter.css';
 import BackgroundFormatter from './background_formatter';
@@ -51,7 +52,7 @@ const CampaignFormatter = ({
   const { id, styleChoices } = tabs[tab];
 
   const [styleChoice, setStyleChoice] = useState(
-    styleChoices.find((styleChoice) => styleChoice.default)
+    styleChoices.find((choice) => choice.default)
   );
 
   const handleTabChange = useCallback(
@@ -59,7 +60,7 @@ const CampaignFormatter = ({
       setStyleChoice(tabs[selectedTabIndex].styleChoices[0]);
       setTab(selectedTabIndex);
     },
-    []
+    [tabs]
   );
 
   const setStyleProperty = useCallback(
@@ -74,7 +75,7 @@ const CampaignFormatter = ({
         currentPreviewStyleKey
       );
     },
-    [isPreviewDesktop, campaign]
+    [isPreviewDesktop, campaign, id, setCampaignProperty]
   );
 
   const styles = isPreviewDesktop
@@ -83,7 +84,7 @@ const CampaignFormatter = ({
 
   const _setColor = (value) => {
     if (styleChoice.value === 'boxShadow') {
-      let boxShadow = styles.boxShadow.split(' ').slice(0, 3);
+      const boxShadow = styles.boxShadow.split(' ').slice(0, 3);
       setStyleProperty(`${boxShadow.join(' ')} ${value}`, styleChoice.value);
     } else {
       setStyleProperty(value, `${styleChoice.value}Color`);

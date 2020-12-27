@@ -1,4 +1,3 @@
-import React from 'react';
 import { Checkbox, RangeSlider } from '@shopify/polaris';
 
 const BorderFormatter = ({ setStyleProperty, styles }) => {
@@ -15,7 +14,7 @@ const BorderFormatter = ({ setStyleProperty, styles }) => {
       .slice([borderWidthShorthandSidesIndex[side]])[0];
 
   const _getCommonBorderWidth = () => {
-    let commonBorderWidth = styles.borderWidth
+    const commonBorderWidth = styles.borderWidth
       .split(' ')
       .find((width) => width !== '0px');
     return commonBorderWidth ? commonBorderWidth : '0px';
@@ -24,7 +23,7 @@ const BorderFormatter = ({ setStyleProperty, styles }) => {
   const _getNewSideWidth = (value) => (value ? _getCommonBorderWidth() : '0px');
 
   const _createNewShorthandBorderWidth = (side, value) => {
-    let borderWidth = styles.borderWidth.split(' ');
+    const borderWidth = styles.borderWidth.split(' ');
     borderWidth[borderWidthShorthandSidesIndex[side]] = value;
     return borderWidth.join(' ');
   };
@@ -34,7 +33,7 @@ const BorderFormatter = ({ setStyleProperty, styles }) => {
       <div className="salestorm-formatter-range">
         <RangeSlider
           label="Border Radius in px"
-          value={parseInt(styles.borderRadius)}
+          value={parseInt(styles.borderRadius, 10)}
           onChange={(value) => setStyleProperty(`${value}px`, 'borderRadius')}
           output
         />
@@ -42,7 +41,7 @@ const BorderFormatter = ({ setStyleProperty, styles }) => {
       <div className="salestorm-formatter-range">
         <RangeSlider
           label="Border width in px"
-          value={parseInt(_getCommonBorderWidth())}
+          value={parseInt(_getCommonBorderWidth(), 10)}
           onChange={(value) => {
             setStyleProperty(
               `${value}px ${value}px ${value}px ${value}px`,

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import '@babel/polyfill';
 import dotenv from 'dotenv';
 import 'isomorphic-fetch';
@@ -10,8 +11,9 @@ import Router from 'koa-router';
 import session from 'koa-session';
 import axios from 'axios';
 
-dotenv.config();
 import db from './db';
+
+dotenv.config();
 
 const port = parseInt(process.env.PORT, 10) || 8081;
 const dev = process.env.NODE_ENV !== 'production';
@@ -20,7 +22,7 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES } = process.env;
-const setupShopifyAPI = async (ctx, next) => {
+const setupShopifyAPI = async (ctx, nxt) => {
   ctx.shopifyAPI = axios.create({
     baseURL: `https://${ctx.session.shop}/admin/api/2020-10/`,
     headers: {
@@ -29,7 +31,7 @@ const setupShopifyAPI = async (ctx, next) => {
     },
     timeout: 30000,
   });
-  await next();
+  await nxt();
 };
 
 app.prepare().then(() => {
@@ -53,12 +55,28 @@ app.prepare().then(() => {
         scopes: [SCOPES],
 
         async afterAuth(ctx) {
-          //Auth token and shop available in session
-          //Redirect to shop upon auth
-          const { shop, accessToken, associatedUserScope, associatedUser } = ctx.session;
-          const { id, first_name, last_name, email, account_owner, locale } = associatedUser;
-          await db.query('INSERT INTO stores(domain) VALUES($1) ON CONFLICT DO NOTHING', [shop]);
-          await db.query(`
+          // Auth token and shop available in session
+          // Redirect to shop upon auth
+          const {
+            shop,
+            accessToken,
+            associatedUserScope,
+            associatedUser,
+          } = ctx.session;
+          const {
+            id,
+            first_name,
+            last_name,
+            email,
+            account_owner,
+            locale,
+          } = associatedUser;
+          await db.query(
+            'INSERT INTO stores(domain) VALUES($1) ON CONFLICT DO NOTHING',
+            [shop]
+          );
+          await db.query(
+            `
             INSERT INTO users(id, domain, associated_user_scope, first_name, last_name, email, account_owner, locale)
             VALUES($1, $2, $3, $4, $5, $6, $7, $8)
             ON CONFLICT (id) DO UPDATE SET
@@ -69,8 +87,17 @@ app.prepare().then(() => {
             account_owner = $7,
             locale = $8
           `,
-            [id, shop, associatedUserScope, first_name, last_name, email, account_owner, locale]
-          )
+            [
+              id,
+              shop,
+              associatedUserScope,
+              first_name,
+              last_name,
+              email,
+              account_owner,
+              locale,
+            ]
+          );
           ctx.cookies.set('shopOrigin', shop, {
             httpOnly: false,
             secure: true,
@@ -83,7 +110,7 @@ app.prepare().then(() => {
   }
   server.use(
     graphQLProxy({
-      version: ApiVersion.October19,
+      version: ApiVersion.October20,
     })
   );
   server.use(bodyParser());
@@ -93,8 +120,7 @@ app.prepare().then(() => {
       ctx.respond = false;
       ctx.res.statusCode = 200;
     });
-  }
-  else {
+  } else {
     router.get('(.*)', async (ctx) => {
       await handle(ctx.req, ctx.res);
       ctx.respond = false;
@@ -102,38 +128,62 @@ app.prepare().then(() => {
     });
   }
 
-  router.post(
-    '/api/save-campaign',
-    verifyRequest(),
-    async (ctx) => {
-      const { styles, mobileStyles, message, mobileMessage, trigger, sell_type, name, products } = ctx.request.body;
-      let campaign;
-      if(ctx.request.body.id) {
-        campaign = await db.query(
-          'UPDATE campaigns SET styles = $1, message = $2, "mobileMessage" = $3, trigger = $4, sell_type = $5, name = $6, "mobileStyles" = $7, products = $8 WHERE id = $9 RETURNING *',
-          [styles, message, mobileMessage, trigger, sell_type, name, mobileStyles, products, ctx.request.body.id]
-        );
-      } else {
-        campaign = await db.query(
-          'INSERT INTO campaigns(domain, styles, message, "mobileMessage", trigger, sell_type, name, "mobileStyles", products) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
-          [ctx.session.shop, styles, message, mobileMessage, trigger, sell_type, name, mobileStyles, products]
-        );
-      }
-
-      ctx.body = campaign.rows[0];
-      ctx.status = 200;
+  router.post('/api/save-campaign', verifyRequest(), async (ctx) => {
+    const {
+      styles,
+      mobileStyles,
+      message,
+      mobileMessage,
+      trigger,
+      sell_type,
+      name,
+      products,
+    } = ctx.request.body;
+    let campaign;
+    if (ctx.request.body.id) {
+      campaign = await db.query(
+        'UPDATE campaigns SET styles = $1, message = $2, "mobileMessage" = $3, trigger = $4, sell_type = $5, name = $6, "mobileStyles" = $7, products = $8 WHERE id = $9 RETURNING *',
+        [
+          styles,
+          message,
+          mobileMessage,
+          trigger,
+          sell_type,
+          name,
+          mobileStyles,
+          products,
+          ctx.request.body.id,
+        ]
+      );
+    } else {
+      campaign = await db.query(
+        'INSERT INTO campaigns(domain, styles, message, "mobileMessage", trigger, sell_type, name, "mobileStyles", products) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+        [
+          ctx.session.shop,
+          styles,
+          message,
+          mobileMessage,
+          trigger,
+          sell_type,
+          name,
+          mobileStyles,
+          products,
+        ]
+      );
     }
-  );
 
-  router.delete(
-    '/api/delete-campaign/:id',
-    verifyRequest(),
-    async (ctx) => {
-      await db.query('DELETE FROM campaigns WHERE id = $1 AND domain = $2', [ctx.params.id, ctx.session.shop]);
+    ctx.body = campaign.rows[0];
+    ctx.status = 200;
+  });
 
-      ctx.status = 200;
-    }
-  );
+  router.delete('/api/delete-campaign/:id', verifyRequest(), async (ctx) => {
+    await db.query('DELETE FROM campaigns WHERE id = $1 AND domain = $2', [
+      ctx.params.id,
+      ctx.session.shop,
+    ]);
+
+    ctx.status = 200;
+  });
 
   router.post(
     '/api/publish-campaign',
@@ -176,7 +226,10 @@ app.prepare().then(() => {
           },
         });
       }
-      await db.query('UPDATE campaigns SET published = true WHERE domain = $1', [ctx.session.shop]);
+      await db.query(
+        'UPDATE campaigns SET published = true WHERE domain = $1',
+        [ctx.session.shop]
+      );
 
       ctx.status = 200;
     }
@@ -198,21 +251,23 @@ app.prepare().then(() => {
           value: '',
         },
       });
-      await db.query('UPDATE campaigns SET published = false WHERE domain = $1', [ctx.session.shop]);
+      await db.query(
+        'UPDATE campaigns SET published = false WHERE domain = $1',
+        [ctx.session.shop]
+      );
 
       ctx.status = 200;
     }
   );
 
-  router.patch(
-    '/api/store/enable',
-    verifyRequest(),
-    async (ctx) => {
-      await db.query('UPDATE stores SET enabled = $1 WHERE domain = $2', [ctx.request.body.enabled, ctx.session.shop]);
+  router.patch('/api/store/enable', verifyRequest(), async (ctx) => {
+    await db.query('UPDATE stores SET enabled = $1 WHERE domain = $2', [
+      ctx.request.body.enabled,
+      ctx.session.shop,
+    ]);
 
-      ctx.status = 200;
-    }
-  );
+    ctx.status = 200;
+  });
 
   server.use(router.allowedMethods());
   server.use(router.routes());

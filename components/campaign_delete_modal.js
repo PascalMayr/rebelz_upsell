@@ -1,8 +1,6 @@
-import {
-  Modal,
-  TextContainer
-} from '@shopify/polaris';
+import { Modal, TextContainer } from '@shopify/polaris';
 import { useState, useContext } from 'react';
+
 import deleteCampaign from '../services/delete_campaign';
 import { AppContext } from '../pages/_app';
 
@@ -12,7 +10,7 @@ const CampaignDeleteModal = ({ campaign, removeFromList, onClose }) => {
 
   return (
     <Modal
-      open={!!campaign}
+      open={Boolean(campaign)}
       onClose={onClose}
       title="Are you sure you want to delete this campaign?"
       primaryAction={{
@@ -29,8 +27,7 @@ const CampaignDeleteModal = ({ campaign, removeFromList, onClose }) => {
               content: 'Campaign deleted',
               isError: false,
             };
-          } catch(e)
-          {
+          } catch (_error) {
             toast = {
               shown: true,
               content: 'Failed to delete campaign',
@@ -41,24 +38,25 @@ const CampaignDeleteModal = ({ campaign, removeFromList, onClose }) => {
             onClose();
             context.setToast(toast);
           }
-        }
+        },
       }}
       secondaryActions={[
         {
           content: 'Cancel',
           onAction: onClose,
-        }
+        },
       ]}
     >
       <Modal.Section>
         <TextContainer>
           <p>
-            Please click "Delete" if you really want to delete {campaign.name}.
+            Please click &quot;Delete&quot; if you really want to delete&nsbp;
+            {campaign.name}.
           </p>
         </TextContainer>
       </Modal.Section>
     </Modal>
   );
-}
+};
 
 export default CampaignDeleteModal;

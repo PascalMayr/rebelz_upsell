@@ -1,4 +1,3 @@
-import React from 'react';
 import Image from 'next/image';
 import { RadioButton } from '@shopify/polaris';
 import '../styles/components_salestorm_triggers.css';
@@ -9,7 +8,6 @@ const CampaignTriggers = ({ trigger, setCampaignProperty }) => {
       <div
         className="salestorm-triggers-option"
         onClick={() => setCampaignProperty('add_to_cart', 'trigger')}
-        onKeyDown={() => {}}
       >
         <Image
           src="/add_to_cart.svg"

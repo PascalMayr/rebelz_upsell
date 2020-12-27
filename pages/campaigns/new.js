@@ -1,13 +1,14 @@
 import { useState, useCallback, useContext, useRef } from 'react';
 import { Page, Card, Layout, TextField } from '@shopify/polaris';
-import CampaignFormatter from '../../components/campaign_formatter.js';
+import { MobilePlusMajor } from '@shopify/polaris-icons';
+
 import '../../styles/pages_campaigns_index.css';
 import saveCampaign from '../../services/save_campaign';
 import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';
-import { AppContext } from '../_app';
 import SalestormTriggers from '../../components/campaign_triggers';
-import { MobilePlusMajor } from '@shopify/polaris-icons';
+import { AppContext } from '../_app';
+import CampaignFormatter from '../../components/campaign_formatter.js';
 import CampaignPreviewSwitch from '../../components/campaign_preview_switch';
 import CampaignPreview from '../../components/campaign_preview';
 import CampaignResourceSelection from '../../components/campaign_resource_selection';
@@ -66,15 +67,17 @@ const New = (props) => {
   const [campaign, setCampaign] = useState({
     styles: initialStyles('desktop'),
     mobileStyles: initialStyles('mobile'),
-    message: '<p style="text-align: center;" data-mce-style="text-align: center;"><br></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="font-size: 18pt; color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif;" data-mce-style="font-size: 14pt; color: #000000; font-family: arial, helvetica, sans-serif;">Congratulations 🎉</span></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="font-size: 14pt; color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif;" data-mce-style="font-size: 14pt; color: #000000; font-family: arial, helvetica, sans-serif;">You have unlocked a special Deal!</span></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="color: rgb(0, 0, 0); font-size: 12pt; font-family: arial, helvetica, sans-serif;" data-mce-style="color: #000000; font-size: 12pt; font-family: arial, helvetica, sans-serif;"><em><strong>Click the text to edit this message.</strong></em></span></p>',
-    mobileMessage: '<p style="text-align: center;" data-mce-style="text-align: center;"><br></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="font-size: 18pt; color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif;" data-mce-style="font-size: 14pt; color: #000000; font-family: arial, helvetica, sans-serif;">Congratulations 🎉</span></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="font-size: 14pt; color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif;" data-mce-style="font-size: 14pt; color: #000000; font-family: arial, helvetica, sans-serif;">You have unlocked a special Deal!</span></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="color: rgb(0, 0, 0); font-size: 12pt; font-family: arial, helvetica, sans-serif;" data-mce-style="color: #000000; font-size: 12pt; font-family: arial, helvetica, sans-serif;"><em><strong>Click the text to edit this message.</strong></em></span></p>',
+    message:
+      '<p style="text-align: center;" data-mce-style="text-align: center;"><br></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="font-size: 18pt; color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif;" data-mce-style="font-size: 14pt; color: #000000; font-family: arial, helvetica, sans-serif;">Congratulations 🎉</span></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="font-size: 14pt; color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif;" data-mce-style="font-size: 14pt; color: #000000; font-family: arial, helvetica, sans-serif;">You have unlocked a special Deal!</span></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="color: rgb(0, 0, 0); font-size: 12pt; font-family: arial, helvetica, sans-serif;" data-mce-style="color: #000000; font-size: 12pt; font-family: arial, helvetica, sans-serif;"><em><strong>Click the text to edit this message.</strong></em></span></p>',
+    mobileMessage:
+      '<p style="text-align: center;" data-mce-style="text-align: center;"><br></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="font-size: 18pt; color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif;" data-mce-style="font-size: 14pt; color: #000000; font-family: arial, helvetica, sans-serif;">Congratulations 🎉</span></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="font-size: 14pt; color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif;" data-mce-style="font-size: 14pt; color: #000000; font-family: arial, helvetica, sans-serif;">You have unlocked a special Deal!</span></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="color: rgb(0, 0, 0); font-size: 12pt; font-family: arial, helvetica, sans-serif;" data-mce-style="color: #000000; font-size: 12pt; font-family: arial, helvetica, sans-serif;"><em><strong>Click the text to edit this message.</strong></em></span></p>',
     published: false,
     trigger: 'add_to_cart',
     sell_type: 'up-sell',
     name: '',
     products: {
       targets: [],
-      selling: []
+      selling: [],
     },
     ...props.campaign,
   });
@@ -105,7 +108,7 @@ const New = (props) => {
                 isError: false,
               });
               setCampaign({ ...campaign, published: false });
-            } catch (e) {
+            } catch (_error) {
               context.setToast({
                 shown: true,
                 content: 'Campaign unpublishing failed',
@@ -125,7 +128,7 @@ const New = (props) => {
                 isError: false,
               });
               setCampaign({ ...campaign, published: true });
-            } catch (e) {
+            } catch (_error) {
               context.setToast({
                 shown: true,
                 content: 'Campaign publishing failed',
@@ -152,7 +155,7 @@ const New = (props) => {
                 isError: false,
               });
               setCampaign({ ...campaign, ...savedCampaign.data });
-            } catch (e) {
+            } catch (_error) {
               context.setToast({
                 shown: true,
                 content: 'Draft campaign saving failed',
@@ -215,7 +218,10 @@ const New = (props) => {
                   label: 'Choose target Products',
                 }}
                 onResourceMutation={(resources) =>
-                  setCampaignProperty({ ...campaign.products, targets: resources }, 'products')
+                  setCampaignProperty(
+                    { ...campaign.products, targets: resources },
+                    'products'
+                  )
                 }
                 resources={campaign.products.targets}
               />
@@ -224,7 +230,7 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title={`3.) Set campaign products`}>
+            <Card.Section title="3.) Set campaign products">
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',
@@ -238,7 +244,10 @@ const New = (props) => {
                   label: 'Choose selling Products',
                 }}
                 onResourceMutation={(resources) =>
-                  setCampaignProperty({ ...campaign.products, selling: resources }, 'products')
+                  setCampaignProperty(
+                    { ...campaign.products, selling: resources },
+                    'products'
+                  )
                 }
                 resources={campaign.products.selling}
               />

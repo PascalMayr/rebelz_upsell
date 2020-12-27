@@ -1,4 +1,3 @@
-import React from 'react';
 import '../../styles/components_campaign_product.css';
 
 const CampaignPreviewProduct = ({ data, productKey, campaign }) => {
@@ -13,7 +12,7 @@ const CampaignPreviewProduct = ({ data, productKey, campaign }) => {
           <img
             src={transformedSrc}
             alt={alt}
-            width={parseInt(campaign.styles.width) / 2.5}
+            width={parseInt(campaign.styles.width, 10) / 2.5}
           />
         )}
       </div>

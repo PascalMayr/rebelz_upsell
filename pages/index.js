@@ -13,14 +13,20 @@ import '../styles/pages_index.css';
 import NextLink from 'next/link';
 import { useCallback, useState, useContext } from 'react';
 
-import { AppContext } from './_app';
 import toggleStoreEnabled from '../services/toggle_store_enabled';
 import CampaignDeleteModal from '../components/campaign_delete_modal';
 import db from '../server/db';
 
+import { AppContext } from './_app';
+
 export async function getServerSideProps(ctx) {
-  const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [ctx.req.cookies.shopOrigin]);
-  const campaigns = await db.query('SELECT * FROM campaigns WHERE domain = $1', [ctx.req.cookies.shopOrigin]);
+  const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [
+    ctx.req.cookies.shopOrigin,
+  ]);
+  const campaigns = await db.query(
+    'SELECT * FROM campaigns WHERE domain = $1',
+    [ctx.req.cookies.shopOrigin]
+  );
   return { props: { campaigns: campaigns.rows, store: stores.rows[0] } };
 }
 
@@ -45,8 +51,7 @@ const Index = ({
     try {
       await toggleStoreEnabled(nowEnabled);
       setEnabled(nowEnabled);
-    } catch(e)
-    {
+    } catch (_error) {
       context.setToast({
         shown: true,
         content: nowEnabled ? 'Enabling failed' : 'Disabling failed',
@@ -136,7 +141,11 @@ const Index = ({
               {enabledStatus}
             </strong>
           </span>
-          <Button onClick={toggleEnabled} primary={!enabled} loading={toggleEnableLoading}>
+          <Button
+            onClick={toggleEnabled}
+            primary={!enabled}
+            loading={toggleEnableLoading}
+          >
             {enabledButtonStatus}
           </Button>
         </div>
@@ -149,6 +158,8 @@ const Index = ({
           renderItem={(campaign) => {
             const { id, name, published } = campaign;
             const url = `/campaigns/${id}`;
+            const publishedStatus = published ? 'info' : 'attention';
+            const publishedStatusText = published ? 'Published' : 'Unpublished';
 
             return (
               <ResourceItem
@@ -160,27 +171,32 @@ const Index = ({
                     content: 'Delete campaign',
                     destructive: true,
                     onAction: () => setDeleteModalCampaign(campaign),
-                    size: 'slim'
-                  }
+                    size: 'slim',
+                  },
                 ]}
               >
-                <h3 className='campaign-title'>
-                  <TextStyle variation='strong'>{name}</TextStyle>
+                <h3 className="campaign-title">
+                  <TextStyle variation="strong">{name}</TextStyle>
                 </h3>
-                <Badge status={published ? 'info' : 'attention'}>
-                  {published ? 'Published' : 'Unpublished'}
-                </Badge>
+                <Badge status={publishedStatus}>{publishedStatusText}</Badge>
               </ResourceItem>
             );
           }}
         />
-        { deleteModalCampaign &&
+        {deleteModalCampaign && (
           <CampaignDeleteModal
             campaign={deleteModalCampaign}
             onClose={closeDeleteModal}
-            removeFromList={(deletedCampaign) => setPersistedCampaigns(persistedCampaigns.filter(persistedCampaign => persistedCampaign.id !== deletedCampaign.id))}
+            removeFromList={(deletedCampaign) =>
+              setPersistedCampaigns(
+                persistedCampaigns.filter(
+                  (persistedCampaign) =>
+                    persistedCampaign.id !== deletedCampaign.id
+                )
+              )
+            }
           />
-        }
+        )}
       </Card>
     </Page>
   );

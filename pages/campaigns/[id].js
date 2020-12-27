@@ -1,5 +1,6 @@
-import New from './new';
 import db from '../../server/db';
+
+import New from './new';
 
 export async function getServerSideProps(context) {
   const data = await db.query('SELECT * FROM campaigns WHERE id = $1', [
