@@ -8,6 +8,7 @@ import next from 'next';
 import bodyParser from 'koa-bodyparser';
 import Router from 'koa-router';
 import session from 'koa-session';
+import axios from 'axios';
 
 dotenv.config();
 import db from './db';
