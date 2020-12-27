@@ -129,7 +129,7 @@ app.prepare().then(() => {
     '/api/delete-campaign/:id',
     verifyRequest(),
     async (ctx) => {
-      await db.query('DELETE FROM campaigns WHERE id = $1', [ctx.params.id]);
+      await db.query('DELETE FROM campaigns WHERE id = $1 AND domain = $2', [ctx.params.id, ctx.session.shop]);
 
       ctx.status = 200;
     }
