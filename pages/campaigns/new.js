@@ -89,7 +89,7 @@ const New = (props) => {
   const [saveLoading, setSaveLoading] = useState(false);
   return (
     <Page
-      title="Create a new campaign"
+      title={props.campaign ? 'Update campaign' : 'Create a new Campaign'}
       breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
       primaryAction={{
         content: campaign.published ? 'Unpublish campaign' : 'Publish campaign',
