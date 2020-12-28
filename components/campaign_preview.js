@@ -49,10 +49,7 @@ const CampaignPreview = ({
         images(first: 3) {
           edges {
             node {
-              transformedSrc(maxWidth: ${campaign.styles.width.replace(
-                'px',
-                ''
-              )})
+              transformedSrc(maxWidth: ${parseInt(campaign.styles.popup.width, 10)})
               altText
             }
           }
