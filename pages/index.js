@@ -6,6 +6,7 @@ import {
   ResourceList,
   ResourceItem,
   TextStyle,
+  Layout
 } from '@shopify/polaris';
 import { CircleTickOutlineMinor } from '@shopify/polaris-icons';
 import Image from 'next/image';
@@ -27,7 +28,7 @@ export async function getServerSideProps(ctx) {
 const Index = ({
   campaigns,
   store,
-  totalRevenue = '$0',
+  totalRevenue,
   appName = 'App',
   plan = 'free_plan',
 }) => {
@@ -108,7 +109,9 @@ const Index = ({
       subtitle="Create new campaigns and boost your sales."
       titleMetadata={
         <Badge status={priceStatus} progress={priceProgress}>
-          {plan.replace('_', ' ').toUpperCase()}
+          <div className='salestorm-pricing-badge'>
+            <NextLink href='/pricing' >{plan.replace('_', ' ').toUpperCase()}</NextLink>
+          </div>
         </Badge>
       }
       primaryAction={
@@ -127,53 +130,72 @@ const Index = ({
         },
       ]}
     >
-      <div className="enabled-satus-container">
-        <h2 id="total-revenue">Total Revenue: {totalRevenue}</h2>
-        <div id="enabled-status-inner-container">
-          <span className="enabled-status">
+      <div className="salestorm-enabled-satus-container">
+        <div id="salestorm-enabled-status-inner-container">
+          <Button onClick={toggleEnabled} primary={!enabled} loading={toggleEnableLoading}>
+            {enabledButtonStatus}
+          </Button>
+          <span className="salestorm-enabled-status">
             {appName} is{' '}
             <strong style={{ color: enabled ? '#50b83c' : 'red' }}>
               {enabledStatus}
             </strong>
           </span>
-          <Button onClick={toggleEnabled} primary={!enabled} loading={toggleEnableLoading}>
-            {enabledButtonStatus}
-          </Button>
         </div>
       </div>
-      <Card>
-        <ResourceList
-          resourceName={{ singular: 'campaign', plural: 'campaigns' }}
-          emptyState={emptyStateMarkup}
-          items={persistedCampaigns}
-          renderItem={(campaign) => {
-            const { id, name, published } = campaign;
-            const url = `/campaigns/${id}`;
+      <Layout>
+        <Layout.Section oneThird>
+          <Card>
+            <Card.Section title='Total Revenue'>
+              <p className='salestorm-analytics-subheading'>The total impact our app made on your store.</p>
+              <div className='salestorm-analytics-value'>
+                <p>$0</p>
+              </div>
+            </Card.Section>
+          </Card>
+        </Layout.Section>
+        <Layout.Section oneThird>
 
-            return (
-              <ResourceItem
-                id={id}
-                url={url}
-                accessibilityLabel={`View details for ${name}`}
-                shortcutActions={[
-                  {
-                    content: 'Delete campaign',
-                    destructive: true,
-                    onAction: () => setDeleteModalCampaign(campaign),
-                    size: 'slim'
-                  }
-                ]}
-              >
-                <h3 className='campaign-title'>
-                  <TextStyle variation='strong'>{name}</TextStyle>
-                </h3>
-                <Badge status={published ? 'info' : 'attention'}>
-                  {published ? 'Published' : 'Unpublished'}
-                </Badge>
-              </ResourceItem>
-            );
-          }}
-        />
+        </Layout.Section>
+        <Layout.Section oneThird>
+
+        </Layout.Section>
+      </Layout>
+      <Card>
+        <div className='salestorm-campaigns-overview'>
+          <ResourceList
+            resourceName={{ singular: 'campaign', plural: 'campaigns' }}
+            emptyState={emptyStateMarkup}
+            items={persistedCampaigns}
+            renderItem={(campaign) => {
+              const { id, name, published } = campaign;
+              const url = `/campaigns/${id}`;
+
+              return (
+                <ResourceItem
+                  id={id}
+                  url={url}
+                  accessibilityLabel={`View details for ${name}`}
+                  shortcutActions={[
+                    {
+                      content: 'Delete campaign',
+                      destructive: true,
+                      onAction: () => setDeleteModalCampaign(campaign),
+                      size: 'slim'
+                    }
+                  ]}
+                >
+                  <h3 className='campaign-title'>
+                    <TextStyle variation='strong'>{name}</TextStyle>
+                  </h3>
+                  <Badge status={published ? 'info' : 'attention'}>
+                    {published ? 'Published' : 'Unpublished'}
+                  </Badge>
+                </ResourceItem>
+              );
+            }}
+          />
+        </div>
         { deleteModalCampaign &&
           <CampaignDeleteModal
             campaign={deleteModalCampaign}

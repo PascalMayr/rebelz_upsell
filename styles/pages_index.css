@@ -1,3 +1,7 @@
+.salestorm-campaigns-overview {
+  margin-top: 1em;
+}
+
 .no-campaigns-container {
   text-align: center;
   padding: 1.5em 0 3em 0;
@@ -46,14 +50,13 @@
   margin-bottom: 1em;
 }
 
-.enabled-status {
-  margin-right: 1em;
+.salestorm-enabled-status {
+  margin-left: 1em;
+  font-size: 12pt;
 }
 
-.enabled-satus-container {
+.salestorm-enabled-satus-container {
   margin-bottom: 1em;
-  display: flex;
-  justify-content: space-between;
 }
 
 #pricing-button {
@@ -63,14 +66,14 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .enabled-satus-container {
+  .salestorm-enabled-satus-container {
     justify-content: flex-start;
     flex-direction: column;
   }
 }
 
 @media only screen and (max-width: 490px) {
-  .enabled-satus-container {
+  .salestorm-enabled-satus-container {
     padding: 1.6rem 1.6rem 0;
   }
 }
@@ -78,4 +81,23 @@
 .campaign-title {
   display: inline-block;
   margin-right: 1em;
+}
+
+.salestorm-pricing-badge > a {
+  text-decoration: none;
+  color: black;
+}
+
+.salestorm-pricing-badge > a:visited {
+  color: black;
+}
+
+.salestorm-analytics-subheading {
+  color: rgb(109, 113, 117);
+}
+
+.salestorm-analytics-value {
+  font-size: 18pt;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
