@@ -28,7 +28,7 @@ const Index = ({
   campaigns,
   store,
   totalRevenue = '$0',
-  appName = 'Salestorm Upsell',
+  appName = 'App',
   plan = 'free_plan',
 }) => {
   const context = useContext(AppContext);
