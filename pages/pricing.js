@@ -6,7 +6,7 @@ const Pricing = () => {
   return (
     <Page
       title="Plans & Pricing"
-      subtitle="Choose the best plan for your needs"
+      subtitle="Choose the best plan for your needs."
       breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
     >
       <div className="plans-container">
@@ -34,17 +34,17 @@ const Pricing = () => {
           <Layout.Section oneThird>
             <PricingCard
               title="PRO Plan"
-              subtitle="$14.99 / month"
-              list={['Everything from FREE plan', '20 Active Campaigns']}
-              button={<Button primary>Start 14 days FREE Trial</Button>}
+              subtitle="$29.99 / month"
+              list={['Everything from FREE plan', 'Premium Support', '20 Active Campaigns']}
+              button={<Button primary>Upgrade now</Button>}
             />
           </Layout.Section>
           <Layout.Section oneThird>
             <PricingCard
               title="BUSINESS Plan"
-              subtitle="$29.99 / month"
-              list={['Everything in FREE & PRO plan', 'Unlimited Campaigns']}
-              button={<Button primary>Start 14 days FREE Trial</Button>}
+              subtitle="$49.99 / month"
+              list={['Everything in FREE & PRO plan', 'Premium Support', 'Unlimited Campaigns']}
+              button={<Button primary>Upgrade now</Button>}
             />
           </Layout.Section>
         </Layout>
