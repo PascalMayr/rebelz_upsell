@@ -40,7 +40,6 @@ const CampaignPreview = ({
     query {
       product(id: "${id}") {
         title
-        descriptionHtml
         priceRange {
           maxVariantPrice {
             amount
