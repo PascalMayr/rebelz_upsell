@@ -23,7 +23,7 @@ const CampaignPreview = ({
       'insertdatetime media table paste code emoticons link',
     ],
     toolbar:
-      'undo redo | fontselect | fontsizeselect | countdownTimerButton | emoticons | bold italic | forecolor backcolor | link | \
+      'undo redo | fontselect | fontsizeselect | countdownTimerButton | emoticons | bold italic strikethrough | forecolor backcolor | link | \
       alignleft aligncenter alignright | \
       removeformat',
     font_formats:
