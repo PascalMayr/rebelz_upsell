@@ -5,16 +5,16 @@ import '../styles/pages_pricing.css';
 const Pricing = () => {
   return (
     <Page
-      title="Plans & Pricing"
-      subtitle="Choose the best plan for your needs."
+      title='Plans & Pricing'
+      subtitle='Choose the best plan for your needs.'
       breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
     >
-      <div className="plans-container">
+      <div className='plans-container'>
         <Layout>
           <Layout.Section oneThird>
             <PricingCard
-              title="FREE Plan"
-              subtitle="$0.00 / month"
+              title='FREE Plan'
+              subtitle='$0.00 / month'
               list={[
                 'Unlimited Impressions',
                 '2 Active Campaigns',
@@ -33,16 +33,16 @@ const Pricing = () => {
           </Layout.Section>
           <Layout.Section oneThird>
             <PricingCard
-              title="PRO Plan"
-              subtitle="$29.99 / month"
+              title='PRO Plan'
+              subtitle='$29.99 / month'
               list={['Everything from FREE plan', 'Premium Support', '20 Active Campaigns']}
               button={<Button primary>Start 7 days FREE trial</Button>}
             />
           </Layout.Section>
           <Layout.Section oneThird>
             <PricingCard
-              title="BUSINESS Plan"
-              subtitle="$49.99 / month"
+              title='BUSINESS Plan'
+              subtitle='$49.99 / month'
               list={['Everything in FREE & PRO plan', 'Premium Support', 'Unlimited Campaigns']}
               button={<Button primary>Start 7 days FREE trial</Button>}
             />
