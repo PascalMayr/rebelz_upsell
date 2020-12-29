@@ -36,7 +36,7 @@ const Pricing = () => {
               title="PRO Plan"
               subtitle="$29.99 / month"
               list={['Everything from FREE plan', 'Premium Support', '20 Active Campaigns']}
-              button={<Button primary>Upgrade now</Button>}
+              button={<Button primary>Start 7 days FREE trial</Button>}
             />
           </Layout.Section>
           <Layout.Section oneThird>
@@ -44,7 +44,7 @@ const Pricing = () => {
               title="BUSINESS Plan"
               subtitle="$49.99 / month"
               list={['Everything in FREE & PRO plan', 'Premium Support', 'Unlimited Campaigns']}
-              button={<Button primary>Upgrade now</Button>}
+              button={<Button primary>Start 7 days FREE trial</Button>}
             />
           </Layout.Section>
         </Layout>
