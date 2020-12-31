@@ -9,7 +9,6 @@ import next from 'next';
 import bodyParser from 'koa-bodyparser';
 import Router from 'koa-router';
 import session from 'koa-session';
-import axios from 'axios';
 
 import db from './db';
 
