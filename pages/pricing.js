@@ -16,13 +16,14 @@ const Pricing = () => {
               title='FREE Plan'
               subtitle='$0.00 / month'
               list={[
-                'Unlimited Impressions',
-                '2 Active Campaigns',
+                '200 monthly Funnel views',
+                'Product-, Cart-, Post purchase upsell funnels',
+                'Premium Support',
                 '100% Responsive',
                 'No Branding',
-                'Custom Background Images',
                 'Customize all Fonts and Styles',
-                'Discount offers',
+                'Custom Background Images',
+                'Analytics'
               ]}
               button={
                 <Button primary disabled>
@@ -34,16 +35,16 @@ const Pricing = () => {
           <Layout.Section oneThird>
             <PricingCard
               title='PRO Plan'
-              subtitle='$29.99 / month'
-              list={['Everything from FREE plan', 'Premium Support', '20 Active Campaigns']}
+              subtitle='$39.99 / month'
+              list={['Everything from FREE plan', '5000 monthly Funnel views', 'Premium Support' ]}
               button={<Button primary>Start 7 days FREE trial</Button>}
             />
           </Layout.Section>
           <Layout.Section oneThird>
             <PricingCard
               title='BUSINESS Plan'
-              subtitle='$49.99 / month'
-              list={['Everything in FREE & PRO plan', 'Premium Support', 'Unlimited Campaigns']}
+              subtitle='$69.99 / month'
+              list={['Everything in FREE & PRO plan', '25.000 monthly Funnel views', 'Premium Support']}
               button={<Button primary>Start 7 days FREE trial</Button>}
             />
           </Layout.Section>
