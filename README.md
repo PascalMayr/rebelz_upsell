@@ -1,27 +1,33 @@
 # Salestorm Upsell
 
-This project was bootstrapped using the Shopify App Node Boilerplate to create an embedded Shopify app made with Node, [Next.js](https://nextjs.org/), [Shopify-koa-auth](https://github.com/Shopify/quilt/tree/master/packages/koa-shopify-auth), [Polaris](https://github.com/Shopify/polaris-react), and [App Bridge React](https://shopify.dev/tools/app-bridge/react-components).
-
 ## Getting started
 
-1. Clone the repository.
-2. Run:
+1. Ask to be added to the repository on Github and to the shopify partner account.
+2. Setup a development store for yourself in the shopify partners account.
+3. Clone the repository.
+4. Run:
 
 ```sh
 ~/ $ npm install
 ```
 
-3. Install the [Shopify-App-CLI](https://github.com/Shopify/shopify-app-cli).
-4. Install PostgreSQL
-5. Enable the `citext` PostgreSQL extension:
+5. Install the [Shopify-App-CLI](https://github.com/Shopify/shopify-app-cli).
+6. Install PostgreSQL
+7. Enable the `citext` PostgreSQL extension:
 ```
 psql
 \c template1
 CREATE EXTENSION citext;
 ```
-6. Run `createdb salestorm && createdb salestorm_shadow` to create your development databases
-7. Ask a developer for the `.env` file and how to configure it
-8. Run:
+8. Run `createdb salestorm && createdb salestorm_shadow` to create your development databases
+9. Ask a developer for the `.env` file where your store and various API keys are stored.
+10. Run:
+
+```sh
+~/ $ shopify connect
+```
+11. Select your account and your dev store.
+12. Run:
 
 ```sh
 ~/ $ shopify serve
@@ -50,22 +56,14 @@ CREATE EXTENSION citext;
 
 ### Developing locally
 
+Note: There are some issues which needs to be fixed before developing locally is possible again.
+
 Run:
 ```sh
 ~/ $ npm run localdev
 ```
 
 Note: You need to ***run at least once shopify serve*** before you can develope locally.
-
-## Requirements
-
-- Ask to be added to the shopify partner account.
-- Setup a development store in the partner account if there isn't one already.
-
-## License
-
-Shopify App Node License:
-This respository is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Troubleshooting authentication problems
 
@@ -75,8 +73,21 @@ This respository is available as open source under the terms of the [MIT License
 shopify tunnel stop
 ```
 
-2. Run the server again and choose 'Yes' when the cli asks to update the Application URL
+2. Connect to the right dev store with the right account
+
+```
+shopify connect
+```
+
+3. Run the server again and choose 'Yes' when the cli asks to update the Application URL
 
 ```
 shopify serve
 ```
+
+## License
+
+Shopify App Node License:
+This respository is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+This project was bootstrapped using the Shopify App Node Boilerplate to create an embedded Shopify app made with Node, [Next.js](https://nextjs.org/), [Shopify-koa-auth](https://github.com/Shopify/quilt/tree/master/packages/koa-shopify-auth), [Polaris](https://github.com/Shopify/polaris-react), and [App Bridge React](https://shopify.dev/tools/app-bridge/react-components).
