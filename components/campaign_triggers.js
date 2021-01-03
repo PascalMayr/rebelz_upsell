@@ -44,6 +44,25 @@ const CampaignTriggers = ({ trigger, setCampaignProperty }) => {
           onChange={(_checked, value) => setCampaignProperty(value, 'trigger')}
         />
       </div>
+      <div
+        className="salestorm-triggers-option"
+        onClick={() => setCampaignProperty('thank_you', 'trigger')}
+        onKeyDown={() => {}}
+      >
+        <Image
+          src="/thank_you.svg"
+          alt="Thank you"
+          width="250"
+          height="250"
+        />
+        <RadioButton
+          label="Show on the Thank you page"
+          id="thank_you"
+          checked={trigger === 'thank_you'}
+          name="triggers"
+          onChange={(_checked, value) => setCampaignProperty(value, 'trigger')}
+        />
+      </div>
     </div>
   );
 };
