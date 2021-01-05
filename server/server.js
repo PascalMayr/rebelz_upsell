@@ -10,6 +10,7 @@ import bodyParser from 'koa-bodyparser';
 import Router from 'koa-router';
 import session from 'koa-session';
 
+import { createClient, getScriptTagId } from './handlers';
 import db from './db';
 
 dotenv.config();
@@ -70,10 +71,19 @@ app.prepare().then(() => {
             account_owner,
             locale,
           } = associatedUser;
-          await db.query(
-            'INSERT INTO stores(domain) VALUES($1) ON CONFLICT DO NOTHING',
+          server.context.client = await createClient(shop, accessToken);
+
+          const store = await db.query(
+            'SELECT * FROM stores WHERE domain = $1',
             [shop]
           );
+          if (store.rowCount === 0) {
+            const scriptid = await getScriptTagId(ctx);
+            await db.query(
+              'INSERT INTO stores(domain, scriptid) VALUES($1, $2)',
+              [shop, scriptid]
+            );
+          }
           await db.query(
             `
             INSERT INTO users(id, domain, associated_user_scope, first_name, last_name, email, account_owner, locale)
