@@ -1,4 +1,3 @@
-import axios from 'axios';
 import '@babel/polyfill';
 import dotenv from 'dotenv';
 import 'isomorphic-fetch';
@@ -10,6 +9,7 @@ import bodyParser from 'koa-bodyparser';
 import Router from 'koa-router';
 import session from 'koa-session';
 
+import { createClient, getScriptTagId } from './handlers';
 import db from './db';
 
 dotenv.config();
@@ -21,17 +21,6 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES } = process.env;
-const setupShopifyAPI = async (ctx, nxt) => {
-  ctx.shopifyAPI = axios.create({
-    baseURL: `https://${ctx.session.shop}/admin/api/2020-10/`,
-    headers: {
-      'X-Shopify-Access-Token': ctx.session.accessToken,
-      'Content-Type': 'application/json',
-    },
-    timeout: 30000,
-  });
-  await nxt();
-};
 
 app.prepare().then(() => {
   const server = new Koa();
@@ -70,10 +59,19 @@ app.prepare().then(() => {
             account_owner,
             locale,
           } = associatedUser;
-          await db.query(
-            'INSERT INTO stores(domain) VALUES($1) ON CONFLICT DO NOTHING',
+          server.context.client = await createClient(shop, accessToken);
+
+          const store = await db.query(
+            'SELECT * FROM stores WHERE domain = $1',
             [shop]
           );
+          if (store.rowCount === 0) {
+            const scriptid = await getScriptTagId(ctx);
+            await db.query(
+              'INSERT INTO stores(domain, scriptid) VALUES($1, $2)',
+              [shop, scriptid]
+            );
+          }
           await db.query(
             `
             INSERT INTO users(id, domain, associated_user_scope, first_name, last_name, email, account_owner, locale)
@@ -184,80 +182,21 @@ app.prepare().then(() => {
     ctx.status = 200;
   });
 
-  router.post(
-    '/api/publish-campaign',
-    verifyRequest(),
-    setupShopifyAPI,
-    async (ctx) => {
-      const themeResponse = await ctx.shopifyAPI.get('themes.json');
-      const activeThemeID = themeResponse.data.themes.find(
-        (theme) => theme.role === 'main'
-      ).id;
+  router.post('/api/publish-campaign', verifyRequest(), async (ctx) => {
+    await db.query('UPDATE campaigns SET published = true WHERE domain = $1', [
+      ctx.session.shop,
+    ]);
 
-      await ctx.shopifyAPI.put(`themes/${activeThemeID}/assets.json`, {
-        asset: {
-          key: 'snippets/salestorm.liquid',
-          value: ctx.request.body.html,
-        },
-      });
+    ctx.status = 200;
+  });
 
-      const themeTemplateResponse = await ctx.shopifyAPI.get(
-        `themes/${activeThemeID}/assets.json`,
-        {
-          params: {
-            'asset[key]': 'layout/theme.liquid',
-          },
-        }
-      );
-      const themeLayoutCode = themeTemplateResponse.data.asset.value;
-      const renderSnippet =
-        "\n{% capture salestorm_content %}{% render 'salestorm' %}{% endcapture %}\n{% unless salestorm_content contains 'Liquid error' %}\n{{ salestorm_content }}\n{% endunless %}\n";
-      if (!themeLayoutCode.includes(renderSnippet)) {
-        const sectionHeader = "{% section 'header' %}";
-        const newthemeLayoutCode = themeLayoutCode.replace(
-          sectionHeader,
-          `${sectionHeader}${renderSnippet}`
-        );
-        await ctx.shopifyAPI.put(`themes/${activeThemeID}/assets.json`, {
-          asset: {
-            key: 'layout/theme.liquid',
-            value: newthemeLayoutCode,
-          },
-        });
-      }
-      await db.query(
-        'UPDATE campaigns SET published = true WHERE domain = $1',
-        [ctx.session.shop]
-      );
+  router.delete('/api/unpublish-campaign', verifyRequest(), async (ctx) => {
+    await db.query('UPDATE campaigns SET published = false WHERE domain = $1', [
+      ctx.session.shop,
+    ]);
 
-      ctx.status = 200;
-    }
-  );
-
-  router.delete(
-    '/api/unpublish-campaign',
-    verifyRequest(),
-    setupShopifyAPI,
-    async (ctx) => {
-      const themeResponse = await ctx.shopifyAPI.get('themes.json');
-      const activeThemeID = themeResponse.data.themes.find(
-        (theme) => theme.role === 'main'
-      ).id;
-
-      await ctx.shopifyAPI.put(`themes/${activeThemeID}/assets.json`, {
-        asset: {
-          key: 'snippets/salestorm.liquid',
-          value: '',
-        },
-      });
-      await db.query(
-        'UPDATE campaigns SET published = false WHERE domain = $1',
-        [ctx.session.shop]
-      );
-
-      ctx.status = 200;
-    }
-  );
+    ctx.status = 200;
+  });
 
   router.patch('/api/store/enable', verifyRequest(), async (ctx) => {
     await db.query('UPDATE stores SET enabled = $1 WHERE domain = $2', [

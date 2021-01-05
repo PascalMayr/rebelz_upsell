@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext, useRef } from 'react';
+import { useState, useCallback, useContext } from 'react';
 import { Page, Card, Layout, TextField } from '@shopify/polaris';
 import { MobilePlusMajor } from '@shopify/polaris-icons';
 
@@ -87,7 +87,6 @@ const New = (props) => {
     (value, id) => setCampaign({ ...campaign, [id]: value }),
     [campaign]
   );
-  const popupRef = useRef(null);
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
   return (
@@ -101,13 +100,14 @@ const New = (props) => {
           if (campaign.published) {
             try {
               setPublishLoading(true);
+              const savedCampaign = await saveCampaign(campaign);
               await unpublishCampaign();
               context.setToast({
                 shown: true,
                 content: 'Successfully unpublished campaign',
                 isError: false,
               });
-              setCampaign({ ...campaign, published: false });
+              setCampaign({ ...savedCampaign.data, published: false });
             } catch (_error) {
               context.setToast({
                 shown: true,
@@ -121,13 +121,14 @@ const New = (props) => {
           } else {
             try {
               setPublishLoading(true);
-              await publishCampaign(popupRef.current.outerHTML);
+              const savedCampaign = await saveCampaign(campaign);
+              await publishCampaign();
               context.setToast({
                 shown: true,
                 content: 'Successfully published campaign',
                 isError: false,
               });
-              setCampaign({ ...campaign, published: true });
+              setCampaign({ ...savedCampaign.data, published: true });
             } catch (_error) {
               context.setToast({
                 shown: true,
@@ -184,7 +185,6 @@ const New = (props) => {
                   <CampaignPreview
                     campaign={campaign}
                     isPreviewDesktop={isPreviewDesktop}
-                    popupRef={popupRef}
                     setCampaignProperty={setCampaignProperty}
                   />
                   <CampaignPreviewSwitch
