@@ -194,80 +194,21 @@ app.prepare().then(() => {
     ctx.status = 200;
   });
 
-  router.post(
-    '/api/publish-campaign',
-    verifyRequest(),
-    setupShopifyAPI,
-    async (ctx) => {
-      const themeResponse = await ctx.shopifyAPI.get('themes.json');
-      const activeThemeID = themeResponse.data.themes.find(
-        (theme) => theme.role === 'main'
-      ).id;
+  router.post('/api/publish-campaign', verifyRequest(), async (ctx) => {
+    await db.query('UPDATE campaigns SET published = true WHERE domain = $1', [
+      ctx.session.shop,
+    ]);
 
-      await ctx.shopifyAPI.put(`themes/${activeThemeID}/assets.json`, {
-        asset: {
-          key: 'snippets/salestorm.liquid',
-          value: ctx.request.body.html,
-        },
-      });
+    ctx.status = 200;
+  });
 
-      const themeTemplateResponse = await ctx.shopifyAPI.get(
-        `themes/${activeThemeID}/assets.json`,
-        {
-          params: {
-            'asset[key]': 'layout/theme.liquid',
-          },
-        }
-      );
-      const themeLayoutCode = themeTemplateResponse.data.asset.value;
-      const renderSnippet =
-        "\n{% capture salestorm_content %}{% render 'salestorm' %}{% endcapture %}\n{% unless salestorm_content contains 'Liquid error' %}\n{{ salestorm_content }}\n{% endunless %}\n";
-      if (!themeLayoutCode.includes(renderSnippet)) {
-        const sectionHeader = "{% section 'header' %}";
-        const newthemeLayoutCode = themeLayoutCode.replace(
-          sectionHeader,
-          `${sectionHeader}${renderSnippet}`
-        );
-        await ctx.shopifyAPI.put(`themes/${activeThemeID}/assets.json`, {
-          asset: {
-            key: 'layout/theme.liquid',
-            value: newthemeLayoutCode,
-          },
-        });
-      }
-      await db.query(
-        'UPDATE campaigns SET published = true WHERE domain = $1',
-        [ctx.session.shop]
-      );
+  router.delete('/api/unpublish-campaign', verifyRequest(), async (ctx) => {
+    await db.query('UPDATE campaigns SET published = false WHERE domain = $1', [
+      ctx.session.shop,
+    ]);
 
-      ctx.status = 200;
-    }
-  );
-
-  router.delete(
-    '/api/unpublish-campaign',
-    verifyRequest(),
-    setupShopifyAPI,
-    async (ctx) => {
-      const themeResponse = await ctx.shopifyAPI.get('themes.json');
-      const activeThemeID = themeResponse.data.themes.find(
-        (theme) => theme.role === 'main'
-      ).id;
-
-      await ctx.shopifyAPI.put(`themes/${activeThemeID}/assets.json`, {
-        asset: {
-          key: 'snippets/salestorm.liquid',
-          value: '',
-        },
-      });
-      await db.query(
-        'UPDATE campaigns SET published = false WHERE domain = $1',
-        [ctx.session.shop]
-      );
-
-      ctx.status = 200;
-    }
-  );
+    ctx.status = 200;
+  });
 
   router.patch('/api/store/enable', verifyRequest(), async (ctx) => {
     await db.query('UPDATE stores SET enabled = $1 WHERE domain = $2', [
