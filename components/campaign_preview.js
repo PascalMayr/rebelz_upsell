@@ -36,7 +36,6 @@ const GET_PRODUCT_DETAILS = (campaign, product) => gql`
 const CampaignPreview = ({
   campaign,
   isPreviewDesktop,
-  popupRef,
   setCampaignProperty,
 }) => {
   /* eslint-disable babel/camelcase */
@@ -72,7 +71,7 @@ const CampaignPreview = ({
     <>
       <div className="salestorm-popup-preview-container">
         <div className={mobileContainerClass}>
-          <div id="salestorm-popup" style={styles.popup} ref={popupRef}>
+          <div id="salestorm-popup" style={styles.popup}>
             <Editor
               // eslint-disable-next-line no-undef
               apiKey={TINY_MCE_API_KEY}
