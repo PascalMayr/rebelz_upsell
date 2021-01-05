@@ -4,11 +4,7 @@
   const managePopup = (campaign) => {
     // TODO: Add button click handlers and show the popup correctly
 
-    const popup = document.createElement('div');
-    popup.id = popupId;
-    popup.innerHTML = campaign.html;
-
-    document.body.appendChild(popup);
+    document.body.insertAdjacentHTML('beforeend', campaign.html);
   };
 
   const getMatchingCampaign = async (trigger, products) => {
