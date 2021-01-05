@@ -13,6 +13,8 @@ module.exports = {
     '@shopify/jsx-no-hardcoded-content': 'off', // Not MVP, we do I18n later
     '@shopify/strict-component-boundaries': 'off',
     'id-length': 'off',
+    'promise/catch-or-return': 'off',
+    'require-atomic-updates': 'off'
   },
   overrides: [
     {
