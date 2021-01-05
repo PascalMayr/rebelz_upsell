@@ -1,4 +1,3 @@
-import axios from 'axios';
 import '@babel/polyfill';
 import dotenv from 'dotenv';
 import 'isomorphic-fetch';
@@ -22,17 +21,6 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES } = process.env;
-const setupShopifyAPI = async (ctx, nxt) => {
-  ctx.shopifyAPI = axios.create({
-    baseURL: `https://${ctx.session.shop}/admin/api/2021-01/`,
-    headers: {
-      'X-Shopify-Access-Token': ctx.session.accessToken,
-      'Content-Type': 'application/json',
-    },
-    timeout: 30000,
-  });
-  await nxt();
-};
 
 app.prepare().then(() => {
   const server = new Koa();
