@@ -56,12 +56,18 @@
       .forEach((form) => form.addEventListener('submit', showPopup));
   };
 
-  const handleCartPage = async () => {
-    // TODO: Get this every 3 seconds and check for changes to it
+  const handleCartPage = async (previousItems) => {
     const response = await fetch('/cart.js');
     const cart = await response.json();
-    const campaign = await getMatchingCampaign('checkout', cart.items);
-    managePopup(campaign);
+    const currentItems = cart.items;
+    if (
+      !previousItems ||
+      JSON.stringify(currentItems) !== JSON.stringify(previousItems)
+    ) {
+      const campaign = await getMatchingCampaign('checkout', currentItems);
+      managePopup(campaign);
+    }
+    setTimeout(() => handleCartPage(currentItems), 3000);
   };
 
   const handleThankYouPage = async () => {
