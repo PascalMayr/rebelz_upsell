@@ -7,6 +7,7 @@ import Koa from 'koa';
 import next from 'next';
 import bodyParser from 'koa-bodyparser';
 import Router from 'koa-router';
+import Cors from '@koa/cors';
 import session from 'koa-session';
 
 import { createClient, getScriptTagId } from './handlers';
@@ -207,6 +208,7 @@ app.prepare().then(() => {
     ctx.status = 200;
   });
 
+  server.use(Cors({ credentials: true }));
   server.use(router.allowedMethods());
   server.use(router.routes());
   server.listen(port, () => {
