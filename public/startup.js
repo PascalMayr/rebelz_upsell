@@ -40,14 +40,15 @@
   };
 
   const handleProductPage = async (productPage) => {
-    let product;
+    let productId;
     if (typeof meta !== 'undefined' && window.meta.product) {
-      product = window.meta.product;
+      productId = window.meta.product.id;
     } else {
       const response = await fetch(`${productPage[0]}.js`);
-      product = await response.json();
+      const product = await response.json();
+      productId = product.id;
     }
-    const campaign = await getMatchingCampaign('add_to_cart', [product]);
+    const campaign = await getMatchingCampaign('add_to_cart', [productId]);
     managePopup(campaign);
 
     Array.from(document.forms)
@@ -64,7 +65,10 @@
       !previousItems ||
       JSON.stringify(currentItems) !== JSON.stringify(previousItems)
     ) {
-      const campaign = await getMatchingCampaign('checkout', currentItems);
+      const campaign = await getMatchingCampaign(
+        'checkout',
+        currentItems.map((item) => item.product_id)
+      );
       managePopup(campaign);
     }
     setTimeout(() => handleCartPage(currentItems), 3000);
@@ -73,7 +77,7 @@
   const handleThankYouPage = async () => {
     const campaign = await getMatchingCampaign(
       'thank_you',
-      window.Shopify.checkout.line_items
+      window.Shopify.checkout.line_items.map((item) => item.product_id)
     );
     managePopup(campaign);
   };
