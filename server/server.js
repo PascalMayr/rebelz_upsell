@@ -47,7 +47,7 @@ app.prepare().then(() => {
 
     if (campaign) {
       // TODO: Render popup here
-      ctx.body = { html: campaigns.message };
+      ctx.body = { html: campaign.message };
       ctx.status = 200;
     } else {
       ctx.status = 404;

@@ -1,16 +1,47 @@
 (async function () {
+  const triggers = {
+    addToCart: 'add_to_cart',
+    checkout: 'checkout',
+    thankYou: 'thank_you',
+  };
+  const addToCartButton = [
+    '[name=addToCart]',
+    '#btn-add-to-cart',
+    '.AddtoCart',
+    'a[href^="/cart/add"]',
+    '#addToCartBtn',
+    '.addToCart',
+    '.btn-addtocart',
+    '#add-to-cart-btn',
+    '#shopify_add_to_cart',
+    '#add-to-cart',
+    '#addToCartButton',
+    '.btn_add_to_cart',
+    '.add_to_cart_button',
+    '.add-to-cart',
+    '[data-action="add-to-cart"]',
+    '.btn-add-to-cart',
+    '[name=AddToCart]',
+    '.button-add-to-cart',
+    '#btnAddToCart',
+    '#AddToCart',
+    '[data-action="AddToCart"]',
+    '.button_add_to_cart',
+    '.add-to-cart-button',
+    '.addtocart',
+    '.AddToCart',
+    '.add_to_cart_btn',
+    '.add_to_cart',
+    '.add-to-cart-btn',
+    '[name=add]',
+  ];
+  const checkoutButton = ['[name="checkout"]', 'a[href^="/checkout"]'];
   const popupId = 'salestorm';
 
-  const managePopup = (campaign) => {
-    // TODO: Add button click handlers and show the popup correctly
-
-    document.body.insertAdjacentHTML('beforeend', campaign.html);
-  };
-
-  const getMatchingCampaign = async (trigger, products) => {
+  const fetchCampaign = async (trigger, products) => {
     try {
       const response = await fetch(
-        'https://a1bd057f095d.ngrok.io/api/get-matching-campaign',
+        'https://020eba19ad4c.ngrok.io/api/get-matching-campaign',
         {
           credentials: 'include',
           method: 'POST',
@@ -27,6 +58,8 @@
       if (response.ok) {
         const campaign = await response.json();
         return campaign;
+      } else {
+        return null;
       }
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -35,8 +68,40 @@
     }
   };
 
-  const showPopup = () => {
-    document.getElementById(popupId).style.display = 'block';
+  const renderCampaign = async (trigger, products) => {
+    const campaign = await fetchCampaign(trigger, products);
+    if (!campaign) return;
+
+    document.body.insertAdjacentHTML('beforeend', campaign.html);
+
+    const showPopup = () => {
+      document.getElementById(popupId).style.display = 'block';
+    };
+
+    switch (trigger) {
+      case triggers.addToCart: {
+        document
+          .querySelector(addToCartButton)
+          .addEventListener('click', showPopup);
+        break;
+      }
+      case triggers.checkout: {
+        document.querySelector(checkoutButton).addEventListener(
+          'click',
+          (e) => {
+            e.preventDefault();
+            showPopup();
+            return false;
+          },
+          true
+        );
+        break;
+      }
+      case triggers.thankYou: {
+        showPopup();
+        break;
+      }
+    }
   };
 
   const handleProductPage = async (productPage) => {
@@ -48,13 +113,7 @@
       const product = await response.json();
       productId = product.id;
     }
-    const campaign = await getMatchingCampaign('add_to_cart', [productId]);
-    managePopup(campaign);
-
-    Array.from(document.forms)
-      .filter((form) => form.action.includes('cart/add'))
-      .filter((form) => form.querySelector(':enabled[type="submit"]'))
-      .forEach((form) => form.addEventListener('submit', showPopup));
+    await renderCampaign(triggers.addToCart, [productId]);
   };
 
   const handleCartPage = async (previousItems) => {
@@ -65,21 +124,19 @@
       !previousItems ||
       JSON.stringify(currentItems) !== JSON.stringify(previousItems)
     ) {
-      const campaign = await getMatchingCampaign(
-        'checkout',
+      await renderCampaign(
+        triggers.checkout,
         currentItems.map((item) => item.product_id)
       );
-      managePopup(campaign);
     }
     setTimeout(() => handleCartPage(currentItems), 3000);
   };
 
   const handleThankYouPage = async () => {
-    const campaign = await getMatchingCampaign(
-      'thank_you',
+    await renderCampaign(
+      triggers.thankYou,
       window.Shopify.checkout.line_items.map((item) => item.product_id)
     );
-    managePopup(campaign);
   };
 
   const init = async () => {
