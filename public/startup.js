@@ -1,4 +1,4 @@
-(async function () {
+(function () {
   const triggers = {
     addToCart: 'add_to_cart',
     checkout: 'checkout',
@@ -62,10 +62,11 @@
       );
       if (response.ok) {
         const campaign = await response.json();
-        return campaign;
+        popups[trigger] = campaign.html;
       } else {
-        return null;
+        popups[trigger] = null;
       }
+      return Boolean(popups[trigger]);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(window.Shopify);
@@ -78,42 +79,9 @@
     document.getElementById(popupId).style.display = 'block';
   };
 
-  const renderCampaign = async (trigger, products) => {
-    const campaign = await fetchCampaign(trigger, products);
-    if (!campaign) return;
-
-    popups[trigger] = campaign.html;
-
-    const handleCheckoutClick = (e) => {
-      e.preventDefault();
-      showPopup(triggers.checkout);
-      return false;
-    };
-
-    switch (trigger) {
-      case triggers.addToCart: {
-        document
-          .querySelector(addToCartButtonSelector)
-          .addEventListener('click', () => {
-            showPopup(triggers.addToCart);
-          });
-        break;
-      }
-      case triggers.checkout: {
-        document
-          .querySelector(checkoutButtonSelector)
-          .addEventListener('click', handleCheckoutClick, true);
-        break;
-      }
-      case triggers.thankYou: {
-        showPopup(triggers.thankYou);
-        break;
-      }
-    }
-  };
-
   const handleProductPage = async (productPage) => {
     let productId;
+    // Many shopify themes have this meta global which includes the product ID
     if (typeof meta !== 'undefined' && window.meta.product) {
       productId = window.meta.product.id;
     } else {
@@ -121,7 +89,45 @@
       const product = await response.json();
       productId = product.id;
     }
-    await renderCampaign(triggers.addToCart, [productId]);
+    const hasCampaign = await fetchCampaign(triggers.addToCart, [productId]);
+    if (hasCampaign) {
+      document
+        .querySelector(addToCartButtonSelector)
+        .addEventListener('click', () => {
+          showPopup(triggers.addToCart);
+        });
+    }
+  };
+
+  const contiouslyFetchCartAndUpdateCampaign = () => {
+    let previousItems;
+    let hasClickListener = false;
+    return setInterval(async () => {
+      const response = await fetch('/cart.js');
+      const cart = await response.json();
+      const currentItems = cart.items;
+      if (
+        !previousItems ||
+        JSON.stringify(currentItems) !== JSON.stringify(previousItems)
+      ) {
+        previousItems = currentItems;
+        const hasCampaign = await fetchCampaign(
+          triggers.checkout,
+          currentItems.map((item) => item.product_id)
+        );
+        if (hasCampaign && !hasClickListener) {
+          document.querySelector(checkoutButtonSelector).addEventListener(
+            'click',
+            (e) => {
+              e.preventDefault();
+              showPopup(triggers.checkout);
+            },
+            true
+          );
+          hasClickListener = true;
+        }
+      }
+    }, 3000);
   };
 
   const handleCart = () => {
@@ -137,31 +143,17 @@
           clearInterval(cartFetchInterval);
           cartFetchInterval = null;
         }
-        let previousItems;
-        cartFetchInterval = setInterval(async () => {
-          const response = await fetch('/cart.js');
-          const cart = await response.json();
-          const currentItems = cart.items;
-          if (
-            !previousItems ||
-            JSON.stringify(currentItems) !== JSON.stringify(previousItems)
-          ) {
-            previousItems = currentItems;
-            await renderCampaign(
-              triggers.checkout,
-              currentItems.map((item) => item.product_id)
-            );
-          }
-        }, 3000);
+        cartFetchInterval = contiouslyFetchCartAndUpdateCampaign();
       }
     }, 300);
   };
 
   const handleThankYouPage = async () => {
-    await renderCampaign(
+    const hasCampaign = await fetchCampaign(
       triggers.thankYou,
       window.Shopify.checkout.line_items.map((item) => item.product_id)
     );
+    if (hasCampaign) showPopup(triggers.thankYou);
   };
 
   const init = () => {
