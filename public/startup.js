@@ -4,7 +4,12 @@
     checkout: 'checkout',
     thankYou: 'thank_you',
   };
-  const addToCartButton = [
+  const popups = {
+    [triggers.addToCart]: null,
+    [triggers.checkout]: null,
+    [triggers.thankYou]: null,
+  };
+  const addToCartButtonSelector = [
     '[name=addToCart]',
     '#btn-add-to-cart',
     '.AddtoCart',
@@ -35,7 +40,7 @@
     '.add-to-cart-btn',
     '[name=add]',
   ];
-  const checkoutButton = ['[name="checkout"]', 'a[href^="/checkout"]'];
+  const checkoutButtonSelector = ['[name="checkout"]', 'a[href^="/checkout"]'];
   const popupId = 'salestorm';
 
   const fetchCampaign = async (trigger, products) => {
@@ -68,37 +73,40 @@
     }
   };
 
+  const showPopup = (trigger) => {
+    document.body.insertAdjacentHTML('beforeend', popups[trigger]);
+    document.getElementById(popupId).style.display = 'block';
+  };
+
   const renderCampaign = async (trigger, products) => {
     const campaign = await fetchCampaign(trigger, products);
     if (!campaign) return;
 
-    document.body.insertAdjacentHTML('beforeend', campaign.html);
+    popups[trigger] = campaign.html;
 
-    const showPopup = () => {
-      document.getElementById(popupId).style.display = 'block';
+    const handleCheckoutClick = (e) => {
+      e.preventDefault();
+      showPopup(triggers.checkout);
+      return false;
     };
 
     switch (trigger) {
       case triggers.addToCart: {
         document
-          .querySelector(addToCartButton)
-          .addEventListener('click', showPopup);
+          .querySelector(addToCartButtonSelector)
+          .addEventListener('click', () => {
+            showPopup(triggers.addToCart);
+          });
         break;
       }
       case triggers.checkout: {
-        document.querySelector(checkoutButton).addEventListener(
-          'click',
-          (e) => {
-            e.preventDefault();
-            showPopup();
-            return false;
-          },
-          true
-        );
+        document
+          .querySelector(checkoutButtonSelector)
+          .addEventListener('click', handleCheckoutClick, true);
         break;
       }
       case triggers.thankYou: {
-        showPopup();
+        showPopup(triggers.thankYou);
         break;
       }
     }
@@ -116,20 +124,37 @@
     await renderCampaign(triggers.addToCart, [productId]);
   };
 
-  const handleCartPage = async (previousItems) => {
-    const response = await fetch('/cart.js');
-    const cart = await response.json();
-    const currentItems = cart.items;
-    if (
-      !previousItems ||
-      JSON.stringify(currentItems) !== JSON.stringify(previousItems)
-    ) {
-      await renderCampaign(
-        triggers.checkout,
-        currentItems.map((item) => item.product_id)
-      );
-    }
-    setTimeout(() => handleCartPage(currentItems), 3000);
+  const handleCart = () => {
+    // The current checkout button, which might appear and disappear at any point
+    let currentCheckoutButton;
+    let cartFetchInterval;
+    // Check for a cart drawer or popup to appear
+    setInterval(function () {
+      const newCheckoutButton = document.querySelector(checkoutButtonSelector);
+      if (newCheckoutButton !== currentCheckoutButton) {
+        currentCheckoutButton = newCheckoutButton;
+        if (cartFetchInterval) {
+          clearInterval(cartFetchInterval);
+          cartFetchInterval = null;
+        }
+        let previousItems;
+        cartFetchInterval = setInterval(async () => {
+          const response = await fetch('/cart.js');
+          const cart = await response.json();
+          const currentItems = cart.items;
+          if (
+            !previousItems ||
+            JSON.stringify(currentItems) !== JSON.stringify(previousItems)
+          ) {
+            previousItems = currentItems;
+            await renderCampaign(
+              triggers.checkout,
+              currentItems.map((item) => item.product_id)
+            );
+          }
+        }, 3000);
+      }
+    }, 300);
   };
 
   const handleThankYouPage = async () => {
@@ -139,19 +164,17 @@
     );
   };
 
-  const init = async () => {
+  const init = () => {
     const path = window.location.pathname;
     const productPage = path.match(/\/products\/[^?/#]+/);
-    const cartPage = path.match(/^\/cart/);
     const thankYouPage = path.match(/\/thank_you$/);
     if (productPage) {
       handleProductPage(productPage);
-    } else if (cartPage) {
-      await handleCartPage();
     } else if (thankYouPage) {
-      await handleThankYouPage();
+      handleThankYouPage();
     }
+    handleCart();
   };
 
-  await init();
+  init();
 })();
