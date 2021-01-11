@@ -103,6 +103,8 @@
     let previousItems;
     let hasClickListener = false;
     return setInterval(async () => {
+      if (document.visibilityState !== 'visible') return;
+
       const response = await fetch('/cart.js');
       const cart = await response.json();
       const currentItems = cart.items;
