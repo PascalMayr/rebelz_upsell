@@ -42,6 +42,7 @@
   ];
   const checkoutButtonSelector = ['[name="checkout"]', 'a[href^="/checkout"]'];
   const popupId = 'salestorm';
+  const productAddEvent = new Event('salestorm-product-add');
 
   const fetchCampaign = async (trigger, products) => {
     try {
@@ -91,11 +92,42 @@
     }
     const hasCampaign = await fetchCampaign(triggers.addToCart, [productId]);
     if (hasCampaign) {
-      document
-        .querySelector(addToCartButtonSelector)
-        .addEventListener('click', () => {
+      // Listening to the click event on the document in the capture phase
+      // This is so that hopefully it gets executed before any other click listener
+      document.addEventListener(
+        'click',
+        (e) => {
+          let target = e.target;
+          if (!target.matches(addToCartButtonSelector)) return;
+
           showPopup(triggers.addToCart);
-        });
+
+          let addToCartForm;
+          while (target) {
+            if (target.tagName && target.tagName.toUpperCase() === 'FORM') {
+              addToCartForm = target;
+              break;
+            }
+            target = target.parentNode;
+          }
+          if (addToCartForm) {
+            addToCartForm.addEventListener('submit', (ev) =>
+              ev.preventDefault()
+            );
+            const timeout = setTimeout(() => {
+              fetch(addToCartForm.action, {
+                method: addToCartForm.method || 'GET',
+                body: new FormData(addToCartForm),
+              });
+            }, 1500);
+            document.addEventListener(productAddEvent.type, () => {
+              clearTimeout(timeout);
+            });
+          }
+          return true;
+        },
+        true
+      );
     }
   };
 
@@ -158,7 +190,38 @@
     if (hasCampaign) showPopup(triggers.thankYou);
   };
 
+  const checkForProductAdd = (url) => {
+    if (url && url.match(/cart\/add/)) document.dispatchEvent(productAddEvent);
+  };
+
+  const initXHRMonkeyPatch = () => {
+    const oldOpen = window.XMLHttpRequest.prototype.open;
+    window.XMLHttpRequest.prototype.open = function (
+      method,
+      url,
+      async,
+      user,
+      password
+    ) {
+      checkForProductAdd(url);
+      return oldOpen.apply(this, method, url, async, user, password);
+    };
+  };
+
+  const initFetchMonkeyPatch = () => {
+    const oldFetch = window.fetch;
+    window.fetch = (url, options) => {
+      checkForProductAdd(url);
+      return oldFetch(url, options);
+    };
+  };
+
   const init = () => {
+    // These 2 monkey patches are needed so we can detect products being added on the add to cart form
+    // The issue is that if that add to cart is really a form, we don't have a way to tell if any other
+    // JS is already adding the product to the cart, so we have to monitor XHR and fetch requests.
+    initXHRMonkeyPatch();
+    initFetchMonkeyPatch();
     const path = window.location.pathname;
     const productPage = path.match(/\/products\/[^?/#]+/);
     const thankYouPage = path.match(/\/thank_you$/);
