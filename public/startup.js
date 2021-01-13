@@ -136,19 +136,16 @@
       document.addEventListener('click', (e) => {
         if (!e.target.matches(addToCartButtonSelector)) return;
 
-        // setTimeout 0 puts this function last on the call stack
-        setTimeout(() => {
-          if (doFormSubmitWithFetch) {
-            fetch(addToCartForm.action, {
-              method: addToCartForm.method || 'GET',
-              body: new FormData(addToCartForm),
-            });
-          }
-          document.removeEventListener(
-            productAddEvent.type,
-            disableFormSubmitWithFetch
-          );
-        }, 0);
+        if (doFormSubmitWithFetch) {
+          fetch(addToCartForm.action, {
+            method: addToCartForm.method || 'GET',
+            body: new FormData(addToCartForm),
+          });
+        }
+        document.removeEventListener(
+          productAddEvent.type,
+          disableFormSubmitWithFetch
+        );
       });
     }
   };
