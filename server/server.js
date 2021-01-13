@@ -7,6 +7,7 @@ import Koa from 'koa';
 import next from 'next';
 import bodyParser from 'koa-bodyparser';
 import Router from 'koa-router';
+import Cors from '@koa/cors';
 import session from 'koa-session';
 
 import { createClient, getScriptTagId } from './handlers';
@@ -25,6 +26,34 @@ const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES } = process.env;
 app.prepare().then(() => {
   const server = new Koa();
   const router = new Router();
+
+  router.post('/api/get-matching-campaign', async (ctx) => {
+    const { shop, trigger, products } = ctx.request.body;
+    const campaigns = await db.query(
+      `SELECT *
+      FROM campaigns
+      INNER JOIN stores ON stores.domain = campaigns.domain
+      WHERE campaigns.domain = $1
+      AND stores.enabled = true
+      AND campaigns.published = true
+      AND campaigns.trigger = $2`,
+      [shop, trigger]
+    );
+    const campaign = campaigns.rows.find((row) => {
+      return row.products.targets.some((targetProduct) =>
+        products.includes(targetProduct.legacyResourceId)
+      );
+    });
+
+    if (campaign) {
+      // TODO: Render popup here
+      ctx.body = { html: campaign.message };
+      ctx.status = 200;
+    } else {
+      ctx.status = 404;
+    }
+  });
+
   server.use(
     session(
       {
@@ -207,6 +236,7 @@ app.prepare().then(() => {
     ctx.status = 200;
   });
 
+  server.use(Cors({ credentials: true }));
   server.use(router.allowedMethods());
   server.use(router.routes());
   server.listen(port, () => {
