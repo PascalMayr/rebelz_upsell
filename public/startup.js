@@ -140,7 +140,7 @@
 
         if (doFormSubmitWithFetch) {
           fetch(addToCartForm.action, {
-            method: addToCartForm.method || 'GET',
+            method: addToCartForm.method || 'POST',
             body: new FormData(addToCartForm),
           });
         }
@@ -192,7 +192,7 @@
     // Check for a cart drawer or popup to appear
     setInterval(function () {
       const newCheckoutButton = document.querySelector(checkoutButtonSelector);
-      if (newCheckoutButton !== currentCheckoutButton) {
+      if (newCheckoutButton && newCheckoutButton !== currentCheckoutButton) {
         currentCheckoutButton = newCheckoutButton;
         if (cartFetchInterval) {
           clearInterval(cartFetchInterval);
