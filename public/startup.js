@@ -76,6 +76,8 @@
   };
 
   const showPopup = (trigger) => {
+    const oldPopup = document.getElementById(popupId);
+    if (oldPopup) oldPopup.remove();
     document.body.insertAdjacentHTML('beforeend', popups[trigger]);
     document.getElementById(popupId).style.display = 'block';
   };
