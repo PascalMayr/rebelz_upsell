@@ -80,6 +80,19 @@
     document.getElementById(popupId).style.display = 'block';
   };
 
+  const searchAddToCartForm = (addToCartButton) => {
+    let addToCartForm;
+    let target = addToCartButton;
+    while (target) {
+      if (target.tagName && target.tagName.toUpperCase() === 'FORM') {
+        addToCartForm = target;
+        break;
+      }
+      target = target.parentNode;
+    }
+    return addToCartForm;
+  };
+
   const handleProductPage = async (productPage) => {
     let productId;
     // Many shopify themes have this meta global which includes the product ID
@@ -92,42 +105,51 @@
     }
     const hasCampaign = await fetchCampaign(triggers.addToCart, [productId]);
     if (hasCampaign) {
+      const addToCartButton = document.querySelector(addToCartButtonSelector);
+      const addToCartForm = searchAddToCartForm(addToCartButton);
+      if (addToCartForm)
+        addToCartForm.addEventListener('submit', (ev) => ev.preventDefault());
+      let doFormSubmitWithFetch;
+      const disableFormSubmitWithFetch = () => (doFormSubmitWithFetch = false);
+
       // Listening to the click event on the document in the capture phase
       // This is so that hopefully it gets executed before any other click listener
       document.addEventListener(
         'click',
         (e) => {
-          let target = e.target;
-          if (!target.matches(addToCartButtonSelector)) return;
+          if (!e.target.matches(addToCartButtonSelector)) return;
 
           showPopup(triggers.addToCart);
 
-          let addToCartForm;
-          while (target) {
-            if (target.tagName && target.tagName.toUpperCase() === 'FORM') {
-              addToCartForm = target;
-              break;
-            }
-            target = target.parentNode;
-          }
           if (addToCartForm) {
-            addToCartForm.addEventListener('submit', (ev) =>
-              ev.preventDefault()
+            doFormSubmitWithFetch = true;
+            document.addEventListener(
+              productAddEvent.type,
+              disableFormSubmitWithFetch
             );
-            const timeout = setTimeout(() => {
-              fetch(addToCartForm.action, {
-                method: addToCartForm.method || 'GET',
-                body: new FormData(addToCartForm),
-              });
-            }, 1500);
-            document.addEventListener(productAddEvent.type, () => {
-              clearTimeout(timeout);
-            });
           }
           return true;
         },
         true
       );
+      // The same listener, but in the bubbling phase, so that it hopefully gets executed last
+      document.addEventListener('click', (e) => {
+        if (!e.target.matches(addToCartButtonSelector)) return;
+
+        // setTimeout 0 puts this function last on the call stack
+        setTimeout(() => {
+          if (doFormSubmitWithFetch) {
+            fetch(addToCartForm.action, {
+              method: addToCartForm.method || 'GET',
+              body: new FormData(addToCartForm),
+            });
+          }
+          document.removeEventListener(
+            productAddEvent.type,
+            disableFormSubmitWithFetch
+          );
+        }, 0);
+      });
     }
   };
 
