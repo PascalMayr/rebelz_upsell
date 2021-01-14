@@ -10,7 +10,6 @@ import { Spinner } from '@shopify/polaris';
 const CampaignPreview = ({
   campaign,
   isPreviewDesktop,
-  popupRef,
   setCampaignProperty,
 }) => {
   const GET_PRODUCT_DETAILS = (id) => gql`
@@ -62,7 +61,6 @@ const CampaignPreview = ({
           </style>
           <div
             id="salestorm-popup"
-            ref={popupRef}
           >
             <br />
             {

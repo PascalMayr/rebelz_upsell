@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext, useRef } from 'react';
+import { useState, useCallback, useContext } from 'react';
 import { Page, Card, Layout, TextField } from '@shopify/polaris';
 import CampaignFormatter from '../../components/campaign_formatter.js';
 import '../../styles/pages_campaigns_index.css';
@@ -86,7 +86,6 @@ const New = (props) => {
     (value, id) => setCampaign({ ...campaign, [id]: value }),
     [campaign]
   );
-  const popupRef = useRef(null);
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
   return (
@@ -199,7 +198,6 @@ const New = (props) => {
                   <CampaignPreview
                     campaign={campaign}
                     isPreviewDesktop={isPreviewDesktop}
-                    popupRef={popupRef}
                     setCampaignProperty={setCampaignProperty}
                   />
                   <CampaignPreviewSwitch
