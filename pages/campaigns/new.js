@@ -176,6 +176,22 @@ const New = (props) => {
           />
         </Card.Section>
         <Card.Section>
+          <Card>
+            <Card.Section title="1.) Where would you like to sell more?">
+              <p className='salestorm-subtitle'>
+                Customers will see this campaign
+                {
+                  campaign.trigger === 'add_to_cart' ? ' after clicking Add to cart' : campaign.trigger === 'checkout' ? ' after clicking Checkout' : campaign.trigger === 'thank_you' ? ' after their purchase' : ''
+                }
+              </p>
+              <SalestormTriggers
+                trigger={campaign.trigger}
+                setCampaignProperty={setCampaignProperty}
+              />
+            </Card.Section>
+          </Card>
+        </Card.Section>
+        <Card.Section>
           <Layout>
             <Layout.Section>
               <Card>
