@@ -122,6 +122,8 @@ const CampaignFormatter = ({
 
   const _getBoxshadowWithoutColor = (boxShadow) => boxShadow.split(' ').slice(0, 3).join(' ');
 
+  const _getBoxshadowColor = (boxShadow) => boxShadow.split(' ').slice(3).join(' ');
+
   const _setColor = (value) => {
     switch (styleChoice.value) {
       case 'boxShadow':
@@ -141,7 +143,7 @@ const CampaignFormatter = ({
   const _getColor = () => {
     switch (styleChoice.value) {
       case 'boxShadow':
-        return styles[styleChoice.value].split(' ').slice(3).join(' ');
+        return _getBoxshadowColor(styles[styleChoice.value]);
       case 'fill':
         return styles[styleChoice.value];
       case 'color':
