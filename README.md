@@ -108,11 +108,3 @@ shopify serve
 4. Check the status of the shopify system:
 [shopifystatus.com](https://shopifystatus.com)
 [status.shopify.com](https://status.shopify.com)
-
-## License
-
-Shopify App Node License:
-This respository is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-This project was bootstrapped using the Shopify App Node Boilerplate to create an embedded Shopify app made with Node, [Next.js](https://nextjs.org/), [Shopify-koa-auth](https://github.com/Shopify/quilt/tree/master/packages/koa-shopify-auth), [Polaris](https://github.com/Shopify/polaris-react), and [App Bridge React](https://shopify.dev/tools/app-bridge/react-components).
-
