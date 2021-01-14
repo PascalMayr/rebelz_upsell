@@ -264,7 +264,7 @@ const CampaignPreview = ({
       </style>
       <div className={mobileContainerClass}>
         <div id="salestorm-overlay-container">
-          <div id='salestorm-popup' className={`animate__animated ${campaign.animation} animate__delay-${campaign.animation_delay}s`}>
+          <div id='salestorm-popup' className={`animate__animated ${campaign.animation.type} animate__delay-${campaign.animation.delay}s animate__${campaign.animation.speed}`}>
             <div id='salestorm-popup-header'>
               <div id='salestorm-popup-header-title'>
                 {

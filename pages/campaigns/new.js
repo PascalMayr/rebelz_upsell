@@ -87,8 +87,11 @@ const New = (props) => {
     },
     customCSS: '',
     customJS: '',
-    animation: 'animate__fadeInUp',
-    animation_delay: '1',
+    animation: {
+      type: 'animate__fadeInUp',
+      delay: 1,
+      speed: ''
+    },
     ...props.campaign,
   });
   const [preview, setPreview] = useState('desktop');

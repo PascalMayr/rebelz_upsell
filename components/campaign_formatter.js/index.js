@@ -150,7 +150,7 @@ const CampaignFormatter = ({
     }
   }
 
-  const incomingAnimations = [
+  const animationTypes = [
     {label: 'Back in down', value: 'animate__backInDown'},
     {label: 'Back in up', value: 'animate__backInUp'},
     {label: 'Fade in', value: 'animate__fadeIn'},
@@ -166,18 +166,17 @@ const CampaignFormatter = ({
     {label: 'Roll in', value: 'animate__rollIn'}
   ];
 
-  const animationDelays = [
-    {label: '0s', value: '0'},
-    {label: '1s', value: '1'},
-    {label: '2s', value: '2'},
-    {label: '3s', value: '3'},
-    {label: '4s', value: '4'},
-    {label: '5s', value: '5'},
+  const animationSpeeds = [
+    {label: 'Slow', value: 'slow'},
+    {label: 'Slower', value: 'slower'},
+    {label: 'Normal', value: 'normal'},
+    {label: 'Fast', value: 'fast'},
+    {label: 'Faster', value: 'faster'},
   ]
 
   const _replayAnimation = () => {
     let oldAnimation = campaign.animation;
-    setCampaignProperty('', 'animation');
+    setCampaignProperty({ type: '', delay: oldAnimation.delay, speed: oldAnimation.speed }, 'animation');
     setTimeout(() => {
       setCampaignProperty(oldAnimation, 'animation');
     }, 200)
@@ -216,22 +215,36 @@ const CampaignFormatter = ({
                     <div className='salestorm-formatter-styles-animation'>
                       <Select
                         label='Incoming Animation'
-                        options={incomingAnimations}
+                        options={animationTypes}
                         onChange={(value) => {
-                          setCampaignProperty(value, 'animation');
+                          setCampaignProperty({ ...campaign.animation, type: value}, 'animation');
                         }}
-                        value={campaign.animation}
+                        value={campaign.animation.type}
                       />
-                      <Select
-                        label='Animation delay'
-                        options={animationDelays}
+                      <TextField
+                        label='Animation delay in seconds'
+                        type='number'
                         onChange={(value) => {
-                          setCampaignProperty(value, 'animation_delay');
+                          if (value >= 0) {
+                            setCampaignProperty({ ...campaign.animation, delay: value}, 'animation');
+                          }
                         }}
-                        value={campaign.animation_delay}
+                        value={`${campaign.animation.delay}`}
                       />
                     </div>
-                    <Button icon={ReplayMinor} primary onClick={_replayAnimation}>Replay Animation</Button>
+                    <div className='salestorm-formatter-styles-animation'>
+                      <Select
+                        label='Animation Speed'
+                        options={animationSpeeds}
+                        onChange={(value) => {
+                          setCampaignProperty({ ...campaign.animation, speed: value}, 'animation');
+                        }}
+                        value={campaign.animation.speed}
+                      />
+                      <div className='salestorm-formatter-styles-animation-repeat'>
+                        <Button icon={ReplayMinor} primary onClick={_replayAnimation}>Replay Animation</Button>
+                      </div>
+                    </div>
                   </div>
                 }
                 {

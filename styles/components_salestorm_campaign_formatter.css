@@ -45,6 +45,12 @@
   margin-left: 2em;
 }
 
+.salestorm-formatter-styles-animation-repeat {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .salestorm-formatter-styles-height-width > div:not(:first-child) {
   margin-left: 1em;
 }
