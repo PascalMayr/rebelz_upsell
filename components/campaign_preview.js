@@ -1,4 +1,3 @@
-import React from 'react';
 import { kebabCasify } from 'casify';
 import '../styles/components_campaign_preview.css';
 import {

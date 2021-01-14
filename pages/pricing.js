@@ -1,4 +1,5 @@
 import { Page, Layout, Button } from '@shopify/polaris';
+
 import PricingCard from '../components/pricing_card';
 import '../styles/pages_pricing.css';
 

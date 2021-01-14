@@ -1,5 +1,6 @@
-import { Pool } from 'pg';
 import url from 'url';
+
+import { Pool } from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -11,9 +12,11 @@ const pool = new Pool({
   password,
   host: params.hostname,
   port: params.port,
-  database: params.pathname.split('/')[1]
+  database: params.pathname.split('/')[1],
 });
 
-export default {
-  query: (...args) => pool.query(...args)
-}
+const db = {
+  query: (...args) => pool.query(...args),
+};
+
+export default db;

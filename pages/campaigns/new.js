@@ -1,13 +1,14 @@
 import { useState, useCallback, useContext } from 'react';
 import { Page, Card, Layout, TextField } from '@shopify/polaris';
-import CampaignFormatter from '../../components/campaign_formatter.js';
+import { MobilePlusMajor } from '@shopify/polaris-icons';
+
 import '../../styles/pages_campaigns_index.css';
 import saveCampaign from '../../services/save_campaign';
 import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';
-import { AppContext } from '../_app';
 import SalestormTriggers from '../../components/campaign_triggers';
-import { MobilePlusMajor } from '@shopify/polaris-icons';
+import { AppContext } from '../_app';
+import CampaignFormatter from '../../components/campaign_formatter.js';
 import CampaignPreviewSwitch from '../../components/campaign_preview_switch';
 import CampaignPreview from '../../components/campaign_preview';
 import CampaignResourceSelection from '../../components/campaign_resource_selection';
@@ -83,7 +84,7 @@ const New = (props) => {
     name: '',
     products: {
       targets: [],
-      selling: []
+      selling: [],
     },
     customCSS: '',
     customJS: '',
@@ -120,14 +121,15 @@ const New = (props) => {
           if (campaign.published) {
             try {
               setPublishLoading(true);
+              const savedCampaign = await saveCampaign(campaign);
               await unpublishCampaign();
               context.setToast({
                 shown: true,
                 content: 'Successfully unpublished campaign',
                 isError: false,
               });
-              setCampaign({ ...campaign, published: false });
-            } catch (e) {
+              setCampaign({ ...savedCampaign.data, published: false });
+            } catch (_error) {
               context.setToast({
                 shown: true,
                 content: 'Campaign unpublishing failed',
@@ -140,14 +142,15 @@ const New = (props) => {
           } else {
             try {
               setPublishLoading(true);
-              await publishCampaign(popupRef.current.outerHTML);
+              const savedCampaign = await saveCampaign(campaign);
+              await publishCampaign();
               context.setToast({
                 shown: true,
                 content: 'Successfully published campaign',
                 isError: false,
               });
-              setCampaign({ ...campaign, published: true });
-            } catch (e) {
+              setCampaign({ ...savedCampaign.data, published: true });
+            } catch (_error) {
               context.setToast({
                 shown: true,
                 content: 'Campaign publishing failed',
@@ -174,7 +177,7 @@ const New = (props) => {
                 isError: false,
               });
               setCampaign({ ...campaign, ...savedCampaign.data });
-            } catch (e) {
+            } catch (_error) {
               context.setToast({
                 shown: true,
                 content: 'Draft campaign saving failed',
@@ -253,7 +256,10 @@ const New = (props) => {
                   label: 'Add target Products',
                 }}
                 onResourceMutation={(resources) =>
-                  setCampaignProperty({ ...campaign.products, targets: resources }, 'products')
+                  setCampaignProperty(
+                    { ...campaign.products, targets: resources },
+                    'products'
+                  )
                 }
                 resources={campaign.products.targets}
               />
@@ -276,7 +282,10 @@ const New = (props) => {
                   label: 'Add selling Products',
                 }}
                 onResourceMutation={(resources) =>
-                  setCampaignProperty({ ...campaign.products, selling: resources }, 'products')
+                  setCampaignProperty(
+                    { ...campaign.products, selling: resources },
+                    'products'
+                  )
                 }
                 resources={campaign.products.selling}
                 applyDiscount

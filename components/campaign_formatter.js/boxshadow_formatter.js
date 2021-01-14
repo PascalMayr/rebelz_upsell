@@ -1,4 +1,3 @@
-import React from 'react';
 import { RangeSlider } from '@shopify/polaris';
 
 const BoxShadowFormatter = ({ styles, setStyleProperty }) => {
@@ -7,9 +6,9 @@ const BoxShadowFormatter = ({ styles, setStyleProperty }) => {
       <div className="salestorm-formatter-range">
         <RangeSlider
           label="Shadow H offset"
-          value={parseInt(styles.boxShadow.split(' ')[0])}
+          value={parseInt(styles.boxShadow.split(' ')[0], 10)}
           onChange={(value) => {
-            let currentBoxShadow = styles.boxShadow.split(' ');
+            const currentBoxShadow = styles.boxShadow.split(' ');
             currentBoxShadow[0] = `${value}px`;
             setStyleProperty(currentBoxShadow.join(' '), 'boxShadow');
           }}
@@ -21,9 +20,9 @@ const BoxShadowFormatter = ({ styles, setStyleProperty }) => {
       <div className="salestorm-formatter-range">
         <RangeSlider
           label="Shadow V offset"
-          value={parseInt(styles.boxShadow.split(' ')[1])}
+          value={parseInt(styles.boxShadow.split(' ')[1], 10)}
           onChange={(value) => {
-            let currentBoxShadow = styles.boxShadow.split(' ');
+            const currentBoxShadow = styles.boxShadow.split(' ');
             currentBoxShadow[1] = `${value}px`;
             setStyleProperty(currentBoxShadow.join(' '), 'boxShadow');
           }}
@@ -35,9 +34,9 @@ const BoxShadowFormatter = ({ styles, setStyleProperty }) => {
       <div className="salestorm-formatter-range">
         <RangeSlider
           label="Shadow spread"
-          value={parseInt(styles.boxShadow.split(' ')[2])}
+          value={parseInt(styles.boxShadow.split(' ')[2], 10)}
           onChange={(value) => {
-            let currentBoxShadow = styles.boxShadow.split(' ');
+            const currentBoxShadow = styles.boxShadow.split(' ');
             currentBoxShadow[2] = `${value}px`;
             setStyleProperty(currentBoxShadow.join(' '), 'boxShadow');
           }}

@@ -21,7 +21,6 @@ const SalestormColorPicker = ({
   allowAlpha = false,
   id,
   onTextChange,
-  label,
   ...props
 }) => {
   const colorMode = allowAlpha ? 'rgb' : 'hex';
@@ -29,7 +28,6 @@ const SalestormColorPicker = ({
   const colorForPicker = { hue: h, saturation: s, brightness: l, alpha: a };
   return (
     <div className="salestorm-color-picker" {...props}>
-      <label>{label}</label>
       <ColorPicker
         onChange={(value) => {
           onChange(getColorFromColorPicker(value, colorMode));

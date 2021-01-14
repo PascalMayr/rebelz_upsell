@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ResourcePicker } from '@shopify/app-bridge-react';
 import { Button, ResourceList, ResourceItem, TextStyle, TextField, Select, Icon } from '@shopify/polaris';
 import {

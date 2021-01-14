@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Layout, Card, ChoiceList, TextField, Tabs, Select, Button } from '@shopify/polaris';
 import {
   ReplayMinor
@@ -90,7 +90,7 @@ const CampaignFormatter = ({
   const { id, styleChoices } = tabs[tab];
 
   const [styleChoice, setStyleChoice] = useState(
-    styleChoices.find((styleChoice) => styleChoice.default)
+    styleChoices.find((choice) => choice.default)
   );
 
   const handleTabChange = useCallback(
@@ -98,7 +98,7 @@ const CampaignFormatter = ({
       setStyleChoice(tabs[selectedTabIndex].styleChoices[0]);
       setTab(selectedTabIndex);
     },
-    []
+    [tabs]
   );
 
   const setStyleProperty = useCallback(

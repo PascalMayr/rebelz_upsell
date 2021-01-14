@@ -1,7 +1,7 @@
 const { parsed: localEnv } = require('dotenv').config();
 const withCSS = require('@zeit/next-css');
-
 const webpack = require('webpack');
+
 const apiKey = JSON.stringify(process.env.SHOPIFY_API_KEY);
 const nodeEnv = JSON.stringify(process.env.NODE_ENV);
 

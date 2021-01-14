@@ -14,14 +14,20 @@ import '../styles/pages_index.css';
 import NextLink from 'next/link';
 import { useCallback, useState, useContext } from 'react';
 
-import { AppContext } from './_app';
 import toggleStoreEnabled from '../services/toggle_store_enabled';
 import CampaignDeleteModal from '../components/campaign_delete_modal';
 import db from '../server/db';
 
+import { AppContext } from './_app';
+
 export async function getServerSideProps(ctx) {
-  const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [ctx.req.cookies.shopOrigin]);
-  const campaigns = await db.query('SELECT * FROM campaigns WHERE domain = $1', [ctx.req.cookies.shopOrigin]);
+  const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [
+    ctx.req.cookies.shopOrigin,
+  ]);
+  const campaigns = await db.query(
+    'SELECT * FROM campaigns WHERE domain = $1',
+    [ctx.req.cookies.shopOrigin]
+  );
   return { props: { campaigns: campaigns.rows, store: stores.rows[0] } };
 }
 
@@ -46,8 +52,7 @@ const Index = ({
     try {
       await toggleStoreEnabled(nowEnabled);
       setEnabled(nowEnabled);
-    } catch(e)
-    {
+    } catch (_error) {
       context.setToast({
         shown: true,
         content: nowEnabled ? 'Enabling failed' : 'Disabling failed',
@@ -202,7 +207,14 @@ const Index = ({
           <CampaignDeleteModal
             campaign={deleteModalCampaign}
             onClose={closeDeleteModal}
-            removeFromList={(deletedCampaign) => setPersistedCampaigns(persistedCampaigns.filter(persistedCampaign => persistedCampaign.id !== deletedCampaign.id))}
+            removeFromList={(deletedCampaign) =>
+              setPersistedCampaigns(
+                persistedCampaigns.filter(
+                  (persistedCampaign) =>
+                    persistedCampaign.id !== deletedCampaign.id
+                )
+              )
+            }
           />
         }
       </Card>
