@@ -113,7 +113,7 @@ const CampaignFormatter = ({
         currentPreviewStyleKey
       );
     },
-    [isPreviewDesktop, campaign]
+    [isPreviewDesktop, id, campaign, styleChoice]
   );
 
   const styles = isPreviewDesktop
