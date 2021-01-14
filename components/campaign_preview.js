@@ -5,7 +5,6 @@ import '../styles/components_campaign_preview.css';
 const CampaignPreview = ({
   campaign,
   isPreviewDesktop,
-  setCampaignProperty,
 }) => {
   const styles = isPreviewDesktop ? campaign.styles : campaign.mobileStyles;
   const mobileContainerClass = !isPreviewDesktop ? 'salestorm-mobile-preview-container' : '';

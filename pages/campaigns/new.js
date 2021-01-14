@@ -211,7 +211,6 @@ const New = (props) => {
                   <CampaignPreview
                     campaign={campaign}
                     isPreviewDesktop={isPreviewDesktop}
-                    setCampaignProperty={setCampaignProperty}
                   />
                   <CampaignPreviewSwitch
                     onSwitch={(value) => setPreview(value)}
