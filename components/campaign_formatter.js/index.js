@@ -187,7 +187,7 @@ const CampaignFormatter = ({
     <Layout>
       <Layout.Section>
         <Card>
-          <Card.Section title='2.) Customize the Popup'>
+          <Card.Section title='Customize the Popup'>
             <Tabs tabs={tabs} selected={tab} onSelect={handleTabChange}>
               <div id="salestorm-formatter">
                 {

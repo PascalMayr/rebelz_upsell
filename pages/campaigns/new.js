@@ -194,7 +194,7 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title="1.) Where would you like to sell more?">
+            <Card.Section title="Where would you like to sell more?">
               <p className='salestorm-subtitle'>
                 Customers will see this campaign
                 {
@@ -234,7 +234,7 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title={`3.) Set Target Products`}>
+            <Card.Section title={`Set Target Products`}>
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',
@@ -259,7 +259,7 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title="4.) Set Upselling Products">
+            <Card.Section title="Set Upselling Products">
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',
