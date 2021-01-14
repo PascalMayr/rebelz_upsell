@@ -177,7 +177,6 @@ app.prepare().then(() => {
       styles,
       mobileStyles,
       message,
-      mobileMessage,
       trigger,
       sell_type,
       name,
@@ -186,11 +185,10 @@ app.prepare().then(() => {
     let campaign;
     if (ctx.request.body.id) {
       campaign = await db.query(
-        'UPDATE campaigns SET styles = $1, message = $2, "mobileMessage" = $3, trigger = $4, sell_type = $5, name = $6, "mobileStyles" = $7, products = $8 WHERE id = $9 RETURNING *',
+        'UPDATE campaigns SET styles = $1, message = $2, trigger = $4, sell_type = $5, name = $6, "mobileStyles" = $7, products = $8 WHERE id = $9 RETURNING *',
         [
           styles,
           message,
-          mobileMessage,
           trigger,
           sell_type,
           name,
@@ -201,12 +199,11 @@ app.prepare().then(() => {
       );
     } else {
       campaign = await db.query(
-        'INSERT INTO campaigns(domain, styles, message, "mobileMessage", trigger, sell_type, name, "mobileStyles", products) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+        'INSERT INTO campaigns(domain, styles, message, trigger, sell_type, name, "mobileStyles", products) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
         [
           ctx.session.shop,
           styles,
           message,
-          mobileMessage,
           trigger,
           sell_type,
           name,

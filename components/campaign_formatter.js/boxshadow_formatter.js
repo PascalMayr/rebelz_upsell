@@ -13,6 +13,8 @@ const BoxShadowFormatter = ({ styles, setStyleProperty }) => {
             setStyleProperty(currentBoxShadow.join(' '), 'boxShadow');
           }}
           output
+          min={-100}
+          max={100}
         />
       </div>
       <div className="salestorm-formatter-range">
@@ -25,6 +27,8 @@ const BoxShadowFormatter = ({ styles, setStyleProperty }) => {
             setStyleProperty(currentBoxShadow.join(' '), 'boxShadow');
           }}
           output
+          min={-100}
+          max={100}
         />
       </div>
       <div className="salestorm-formatter-range">

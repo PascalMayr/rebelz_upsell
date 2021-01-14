@@ -6,24 +6,25 @@ import '../styles/pages_pricing.css';
 const Pricing = () => {
   return (
     <Page
-      title="Plans & Pricing"
-      subtitle="Choose the best plan for your needs"
+      title='Plans & Pricing'
+      subtitle='Choose the best plan for your needs.'
       breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
     >
-      <div className="plans-container">
+      <div className='plans-container'>
         <Layout>
           <Layout.Section oneThird>
             <PricingCard
-              title="FREE Plan"
-              subtitle="$0.00 / month"
+              title='FREE Plan'
+              subtitle='$0.00 / month'
               list={[
-                'Unlimited Impressions',
-                '2 Active Campaigns',
+                '500 monthly Funnel views',
+                'Product-, Cart-, Post purchase upsell funnels',
                 '100% Responsive',
                 'No Branding',
-                'Custom Background Images',
                 'Customize all Fonts and Styles',
-                'Discount offers',
+                'Autopilot',
+                'Analytics',
+                'Premium Support'
               ]}
               button={
                 <Button primary disabled>
@@ -34,21 +35,27 @@ const Pricing = () => {
           </Layout.Section>
           <Layout.Section oneThird>
             <PricingCard
-              title="PRO Plan"
-              subtitle="$14.99 / month"
-              list={['Everything from FREE plan', '20 Active Campaigns']}
-              button={<Button primary>Start 14 days FREE Trial</Button>}
+              title='PRO Plan'
+              subtitle='$39.99 / month'
+              list={[
+              'Everything from FREE plan',
+              '10.000 monthly Funnel views',
+              'Premium Support'
+              ]}
+              button={<Button primary>Start 7 days FREE trial</Button>}
             />
           </Layout.Section>
           <Layout.Section oneThird>
             <PricingCard
-              title="BUSINESS Plan"
-              subtitle="$29.99 / month"
-              list={['Everything in FREE & PRO plan', 'Unlimited Campaigns']}
-              button={<Button primary>Start 14 days FREE Trial</Button>}
+              title='BUSINESS Plan'
+              subtitle='$69.99 / month'
+              list={['Everything in FREE & PRO plan', '100.000 monthly Funnel views', 'Premium Support']}
+              button={<Button primary>Start 7 days FREE trial</Button>}
             />
           </Layout.Section>
         </Layout>
+        <br />
+        <p>Cancel anytime, no strings attached.</p>
       </div>
     </Page>
   );

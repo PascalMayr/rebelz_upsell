@@ -12,11 +12,11 @@ const CampaignTriggers = ({ trigger, setCampaignProperty }) => {
         <Image
           src="/add_to_cart.svg"
           alt="Add to cart"
-          width="250"
-          height="250"
+          width="150"
+          height="150"
         />
         <RadioButton
-          label="Show on add to cart"
+          label="On add to cart"
           id="add_to_cart"
           checked={trigger === 'add_to_cart'}
           name="triggers"
@@ -31,13 +31,32 @@ const CampaignTriggers = ({ trigger, setCampaignProperty }) => {
         <Image
           src="/before_checkout.svg"
           alt="Before checkout"
-          width="250"
-          height="250"
+          width="150"
+          height="150"
         />
         <RadioButton
-          label="Show before checkout"
+          label="Before checkout"
           id="checkout"
           checked={trigger === 'checkout'}
+          name="triggers"
+          onChange={(_checked, value) => setCampaignProperty(value, 'trigger')}
+        />
+      </div>
+      <div
+        className="salestorm-triggers-option"
+        onClick={() => setCampaignProperty('thank_you', 'trigger')}
+        onKeyDown={() => {}}
+      >
+        <Image
+          src="/thank_you.svg"
+          alt="Thank you"
+          width="150"
+          height="150"
+        />
+        <RadioButton
+          label="On the Thank you page"
+          id="thank_you"
+          checked={trigger === 'thank_you'}
           name="triggers"
           onChange={(_checked, value) => setCampaignProperty(value, 'trigger')}
         />

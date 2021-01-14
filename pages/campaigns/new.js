@@ -20,57 +20,64 @@ const New = (props) => {
     return {
       popup: {
         margin: '0px',
-        padding: '1em',
-        borderRadius: '0px',
+        padding: '0px',
+        borderRadius: '2px',
         borderWidth: '0px 0px 0px 0px',
         borderStyle: 'solid',
-        backgroundColor: 'rgb(249, 249, 239)',
+        backgroundColor: 'rgb(33, 36, 37)',
         backgroundImage: 'url()',
         backgroundRepeat: 'repeat',
         backgroundOrigin: 'padding-box',
         borderColor: 'rgb(0, 128, 96)',
-        boxShadow: isDesktop
-          ? '1px 5px 30px rgb(0, 0, 0)'
-          : '0px 0px 0px rgb(0, 0, 0)',
-        width: isDesktop ? '550px' : '100%',
-        height: isDesktop ? '450px' : '100%',
+        boxShadow: '0px 0px 0px rgb(0, 0, 0)',
+        width: isDesktop ? '600px' : '95%',
         position: 'relative',
+        color: 'rgb(255, 255, 255)',
+        fontFamily: "'Arial', sans-serif",
       },
       overlay: {
-        margin: '0px',
-        padding: '0px',
         borderRadius: '0px',
         borderWidth: '0px 0px 0px 0px',
         borderStyle: 'solid',
-        backgroundColor: 'rgb(0, 0, 0, 0.3)',
+        backgroundColor: 'rgba(237, 237, 237, 0.20)',
         backgroundImage: 'url()',
         backgroundRepeat: 'repeat',
         backgroundOrigin: 'padding-box',
-        borderColor: 'rgb(0, 128, 96)',
       },
-      actionButton: {
-        margin: '1em',
-        padding: '0px',
-        borderRadius: '0px',
+      secondaryButtons: {
+        width: '37px',
+        height: '37px',
+        borderRadius: '2px',
         borderWidth: '0px 0px 0px 0px',
         borderStyle: 'solid',
-        backgroundColor: 'rgb(249, 249, 239)',
+        borderColor: 'rgb(0, 128, 96)',
+        backgroundColor: 'rgb(39, 41, 45)',
+        backgroundImage: 'url()',
+        backgroundRepeat: 'repeat',
+        backgroundOrigin: 'padding-box',
+        boxShadow: '0px 0px 0px rgb(0, 0, 0)',
+        fill: 'rgb(255, 255, 255)'
+      },
+      primaryButtons: {
+        margin: '0px',
+        borderRadius: '2px',
+        borderWidth: '0px 0px 0px 0px',
+        borderStyle: 'solid',
+        backgroundColor: 'rgb(39, 41, 45)',
         backgroundImage: 'url()',
         backgroundRepeat: 'repeat',
         backgroundOrigin: 'padding-box',
         borderColor: 'rgb(0, 128, 96)',
-        boxShadow: '1px 5px 30px rgb(0, 0, 0)',
+        boxShadow: '0px 0px 0px rgb(255, 255, 255)',
         position: 'relative',
+        fontFamily: "'Arial', sans-serif",
+        color: 'rgb(255, 255, 255)',
       },
     };
   };
   const [campaign, setCampaign] = useState({
     styles: initialStyles('desktop'),
     mobileStyles: initialStyles('mobile'),
-    message:
-      '<p style="text-align: center;" data-mce-style="text-align: center;"><br></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="font-size: 18pt; color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif;" data-mce-style="font-size: 14pt; color: #000000; font-family: arial, helvetica, sans-serif;">Congratulations 🎉</span></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="font-size: 14pt; color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif;" data-mce-style="font-size: 14pt; color: #000000; font-family: arial, helvetica, sans-serif;">You have unlocked a special Deal!</span></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="color: rgb(0, 0, 0); font-size: 12pt; font-family: arial, helvetica, sans-serif;" data-mce-style="color: #000000; font-size: 12pt; font-family: arial, helvetica, sans-serif;"><em><strong>Click the text to edit this message.</strong></em></span></p>',
-    mobileMessage:
-      '<p style="text-align: center;" data-mce-style="text-align: center;"><br></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="font-size: 18pt; color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif;" data-mce-style="font-size: 14pt; color: #000000; font-family: arial, helvetica, sans-serif;">Congratulations 🎉</span></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="font-size: 14pt; color: rgb(0, 0, 0); font-family: arial, helvetica, sans-serif;" data-mce-style="font-size: 14pt; color: #000000; font-family: arial, helvetica, sans-serif;">You have unlocked a special Deal!</span></p><p style="text-align: center;" data-mce-style="text-align: center;"><span style="color: rgb(0, 0, 0); font-size: 12pt; font-family: arial, helvetica, sans-serif;" data-mce-style="color: #000000; font-size: 12pt; font-family: arial, helvetica, sans-serif;"><em><strong>Click the text to edit this message.</strong></em></span></p>',
     published: false,
     trigger: 'add_to_cart',
     sell_type: 'up-sell',
@@ -78,6 +85,13 @@ const New = (props) => {
     products: {
       targets: [],
       selling: [],
+    },
+    customCSS: '',
+    customJS: '',
+    animation: {
+      type: 'animate__fadeInUp',
+      delay: 1,
+      speed: ''
     },
     ...props.campaign,
   });
@@ -89,9 +103,16 @@ const New = (props) => {
   );
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
+  const _getResourcePickerInitialSelectedProducts = (products) => products.map(product => (
+    {
+      id: product.id,
+      variants: product.variants.edges.map(edge => edge.node.product.id)
+    }
+    )
+  )
   return (
     <Page
-      title="Create a new campaign"
+      title={props.campaign ? 'Update campaign' : 'Create new campaign'}
       breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
       primaryAction={{
         content: campaign.published ? 'Unpublish campaign' : 'Publish campaign',
@@ -178,6 +199,22 @@ const New = (props) => {
           />
         </Card.Section>
         <Card.Section>
+          <Card>
+            <Card.Section title="Where would you like to sell more?">
+              <p className='salestorm-subtitle'>
+                Customers will see this campaign
+                {
+                  campaign.trigger === 'add_to_cart' ? ' after clicking Add to cart' : campaign.trigger === 'checkout' ? ' after clicking Checkout' : campaign.trigger === 'thank_you' ? ' after their purchase' : ''
+                }
+              </p>
+              <SalestormTriggers
+                trigger={campaign.trigger}
+                setCampaignProperty={setCampaignProperty}
+              />
+            </Card.Section>
+          </Card>
+        </Card.Section>
+        <Card.Section>
           <Layout>
             <Layout.Section>
               <Card>
@@ -185,7 +222,6 @@ const New = (props) => {
                   <CampaignPreview
                     campaign={campaign}
                     isPreviewDesktop={isPreviewDesktop}
-                    setCampaignProperty={setCampaignProperty}
                   />
                   <CampaignPreviewSwitch
                     onSwitch={(value) => setPreview(value)}
@@ -204,18 +240,20 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title="2.) Set Target Products">
+            <Card.Section title={`Set Target Products`}>
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',
-                  selectMultiple: false,
-                  initialSelectionIds: campaign.products.targets,
+                  selectMultiple: true,
+                  initialSelectionIds: _getResourcePickerInitialSelectedProducts(campaign.products.targets),
                   showVariants: false,
+                  showDraftBadge: true,
+                  showArchivedBadge: true
                 }}
                 buttonProps={{
                   primary: true,
                   icon: MobilePlusMajor,
-                  label: 'Choose target Products',
+                  label: 'Add target Products',
                 }}
                 onResourceMutation={(resources) =>
                   setCampaignProperty(
@@ -230,18 +268,18 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title="3.) Set campaign products">
+            <Card.Section title="Set Upselling Products">
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',
                   selectMultiple: false,
-                  initialSelectionIds: campaign.products.selling,
+                  initialSelectionIds: _getResourcePickerInitialSelectedProducts(campaign.products.selling),
                   showVariants: false,
                 }}
                 buttonProps={{
                   primary: true,
                   icon: MobilePlusMajor,
-                  label: 'Choose selling Products',
+                  label: 'Add selling Products',
                 }}
                 onResourceMutation={(resources) =>
                   setCampaignProperty(
@@ -250,16 +288,7 @@ const New = (props) => {
                   )
                 }
                 resources={campaign.products.selling}
-              />
-            </Card.Section>
-          </Card>
-        </Card.Section>
-        <Card.Section>
-          <Card>
-            <Card.Section title="4.) Set Popup Triggers">
-              <SalestormTriggers
-                trigger={campaign.trigger}
-                setCampaignProperty={setCampaignProperty}
+                applyDiscount
               />
             </Card.Section>
           </Card>
