@@ -187,54 +187,9 @@ const CampaignFormatter = ({
     <Layout>
       <Layout.Section>
         <Card>
-          <Card.Section title="1.) Customize the Campaign Popup">
+          <Card.Section title='2.) Customize the Popup'>
             <Tabs tabs={tabs} selected={tab} onSelect={handleTabChange}>
               <div id="salestorm-formatter">
-                {id === 'popup' && (
-                  <div className="salestorm-formatter-styles-height-width">
-                    <TextField
-                      label="Width"
-                      value={styles.width}
-                      onChange={(value) => setStyleProperty(value, 'width')}
-                      placeholder="width"
-                    />
-                    <TextField
-                      label="Height"
-                      value={styles.height}
-                      onChange={(value) => setStyleProperty(value, 'height')}
-                      placeholder="height"
-                    />
-                  </div>
-                )}
-                <div className="salestorm-formatter-colors">
-                  <div className="salestorm-formatter-choces">
-                    <ChoiceList
-                      choices={styleChoices}
-                      selected={styleChoice.value}
-                      onChange={(option) => {
-                        setStyleChoice(
-                          styleChoices.find(
-                            (choice) => choice.value === option[0]
-                          )
-                        );
-                      }}
-                    />
-                  </div>
-                  {['border', 'background', 'boxShadow'].includes(
-                    styleChoice.value
-                  ) && (
-                    <SalestormColorPicker
-                      onChange={_setColor}
-                      onTextChange={_setColor}
-                      color={_getColor()}
-                      allowAlpha
-                    />
-                  )}
-                  <div className="salestorm-formatter-styles">
-                    {styleChoice.value === 'background' && (
-                      <BackgroundFormatter
-                        styles={styles}
-                        setStyleProperty={setStyleProperty}
                 {
                   id === 'customCSS' &&
                   <TextField
