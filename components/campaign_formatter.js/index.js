@@ -256,13 +256,60 @@ const CampaignFormatter = ({
                     <Button icon={ReplayMinor} primary onClick={_replayAnimation}>Replay Animation</Button>
                   </div>
                 }
+                {
+                  styleChoices.length > 0 &&
+                  <div className="salestorm-formatter-colors">
+                    <div className="salestorm-formatter-choces">
+                      {
+                        styleChoices.length > 1 &&
+                        <ChoiceList
+                          choices={styleChoices}
+                          selected={styleChoice.value}
+                          onChange={(option) => {
+                            setStyleChoice(
+                              styleChoices.find(
+                                (choice) => choice.value === option[0]
+                              )
+                            );
+                          }}
+                        />
+                      }
+                    </div>
+                    {['border', 'background', 'boxShadow', 'fill', 'color'].includes(
+                      styleChoice.value
+                    ) && (
+                      <SalestormColorPicker
+                        onChange={_setColor}
+                        onTextChange={_setColor}
+                        color={_getColor()}
+                        allowAlpha
                       />
                     )}
+                    <div className="salestorm-formatter-styles">
+                      {styleChoice.value === 'background' && (
+                        <BackgroundFormatter
+                          styles={styles}
+                          setStyleProperty={setStyleProperty}
+                        />
+                      )}
+                      {styleChoice.value === 'border' && (
+                        <BorderFormatter
+                          styles={styles}
+                          setStyleProperty={setStyleProperty}
+                        />
+                      )}
+                      {styleChoice.value === 'boxShadow' && (
+                        <BoxShadowFormatter
+                          styles={styles}
+                          setStyleProperty={setStyleProperty}
+                        />
+                      )}
                       {
                         styleChoice.value === 'color' && <TextFormatter styles={styles} setStyleProperty={setStyleProperty} />
                       }
+                    </div>
                   </div>
-                </div>
+                }
               </div>
             </Tabs>
           </Card.Section>
