@@ -44,6 +44,13 @@ const CampaignFormatter = ({
         { label: 'Box Shadow', value: 'boxShadow' },
       ],
     },
+    {
+      id: 'animation',
+      content: 'Animation',
+      accessibilityLabel: 'Animation',
+      panelID: 'animation-panel',
+      styleChoices: [],
+    },
   ];
 
   const [tab, setTab] = useState(0);
@@ -94,6 +101,38 @@ const CampaignFormatter = ({
     styleChoice.value === 'boxShadow' && id !== 'overlay'
       ? styles[styleChoice.value].split(' ').slice(3).join(' ')
       : styles[`${styleChoice.value}Color`];
+  const incomingAnimations = [
+    {label: 'Back in down', value: 'animate__backInDown'},
+    {label: 'Back in up', value: 'animate__backInUp'},
+    {label: 'Fade in', value: 'animate__fadeIn'},
+    {label: 'Fade in down', value: 'animate__fadeInDown'},
+    {label: 'Fade in up', value: 'animate__fadeInUp'},
+    {label: 'Light Speed in from right', value: 'animate__lightSpeedInRight'},
+    {label: 'Light Speed in from left', value: 'animate__lightSpeedInLeft'},
+    {label: 'Rotate in', value: 'animate__rotateIn'},
+    {label: 'Jack in the Box', value: 'animate__jackInTheBox'},
+    {label: 'Zoom in', value: 'animate__zoomIn'},
+    {label: 'Flip in X', value: 'animate__flipInX'},
+    {label: 'Flip in Y', value: 'animate__flipInY'},
+    {label: 'Roll in', value: 'animate__rollIn'}
+  ];
+
+  const animationDelays = [
+    {label: '0s', value: '0'},
+    {label: '1s', value: '1'},
+    {label: '2s', value: '2'},
+    {label: '3s', value: '3'},
+    {label: '4s', value: '4'},
+    {label: '5s', value: '5'},
+  ]
+
+  const _replayAnimation = () => {
+    let oldAnimation = campaign.animation;
+    setCampaignProperty('', 'animation');
+    setTimeout(() => {
+      setCampaignProperty(oldAnimation, 'animation');
+    }, 200)
+  }
 
   return (
     <Layout>
@@ -147,18 +186,30 @@ const CampaignFormatter = ({
                       <BackgroundFormatter
                         styles={styles}
                         setStyleProperty={setStyleProperty}
+                {
+                  id === 'animation' &&
+                  <div className='salestorm-formatter-styles-animation-container'>
+                    <div className='salestorm-formatter-styles-animation'>
+                      <Select
+                        label='Incoming Animation'
+                        options={incomingAnimations}
+                        onChange={(value) => {
+                          setCampaignProperty(value, 'animation');
+                        }}
+                        value={campaign.animation}
                       />
-                    )}
-                    {styleChoice.value === 'border' && (
-                      <BorderFormatter
-                        styles={styles}
-                        setStyleProperty={setStyleProperty}
+                      <Select
+                        label='Animation delay'
+                        options={animationDelays}
+                        onChange={(value) => {
+                          setCampaignProperty(value, 'animation_delay');
+                        }}
+                        value={campaign.animation_delay}
                       />
-                    )}
-                    {styleChoice.value === 'boxShadow' && (
-                      <BoxShadowFormatter
-                        styles={styles}
-                        setStyleProperty={setStyleProperty}
+                    </div>
+                    <Button icon={ReplayMinor} primary onClick={_replayAnimation}>Replay Animation</Button>
+                  </div>
+                }
                       />
                     )}
                   </div>

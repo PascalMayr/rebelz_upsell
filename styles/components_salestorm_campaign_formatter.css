@@ -27,6 +27,24 @@
   margin-bottom: 1em;
 }
 
+.salestorm-formatter-styles-animation {
+  display: flex;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+.salestorm-formatter-styles-animation-container {
+  margin-bottom: 5em;
+}
+
+.salestorm-formatter-styles-animation > div {
+  flex: 1;
+}
+
+.salestorm-formatter-styles-animation > div:not(:first-child) {
+  margin-left: 2em;
+}
+
 .salestorm-formatter-styles-height-width > div:not(:first-child) {
   margin-left: 1em;
 }

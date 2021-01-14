@@ -65,6 +65,26 @@ Run:
 
 Note: You need to ***run at least once shopify serve*** before you can develope locally.
 
+### Add new Animations
+1.) Clone the animate.css repo
+```sh
+~/ $ git clone git@github.com:animate-css/animate.css.git
+```
+
+1.)
+```sh
+~/ $ cd animate.css/source
+```
+
+2.) Modify the @imports in the /source/animate.css file according to your needs;
+
+3.)
+```sh
+~/ $ cd .. && yarn start
+```
+
+4.) Copy the content without comments of animate.min.css into the campaign_preview components style tag.
+
 ## Troubleshooting authentication problems
 
 1. Stop the shopify tunnel with shopify tunnel stop
@@ -85,9 +105,14 @@ shopify connect
 shopify serve
 ```
 
+4. Check the status of the shopify system:
+[shopifystatus.com](https://shopifystatus.com)
+[status.shopify.com](https://status.shopify.com)
+
 ## License
 
 Shopify App Node License:
 This respository is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
 This project was bootstrapped using the Shopify App Node Boilerplate to create an embedded Shopify app made with Node, [Next.js](https://nextjs.org/), [Shopify-koa-auth](https://github.com/Shopify/quilt/tree/master/packages/koa-shopify-auth), [Polaris](https://github.com/Shopify/polaris-react), and [App Bridge React](https://shopify.dev/tools/app-bridge/react-components).
+

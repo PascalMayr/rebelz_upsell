@@ -76,6 +76,8 @@ const New = (props) => {
       targets: [],
       selling: []
     },
+    animation: 'animate__fadeInUp',
+    animation_delay: '1',
     ...props.campaign,
   });
   const [preview, setPreview] = useState('desktop');
