@@ -108,7 +108,7 @@ const New = (props) => {
   )
   return (
     <Page
-      title={props.campaign ? 'Update campaign' : 'Create a new Campaign'}
+      title={props.campaign ? 'Update campaign' : 'Create new campaign'}
       breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
       primaryAction={{
         content: campaign.published ? 'Unpublish campaign' : 'Publish campaign',
