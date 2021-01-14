@@ -1,18 +1,30 @@
 import React from 'react';
 import { kebabCasify } from 'casify';
 import '../styles/components_campaign_preview.css';
+import {
+  MobileCancelMajor
+} from '@shopify/polaris-icons';
+import { Icon } from '@shopify/polaris';
+import tinycolor from 'tinycolor2';
 
 const CampaignPreview = ({
   campaign,
-  isPreviewDesktop,
+  isPreviewDesktop
 }) => {
-  const styles = isPreviewDesktop ? campaign.styles : campaign.mobileStyles;
-  const mobileContainerClass = !isPreviewDesktop ? 'salestorm-mobile-preview-container' : '';
-  const campaignMessageKey = isPreviewDesktop ? 'message' : 'mobileMessage';
+  const mobileContainerClass = !isPreviewDesktop ? 'salestorm-mobile-preview-container' : 'salestorm-desktop-preview-container';
+  let styles = isPreviewDesktop
+    ? campaign.styles
+    : campaign.mobileStyles;
+
   const styleObjectToStyleString = (styleObject) => {
     const kebabCaseStyles = kebabCasify(styleObject);
     return Object.keys(kebabCaseStyles).map(styleKey => `${styleKey}: ${kebabCaseStyles[styleKey]}`).join(';');
   }
+
+  const campaignProduct = campaign.products.selling[0];
+  const campaignProductImage = campaignProduct && campaignProduct.variants.edges[0].node.product.images.edges.length > 0 && campaignProduct.variants.edges[0].node.product.images.edges[0].node.transformedSrc;
+  const campaignProductTitle = campaignProduct && campaignProduct.title;
+  const campaignDiscount = campaignProduct && `${campaignProduct.discount.value}${campaignProduct.discount.type}`;
 
   const popupJS = () => {
     // JS used in the popup to hide, chnange variants, show timer
@@ -244,24 +256,58 @@ const CampaignPreview = ({
   `;
 
   return (
-    <>
-      <div className="salestorm-popup-preview-container">
-        <div className={mobileContainerClass}>
-          <style>
-            {
-              campaignCSS
-            }
-          </style>
-          <div
-            id="salestorm-popup"
-          >
-            <br />
+    <div id='salestorm-upselling-container'>
       <style>
         {
           campaignCSS
         }
       </style>
+      <div className={mobileContainerClass}>
+        <div id="salestorm-overlay-container">
           <div id='salestorm-popup' className={`animate__animated ${campaign.animation} animate__delay-${campaign.animation_delay}s`}>
+            <div id='salestorm-popup-header'>
+              <div id='salestorm-popup-header-title'>
+                {
+                  campaignProductTitle
+                }
+              </div>
+              <div id='salestorm-popup-close'>
+                <Icon source={MobileCancelMajor} />
+              </div>
+            </div>
+            <div id='salestorm-product'>
+              <div id='salestorm-product-image-container'>
+                <div id='salestorm-product-image'/>
+              </div>
+              <div id='salestorm-product-action-container'>
+                {
+                  campaignProduct && (
+                    <>
+                      <h3>GET {campaignDiscount} DISCOUNT!</h3>
+                      <p>Get this product with a {campaignDiscount} Discount.</p>
+                      <select className='salestorm-product-select'>
+                        <option value="volvo">Volvo</option>
+                        <option value="saab">Saab</option>
+                        <option value="mercedes">Mercedes</option>
+                        <option value="audi">Audi</option>
+                      </select>
+                      <button id='salestorm-add-to-cart-button'>
+                        Claim Offer!
+                      </button>
+                      <p id='salestorm-product-details-message'>See product details</p>
+                    </>
+                  )
+                }
+              </div>
+            </div>
+            <div id='salestorm-popup-footer'>
+              <div id='salestorm-popup-footer-close-action'>
+                No thanks
+              </div>
+              <div id='salestorm-popup-footer-checkout-action'>
+                Go to checkout &#8594;
+              </div>
+            </div>
           </div>
         </div>
       </div>
