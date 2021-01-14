@@ -192,6 +192,7 @@ const CampaignFormatter = ({
                 {
                   id === 'customCSS' &&
                   <TextField
+                    placeholder='/* Use this field to add custom CSS &hearts; */'
                     value={campaign.customCSS}
                     onChange={(value) => {
                       setCampaignProperty(value, 'customCSS')
@@ -202,6 +203,7 @@ const CampaignFormatter = ({
                 {
                   id === 'customJS' &&
                   <TextField
+                    placeholder='/* Use this field to add custom Javascript &hearts; */'
                     value={campaign.customJS}
                     onChange={(value) => {
                       setCampaignProperty(value, 'customJS')
