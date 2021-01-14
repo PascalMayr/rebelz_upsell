@@ -261,16 +261,6 @@ const New = (props) => {
             </Card.Section>
           </Card>
         </Card.Section>
-        <Card.Section>
-          <Card>
-            <Card.Section title="4.) Set Popup Triggers">
-              <SalestormTriggers
-                trigger={campaign.trigger}
-                setCampaignProperty={setCampaignProperty}
-              />
-            </Card.Section>
-          </Card>
-        </Card.Section>
       </Card>
     </Page>
   );
