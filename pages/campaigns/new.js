@@ -92,6 +92,13 @@ const New = (props) => {
   );
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
+  const _getResourcePickerInitialSelectedProducts = (products) => products.map(product => (
+    {
+      id: product.id,
+      variants: product.variants.edges.map(edge => edge.node.product.id)
+    }
+    )
+  )
   return (
     <Page
       title={props.campaign ? 'Update campaign' : 'Create a new Campaign'}
@@ -221,18 +228,20 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title="2.) Set Target Products">
+            <Card.Section title={`3.) Set Target Products`}>
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',
-                  selectMultiple: false,
-                  initialSelectionIds: campaign.products.targets,
+                  selectMultiple: true,
+                  initialSelectionIds: _getResourcePickerInitialSelectedProducts(campaign.products.targets),
                   showVariants: false,
+                  showDraftBadge: true,
+                  showArchivedBadge: true
                 }}
                 buttonProps={{
                   primary: true,
                   icon: MobilePlusMajor,
-                  label: 'Choose target Products',
+                  label: 'Add target Products',
                 }}
                 onResourceMutation={(resources) =>
                   setCampaignProperty({ ...campaign.products, targets: resources }, 'products')
@@ -244,23 +253,24 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title={`3.) Set campaign products`}>
+            <Card.Section title="4.) Set Upselling Products">
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',
                   selectMultiple: false,
-                  initialSelectionIds: campaign.products.selling,
+                  initialSelectionIds: _getResourcePickerInitialSelectedProducts(campaign.products.selling),
                   showVariants: false,
                 }}
                 buttonProps={{
                   primary: true,
                   icon: MobilePlusMajor,
-                  label: 'Choose selling Products',
+                  label: 'Add selling Products',
                 }}
                 onResourceMutation={(resources) =>
                   setCampaignProperty({ ...campaign.products, selling: resources }, 'products')
                 }
                 resources={campaign.products.selling}
+                applyDiscount
               />
             </Card.Section>
           </Card>

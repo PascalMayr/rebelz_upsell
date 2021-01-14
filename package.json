@@ -39,6 +39,7 @@
     "axios": "^0.21.0",
     "casify": "^2.0.0",
     "cross-env": "^7.0.2",
+    "currency-symbol-map": "^4.0.4",
     "dotenv": "^8.2.0",
     "eslint-plugin-shopify": "^35.1.0",
     "graphql": "^14.5.8",
