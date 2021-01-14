@@ -34,6 +34,8 @@ const New = (props) => {
         width: isDesktop ? '550px' : '100%',
         height: isDesktop ? '450px' : '100%',
         position: 'relative',
+        color: 'rgb(255, 255, 255)',
+        fontFamily: "'Arial', sans-serif",
       },
       overlay: {
         margin: '0px',
@@ -60,6 +62,8 @@ const New = (props) => {
         borderColor: 'rgb(0, 128, 96)',
         boxShadow: '1px 5px 30px rgb(0, 0, 0)',
         position: 'relative',
+        fontFamily: "'Arial', sans-serif",
+        color: 'rgb(255, 255, 255)',
       },
     };
   };

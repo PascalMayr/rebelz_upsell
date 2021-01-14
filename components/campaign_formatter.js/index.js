@@ -5,6 +5,7 @@ import '../../styles/components_salestorm_campaign_formatter.css';
 import BackgroundFormatter from './background_formatter';
 import BorderFormatter from './border_formatter';
 import BoxShadowFormatter from './boxshadow_formatter';
+import TextFormatter from './text_formatter';
 
 const CampaignFormatter = ({
   campaign,
@@ -21,6 +22,7 @@ const CampaignFormatter = ({
         { label: 'Background', value: 'background', default: true },
         { label: 'Border', value: 'border' },
         { label: 'Box Shadow', value: 'boxShadow' },
+        { label: 'Text', value: 'color' }
       ],
     },
     {
@@ -34,14 +36,27 @@ const CampaignFormatter = ({
       ],
     },
     {
-      id: 'actionButton',
-      content: 'Add to cart Button',
-      accessibilityLabel: 'Add to cart Button',
-      panelID: 'actionButton-panel',
+      id: 'secondaryButtons',
+      content: 'Close Button',
+      accessibilityLabel: 'Close Button',
+      panelID: 'secondaryButtons-panel',
       styleChoices: [
         { label: 'Background', value: 'background', default: true },
         { label: 'Border', value: 'border' },
         { label: 'Box Shadow', value: 'boxShadow' },
+        { label: 'Icon Color', value: 'fill' },
+      ],
+    },
+    {
+      id: 'primaryButtons',
+      content: 'Claim Offer Button',
+      accessibilityLabel: 'Claim Offer Button',
+      panelID: 'primaryButtons-panel',
+      styleChoices: [
+        { label: 'Background', value: 'background', default: true },
+        { label: 'Border', value: 'border' },
+        { label: 'Box Shadow', value: 'boxShadow' },
+        { label: 'Text', value: 'color' },
       ],
     },
     {
@@ -51,6 +66,20 @@ const CampaignFormatter = ({
       panelID: 'animation-panel',
       styleChoices: [],
     },
+    {
+      id: 'customCSS',
+      content: 'Custom CSS',
+      accessibilityLabel: 'Custom CSS',
+      panelID: 'customCSS-panel',
+      styleChoices: [],
+    },
+    {
+      id: 'customJS',
+      content: 'Custom Javascript',
+      accessibilityLabel: 'Custom Javascript',
+      panelID: 'customJS-panel',
+      styleChoices: [],
+    }
   ];
 
   const [tab, setTab] = useState(0);
@@ -89,18 +118,35 @@ const CampaignFormatter = ({
     : campaign.mobileStyles[id];
 
   const _setColor = (value) => {
-    if (styleChoice.value === 'boxShadow') {
-      let boxShadow = styles.boxShadow.split(' ').slice(0, 3);
-      setStyleProperty(`${boxShadow.join(' ')} ${value}`, styleChoice.value);
-    } else {
-      setStyleProperty(value, `${styleChoice.value}Color`);
+    switch (styleChoice.value) {
+      case 'boxShadow':
+        let boxShadow = styles.boxShadow.split(' ').slice(0, 3);
+        setStyleProperty(`${boxShadow.join(' ')} ${value}`, styleChoice.value);
+        break;
+      case 'fill':
+        setStyleProperty(value, styleChoice.value);
+        break;
+      case 'color':
+        setStyleProperty(value, styleChoice.value);
+        break;
+      default:
+        setStyleProperty(value, `${styleChoice.value}Color`);
     }
   };
 
-  const _getColor = () =>
-    styleChoice.value === 'boxShadow' && id !== 'overlay'
-      ? styles[styleChoice.value].split(' ').slice(3).join(' ')
-      : styles[`${styleChoice.value}Color`];
+  const _getColor = () => {
+    switch (styleChoice.value) {
+      case 'boxShadow':
+        return styles[styleChoice.value].split(' ').slice(3).join(' ');
+      case 'fill':
+        return styles[styleChoice.value];
+      case 'color':
+        return styles[styleChoice.value];
+      default:
+        return styles[`${styleChoice.value}Color`];
+    }
+  }
+
   const incomingAnimations = [
     {label: 'Back in down', value: 'animate__backInDown'},
     {label: 'Back in up', value: 'animate__backInUp'},
@@ -212,6 +258,9 @@ const CampaignFormatter = ({
                 }
                       />
                     )}
+                      {
+                        styleChoice.value === 'color' && <TextFormatter styles={styles} setStyleProperty={setStyleProperty} />
+                      }
                   </div>
                 </div>
               </div>
