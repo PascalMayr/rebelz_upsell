@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import 'isomorphic-fetch';
 import createShopifyAuth, { verifyRequest } from '@shopify/koa-shopify-auth';
 import graphQLProxy, { ApiVersion } from '@shopify/koa-shopify-graphql-proxy';
+import { receiveWebhook } from '@shopify/koa-shopify-webhooks';
 import Koa from 'koa';
 import next from 'next';
 import bodyParser from 'koa-bodyparser';
@@ -52,6 +53,23 @@ app.prepare().then(() => {
     } else {
       ctx.status = 404;
     }
+  });
+
+  const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET });
+
+  router.post('/webhooks/customers/redact', webhook, (ctx) => {
+    ctx.body = {};
+    ctx.status = 200;
+  });
+
+  router.post('/webhooks/shop/redact', webhook, (ctx) => {
+    ctx.body = {};
+    ctx.status = 200;
+  });
+
+  router.post('/webhooks/customers/data_request', webhook, (ctx) => {
+    ctx.body = {};
+    ctx.status = 200;
   });
 
   server.use(
