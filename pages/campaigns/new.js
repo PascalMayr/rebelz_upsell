@@ -80,6 +80,8 @@ const New = (props) => {
       targets: [],
       selling: []
     },
+    customCSS: '',
+    customJS: '',
     animation: 'animate__fadeInUp',
     animation_delay: '1',
     ...props.campaign,

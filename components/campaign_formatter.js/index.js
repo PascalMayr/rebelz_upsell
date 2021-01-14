@@ -233,6 +233,26 @@ const CampaignFormatter = ({
                         styles={styles}
                         setStyleProperty={setStyleProperty}
                 {
+                  id === 'customCSS' &&
+                  <TextField
+                    value={campaign.customCSS}
+                    onChange={(value) => {
+                      setCampaignProperty(value, 'customCSS')
+                    }}
+                    multiline={6}
+                  />
+                }
+                {
+                  id === 'customJS' &&
+                  <TextField
+                    value={campaign.customJS}
+                    onChange={(value) => {
+                      setCampaignProperty(value, 'customJS')
+                    }}
+                    multiline={6}
+                  />
+                }
+                {
                   id === 'animation' &&
                   <div className='salestorm-formatter-styles-animation-container'>
                     <div className='salestorm-formatter-styles-animation'>
