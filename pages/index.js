@@ -28,7 +28,7 @@ export async function getServerSideProps(ctx) {
 const Index = ({
   campaigns,
   store,
-  totalRevenue,
+  totalRevenue = 0,
   appName = 'App',
   plan = 'free_plan',
 }) => {
@@ -149,7 +149,9 @@ const Index = ({
             <Card.Section title='Total Revenue'>
               <p className='salestorm-analytics-subheading'>The total impact our app made on your store.</p>
               <div className='salestorm-analytics-value'>
-                <p>$0</p>
+                <p>
+
+                </p>
               </div>
             </Card.Section>
           </Card>
