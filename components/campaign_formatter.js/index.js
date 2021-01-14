@@ -120,11 +120,12 @@ const CampaignFormatter = ({
     ? campaign.styles[id]
     : campaign.mobileStyles[id];
 
+  const _getBoxshadowWithoutColor = (boxShadow) => boxShadow.split(' ').slice(0, 3).join(' ');
+
   const _setColor = (value) => {
     switch (styleChoice.value) {
       case 'boxShadow':
-        let boxShadow = styles.boxShadow.split(' ').slice(0, 3);
-        setStyleProperty(`${boxShadow.join(' ')} ${value}`, styleChoice.value);
+        setStyleProperty(`${_getBoxshadowWithoutColor(styles.boxShadow)} ${value}`, styleChoice.value);
         break;
       case 'fill':
         setStyleProperty(value, styleChoice.value);
