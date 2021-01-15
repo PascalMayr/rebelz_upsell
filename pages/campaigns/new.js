@@ -33,7 +33,7 @@ const New = (props) => {
         width: isDesktop ? '600px' : '95%',
         position: 'relative',
         color: 'rgb(255, 255, 255)',
-        fontFamily: "'Arial', sans-serif",
+        fontFamily: "'Open Sans', sans-serif",
       },
       overlay: {
         borderRadius: '0px',
@@ -70,7 +70,7 @@ const New = (props) => {
         borderColor: 'rgb(0, 128, 96)',
         boxShadow: '0px 0px 0px rgb(255, 255, 255)',
         position: 'relative',
-        fontFamily: "'Arial', sans-serif",
+        fontFamily: "'Open Sans', sans-serif",
         color: 'rgb(255, 255, 255)',
       },
     };
