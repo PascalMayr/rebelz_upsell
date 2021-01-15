@@ -37,6 +37,7 @@ const TextFormatter = ({
     {value: "'Gravitas One', cursive;", label: 'Gravitas One'},
     {value: "'Monoton', cursive;", label: 'Monoton'},
     {value: "'Rubrik', sans-serif;", label: 'Rubrik'},
+    {value: "'Open Sans', sans-serif;", label: 'Open Sans'},
   ].sort((a, b) => a.label.toUpperCase() < b.label.toUpperCase() ? -1 : 1)
 
   return (
