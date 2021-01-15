@@ -247,7 +247,7 @@ const CampaignFormatter = ({
                         value={campaign.animation.speed}
                       />
                       <div className='salestorm-formatter-styles-animation-repeat'>
-                        <Button icon={ReplayMinor} primary onClick={_replayAnimation}>Replay Animation</Button>
+                        <Button icon={ReplayMinor} primary onClick={_replayAnimation}>Replay incoming Animation</Button>
                       </div>
                     </div>
                   </div>
