@@ -176,39 +176,45 @@ app.prepare().then(() => {
     const {
       styles,
       mobileStyles,
-      message,
       trigger,
       sell_type,
       name,
       products,
+      customCSS,
+      customJS,
+      animation
     } = ctx.request.body;
     let campaign;
     if (ctx.request.body.id) {
       campaign = await db.query(
-        'UPDATE campaigns SET styles = $1, message = $2, trigger = $4, sell_type = $5, name = $6, "mobileStyles" = $7, products = $8 WHERE id = $9 RETURNING *',
+        'UPDATE campaigns SET styles = $1, trigger = $2, sell_type = $3, name = $4, "mobileStyles" = $5, products = $6, "customCSS" = $7, "customJS" = $8, animation = $9 WHERE id = $10 RETURNING *',
         [
           styles,
-          message,
           trigger,
           sell_type,
           name,
           mobileStyles,
           products,
+          customCSS,
+          customJS,
+          animation,
           ctx.request.body.id,
         ]
       );
     } else {
       campaign = await db.query(
-        'INSERT INTO campaigns(domain, styles, message, trigger, sell_type, name, "mobileStyles", products) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+        'INSERT INTO campaigns(domain, styles, trigger, sell_type, name, "mobileStyles", products, "customCSS", "customJS", animation) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
         [
           ctx.session.shop,
           styles,
-          message,
           trigger,
           sell_type,
           name,
           mobileStyles,
           products,
+          customCSS,
+          customJS,
+          animation,
         ]
       );
     }

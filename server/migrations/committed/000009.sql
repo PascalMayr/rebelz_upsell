@@ -1,0 +1,15 @@
+--! Previous: sha1:c952566ac5bec7b386557f68d31872a3eaba8af5
+--! Hash: sha1:49248b774c5580db43d828df598c633f308bcc3a
+
+-- Enter migration here
+ALTER TABLE campaigns DROP COLUMN IF EXISTS "customCSS" CASCADE;
+ALTER TABLE campaigns ADD COLUMN "customCSS" TEXT;
+
+ALTER TABLE campaigns DROP COLUMN IF EXISTS "customJS" CASCADE;
+ALTER TABLE campaigns ADD COLUMN "customJS" TEXT;
+
+ALTER TABLE campaigns DROP COLUMN IF EXISTS animation CASCADE;
+ALTER TABLE campaigns ADD COLUMN animation JSONB;
+
+ALTER TABLE campaigns DROP COLUMN IF EXISTS message CASCADE;
+ALTER TABLE campaigns DROP COLUMN IF EXISTS "mobileMessage" CASCADE;
