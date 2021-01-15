@@ -1,7 +1,8 @@
 import { kebabCasify } from 'casify';
 import '../styles/components_campaign_preview.css';
 import {
-  MobileCancelMajor
+  MobileCancelMajor,
+  SelectMinor
 } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 import tinycolor from 'tinycolor2';
@@ -157,7 +158,9 @@ const CampaignPreview = ({
       width: 100%;
     }
     #salestorm-popup-close:hover {
-      fill: ${tinycolor(styles.secondaryButtons.fill).darken(20)};
+      background-color: ${tinycolor(
+        styles.secondaryButtons.backgroundColor
+      ).lighten(10)};
     }
     #salestorm-popup-header {
       width: 100%;
@@ -220,9 +223,12 @@ const CampaignPreview = ({
     #salestorm-product-action-container > p {
       margin-bottom: 16px;
     }
+    .salestorm-product-select-container {
+      position: relative;
+    }
     .salestorm-product-select {
       padding: 8px 16px !important;
-      background-color: ${tinycolor(styles.popup.backgroundColor).darken(20)};
+      background-color: ${tinycolor(styles.popup.backgroundColor).darken(10)};
       width: 100% !important;
       border-radius: 3px;
       border-color: inherit;
@@ -231,7 +237,16 @@ const CampaignPreview = ({
       appearance: none;
       color: inherit;
       font-family: inherit;
-      margin-bottom: 16px;
+      font-size: 14px;
+      z-index: 100002 !important;
+    }
+    .salestorm-product-select-arrow > span {
+      position: absolute;
+      top: 7px;
+      right: 5px;
+      width: 21px;
+      height: 21px;
+      fill: ${styles.popup.color};
     }
     #salestorm-add-to-cart-button {
       width: 100% !important;
@@ -244,7 +259,7 @@ const CampaignPreview = ({
       ${styleObjectToStyleString(campaign.styles.primaryButtons)};
     }
     #salestorm-add-to-cart-button:hover {
-      background-color: ${tinycolor(styles.primaryButtons.backgroundColor).darken(20)};
+      background-color: ${tinycolor(styles.primaryButtons.backgroundColor).darken(10)};
     }
     #salestorm-product-details-message{
       color: inherit;
@@ -288,12 +303,17 @@ const CampaignPreview = ({
                     <>
                       <h3>GET {campaignDiscount} DISCOUNT!</h3>
                       <p>Get this product with a {campaignDiscount} Discount.</p>
-                      <select className='salestorm-product-select'>
-                        <option value="volvo">Volvo</option>
-                        <option value="saab">Saab</option>
-                        <option value="mercedes">Mercedes</option>
-                        <option value="audi">Audi</option>
-                      </select>
+                      <div className='salestorm-product-select-container'>
+                        <select className='salestorm-product-select'>
+                          <option value="volvo">Volvo</option>
+                          <option value="saab">Saab</option>
+                          <option value="mercedes">Mercedes</option>
+                          <option value="audi">Audi</option>
+                        </select>
+                        <div className='salestorm-product-select-arrow'>
+                          <Icon source={SelectMinor} />
+                        </div>
+                      </div>
                       <button id='salestorm-add-to-cart-button'>
                         Claim Offer!
                       </button>
