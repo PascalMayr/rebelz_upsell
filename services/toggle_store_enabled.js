@@ -1,5 +1,6 @@
 import api from './api';
 
-const deleteCampaign = (enabled) => api.patch('/api/store/enable', { enabled });
+const toggleStoreEnabled = (enabled) =>
+  api.patch('/api/store/enable', { enabled });
 
-export default deleteCampaign;
+export default toggleStoreEnabled;
