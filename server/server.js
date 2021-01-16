@@ -12,6 +12,8 @@ import Cors from '@koa/cors';
 import session from 'koa-session';
 
 import { createClient, getScriptTagId } from './handlers';
+import config from '../config';
+
 import db from './db';
 
 dotenv.config();
