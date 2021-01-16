@@ -80,7 +80,7 @@ const New = (props) => {
     mobileStyles: initialStyles('mobile'),
     published: false,
     trigger: 'add_to_cart',
-    sell_type: 'up-sell',
+    sellType: 'up-sell',
     name: '',
     products: {
       targets: [],

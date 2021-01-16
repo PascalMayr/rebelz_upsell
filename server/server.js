@@ -177,7 +177,7 @@ app.prepare().then(() => {
       styles,
       mobileStyles,
       trigger,
-      sell_type,
+      sellType,
       name,
       products,
       customCSS,
@@ -187,11 +187,11 @@ app.prepare().then(() => {
     let campaign;
     if (ctx.request.body.id) {
       campaign = await db.query(
-        'UPDATE campaigns SET styles = $1, trigger = $2, sell_type = $3, name = $4, "mobileStyles" = $5, products = $6, "customCSS" = $7, "customJS" = $8, animation = $9 WHERE id = $10 RETURNING *',
+        'UPDATE campaigns SET styles = $1, trigger = $2, "sellType" = $3, name = $4, "mobileStyles" = $5, products = $6, "customCSS" = $7, "customJS" = $8, animation = $9 WHERE id = $10 RETURNING *',
         [
           styles,
           trigger,
-          sell_type,
+          sellType,
           name,
           mobileStyles,
           products,
@@ -203,12 +203,12 @@ app.prepare().then(() => {
       );
     } else {
       campaign = await db.query(
-        'INSERT INTO campaigns(domain, styles, trigger, sell_type, name, "mobileStyles", products, "customCSS", "customJS", animation) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
+        'INSERT INTO campaigns(domain, styles, trigger, "sellType", name, "mobileStyles", products, "customCSS", "customJS", animation) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
         [
           ctx.session.shop,
           styles,
           trigger,
-          sell_type,
+          sellType,
           name,
           mobileStyles,
           products,
