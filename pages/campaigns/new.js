@@ -106,7 +106,7 @@ const New = (props) => {
   const _getResourcePickerInitialSelectedProducts = (products) => products.map(product => (
     {
       id: product.id,
-      variants: product.variants.edges.map(edge => edge.node.product.id)
+      variants: product.variants.edges.map(edge => edge.node.id)
     }
     )
   )
