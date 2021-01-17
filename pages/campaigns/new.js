@@ -103,12 +103,14 @@ const New = (props) => {
   );
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
-  const _getResourcePickerInitialSelectedProducts = (products) => products.map(product => (
-    {
-      id: product.id,
-      variants: product.variants.edges.map(edge => edge.node.id)
+  const _getResourcePickerInitialSelectedProducts = (products) => products.map(product => {
+    if (product) {
+      return ({
+        id: product.id,
+        variants: product.variants.edges.map(edge => edge.node.id)
+      });
     }
-    )
+  }
   )
   return (
     <Page
