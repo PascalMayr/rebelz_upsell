@@ -71,14 +71,14 @@ Note: You need to ***run at least once shopify serve*** before you can develope 
 ~/ $ git clone git@github.com:animate-css/animate.css.git
 ```
 
-1.)
+2.)
 ```sh
 ~/ $ cd animate.css/source
 ```
 
-2.) Modify the @imports in the /source/animate.css file according to your needs;
+3.) Modify the @imports in the /source/animate.css file according to your needs;
 
-3.)
+4.)
 ```sh
 ~/ $ cd .. && yarn start
 ```
