@@ -141,6 +141,11 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
     #salestorm-popup-header-title {
       max-width: 75%;
     }
+    #salestorm-product-description {
+      padding: 0px 16px;
+      margin-top: 6px;
+      text-align: center;
+    }
     #salestorm-overlay-container {
       contain: layout;
       display: flex !important;
