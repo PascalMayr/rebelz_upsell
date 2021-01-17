@@ -367,6 +367,7 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
                           className="salestorm-product-select"
                           key={option}
                         >
+                          <option selected disabled value={option}>{option}</option>
                           {renderedProductVariantsByOption[option].map((productVariant) => (
                             <option
                               value={productVariant.legacyResourceId}
