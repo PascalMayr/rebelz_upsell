@@ -141,14 +141,18 @@ const CampaignResourceSelection = ({
                   if (resourcePickerProps.resourceType === 'Product') {
                     setLoading(true);
                     const products = await Promise.all(selectPayload.selection.map(async (resource) => {
-                      const { id } = resource;
-                      const product = await client.query({
-                        query: GET_PRODUCT,
-                        variables: {
-                          id
-                      }});
-                      const product_data = product.data.product;
-                      return applyDiscount ? {...product_data, discount: { type: getSymbolFromCurrency(currencyCode), value: 5 }} : product_data;
+                      const { id, title } = resource;
+                      try {
+                        const product = await client.query({
+                          query: GET_PRODUCT,
+                          variables: {
+                            id
+                        }});
+                        const product_data = product.data.product;
+                        return applyDiscount ? {...product_data, discount: { type: getSymbolFromCurrency(currencyCode), value: 5 }} : product_data;
+                      } catch (error) {
+                        console.log(`Failed to load product data for product: ${title}`);
+                      }
                     }));
                     setLoading(false);
                     onResourceMutation(products);
