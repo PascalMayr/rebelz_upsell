@@ -91,7 +91,7 @@ const New = (props) => {
     animation: {
       type: 'animate__fadeInUp',
       delay: 1,
-      speed: ''
+      speed: 'normal'
     },
     ...props.campaign,
   });
