@@ -212,35 +212,7 @@ const New = (props) => {
                 setCampaignProperty={setCampaignProperty}
               />
             </Card.Section>
-          </Card>
-        </Card.Section>
-        <Card.Section>
-          <Layout>
-            <Layout.Section>
-              <Card>
-                <Card.Section title="PREVIEW">
-                  <CampaignPreview
-                    campaign={campaign}
-                    isPreviewDesktop={isPreviewDesktop}
-                  />
-                  <CampaignPreviewSwitch
-                    onSwitch={(value) => setPreview(value)}
-                  />
-                </Card.Section>
-              </Card>
-            </Layout.Section>
-          </Layout>
-        </Card.Section>
-        <Card.Section>
-          <CampaignFormatter
-            campaign={campaign}
-            isPreviewDesktop={isPreviewDesktop}
-            setCampaignProperty={setCampaignProperty}
-          />
-        </Card.Section>
-        <Card.Section>
-          <Card>
-            <Card.Section title={`Set Target Products`}>
+            <Card.Section>
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',
@@ -267,31 +239,51 @@ const New = (props) => {
           </Card>
         </Card.Section>
         <Card.Section>
-          <Card>
-            <Card.Section title="Set Upselling Products">
-              <CampaignResourceSelection
-                resourcePickerProps={{
-                  resourceType: 'Product',
-                  selectMultiple: false,
-                  initialSelectionIds: _getResourcePickerInitialSelectedProducts(campaign.products.selling),
-                  showVariants: false,
-                }}
-                buttonProps={{
-                  primary: true,
-                  icon: MobilePlusMajor,
-                  label: 'Add selling Products',
-                }}
-                onResourceMutation={(resources) =>
-                  setCampaignProperty(
-                    { ...campaign.products, selling: resources },
-                    'products'
-                  )
-                }
-                resources={campaign.products.selling}
-                applyDiscount
-              />
-            </Card.Section>
-          </Card>
+          <Layout>
+            <Layout.Section>
+              <Card>
+                <Card.Section title="What and how would you like to sell more ?">
+                  <Card.Section>
+                    <CampaignResourceSelection
+                      resourcePickerProps={{
+                        resourceType: 'Product',
+                        selectMultiple: false,
+                        initialSelectionIds: _getResourcePickerInitialSelectedProducts(campaign.products.selling),
+                        showVariants: false,
+                      }}
+                      buttonProps={{
+                        primary: true,
+                        icon: MobilePlusMajor,
+                        label: 'Add selling Products',
+                      }}
+                      onResourceMutation={(resources) =>
+                        setCampaignProperty(
+                          { ...campaign.products, selling: resources },
+                          'products'
+                        )
+                      }
+                      resources={campaign.products.selling}
+                      applyDiscount
+                    />
+                  </Card.Section>
+                  <CampaignPreview
+                    campaign={campaign}
+                    isPreviewDesktop={isPreviewDesktop}
+                  />
+                  <CampaignPreviewSwitch
+                    onSwitch={(value) => setPreview(value)}
+                  />
+                </Card.Section>
+              </Card>
+            </Layout.Section>
+          </Layout>
+        </Card.Section>
+        <Card.Section>
+          <CampaignFormatter
+            campaign={campaign}
+            isPreviewDesktop={isPreviewDesktop}
+            setCampaignProperty={setCampaignProperty}
+          />
         </Card.Section>
       </Card>
     </Page>

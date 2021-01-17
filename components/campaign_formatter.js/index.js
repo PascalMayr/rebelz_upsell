@@ -189,7 +189,7 @@ const CampaignFormatter = ({
     <Layout>
       <Layout.Section>
         <Card>
-          <Card.Section title='Customize the Popup'>
+          <Card.Section title='Customize the Upselling Popup.'>
             <Tabs tabs={tabs} selected={tab} onSelect={handleTabChange}>
               <div id="salestorm-formatter">
                 {
