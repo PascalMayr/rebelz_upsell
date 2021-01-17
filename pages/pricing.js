@@ -19,7 +19,7 @@ const Pricing = () => {
                 plan.limit
               )} monthly Funnel views`,
             ];
-            if (plan.name === 'FREE') {
+            if (plan.name === config.planNames.free) {
               list = [
                 ...list,
                 ...[
@@ -38,7 +38,7 @@ const Pricing = () => {
             return (
               <Layout.Section oneThird key={plan.name}>
                 <PricingCard
-                  title={`${plan.name} PLAN`}
+                  title={plan.name}
                   subtitle={`$${plan.amount} / month`}
                   list={list}
                   button={
