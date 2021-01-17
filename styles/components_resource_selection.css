@@ -33,6 +33,7 @@
 
 .salestorm-resource-item-info > img {
   width: 75px;
+  min-height: 60px;
   border-radius: 5px;
 }
 
