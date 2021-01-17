@@ -94,57 +94,7 @@ app.prepare().then(() => {
         async afterAuth(ctx) {
           // Auth token and shop available in session
           // Redirect to shop upon auth
-          const {
-            shop,
-            accessToken,
-            associatedUserScope,
-            associatedUser,
-          } = ctx.session;
-          const {
-            id,
-            first_name,
-            last_name,
-            email,
-            account_owner,
-            locale,
-          } = associatedUser;
-          server.context.client = await createClient(shop, accessToken);
-
-          const store = await db.query(
-            'SELECT * FROM stores WHERE domain = $1',
-            [shop]
-          );
-          if (store.rowCount === 0) {
-            const scriptid = await getScriptTagId(ctx);
-            await db.query(
-              'INSERT INTO stores(domain, scriptid) VALUES($1, $2)',
-              [shop, scriptid]
-            );
-          }
-          await db.query(
-            `
-            INSERT INTO users(id, domain, associated_user_scope, first_name, last_name, email, account_owner, locale)
-            VALUES($1, $2, $3, $4, $5, $6, $7, $8)
-            ON CONFLICT (id) DO UPDATE SET
-            associated_user_scope = $3,
-            first_name = $4,
-            last_name = $5,
-            email = $6,
-            account_owner = $7,
-            locale = $8
-          `,
-            [
-              id,
-              shop,
-              associatedUserScope,
-              first_name,
-              last_name,
-              email,
-              account_owner,
-              locale,
-            ]
-          );
-          ctx.cookies.set('shopOrigin', shop, {
+          ctx.cookies.set('shopOrigin', ctx.session.shop, {
             httpOnly: false,
             secure: true,
             sameSite: 'none',
@@ -159,6 +109,63 @@ app.prepare().then(() => {
       version: ApiVersion.October20,
     })
   );
+  server.use(async (ctx, nxt) => {
+    const {
+      shop,
+      accessToken,
+      associatedUserScope,
+      associatedUser,
+    } = ctx.session;
+
+    if (!accessToken) {
+      await nxt();
+    }
+
+    const {
+      id,
+      first_name,
+      last_name,
+      email,
+      account_owner,
+      locale,
+    } = associatedUser;
+    server.context.client = await createClient(shop, accessToken);
+
+    const store = await db.query('SELECT * FROM stores WHERE domain = $1', [
+      shop,
+    ]);
+    if (store.rowCount === 0) {
+      const scriptid = await getScriptTagId(ctx);
+      await db.query('INSERT INTO stores(domain, scriptid) VALUES($1, $2)', [
+        shop,
+        scriptid,
+      ]);
+    }
+    await db.query(
+      `
+      INSERT INTO users(id, domain, associated_user_scope, first_name, last_name, email, account_owner, locale)
+      VALUES($1, $2, $3, $4, $5, $6, $7, $8)
+      ON CONFLICT (id) DO UPDATE SET
+      associated_user_scope = $3,
+      first_name = $4,
+      last_name = $5,
+      email = $6,
+      account_owner = $7,
+      locale = $8
+    `,
+      [
+        id,
+        shop,
+        associatedUserScope,
+        first_name,
+        last_name,
+        email,
+        account_owner,
+        locale,
+      ]
+    );
+    await nxt();
+  });
   server.use(bodyParser());
   if (process.env.NODE_ENV !== 'localdevelopment') {
     router.get('(.*)', verifyRequest(), async (ctx) => {
