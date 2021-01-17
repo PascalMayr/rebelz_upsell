@@ -38,9 +38,10 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
   const campaignJS = `
     try {
       if(typeof document !== 'undefined') {
-        const claimOfferButton = document.querySelector('#salestorm-claim-offer-button');
-        claimOfferButton.addEventListener('click', () => {
-          console.log('hey');
+        const productDetailsMessage = document.querySelector('#salestorm-product-details-message');
+        productDetailsMessage.addEventListener('click', () => {
+          document.querySelector('#salestorm-product').style.paddingBottom = '0px';
+          document.querySelector('#salestorm-product-description').style.display = 'block';
         });
       }
     }
@@ -59,7 +60,7 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       console.log('%cA Salestorm Javascript Error occured in the preview', 'color: orange;');
       console.log(error);
     }
-  }, []);
+  }, [renderedProduct]);
 
   const customJS = `
     try {
@@ -247,7 +248,6 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
     }
     #salestorm-product {
       padding: 30px;
-      ${Object.keys(renderedProductVariantsByOption).length > 1 ? `padding-bottom: 0px;`: ''}
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -327,6 +327,10 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       text-decoration: underline;
       cursor: pointer;
     }
+    #salestorm-product-description {
+      padding: 16px 30px;
+      display: none;
+    }
     ${isPreviewDesktop ? '' : campaignMobileCSS}
     @media only screen and (max-width: 750px) {
       ${campaignMobileCSS}
@@ -387,11 +391,18 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
                 <button id="salestorm-claim-offer-button">
                   Claim Offer!
                 </button>
-                <p id="salestorm-product-details-message">
-                  See product details
-                </p>
+                {
+                  renderedProduct && renderedProduct.descriptionHtml !== '' &&
+                  <p id="salestorm-product-details-message">
+                    See product details
+                  </p>
+                }
               </div>
             </div>
+            {
+              renderedProduct && renderedProduct.descriptionHtml !== '' &&
+              <div id="salestorm-product-description" dangerouslySetInnerHTML={{ __html: renderedProduct.descriptionHtml }} />
+            }
             <div id="salestorm-popup-footer">
               <div id="salestorm-popup-footer-close-action">No thanks</div>
               <div id="salestorm-popup-footer-checkout-action">
