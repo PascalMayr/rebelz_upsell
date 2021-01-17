@@ -250,6 +250,7 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       ${Object.keys(renderedProductVariantsByOption).length > 1 ? `padding-bottom: 0px;`: ''}
       display: flex;
       justify-content: space-between;
+      align-items: center;
       overflow: hidden;
     }
     #salestorm-product-image-container {
