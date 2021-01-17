@@ -11,10 +11,17 @@ import Router from 'koa-router';
 import Cors from '@koa/cors';
 import session from 'koa-session';
 
-import { createClient, getScriptTagId } from './handlers';
 import config from '../config';
 
 import db from './db';
+import {
+  createClient,
+  getActiveSubscription,
+  getScriptTagId,
+  getSubscriptionUrl,
+  cancelSubscription,
+  registerWebhooks,
+} from './handlers';
 
 dotenv.config();
 
@@ -140,6 +147,13 @@ app.prepare().then(() => {
         shop,
         scriptid,
       ]);
+      registerWebhooks(
+        shop,
+        accessToken,
+        'APP_SUBSCRIPTIONS_UPDATE',
+        '/webhooks/app_subscriptions/update',
+        ApiVersion.October20
+      );
     }
     await db.query(
       `
@@ -191,7 +205,7 @@ app.prepare().then(() => {
       products,
       customCSS,
       customJS,
-      animation
+      animation,
     } = ctx.request.body;
     let campaign;
     if (ctx.request.body.id) {
