@@ -12,7 +12,7 @@ import getSymbolFromCurrency from 'currency-symbol-map';
 
 const GET_PRODUCT = gql`
   query Product($id: ID!) {
-    product (id: $id) {
+    product(id: $id) {
       id
       legacyResourceId
       title
@@ -20,35 +20,22 @@ const GET_PRODUCT = gql`
       images(first: 1) {
         edges {
           node {
+            transformedSrc(maxHeight: 500)
             altText
-            transformedSrc(maxWidth: 75)
           }
         }
       }
       variants(first: 10) {
         edges {
           node {
+            title
+            id
+            legacyResourceId
             selectedOptions {
               name
             }
-            product {
-              id
-              legacyResourceId
-              title
-              priceRange {
-                maxVariantPrice {
-                  amount
-                  currencyCode
-                }
-              }
-              images(first: 1) {
-                edges {
-                  node {
-                    altText
-                    transformedSrc(maxWidth: 500)
-                  }
-                }
-              }
+            image {
+              transformedSrc(maxHeight: 500)
             }
           }
         }
@@ -57,7 +44,7 @@ const GET_PRODUCT = gql`
       createdAt
     }
   }
-`
+`;
 
 const CampaignResourceSelection = ({
   resourcePickerProps,
