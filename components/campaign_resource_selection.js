@@ -64,7 +64,8 @@ const CampaignResourceSelection = ({
   buttonProps,
   resources = [],
   onResourceMutation,
-  applyDiscount
+  applyDiscount,
+  currencyCode = 'EUR'
 }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false)
@@ -76,7 +77,6 @@ const CampaignResourceSelection = ({
           items={resources}
           renderItem={(resource) => {
             const { title, id, images, discount } = resource;
-            const { node: { product: { priceRange: { maxVariantPrice: { currencyCode }} } } } = resource.variants.edges[0];
             return (
               <ResourceItem
                 id={id}
@@ -161,7 +161,6 @@ const CampaignResourceSelection = ({
                           id
                       }});
                       const product_data = product.data.product;
-                      const { node: { product: { priceRange: { maxVariantPrice: { currencyCode }} } } } = product_data.variants.edges[0];
                       return applyDiscount ? {...product_data, discount: { type: getSymbolFromCurrency(currencyCode), value: 5 }} : product_data;
                     }));
                     setLoading(false);
