@@ -384,11 +384,11 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
                   }
                   })}
                 <button id="salestorm-claim-offer-button">
-                    Claim Offer!
-                  </button>
+                  Claim Offer!
+                </button>
                 <p id="salestorm-product-details-message">
-                    See product details
-                  </p>
+                  See product details
+                </p>
               </div>
             </div>
             <div id="salestorm-popup-footer">
