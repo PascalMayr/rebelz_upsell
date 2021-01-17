@@ -241,33 +241,37 @@ const New = (props) => {
           </Card>
         </Card.Section>
         <Card.Section>
+          <Card>
+            <Card.Section title="What and how would you like to sell more ?">
+              <CampaignResourceSelection
+                resourcePickerProps={{
+                  resourceType: 'Product',
+                  selectMultiple: false,
+                  initialSelectionIds: _getResourcePickerInitialSelectedProducts(campaign.products.selling),
+                  showVariants: false,
+                }}
+                buttonProps={{
+                  primary: true,
+                  icon: MobilePlusMajor,
+                  label: 'Add selling Products',
+                }}
+                onResourceMutation={(resources) =>
+                  setCampaignProperty(
+                    { ...campaign.products, selling: resources },
+                    'products'
+                  )
+                }
+                resources={campaign.products.selling}
+                applyDiscount
+              />
+            </Card.Section>
+          </Card>
+        </Card.Section>
+        <Card.Section>
           <Layout>
             <Layout.Section>
               <Card>
-                <Card.Section title="What and how would you like to sell more ?">
-                  <Card.Section>
-                    <CampaignResourceSelection
-                      resourcePickerProps={{
-                        resourceType: 'Product',
-                        selectMultiple: false,
-                        initialSelectionIds: _getResourcePickerInitialSelectedProducts(campaign.products.selling),
-                        showVariants: false,
-                      }}
-                      buttonProps={{
-                        primary: true,
-                        icon: MobilePlusMajor,
-                        label: 'Add selling Products',
-                      }}
-                      onResourceMutation={(resources) =>
-                        setCampaignProperty(
-                          { ...campaign.products, selling: resources },
-                          'products'
-                        )
-                      }
-                      resources={campaign.products.selling}
-                      applyDiscount
-                    />
-                  </Card.Section>
+                <Card.Section title="Preview">
                   <CampaignPreview
                     campaign={campaign}
                     isPreviewDesktop={isPreviewDesktop}
