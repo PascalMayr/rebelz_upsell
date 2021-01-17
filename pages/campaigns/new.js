@@ -271,7 +271,7 @@ const New = (props) => {
           <Layout>
             <Layout.Section>
               <Card>
-                <Card.Section title="Preview">
+                <Card.Section title="Check, customize and try your Upselling Campaign.">
                   <CampaignPreview
                     campaign={campaign}
                     isPreviewDesktop={isPreviewDesktop}
