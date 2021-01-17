@@ -43,6 +43,15 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
           document.querySelector('#salestorm-product').style.paddingBottom = '0px';
           document.querySelector('#salestorm-product-description').style.display = 'block';
         });
+        const hideCampaign = () => document.querySelector('#salestorm-upselling-container').style.display = 'none';
+        const closeButton = document.querySelector('#salestorm-popup-close');
+        closeButton.addEventListener('click', () => {
+          hideCampaign();
+        });
+        const closeAction = document.querySelector('#salestorm-popup-footer-close-action');
+        closeAction.addEventListener('click', () => {
+          hideCampaign();
+        });
       }
     }
     catch(error) {
@@ -60,7 +69,7 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       console.log('%cA Salestorm Javascript Error occured in the preview', 'color: orange;');
       console.log(error);
     }
-  }, [renderedProduct]);
+  }, [campaign]);
 
   const customJS = `
     try {
