@@ -1,10 +1,16 @@
+import { useState, useContext } from 'react';
 import { Page, Layout, Button } from '@shopify/polaris';
 
 import config from '../config';
 import PricingCard from '../components/pricing_card';
+import setPlan from '../services/set-plan';
+
+import { AppContext } from './_app';
 import '../styles/pages_pricing.css';
 
 const Pricing = () => {
+  const context = useContext(AppContext);
+  const [loading, setLoading] = useState(null);
   return (
     <Page
       title="Plans & Pricing"
@@ -42,7 +48,35 @@ const Pricing = () => {
                   subtitle={`$${plan.amount} / month`}
                   list={list}
                   button={
-                    <Button primary disabled>
+                    <Button
+                      primary
+                      disabled={Boolean(loading)}
+                      loading={loading === plan.name}
+                      onClick={async () => {
+                        setLoading(plan.name);
+                        try {
+                          const response = await setPlan(plan.name);
+                          const { confirmationUrl } = response.data;
+                          if (confirmationUrl) {
+                            window.top.location = confirmationUrl;
+                          } else {
+                            context.setToast({
+                              shown: true,
+                              content: `Successfully canceled your subscription`,
+                              isError: true,
+                            });
+                          }
+                        } catch (e) {
+                          context.setToast({
+                            shown: true,
+                            content: `Failed to change to ${plan.name}`,
+                            isError: true,
+                          });
+                        } finally {
+                          setLoading(null);
+                        }
+                      }}
+                    >
                       Your current plan
                     </Button>
                   }
