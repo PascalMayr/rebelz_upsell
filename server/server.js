@@ -306,6 +306,37 @@ app.prepare().then(() => {
     ctx.status = 200;
   });
 
+  router.patch('/api/plan', verifyRequest(), async (ctx) => {
+    const { plan } = ctx.request.body;
+    const { shop, accessToken } = ctx.session;
+    server.context.client = await createClient(shop, accessToken);
+
+    if (config.planNames.free === plan) {
+      const freePlan = config.plans.find(
+        (p) => p.name === config.planNames.free
+      );
+      const storeData = await db.query(
+        'SELECT "subscriptionId" FROM stores WHERE domain = $1',
+        [ctx.session.shop]
+      );
+      await cancelSubscription(ctx, storeData.rows[0].subscriptionId);
+      await db.query(
+        'UPDATE stores SET plan_name = NULL, "subscriptionId" = NULL, plan_limit = $1 WHERE domain = $2',
+        [freePlan.limit, ctx.session.shop]
+      );
+
+      ctx.body = {};
+      ctx.status = 200;
+    } else {
+      const currentPlan = config.plans.find(
+        (configPlan) => configPlan.name === plan
+      );
+      const { confirmationUrl } = await getSubscriptionUrl(ctx, currentPlan);
+
+      ctx.body = { confirmationUrl };
+    }
+  });
+
   server.use(Cors({ credentials: true }));
   server.use(router.allowedMethods());
   server.use(router.routes());
