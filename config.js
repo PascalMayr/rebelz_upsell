@@ -1,8 +1,8 @@
 const planNames = {
-  free: 'FREE Plan',
-  plus: 'PLUS Plan',
-  pro: 'PRO Plan',
-  business: 'BUSINESS Plan',
+  free: 'FREE',
+  plus: 'PLUS',
+  pro: 'PRO',
+  business: 'BUSINESS',
 };
 
 const plans = [
