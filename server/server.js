@@ -16,7 +16,6 @@ import config from '../config';
 import db from './db';
 import {
   createClient,
-  getActiveSubscription,
   getScriptTagId,
   getSubscriptionUrl,
   cancelSubscription,
