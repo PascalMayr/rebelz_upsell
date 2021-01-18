@@ -6,10 +6,12 @@ import { Icon } from '@shopify/polaris';
 import tinycolor from 'tinycolor2';
 
 const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
+
   const mobileContainerClass = !isPreviewDesktop
     ? 'salestorm-mobile-preview-container'
     : 'salestorm-desktop-preview-container';
-  let styles = isPreviewDesktop ? campaign.styles : campaign.mobileStyles;
+
+  const styles = campaign.styles;
 
   const styleObjectToStyleString = (styleObject) => {
     const kebabCaseStyles = kebabCasify(styleObject);
@@ -154,20 +156,14 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       width: 100% !important;
       height: 100% !important;
       z-index: 99999 !important;
-      ${styleObjectToStyleString(campaign.mobileStyles.overlay)};
     }
     #salestorm-popup {
       contain: layout;
       z-index: 100000 !important;
       max-height: 100% !important;
-      ${styleObjectToStyleString(campaign.mobileStyles.popup)};
     }
     #salestorm-popup-close {
       contain: layout;
-      ${styleObjectToStyleString(campaign.mobileStyles.secondaryButtons)};
-    }
-    #salestorm-claim-offer-button {
-      ${styleObjectToStyleString(campaign.mobileStyles.primaryButtons)};
     }
   `;
 

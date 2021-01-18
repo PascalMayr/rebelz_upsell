@@ -175,7 +175,6 @@ app.prepare().then(() => {
   router.post('/api/save-campaign', verifyRequest(), async (ctx) => {
     const {
       styles,
-      mobileStyles,
       trigger,
       sellType,
       name,
@@ -187,13 +186,12 @@ app.prepare().then(() => {
     let campaign;
     if (ctx.request.body.id) {
       campaign = await db.query(
-        'UPDATE campaigns SET styles = $1, trigger = $2, "sellType" = $3, name = $4, "mobileStyles" = $5, products = $6, "customCSS" = $7, "customJS" = $8, animation = $9 WHERE id = $10 RETURNING *',
+        'UPDATE campaigns SET styles = $1, trigger = $2, "sellType" = $3, name = $4, products = $5, "customCSS" = $6, "customJS" = $7, animation = $8 WHERE id = $9 RETURNING *',
         [
           styles,
           trigger,
           sellType,
           name,
-          mobileStyles,
           products,
           customCSS,
           customJS,
@@ -203,14 +201,13 @@ app.prepare().then(() => {
       );
     } else {
       campaign = await db.query(
-        'INSERT INTO campaigns(domain, styles, trigger, "sellType", name, "mobileStyles", products, "customCSS", "customJS", animation) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
+        'INSERT INTO campaigns(domain, styles, trigger, "sellType", name, products, "customCSS", "customJS", animation) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
         [
           ctx.session.shop,
           styles,
           trigger,
           sellType,
           name,
-          mobileStyles,
           products,
           customCSS,
           customJS,

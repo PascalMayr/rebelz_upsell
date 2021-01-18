@@ -103,22 +103,17 @@ const CampaignFormatter = ({
 
   const setStyleProperty = useCallback(
     (value, styleKey) => {
-      const currentPreviewStyleKey = isPreviewDesktop
-        ? 'styles'
-        : 'mobileStyles';
-      const currentStyleObject = campaign[currentPreviewStyleKey][id];
+      const currentStyleObject = campaign.styles[id];
       const newStyleObject = { ...currentStyleObject, [styleKey]: value };
       setCampaignProperty(
-        { ...campaign[currentPreviewStyleKey], [id]: newStyleObject },
-        currentPreviewStyleKey
+        { ...campaign.styles, [id]: newStyleObject },
+        'styles'
       );
     },
     [isPreviewDesktop, id, campaign, styleChoice]
   );
 
-  const styles = isPreviewDesktop
-    ? campaign.styles[id]
-    : campaign.mobileStyles[id];
+  const styles = campaign.styles[id];
 
   const _getBoxshadowWithoutColor = (boxShadow) => boxShadow.split(' ').slice(0, 3).join(' ');
 

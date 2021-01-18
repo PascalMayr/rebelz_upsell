@@ -77,7 +77,6 @@ const New = (props) => {
   };
   const [campaign, setCampaign] = useState({
     styles: initialStyles('desktop'),
-    mobileStyles: initialStyles('mobile'),
     published: false,
     trigger: 'add_to_cart',
     sellType: 'up-sell',
