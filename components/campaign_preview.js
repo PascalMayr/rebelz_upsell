@@ -274,6 +274,9 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
     #salestorm-product-image {
       padding-top: 254px;
       border-radius: 4px;
+      background-color: ${tinycolor(
+        styles.popup.backgroundColor
+      ).lighten(10)};
       background-image: url(${renderedProduct && renderedProduct.images.edges.length > 0 && renderedProduct.images.edges[0].node.transformedSrc});
       background-size: cover;
       background-position: center;
