@@ -161,6 +161,7 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       contain: layout;
       z-index: 100000 !important;
       max-height: 100% !important;
+      width: 100%;
     }
     #salestorm-popup-close {
       contain: layout;
