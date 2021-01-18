@@ -4,13 +4,22 @@ import { Page, Layout, Button } from '@shopify/polaris';
 import config from '../config';
 import PricingCard from '../components/pricing_card';
 import setPlan from '../services/set-plan';
+import db from '../server/db';
 
 import { AppContext } from './_app';
 import '../styles/pages_pricing.css';
 
-const Pricing = () => {
+export async function getServerSideProps(ctx) {
+  const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [
+    ctx.req.cookies.shopOrigin,
+  ]);
+  return { props: { store: stores.rows[0] } };
+}
+
+const Pricing = ({ store }) => {
   const context = useContext(AppContext);
   const [loading, setLoading] = useState(null);
+  const activePlanName = store.plan_name || config.planNames.free;
   return (
     <Page
       title="Plans & Pricing"
@@ -41,6 +50,16 @@ const Pricing = () => {
               list.unshift('Everything from FREE Plan');
             }
             list.push('Premium Support');
+            const isThisPlanActive = activePlanName === plan.name;
+            const isThisTheFreePlan = config.planNames.free === plan.name;
+            let priceLabel;
+            if (activePlanName === config.planNames.free) {
+              priceLabel = isThisTheFreePlan ? 'Your Plan' : 'UPGRADE NOW';
+            } else if (isThisPlanActive) {
+              priceLabel = 'Cancel subscription';
+            } else if (!isThisTheFreePlan) {
+              priceLabel = 'Change Plan';
+            }
             return (
               <Layout.Section oneThird key={plan.name}>
                 <PricingCard
@@ -50,7 +69,7 @@ const Pricing = () => {
                   button={
                     <Button
                       primary
-                      disabled={Boolean(loading)}
+                      disabled={Boolean(loading) || isThisPlanActive}
                       loading={loading === plan.name}
                       onClick={async () => {
                         setLoading(plan.name);
@@ -77,7 +96,7 @@ const Pricing = () => {
                         }
                       }}
                     >
-                      Your current plan
+                      {priceLabel}
                     </Button>
                   }
                 />

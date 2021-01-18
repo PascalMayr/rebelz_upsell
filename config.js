@@ -1,5 +1,6 @@
 const planNames = {
   free: 'FREE Plan',
+  plus: 'PLUS Plan',
   pro: 'PRO Plan',
   business: 'BUSINESS Plan',
 };
@@ -12,16 +13,22 @@ const plans = [
     limit: 500,
   },
   {
-    name: planNames.pro,
-    amount: 39.99,
+    name: planNames.plus,
+    amount: 19.99,
     currency: 'USD',
-    limit: 10000,
+    limit: 2000,
+  },
+  {
+    name: planNames.pro,
+    amount: 49.99,
+    currency: 'USD',
+    limit: 5000,
   },
   {
     name: planNames.business,
-    amount: 69.99,
+    amount: 99.99,
     currency: 'USD',
-    limit: 100000,
+    limit: 10000,
   },
 ];
 
