@@ -120,7 +120,7 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       padding-bottom: 0px !important;
     }
     #salestorm-product-action-container > h3 {
-      font-size: 18px;
+      font-size: 18px !important;
     }
     #salestorm-product-action-container > * {
       margin-bottom: 6px !important;
@@ -141,12 +141,12 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       font-size: 16px !important;
     }
     #salestorm-popup-header-title {
-      max-width: 75%;
+      max-width: 75% !important;
     }
     #salestorm-product-description {
-      padding: 0px 16px;
-      margin-top: 6px;
-      text-align: center;
+      padding: 0px 16px !important;
+      margin-top: 6px !important;
+      text-align: center !important;
     }
     #salestorm-overlay-container {
       contain: layout;
@@ -161,10 +161,7 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       contain: layout;
       z-index: 100000 !important;
       max-height: 100% !important;
-      width: 100%;
-    }
-    #salestorm-popup-close {
-      contain: layout;
+      width: 100% !important;
     }
   `;
 
@@ -192,41 +189,41 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       outline: none;
     }
     #salestorm-overlay-container p {
-      margin: 0px;
-      padding: 0px;
+      margin: 0px !important;
+      padding: 0px !important;
     }
     #salestorm-overlay-container {
       contain: layout;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-      z-index: 99999;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 99999 !important;
       transition: 0.25s ease;
       ${styleObjectToStyleString(styles.overlay)};
     }
     #salestorm-popup {
       contain: layout;
-      z-index: 100000;
+      z-index: 100000 !important;
       transition: 0.25s ease;
       ${styleObjectToStyleString(styles.popup)};
     }
     #salestorm-popup-close {
       contain: layout;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      cursor: pointer !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
       transition: 0.25s ease;
       ${styleObjectToStyleString(styles.secondaryButtons)};
     }
     #salestorm-popup-close > span {
-      width: 1.5rem;
-      height: 1.5rem;
+      width: 1.5rem !important;
+      height: 1.5rem !important;
     }
     #salestorm-popup-close > span > svg {
-      width: 100%;
+      width: 100% !important;
     }
     #salestorm-popup-close:hover {
       background-color: ${tinycolor(
@@ -234,115 +231,114 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       ).lighten(10)};
     }
     #salestorm-popup-header {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px;
+      width: 100% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 16px !important;
     }
     #salestorm-popup-header-title {
-      font-size: 23px;
-      max-width: 75%;
+      font-size: 23px !important;
+      max-width: 75% !important;
     }
     #salestorm-popup-footer {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px;
+      width: 100% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 16px !important;
     }
     #salestorm-popup-footer-close-action {
-      cursor: pointer;
+      cursor: pointer !important;
     }
     #salestorm-popup-footer-checkout-action {
-      cursor: pointer;
+      cursor: pointer !important;
     }
     #salestorm-product {
-      padding: 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      overflow: hidden;
+      padding: 30px !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
     }
     #salestorm-product-image-container {
-      width: 254px;
-      height: 254px;
+      width: 254px !important;
+      height: 254px !important;
     }
     #salestorm-product-image {
-      padding-top: 254px;
-      border-radius: 4px;
+      padding-top: 254px !important;
+      border-radius: 4px !important;
       background-color: ${tinycolor(
         styles.popup.backgroundColor
-      ).lighten(10)};
+      ).lighten(10)} !important;
       background-image: url(${renderedProduct && renderedProduct.images.edges.length > 0 && renderedProduct.images.edges[0].node.transformedSrc});
-      background-size: cover;
-      background-position: center;
+      background-size: cover !important;
+      background-position: center !important;
     }
     #salestorm-product-action-container {
-      width: 254px;
-      padding: 16px;
-      text-align: center;
+      width: 254px !important;
+      padding: 16px !important;
+      text-align: center !important;
     }
     #salestorm-product-action-container > h3 {
-      font-size: 23px;
-      font-weight: bold;
+      font-size: 23px !important;
+      font-weight: bold !important;
     }
     #salestorm-product-action-container > * {
-      margin-bottom: 16px;
+      margin-bottom: 16px !important;
     }
     #salestorm-product-action-container > button {
-      margin-bottom: 16px;
+      margin-bottom: 16px !important;
     }
     #salestorm-product-action-container > p {
-      margin-bottom: 16px;
+      margin-bottom: 16px !important;
     }
     .salestorm-product-select-container {
-      position: relative;
+      position: relative !important;
     }
     .salestorm-product-select {
       padding: 8px 16px !important;
       background-color: ${tinycolor(styles.popup.backgroundColor).darken(10)};
       width: 100% !important;
-      border-radius: 3px;
-      border-color: inherit;
-      text-indent: 0.01px;
-      cursor: pointer;
-      appearance: none;
-      color: inherit;
-      font-family: inherit;
-      font-size: 14px;
+      border-radius: 3px !important;
+      border-color: inherit !important;
+      text-indent: 0.01px !important;
+      cursor: pointer !important;
+      appearance: none !important;
+      color: inherit !important;
+      font-family: inherit !important;
+      font-size: 14px !important;
       z-index: 100002 !important;
     }
     .salestorm-product-select-arrow > span {
-      position: absolute;
-      top: 7px;
-      right: 5px;
-      width: 21px;
-      height: 21px;
-      fill: ${styles.popup.color};
+      position: absolute !important;
+      top: 7px !important;
+      right: 5px !important;
+      width: 21px !important;
+      height: 21px !important;
+      fill: ${styles.popup.color} !important;
     }
     #salestorm-claim-offer-button {
       width: 100% !important;
-      color: inherit;
+      color: inherit !important;
       padding: 16px 24px !important;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
+      font-size: 17px !important;
+      font-weight: bold !important;
+      cursor: pointer !important;
       transition: 0.25s ease;
       ${styleObjectToStyleString(campaign.styles.primaryButtons)};
     }
     #salestorm-claim-offer-button:hover {
       background-color: ${tinycolor(
         styles.primaryButtons.backgroundColor
-      ).darken(10)};
+      ).darken(10)} !important;
     }
     #salestorm-product-details-message{
-      color: inherit;
-      text-decoration: underline;
-      cursor: pointer;
+      color: inherit !important;
+      text-decoration: underline !important;
+      cursor: pointer !important;
     }
     #salestorm-product-description {
-      padding: 16px 30px;
+      padding: 16px 30px !important;
       display: none;
     }
     ${isPreviewDesktop ? '' : campaignMobileCSS}
