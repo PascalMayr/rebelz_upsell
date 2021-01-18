@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Page, Layout, Button } from '@shopify/polaris';
 
 import config from '../config';
@@ -18,8 +18,12 @@ export async function getServerSideProps(ctx) {
 
 const Pricing = ({ store }) => {
   const context = useContext(AppContext);
+  const [activePlan, setActivePlan] = useState(store.plan_name);
+  useEffect(() => {
+    setActivePlan(store.plan_name);
+  }, [store.plan_name]);
   const [loading, setLoading] = useState(null);
-  const activePlanName = store.plan_name || config.planNames.free;
+  const activePlanName = activePlan || config.planNames.free;
   return (
     <Page
       title="Plans & Pricing"
@@ -84,6 +88,7 @@ const Pricing = ({ store }) => {
                               content: `Successfully canceled your subscription`,
                               isError: true,
                             });
+                            setActivePlan(config.planNames.free);
                           }
                         } catch (e) {
                           context.setToast({
