@@ -39,7 +39,7 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
     try {
       if(typeof document !== 'undefined') {
         const productDetailsMessage = document.querySelector('#salestorm-product-details-message');
-        productDetailsMessage.addEventListener('click', () => {
+        productDetailsMessage && productDetailsMessage.addEventListener('click', () => {
           document.querySelector('#salestorm-product').style.paddingBottom = '0px';
           document.querySelector('#salestorm-product-description').style.display = 'block';
         });
