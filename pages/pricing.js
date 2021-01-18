@@ -73,7 +73,7 @@ const Pricing = ({ store }) => {
                   button={
                     <Button
                       primary
-                      disabled={Boolean(loading) || isThisPlanActive}
+                      disabled={Boolean(loading)}
                       loading={loading === plan.name}
                       onClick={async () => {
                         setLoading(plan.name);
@@ -86,9 +86,9 @@ const Pricing = ({ store }) => {
                             context.setToast({
                               shown: true,
                               content: `Successfully canceled your subscription`,
-                              isError: true,
+                              isError: false,
                             });
-                            setActivePlan(config.planNames.free);
+                            setActivePlan(null);
                           }
                         } catch (e) {
                           context.setToast({
