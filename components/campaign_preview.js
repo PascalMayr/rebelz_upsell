@@ -315,6 +315,9 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       font-size: 14px !important;
       z-index: 100002 !important;
       -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      text-indent: 0.01px;
+      text-overflow: '';
     }
     .salestorm-product-select-arrow > span {
       position: absolute !important;
