@@ -15,8 +15,7 @@ import CampaignResourceSelection from '../../components/campaign_resource_select
 
 const New = (props) => {
   const context = useContext(AppContext);
-  const initialStyles = (screen) => {
-    const isDesktop = screen === 'desktop';
+  const initialStyles = () => {
     return {
       popup: {
         margin: '0px',
@@ -30,7 +29,7 @@ const New = (props) => {
         backgroundOrigin: 'padding-box',
         borderColor: 'rgb(0, 128, 96)',
         boxShadow: '0px 0px 0px rgb(0, 0, 0)',
-        width: isDesktop ? '600px' : '95%',
+        width: '600px',
         position: 'relative',
         color: 'rgb(255, 255, 255)',
         fontFamily: "'Open Sans', sans-serif",
@@ -76,7 +75,7 @@ const New = (props) => {
     };
   };
   const [campaign, setCampaign] = useState({
-    styles: initialStyles('desktop'),
+    styles: initialStyles(),
     published: false,
     trigger: 'add_to_cart',
     sellType: 'up-sell',
