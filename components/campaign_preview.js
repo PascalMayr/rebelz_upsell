@@ -45,14 +45,14 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
           document.querySelector('#salestorm-product').style.paddingBottom = '0px';
           document.querySelector('#salestorm-product-description').style.display = 'block';
         });
-        const hideCampaign = () => document.querySelector('#salestorm-upselling-container').style.display = 'none';
+        const hidePopup = () => document.querySelector('#salestorm-upselling-container').style.display = 'none';
         const closeButton = document.querySelector('#salestorm-popup-close');
         closeButton.addEventListener('click', () => {
-          hideCampaign();
+          hidePopup();
         });
         const closeAction = document.querySelector('#salestorm-popup-footer-close-action');
         closeAction.addEventListener('click', () => {
-          hideCampaign();
+          hidePopup();
         });
       }
     }
@@ -104,15 +104,15 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
   const campaignMobileCSS = `
     #salestorm-product {
       flex-direction: column !important;
-      padding: 15px !important;
+      padding: 10px !important;
       padding-bottom: 0px !important;
     }
     #salestorm-product-image {
-      padding-top: 135px !important;
+      padding-top: 150px !important;
     }
     #salestorm-product-image-container {
       width: 100% !important;
-      height: 135px !important;
+      height: 150px !important;
     }
     #salestorm-product-action-container {
       width: 100% !important;
@@ -162,6 +162,9 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       z-index: 100000 !important;
       max-height: 100% !important;
       width: 100% !important;
+      -webkit-tap-highlight-color: ${tinycolor(
+        styles.popup.backgroundColor
+      ).lighten(10)};
     }
   `;
 
@@ -376,7 +379,7 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
                   const productVariants = renderedProductVariantsByOption[option];
                   if (productVariants.length > 1) {
                     return (
-                      <div className="salestorm-product-select-container">
+                      <div className="salestorm-product-select-container" key={option}>
                         <select
                           className="salestorm-product-select"
                           key={option}
