@@ -240,7 +240,7 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title="What and how would you like to sell more ?">
+            <Card.Section title="How and what would you like to sell more ?">
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',
