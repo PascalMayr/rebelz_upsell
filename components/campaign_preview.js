@@ -258,7 +258,7 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       cursor: pointer !important;
     }
     #salestorm-product {
-      padding: 30px !important;
+      padding: 30px;
       display: flex !important;
       justify-content: space-between !important;
       align-items: center !important;
