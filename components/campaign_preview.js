@@ -297,13 +297,16 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
     }
     .salestorm-product-select-container {
       position: relative !important;
+      border-radius: 3px !important;
+      border-color: inherit !important;
+      border-width: 1px !important;
+      border-style: solid;
     }
     .salestorm-product-select {
       padding: 8px 16px !important;
       background-color: ${tinycolor(styles.popup.backgroundColor).darken(10)};
       width: 100% !important;
-      border-radius: 3px !important;
-      border-color: inherit !important;
+      border-width: 0px !important;
       text-indent: 0.01px !important;
       cursor: pointer !important;
       appearance: none !important;
@@ -311,10 +314,11 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       font-family: inherit !important;
       font-size: 14px !important;
       z-index: 100002 !important;
+      -webkit-appearance: none !important;
     }
     .salestorm-product-select-arrow > span {
       position: absolute !important;
-      top: 7px !important;
+      top: 22% !important;
       right: 5px !important;
       width: 21px !important;
       height: 21px !important;
@@ -322,7 +326,6 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
     }
     #salestorm-claim-offer-button {
       width: 100% !important;
-      color: inherit !important;
       padding: 16px 24px !important;
       font-size: 17px !important;
       font-weight: bold !important;
