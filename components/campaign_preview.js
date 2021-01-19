@@ -317,6 +317,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     #salestorm-product-action-container > h3 {
       font-size: 23px !important;
       font-weight: bold !important;
+      margin-top: 0px !important;
     }
     #salestorm-product-action-container > * {
       margin-bottom: 16px !important;
@@ -325,7 +326,8 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       margin-bottom: 16px !important;
     }
     #salestorm-product-action-container > p {
-      margin-bottom: 16px !important;
+      margin-bottom: 8px !important;
+      font-size: 14px !important;
     }
     .salestorm-product-select-container {
       position: relative !important;
