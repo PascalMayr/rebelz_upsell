@@ -1,3 +1,25 @@
 .plans-container {
   margin-top: 3em;
 }
+
+.plans-container .Polaris-Heading {
+  text-align: center;
+  font-size: 2rem;
+  padding-top: 2rem;
+}
+
+.plans-container .Polaris-List {
+  list-style: none;
+  margin-top: 1rem;
+  min-height: 240px;
+}
+
+.plans-container .Polaris-List__Item {
+  font-size: 1.5rem;
+}
+
+.plans-container .salestorm-pricing-card-checkmark {
+  color: rgb(0, 128, 96);
+  margin-right: 0.5em;
+  font-weight: bold;
+}
