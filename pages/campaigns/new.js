@@ -277,15 +277,15 @@ const New = (props) => {
                     onSwitch={(value) => setPreview(value)}
                   />
                 </Card.Section>
+                <Card.Section>
+                  <CampaignFormatter
+                    campaign={campaign}
+                    setCampaignProperty={setCampaignProperty}
+                  />
+                </Card.Section>
               </Card>
             </Layout.Section>
           </Layout>
-        </Card.Section>
-        <Card.Section>
-          <CampaignFormatter
-            campaign={campaign}
-            setCampaignProperty={setCampaignProperty}
-          />
         </Card.Section>
       </Card>
     </Page>

@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Layout, Card, ChoiceList, TextField, Tabs, Select, Button } from '@shopify/polaris';
+import { ChoiceList, TextField, Tabs, Select, Button } from '@shopify/polaris';
 import {
   ReplayMinor
 } from '@shopify/polaris-icons';
@@ -180,132 +180,126 @@ const CampaignFormatter = ({
   }
 
   return (
-    <Layout>
-      <Layout.Section>
-        <Card>
-          <Card.Section title='Customize the Upselling Popup.'>
-            <Tabs tabs={tabs} selected={tab} onSelect={handleTabChange}>
-              <div id="salestorm-formatter">
+    <>
+      <Tabs tabs={tabs} selected={tab} onSelect={handleTabChange}>
+        <div id="salestorm-formatter">
+          {
+            id === 'customCSS' &&
+            <TextField
+              placeholder='/* Use this field to add custom CSS &hearts; */'
+              value={campaign.customCSS}
+              onChange={(value) => {
+                setCampaignProperty(value, 'customCSS')
+              }}
+              multiline={6}
+            />
+          }
+          {
+            id === 'customJS' &&
+            <TextField
+              placeholder='/* Use this field to add custom Javascript &hearts; */'
+              value={campaign.customJS}
+              onChange={(value) => {
+                setCampaignProperty(value, 'customJS')
+              }}
+              multiline={6}
+            />
+          }
+          {
+            id === 'animation' &&
+            <div className='salestorm-formatter-styles-animation-container'>
+              <div className='salestorm-formatter-styles-animation'>
+                <Select
+                  label='Incoming Animation'
+                  options={animationTypes}
+                  onChange={(value) => {
+                    setCampaignProperty({ ...campaign.animation, type: value}, 'animation');
+                  }}
+                  value={campaign.animation.type}
+                />
+                <TextField
+                  label='Animation delay in seconds'
+                  type='number'
+                  onChange={(value) => {
+                    if (value >= 0) {
+                      setCampaignProperty({ ...campaign.animation, delay: value}, 'animation');
+                    }
+                  }}
+                  value={`${campaign.animation.delay}`}
+                />
+              </div>
+              <div className='salestorm-formatter-styles-animation'>
+                <Select
+                  label='Animation Speed'
+                  options={animationSpeeds}
+                  onChange={(value) => {
+                    setCampaignProperty({ ...campaign.animation, speed: value}, 'animation');
+                  }}
+                  value={campaign.animation.speed}
+                />
+                <div className='salestorm-formatter-styles-animation-repeat'>
+                  <Button icon={ReplayMinor} primary onClick={_replayAnimation}>Replay incoming Animation</Button>
+                </div>
+              </div>
+            </div>
+          }
+          {
+            styleChoices.length > 0 &&
+            <div className="salestorm-formatter-colors">
+              <div className="salestorm-formatter-choces">
                 {
-                  id === 'customCSS' &&
-                  <TextField
-                    placeholder='/* Use this field to add custom CSS &hearts; */'
-                    value={campaign.customCSS}
-                    onChange={(value) => {
-                      setCampaignProperty(value, 'customCSS')
+                  styleChoices.length > 1 &&
+                  <ChoiceList
+                    choices={styleChoices}
+                    selected={styleChoice.value}
+                    onChange={(option) => {
+                      setStyleChoice(
+                        styleChoices.find(
+                          (choice) => choice.value === option[0]
+                        )
+                      );
                     }}
-                    multiline={6}
                   />
-                }
-                {
-                  id === 'customJS' &&
-                  <TextField
-                    placeholder='/* Use this field to add custom Javascript &hearts; */'
-                    value={campaign.customJS}
-                    onChange={(value) => {
-                      setCampaignProperty(value, 'customJS')
-                    }}
-                    multiline={6}
-                  />
-                }
-                {
-                  id === 'animation' &&
-                  <div className='salestorm-formatter-styles-animation-container'>
-                    <div className='salestorm-formatter-styles-animation'>
-                      <Select
-                        label='Incoming Animation'
-                        options={animationTypes}
-                        onChange={(value) => {
-                          setCampaignProperty({ ...campaign.animation, type: value}, 'animation');
-                        }}
-                        value={campaign.animation.type}
-                      />
-                      <TextField
-                        label='Animation delay in seconds'
-                        type='number'
-                        onChange={(value) => {
-                          if (value >= 0) {
-                            setCampaignProperty({ ...campaign.animation, delay: value}, 'animation');
-                          }
-                        }}
-                        value={`${campaign.animation.delay}`}
-                      />
-                    </div>
-                    <div className='salestorm-formatter-styles-animation'>
-                      <Select
-                        label='Animation Speed'
-                        options={animationSpeeds}
-                        onChange={(value) => {
-                          setCampaignProperty({ ...campaign.animation, speed: value}, 'animation');
-                        }}
-                        value={campaign.animation.speed}
-                      />
-                      <div className='salestorm-formatter-styles-animation-repeat'>
-                        <Button icon={ReplayMinor} primary onClick={_replayAnimation}>Replay incoming Animation</Button>
-                      </div>
-                    </div>
-                  </div>
-                }
-                {
-                  styleChoices.length > 0 &&
-                  <div className="salestorm-formatter-colors">
-                    <div className="salestorm-formatter-choces">
-                      {
-                        styleChoices.length > 1 &&
-                        <ChoiceList
-                          choices={styleChoices}
-                          selected={styleChoice.value}
-                          onChange={(option) => {
-                            setStyleChoice(
-                              styleChoices.find(
-                                (choice) => choice.value === option[0]
-                              )
-                            );
-                          }}
-                        />
-                      }
-                    </div>
-                    {['border', 'background', 'boxShadow', 'fill', 'color'].includes(
-                      styleChoice.value
-                    ) && (
-                      <SalestormColorPicker
-                        onChange={_setColor}
-                        onTextChange={_setColor}
-                        color={_getColor()}
-                        allowAlpha
-                      />
-                    )}
-                    <div className="salestorm-formatter-styles">
-                      {styleChoice.value === 'background' && (
-                        <BackgroundFormatter
-                          styles={styles}
-                          setStyleProperty={setStyleProperty}
-                        />
-                      )}
-                      {styleChoice.value === 'border' && (
-                        <BorderFormatter
-                          styles={styles}
-                          setStyleProperty={setStyleProperty}
-                        />
-                      )}
-                      {styleChoice.value === 'boxShadow' && (
-                        <BoxShadowFormatter
-                          styles={styles}
-                          setStyleProperty={setStyleProperty}
-                        />
-                      )}
-                      {
-                        styleChoice.value === 'color' && <TextFormatter styles={styles} setStyleProperty={setStyleProperty} />
-                      }
-                    </div>
-                  </div>
                 }
               </div>
-            </Tabs>
-          </Card.Section>
-        </Card>
-      </Layout.Section>
-    </Layout>
+              {['border', 'background', 'boxShadow', 'fill', 'color'].includes(
+                styleChoice.value
+              ) && (
+                <SalestormColorPicker
+                  onChange={_setColor}
+                  onTextChange={_setColor}
+                  color={_getColor()}
+                  allowAlpha
+                />
+              )}
+              <div className="salestorm-formatter-styles">
+                {styleChoice.value === 'background' && (
+                  <BackgroundFormatter
+                    styles={styles}
+                    setStyleProperty={setStyleProperty}
+                  />
+                )}
+                {styleChoice.value === 'border' && (
+                  <BorderFormatter
+                    styles={styles}
+                    setStyleProperty={setStyleProperty}
+                  />
+                )}
+                {styleChoice.value === 'boxShadow' && (
+                  <BoxShadowFormatter
+                    styles={styles}
+                    setStyleProperty={setStyleProperty}
+                  />
+                )}
+                {
+                  styleChoice.value === 'color' && <TextFormatter styles={styles} setStyleProperty={setStyleProperty} />
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </Tabs>
+    </>
   );
 };
 
