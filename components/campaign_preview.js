@@ -209,10 +209,16 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       transition: 0.25s ease;
       ${styleObjectToStyleString(styles.overlay)};
     }
+    #salestorm-popup::-webkit-scrollbar {
+      display: none;
+    }
     #salestorm-popup {
       contain: layout;
       z-index: 100000 !important;
       transition: 0.25s ease;
+      overflow-y: scroll;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
       ${styleObjectToStyleString(styles.popup)};
     }
     #salestorm-popup-close {
