@@ -102,6 +102,13 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       padding: 8px !important;
       padding-bottom: 0px !important;
     }
+    #salestorm-product-image {
+      padding-top: 200px !important;
+    }
+    #salestorm-product-image-container {
+      width: 100% !important;
+      height: 200px !important;
+    }
   `;
 
   const campaignTabletCSS = `
@@ -111,30 +118,30 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       padding-bottom: 0px !important;
     }
     #salestorm-product-image {
-      padding-top: 180px !important;
+      padding-top: 300px !important;
     }
     #salestorm-product-image-container {
       width: 100% !important;
-      height: 180px !important;
+      height: 300px !important;
     }
     #salestorm-product-action-container {
       width: 100% !important;
       height: initial !important;
-      padding-bottom: 0px !important;
+      padding-top: 16px !important;
     }
     #salestorm-product-action-container > h3 {
       font-size: 18px !important;
     }
     #salestorm-product-action-container > * {
-      margin-bottom: 6px !important;
+      margin-bottom: 10px !important;
     }
     #salestorm-product-action-container > button {
       margin-top: 8px !important;
       margin-bottom: 8px !important;
     }
     #salestorm-product-action-container > p {
-      margin-bottom: 5px !important;
-      margin-top: 5px !important;
+      margin-bottom: 10px !important;
+      margin-top: 10px !important;
     }
     #salestorm-popup-footer-close-action {
       display: none !important;
@@ -190,13 +197,29 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     body {
       margin: 0px;
       padding: 0px;
+      line-height: 2rem;
+      text-transform: initial;
+      letter-spacing: initial;
     }
     *:focus {
       outline: none;
     }
-    #salestorm-overlay-container p {
+    #salestorm-upselling-container div {
+      box-sizing: border-box;
+      font-weight: 400;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    #salestorm-upselling-container h3 {
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    #salestorm-upselling-container p {
       margin: 0px !important;
       padding: 0px !important;
+      font-weight: 400;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
     }
     #salestorm-overlay-container {
       contain: layout;
@@ -231,8 +254,9 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       ${styleObjectToStyleString(styles.secondaryButtons)};
     }
     #salestorm-popup-close > span {
-      width: 1.5rem !important;
-      height: 1.5rem !important;
+      width: 16px !important;
+      height: 16px !important;
+      margin: 0 auto !important;
     }
     #salestorm-popup-close > span > svg {
       width: 100% !important;
@@ -288,7 +312,6 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     }
     #salestorm-product-action-container {
       width: 254px !important;
-      padding: 16px !important;
       text-align: center !important;
     }
     #salestorm-product-action-container > h3 {
@@ -312,7 +335,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       border-style: solid;
     }
     .salestorm-product-select {
-      padding: 8px 16px !important;
+      padding: 10px 16px !important;
       background-color: ${tinycolor(styles.popup.backgroundColor).darken(10)};
       width: 100% !important;
       border-width: 0px !important;
@@ -361,7 +384,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     }
     ${['tablet', 'mobile'].includes(preview) ? campaignTabletCSS : ''}
     ${preview === 'mobile' ? campaignMobileCSS : ''}
-    @media only screen and (max-width: 750px) {
+    @media only screen and (max-width: 600px) {
       ${campaignTabletCSS}
     }
     @media only screen and (max-width: 450px) {
