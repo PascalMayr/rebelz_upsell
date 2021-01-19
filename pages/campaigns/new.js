@@ -95,7 +95,6 @@ const New = (props) => {
     ...props.campaign,
   });
   const [preview, setPreview] = useState('desktop');
-  const isPreviewDesktop = preview === 'desktop';
   const setCampaignProperty = useCallback(
     (value, id) => setCampaign({ ...campaign, [id]: value }),
     [campaign]
@@ -273,7 +272,7 @@ const New = (props) => {
                 <Card.Section title="Check, customize and try your Upselling Campaign.">
                   <CampaignPreview
                     campaign={campaign}
-                    isPreviewDesktop={isPreviewDesktop}
+                    preview={preview}
                   />
                   <CampaignPreviewSwitch
                     onSwitch={(value) => setPreview(value)}
@@ -286,7 +285,6 @@ const New = (props) => {
         <Card.Section>
           <CampaignFormatter
             campaign={campaign}
-            isPreviewDesktop={isPreviewDesktop}
             setCampaignProperty={setCampaignProperty}
           />
         </Card.Section>

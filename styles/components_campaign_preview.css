@@ -11,17 +11,30 @@
   margin: 0 auto;
 }
 
-.salestorm-desktop-preview-container {
-  display: block;
-  min-height: 500px;
-}
-
 #product-loading-container {
   display: flex;
   justify-content: center;
   margin-top: 4em;
 }
 
+.salestorm-desktop-preview-container {
+  display: block;
+  min-height: 500px;
+}
+
 .salestorm-desktop-preview-container > #salestorm-overlay-container {
   padding: 3em;
+}
+
+.salestorm-tablet-preview-container {
+  border-right: 1em;
+  border-left: 1em;
+  border-top: 2em;
+  border-bottom: 2em;
+  border-radius: 30px;
+  border-color: rgb(32, 34, 35, 0.1);
+  border-style: solid;
+  width: 400px;
+  height: 600px;
+  margin: 0 auto;
 }

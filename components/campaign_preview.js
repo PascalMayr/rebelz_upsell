@@ -5,13 +5,7 @@ import { MobileCancelMajor, SelectMinor } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 import tinycolor from 'tinycolor2';
 
-const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
-
-  const mobileContainerClass = !isPreviewDesktop
-    ? 'salestorm-mobile-preview-container'
-    : 'salestorm-desktop-preview-container';
-
-  const styles = campaign.styles;
+const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
 
   const styleObjectToStyleString = (styleObject) => {
     const kebabCaseStyles = kebabCasify(styleObject);
@@ -101,18 +95,27 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
 
   const _getGoogleFontValue = (value) => _getFontValue(value).replace(' ', '+');
 
+
   const campaignMobileCSS = `
     #salestorm-product {
       flex-direction: column !important;
-      padding: 10px !important;
+      padding: 8px !important;
+      padding-bottom: 0px !important;
+    }
+  `;
+
+  const campaignTabletCSS = `
+    #salestorm-product {
+      flex-direction: column !important;
+      padding: 24px !important;
       padding-bottom: 0px !important;
     }
     #salestorm-product-image {
-      padding-top: 150px !important;
+      padding-top: 180px !important;
     }
     #salestorm-product-image-container {
       width: 100% !important;
-      height: 150px !important;
+      height: 180px !important;
     }
     #salestorm-product-action-container {
       width: 100% !important;
@@ -350,8 +353,12 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
       padding: 16px 30px !important;
       display: none;
     }
-    ${isPreviewDesktop ? '' : campaignMobileCSS}
+    ${['tablet', 'mobile'].includes(preview) ? campaignTabletCSS : ''}
+    ${preview === 'mobile' ? campaignMobileCSS : ''}
     @media only screen and (max-width: 750px) {
+      ${campaignTabletCSS}
+    }
+    @media only screen and (max-width: 450px) {
       ${campaignMobileCSS}
     }
     ${campaign.customCSS}
@@ -360,7 +367,7 @@ const CampaignPreview = ({ campaign, isPreviewDesktop }) => {
   return (
     <div id="salestorm-upselling-container">
       <style>{campaignCSS}</style>
-      <div className={mobileContainerClass}>
+      <div className={`salestorm-${preview}-preview-container`}>
         <div id="salestorm-overlay-container">
           <div
             id="salestorm-popup"

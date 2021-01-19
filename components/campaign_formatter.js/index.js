@@ -12,8 +12,7 @@ import TextFormatter from './text_formatter';
 
 const CampaignFormatter = ({
   campaign,
-  setCampaignProperty,
-  isPreviewDesktop,
+  setCampaignProperty
 }) => {
   const tabs = [
     {
@@ -110,7 +109,7 @@ const CampaignFormatter = ({
         'styles'
       );
     },
-    [isPreviewDesktop, id, campaign, styleChoice]
+    [id, campaign, styleChoice]
   );
 
   const styles = campaign.styles[id];
