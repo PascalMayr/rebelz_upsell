@@ -202,9 +202,13 @@ const New = (props) => {
             <Card.Section title="Where would you like to sell more?">
               <p className='salestorm-subtitle'>
                 Customers will see this campaign
-                {
-                  campaign.trigger === 'add_to_cart' ? ' after clicking Add to cart' : campaign.trigger === 'checkout' ? ' after clicking Checkout' : campaign.trigger === 'thank_you' ? ' after their purchase' : ''
-                }
+                {campaign.trigger === 'add_to_cart'
+                  ? ' after clicking Add to cart on the specified target products.'
+                  : campaign.trigger === 'checkout'
+                  ? ' after clicking Checkout with the specified target products in cart.'
+                  : campaign.trigger === 'thank_you'
+                  ? ' after purchasing the specified target products.'
+                  : ''}
               </p>
               <SalestormTriggers
                 trigger={campaign.trigger}
