@@ -141,41 +141,39 @@ const CampaignResourceSelection = ({
           }}
         />
       </div>
-      {NODE_ENV !== 'localdevelopment' && (
-        <ApolloConsumer>
-          {
-            client => (
-              <ResourcePicker
-                {...resourcePickerProps}
-                open={open}
-                onCancel={() => setOpen(false)}
-                onSelection={async (selectPayload) => {
-                  setOpen(false);
-                  if (resourcePickerProps.resourceType === 'Product') {
-                    setLoading(true);
-                    const products = await Promise.all(selectPayload.selection.map(async (resource) => {
-                      const { id } = resource;
-                      const product = await client.query({
-                        query: GET_PRODUCT,
-                        variables: {
-                          id
-                      }});
-                      const product_data = product.data.product;
-                      const { node: { product: { priceRange: { maxVariantPrice: { currencyCode }} } } } = product_data.variants.edges[0];
-                      return applyDiscount ? {...product_data, discount: { type: getSymbolFromCurrency(currencyCode), value: 5 }} : product_data;
-                    }));
-                    setLoading(false);
-                    onResourceMutation(products);
-                  }
-                  else {
-                    onResourceMutation(selectPayload.selection);
-                  }
-                }}
-              />
-            )
-          }
-        </ApolloConsumer>
-      )}
+      <ApolloConsumer>
+        {
+          client => (
+            <ResourcePicker
+              {...resourcePickerProps}
+              open={open}
+              onCancel={() => setOpen(false)}
+              onSelection={async (selectPayload) => {
+                setOpen(false);
+                if (resourcePickerProps.resourceType === 'Product') {
+                  setLoading(true);
+                  const products = await Promise.all(selectPayload.selection.map(async (resource) => {
+                    const { id } = resource;
+                    const product = await client.query({
+                      query: GET_PRODUCT,
+                      variables: {
+                        id
+                    }});
+                    const product_data = product.data.product;
+                    const { node: { product: { priceRange: { maxVariantPrice: { currencyCode }} } } } = product_data.variants.edges[0];
+                    return applyDiscount ? {...product_data, discount: { type: getSymbolFromCurrency(currencyCode), value: 5 }} : product_data;
+                  }));
+                  setLoading(false);
+                  onResourceMutation(products);
+                }
+                else {
+                  onResourceMutation(selectPayload.selection);
+                }
+              }}
+            />
+          )
+        }
+      </ApolloConsumer>
       {
         resourcePickerProps.selectMultiple || resources.length === 0 ?
         <div className='salestorm-add-resource-button-container'>
