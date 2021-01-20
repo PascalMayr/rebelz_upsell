@@ -1,3 +1,7 @@
+import fs from 'fs';
+import https from 'https';
+import path from 'path';
+
 import '@babel/polyfill';
 import dotenv from 'dotenv';
 import 'isomorphic-fetch';
@@ -19,7 +23,7 @@ dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({
-  dev,
+  dev: process.env.NODE_ENV !== 'production',
 });
 const handle = app.getRequestHandler();
 const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES } = process.env;
@@ -260,7 +264,23 @@ app.prepare().then(() => {
   server.use(Cors({ credentials: true }));
   server.use(router.allowedMethods());
   server.use(router.routes());
-  server.listen(port, () => {
-    console.log(`> Ready on http://localhost:${port}`);
-  });
+  const readyFunc = () => console.log(`> Ready on http://localhost:${port}`);
+  if (process.env.NODE_ENV === 'production') {
+    server.listen(port, readyFunc);
+  } else {
+    https
+      .createServer(
+        {
+          port,
+          key: fs
+            .readFileSync(path.resolve(process.cwd(), 'certs/key.pem'), 'utf8')
+            .toString(),
+          cert: fs
+            .readFileSync(path.resolve(process.cwd(), 'certs/cert.pem'), 'utf8')
+            .toString(),
+        },
+        server.callback()
+      )
+      .listen({ port }, readyFunc);
+  }
 });

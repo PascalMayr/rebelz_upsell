@@ -30,8 +30,10 @@ CREATE EXTENSION citext;
 12. Run:
 
 ```sh
-~/ $ shopify serve
+~/ $ shopify serve --host https://loop.salestorm.cc:8081
 ```
+
+13. Open the app URL shown in the output. The first time you do this Chrome will complain about an invalid certificate, [to circumvent this type "thisisunsafe" and Chrome will remember to trust the local certificate](https://medium.com/@dblazeski/chrome-bypass-net-err-cert-invalid-for-development-daefae43eb12).
 
 ## Development guides
 
