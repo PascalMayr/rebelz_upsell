@@ -34,6 +34,7 @@ CREATE EXTENSION citext;
 ```
 
 13. Open the app URL shown in the output. The first time you do this Chrome will complain about an invalid certificate, [to circumvent this type "thisisunsafe" and Chrome will remember to trust the local certificate](https://medium.com/@dblazeski/chrome-bypass-net-err-cert-invalid-for-development-daefae43eb12).
+14. Install and enable the ["Disable Content-Security-Policy" Chrome Extension](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden).
 
 ## Development guides
 
@@ -55,17 +56,6 @@ CREATE EXTENSION citext;
 ```sh
 ~/ $ shopify serve
 ```
-
-### Developing locally
-
-Note: There are some issues which needs to be fixed before developing locally is possible again.
-
-Run:
-```sh
-~/ $ npm run localdev
-```
-
-Note: You need to ***run at least once shopify serve*** before you can develope locally.
 
 ### Add new Animations
 1.) Clone the animate.css repo
@@ -89,24 +79,18 @@ Note: You need to ***run at least once shopify serve*** before you can develope 
 
 ## Troubleshooting authentication problems
 
-1. Stop the shopify tunnel with shopify tunnel stop
-
-```
-shopify tunnel stop
-```
-
-2. Connect to the right dev store with the right account
+1. Connect to the right dev store with the right account
 
 ```
 shopify connect
 ```
 
-3. Run the server again and choose 'Yes' when the cli asks to update the Application URL
+2. Run the server again and choose 'Yes' when the cli asks to update the Application URL
 
 ```
 shopify serve
 ```
 
-4. Check the status of the shopify system:
+3. Check the status of the shopify system:
 [shopifystatus.com](https://shopifystatus.com)
 [status.shopify.com](https://status.shopify.com)
