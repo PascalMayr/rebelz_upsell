@@ -14,8 +14,5 @@ coverage
 logs
 *.log
 
-# ngrok tunnel file
-config/tunnel.pid
-
 # next build output
 .next/

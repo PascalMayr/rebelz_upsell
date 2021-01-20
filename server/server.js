@@ -1,3 +1,7 @@
+import fs from 'fs';
+import https from 'https';
+import path from 'path';
+
 import '@babel/polyfill';
 import dotenv from 'dotenv';
 import 'isomorphic-fetch';
@@ -16,13 +20,13 @@ import db from './db';
 
 dotenv.config();
 
+const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES, NODE_ENV } = process.env;
+const isProduction = NODE_ENV === 'production';
 const port = parseInt(process.env.PORT, 10) || 8081;
-const dev = process.env.NODE_ENV !== 'production';
 const app = next({
-  dev,
+  dev: !isProduction,
 });
 const handle = app.getRequestHandler();
-const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES } = process.env;
 
 app.prepare().then(() => {
   const server = new Koa();
@@ -82,95 +86,85 @@ app.prepare().then(() => {
     )
   );
   server.keys = [SHOPIFY_API_SECRET];
-  if (process.env.NODE_ENV !== 'localdevelopment') {
-    server.use(
-      createShopifyAuth({
-        apiKey: SHOPIFY_API_KEY,
-        secret: SHOPIFY_API_SECRET,
-        scopes: [SCOPES],
+  server.use(
+    createShopifyAuth({
+      apiKey: SHOPIFY_API_KEY,
+      secret: SHOPIFY_API_SECRET,
+      scopes: [SCOPES],
 
-        async afterAuth(ctx) {
-          // Auth token and shop available in session
-          // Redirect to shop upon auth
-          const {
-            shop,
-            accessToken,
-            associatedUserScope,
-            associatedUser,
-          } = ctx.session;
-          const {
+      async afterAuth(ctx) {
+        // Auth token and shop available in session
+        // Redirect to shop upon auth
+        const {
+          shop,
+          accessToken,
+          associatedUserScope,
+          associatedUser,
+        } = ctx.session;
+        const {
+          id,
+          first_name,
+          last_name,
+          email,
+          account_owner,
+          locale,
+        } = associatedUser;
+        server.context.client = await createClient(shop, accessToken);
+
+        const store = await db.query(
+          'SELECT * FROM stores WHERE domain = $1',
+          [shop]
+        );
+        if (store.rowCount === 0) {
+          const scriptid = await getScriptTagId(ctx);
+          await db.query(
+            'INSERT INTO stores(domain, scriptid) VALUES($1, $2)',
+            [shop, scriptid]
+          );
+        }
+        await db.query(
+          `
+          INSERT INTO users(id, domain, associated_user_scope, first_name, last_name, email, account_owner, locale)
+          VALUES($1, $2, $3, $4, $5, $6, $7, $8)
+          ON CONFLICT (id) DO UPDATE SET
+          associated_user_scope = $3,
+          first_name = $4,
+          last_name = $5,
+          email = $6,
+          account_owner = $7,
+          locale = $8
+        `,
+          [
             id,
+            shop,
+            associatedUserScope,
             first_name,
             last_name,
             email,
             account_owner,
             locale,
-          } = associatedUser;
-          server.context.client = await createClient(shop, accessToken);
-
-          const store = await db.query(
-            'SELECT * FROM stores WHERE domain = $1',
-            [shop]
-          );
-          if (store.rowCount === 0) {
-            const scriptid = await getScriptTagId(ctx);
-            await db.query(
-              'INSERT INTO stores(domain, scriptid) VALUES($1, $2)',
-              [shop, scriptid]
-            );
-          }
-          await db.query(
-            `
-            INSERT INTO users(id, domain, associated_user_scope, first_name, last_name, email, account_owner, locale)
-            VALUES($1, $2, $3, $4, $5, $6, $7, $8)
-            ON CONFLICT (id) DO UPDATE SET
-            associated_user_scope = $3,
-            first_name = $4,
-            last_name = $5,
-            email = $6,
-            account_owner = $7,
-            locale = $8
-          `,
-            [
-              id,
-              shop,
-              associatedUserScope,
-              first_name,
-              last_name,
-              email,
-              account_owner,
-              locale,
-            ]
-          );
-          ctx.cookies.set('shopOrigin', shop, {
-            httpOnly: false,
-            secure: true,
-            sameSite: 'none',
-          });
-          ctx.redirect('/');
-        },
-      })
-    );
-  }
+          ]
+        );
+        ctx.cookies.set('shopOrigin', shop, {
+          httpOnly: false,
+          secure: true,
+          sameSite: 'none',
+        });
+        ctx.redirect('/');
+      },
+    })
+  );
   server.use(
     graphQLProxy({
       version: ApiVersion.October20,
     })
   );
   server.use(bodyParser());
-  if (process.env.NODE_ENV !== 'localdevelopment') {
-    router.get('(.*)', verifyRequest(), async (ctx) => {
-      await handle(ctx.req, ctx.res);
-      ctx.respond = false;
-      ctx.res.statusCode = 200;
-    });
-  } else {
-    router.get('(.*)', async (ctx) => {
-      await handle(ctx.req, ctx.res);
-      ctx.respond = false;
-      ctx.res.statusCode = 200;
-    });
-  }
+  router.get('(.*)', verifyRequest(), async (ctx) => {
+    await handle(ctx.req, ctx.res);
+    ctx.respond = false;
+    ctx.res.statusCode = 200;
+  });
 
   router.post('/api/save-campaign', verifyRequest(), async (ctx) => {
     const {
@@ -257,7 +251,23 @@ app.prepare().then(() => {
   server.use(Cors({ credentials: true }));
   server.use(router.allowedMethods());
   server.use(router.routes());
-  server.listen(port, () => {
-    console.log(`> Ready on http://localhost:${port}`);
-  });
+  const readyFunc = () => console.log(`> Ready on http://localhost:${port}`);
+  if (isProduction) {
+    server.listen(port, readyFunc);
+  } else {
+    https
+      .createServer(
+        {
+          port,
+          key: fs
+            .readFileSync(path.resolve(process.cwd(), 'certs/key.pem'), 'utf8')
+            .toString(),
+          cert: fs
+            .readFileSync(path.resolve(process.cwd(), 'certs/cert.pem'), 'utf8')
+            .toString(),
+        },
+        server.callback()
+      )
+      .listen({ port }, readyFunc);
+  }
 });

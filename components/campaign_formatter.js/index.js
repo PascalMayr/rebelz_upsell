@@ -1,8 +1,13 @@
-import { useState, useCallback } from 'react';
-import { ChoiceList, TextField, Tabs, Select, Button } from '@shopify/polaris';
+import { useState, useCallback, useMemo } from 'react';
 import {
-  ReplayMinor
-} from '@shopify/polaris-icons';
+  ChoiceList,
+  TextField,
+  Tabs,
+  Select,
+  Button,
+} from '@shopify/polaris';
+import { ReplayMinor } from '@shopify/polaris-icons';
+
 import SalestormColorPicker from './salestorm_color_picker';
 import '../../styles/components_salestorm_campaign_formatter.css';
 import BackgroundFormatter from './background_formatter';
@@ -14,75 +19,78 @@ const CampaignFormatter = ({
   campaign,
   setCampaignProperty
 }) => {
-  const tabs = [
-    {
-      id: 'popup',
-      content: 'Popup',
-      accessibilityLabel: 'Popup',
-      panelID: 'popup-panel',
-      styleChoices: [
-        { label: 'Background', value: 'background', default: true },
-        { label: 'Border', value: 'border' },
-        { label: 'Box Shadow', value: 'boxShadow' },
-        { label: 'Text', value: 'color' }
-      ],
-    },
-    {
-      id: 'overlay',
-      content: 'Overlay',
-      accessibilityLabel: 'Overlay',
-      panelID: 'overlay-panel',
-      styleChoices: [
-        { label: 'Background', value: 'background', default: true },
-        { label: 'Border', value: 'border' },
-      ],
-    },
-    {
-      id: 'secondaryButtons',
-      content: 'Close Button',
-      accessibilityLabel: 'Close Button',
-      panelID: 'secondaryButtons-panel',
-      styleChoices: [
-        { label: 'Background', value: 'background', default: true },
-        { label: 'Border', value: 'border' },
-        { label: 'Box Shadow', value: 'boxShadow' },
-        { label: 'Icon Color', value: 'fill' },
-      ],
-    },
-    {
-      id: 'primaryButtons',
-      content: 'Claim Offer Button',
-      accessibilityLabel: 'Claim Offer Button',
-      panelID: 'primaryButtons-panel',
-      styleChoices: [
-        { label: 'Background', value: 'background', default: true },
-        { label: 'Border', value: 'border' },
-        { label: 'Box Shadow', value: 'boxShadow' },
-        { label: 'Text', value: 'color' },
-      ],
-    },
-    {
-      id: 'animation',
-      content: 'Animation',
-      accessibilityLabel: 'Animation',
-      panelID: 'animation-panel',
-      styleChoices: [],
-    },
-    {
-      id: 'customCSS',
-      content: 'Custom CSS',
-      accessibilityLabel: 'Custom CSS',
-      panelID: 'customCSS-panel',
-      styleChoices: [],
-    },
-    {
-      id: 'customJS',
-      content: 'Custom Javascript',
-      accessibilityLabel: 'Custom Javascript',
-      panelID: 'customJS-panel',
-      styleChoices: [],
-    }
-  ];
+  const tabs = useMemo(
+    () => [
+      {
+        id: 'popup',
+        content: 'Popup',
+        accessibilityLabel: 'Popup',
+        panelID: 'popup-panel',
+        styleChoices: [
+          { label: 'Background', value: 'background', default: true },
+          { label: 'Border', value: 'border' },
+          { label: 'Box Shadow', value: 'boxShadow' },
+          { label: 'Text', value: 'color' },
+        ],
+      },
+      {
+        id: 'overlay',
+        content: 'Overlay',
+        accessibilityLabel: 'Overlay',
+        panelID: 'overlay-panel',
+        styleChoices: [
+          { label: 'Background', value: 'background', default: true },
+          { label: 'Border', value: 'border' },
+        ],
+      },
+      {
+        id: 'secondaryButtons',
+        content: 'Close Button',
+        accessibilityLabel: 'Close Button',
+        panelID: 'secondaryButtons-panel',
+        styleChoices: [
+          { label: 'Background', value: 'background', default: true },
+          { label: 'Border', value: 'border' },
+          { label: 'Box Shadow', value: 'boxShadow' },
+          { label: 'Icon Color', value: 'fill' },
+        ],
+      },
+      {
+        id: 'primaryButtons',
+        content: 'Claim Offer Button',
+        accessibilityLabel: 'Claim Offer Button',
+        panelID: 'primaryButtons-panel',
+        styleChoices: [
+          { label: 'Background', value: 'background', default: true },
+          { label: 'Border', value: 'border' },
+          { label: 'Box Shadow', value: 'boxShadow' },
+          { label: 'Text', value: 'color' },
+        ],
+      },
+      {
+        id: 'animation',
+        content: 'Animation',
+        accessibilityLabel: 'Animation',
+        panelID: 'animation-panel',
+        styleChoices: [],
+      },
+      {
+        id: 'customCSS',
+        content: 'Custom CSS',
+        accessibilityLabel: 'Custom CSS',
+        panelID: 'customCSS-panel',
+        styleChoices: [],
+      },
+      {
+        id: 'customJS',
+        content: 'Custom Javascript',
+        accessibilityLabel: 'Custom Javascript',
+        panelID: 'customJS-panel',
+        styleChoices: [],
+      },
+    ],
+    []
+  );
 
   const [tab, setTab] = useState(0);
 
@@ -114,14 +122,19 @@ const CampaignFormatter = ({
 
   const styles = campaign.styles[id];
 
-  const _getBoxshadowWithoutColor = (boxShadow) => boxShadow.split(' ').slice(0, 3).join(' ');
+  const _getBoxshadowWithoutColor = (boxShadow) =>
+    boxShadow.split(' ').slice(0, 3).join(' ');
 
-  const _getBoxshadowColor = (boxShadow) => boxShadow.split(' ').slice(3).join(' ');
+  const _getBoxshadowColor = (boxShadow) =>
+    boxShadow.split(' ').slice(3).join(' ');
 
   const _setColor = (value) => {
     switch (styleChoice.value) {
       case 'boxShadow':
-        setStyleProperty(`${_getBoxshadowWithoutColor(styles.boxShadow)} ${value}`, styleChoice.value);
+        setStyleProperty(
+          `${_getBoxshadowWithoutColor(styles.boxShadow)} ${value}`,
+          styleChoice.value
+        );
         break;
       case 'fill':
         setStyleProperty(value, styleChoice.value);
@@ -145,39 +158,42 @@ const CampaignFormatter = ({
       default:
         return styles[`${styleChoice.value}Color`];
     }
-  }
+  };
 
   const animationTypes = [
-    {label: 'Back in down', value: 'animate__backInDown'},
-    {label: 'Back in up', value: 'animate__backInUp'},
-    {label: 'Fade in', value: 'animate__fadeIn'},
-    {label: 'Fade in down', value: 'animate__fadeInDown'},
-    {label: 'Fade in up', value: 'animate__fadeInUp'},
-    {label: 'Light Speed in from right', value: 'animate__lightSpeedInRight'},
-    {label: 'Light Speed in from left', value: 'animate__lightSpeedInLeft'},
-    {label: 'Rotate in', value: 'animate__rotateIn'},
-    {label: 'Jack in the Box', value: 'animate__jackInTheBox'},
-    {label: 'Zoom in', value: 'animate__zoomIn'},
-    {label: 'Flip in X', value: 'animate__flipInX'},
-    {label: 'Flip in Y', value: 'animate__flipInY'},
-    {label: 'Roll in', value: 'animate__rollIn'}
+    { label: 'Back in down', value: 'animate__backInDown' },
+    { label: 'Back in up', value: 'animate__backInUp' },
+    { label: 'Fade in', value: 'animate__fadeIn' },
+    { label: 'Fade in down', value: 'animate__fadeInDown' },
+    { label: 'Fade in up', value: 'animate__fadeInUp' },
+    { label: 'Light Speed in from right', value: 'animate__lightSpeedInRight' },
+    { label: 'Light Speed in from left', value: 'animate__lightSpeedInLeft' },
+    { label: 'Rotate in', value: 'animate__rotateIn' },
+    { label: 'Jack in the Box', value: 'animate__jackInTheBox' },
+    { label: 'Zoom in', value: 'animate__zoomIn' },
+    { label: 'Flip in X', value: 'animate__flipInX' },
+    { label: 'Flip in Y', value: 'animate__flipInY' },
+    { label: 'Roll in', value: 'animate__rollIn' },
   ];
 
   const animationSpeeds = [
-    {label: 'Slow', value: 'slow'},
-    {label: 'Slower', value: 'slower'},
-    {label: 'Normal', value: 'normal'},
-    {label: 'Fast', value: 'fast'},
-    {label: 'Faster', value: 'faster'},
-  ]
+    { label: 'Slow', value: 'slow' },
+    { label: 'Slower', value: 'slower' },
+    { label: 'Normal', value: 'normal' },
+    { label: 'Fast', value: 'fast' },
+    { label: 'Faster', value: 'faster' },
+  ];
 
   const _replayAnimation = () => {
-    let oldAnimation = campaign.animation;
-    setCampaignProperty({ type: '', delay: oldAnimation.delay, speed: oldAnimation.speed }, 'animation');
+    const oldAnimation = campaign.animation;
+    setCampaignProperty(
+      { type: '', delay: oldAnimation.delay, speed: oldAnimation.speed },
+      'animation'
+    );
     setTimeout(() => {
       setCampaignProperty(oldAnimation, 'animation');
-    }, 200)
-  }
+    }, 200);
+  };
 
   return (
     <>
