@@ -1,5 +1,5 @@
 import { useState, useCallback, useContext } from 'react';
-import { Page, Card, Layout, TextField } from '@shopify/polaris';
+import { Page, Card, Layout, TextField, Checkbox } from '@shopify/polaris';
 import { MobilePlusMajor } from '@shopify/polaris-icons';
 
 import '../../styles/pages_campaigns_index.css';
@@ -91,6 +91,7 @@ const New = (props) => {
       delay: 1,
       speed: 'normal'
     },
+    multiCurrencySupport: true,
     ...props.campaign,
   });
   const [preview, setPreview] = useState('desktop');
@@ -200,7 +201,7 @@ const New = (props) => {
         <Card.Section>
           <Card>
             <Card.Section title="Where would you like to sell more?">
-              <p className='salestorm-subtitle'>
+              <div className='salestorm-card-section-subtitle'>
                 Customers will see this campaign
                 {campaign.trigger === 'add_to_cart'
                   ? ' after clicking Add to cart on the specified target products.'
@@ -209,7 +210,7 @@ const New = (props) => {
                   : campaign.trigger === 'thank_you'
                   ? ' after purchasing the specified target products.'
                   : ''}
-              </p>
+              </div>
               <SalestormTriggers
                 trigger={campaign.trigger}
                 setCampaignProperty={setCampaignProperty}
@@ -244,6 +245,10 @@ const New = (props) => {
         <Card.Section>
           <Card>
             <Card.Section title="Add a upselling product and set an upselling offer.">
+              <div className='salestorm-card-section-subtitle'>
+                <Checkbox checked={campaign.multiCurrencySupport} onChange={(value) => setCampaignProperty(value, 'multiCurrencySupport')} />
+                Multi currency support&nbsp;<span><strong>enabled</strong></span>.
+              </div>
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',

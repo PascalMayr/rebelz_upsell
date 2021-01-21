@@ -12,6 +12,9 @@
   margin-top: 2em;
 }
 
-.salestorm-subtitle {
-  color: rgb(109, 113, 117)
+.salestorm-card-section-subtitle {
+  color: rgb(109, 113, 117);
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
 }

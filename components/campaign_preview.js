@@ -53,24 +53,24 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
           hidePopup();
         });
 
-        if (${renderedProduct && renderedProduct.discount.type !== '%'}) {
-          const baseCurrencyCode = "${renderedProduct.discount.type}";
+        if (${renderedProduct && renderedProduct.discount && renderedProduct.discount.type !== '%'}) {
+          const baseCurrencyCode = "${renderedProduct && renderedProduct.discount && renderedProduct.discount.type}";
 
           let currentCurrencyCode = baseCurrencyCode;
 
-          if (window.afterpay_shop_currency) {
+          if (window.afterpay_shop_currency && window.afterpay_shop_currency !== "") {
             currentCurrencyCode = window.afterpay_shop_currency;
           }
-          if (window.shop_currency) {
+          if (window.shop_currency && window.shop_currency !== "") {
             currentCurrencyCode = window.shop_currency;
           }
-          if (window.Currency && window.Currency.currentCurrency) {
+          if (window.Currency && window.Currency.currentCurrency && window.Currency.currentCurrency !== "") {
             currentCurrencyCode = window.Currency.currentCurrency
           }
-          if (localStorage.getItem('currency')) {
+          if (localStorage.getItem('currency') && localStorage.getItem('currency') !== "") {
             currentCurrencyCode = localStorage.getItem('currency');
           }
-          if (window.Shopify && window.Shopify.currency) {
+          if (window.Shopify && window.Shopify.currency && window.Shopify.currency !== "") {
             currentCurrencyCode = Shopify.currency.active;
           }
 
@@ -89,14 +89,14 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
           }
           document.querySelectorAll('.salestorm-price').forEach(async priceElement => {
             const converstionRate = await getConversionRate();
-            const priceValue = ${renderedProduct.discount.value ? renderedProduct.discount.value : 0};
-            const convertedPriceValue = priceValue * converstionRate;
+            const priceValue = ${renderedProduct && renderedProduct.discount && renderedProduct.discount.value ? renderedProduct.discount.value : 0};
+            const convertedPriceValue = ${campaign.multiCurrencySupport} ? priceValue * converstionRate : priceValue;
             priceElement.innerText = currencyFormatter.format(convertedPriceValue);
           });
         }
         else {
           document.querySelectorAll('.salestorm-price').forEach(priceElement => {
-            priceElement.innerText = "${renderedProduct.discount.value}%";
+            priceElement.innerText = "${renderedProduct && renderedProduct.discount && renderedProduct.discount.value}%";
           });
         }
 
