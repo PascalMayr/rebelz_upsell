@@ -175,12 +175,13 @@ app.prepare().then(() => {
       products,
       customCSS,
       customJS,
-      animation
+      animation,
+      multiCurrencySupport,
     } = ctx.request.body;
     let campaign;
     if (ctx.request.body.id) {
       campaign = await db.query(
-        'UPDATE campaigns SET styles = $1, trigger = $2, "sellType" = $3, name = $4, products = $5, "customCSS" = $6, "customJS" = $7, animation = $8 WHERE id = $9 RETURNING *',
+        'UPDATE campaigns SET styles = $1, trigger = $2, "sellType" = $3, name = $4, products = $5, "customCSS" = $6, "customJS" = $7, animation = $8, "multiCurrencySupport" = $9 WHERE id = $10 RETURNING *',
         [
           styles,
           trigger,
@@ -190,12 +191,13 @@ app.prepare().then(() => {
           customCSS,
           customJS,
           animation,
+          multiCurrencySupport,
           ctx.request.body.id,
         ]
       );
     } else {
       campaign = await db.query(
-        'INSERT INTO campaigns(domain, styles, trigger, "sellType", name, products, "customCSS", "customJS", animation) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+        'INSERT INTO campaigns(domain, styles, trigger, "sellType", name, products, "customCSS", "customJS", animation, "multiCurrencySupport") VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
         [
           ctx.session.shop,
           styles,
@@ -206,6 +208,7 @@ app.prepare().then(() => {
           customCSS,
           customJS,
           animation,
+          multiCurrencySupport
         ]
       );
     }
