@@ -81,7 +81,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
               currentCurrencyCode = localStorage.getItem('GIP_USER_CURRENCY');
             }
           }
-          if (window.Shopify && window.Shopify.currency && window.Shopify.currency !== "") {
+          if (window.Shopify && window.Shopify.currency && window.Shopify.currency.active !== "") {
             currentCurrencyCode = Shopify.currency.active;
           }
 
