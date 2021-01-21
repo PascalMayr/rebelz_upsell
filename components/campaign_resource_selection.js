@@ -165,15 +165,16 @@ const CampaignResourceSelection = ({
         }
       </ApolloConsumer>
     {
-      resourcePickerProps.selectMultiple || resources.length === 0 &&
+      resourcePickerProps.selectMultiple || resources.length === 0 ?
       <div className='salestorm-add-resource-button-container'>
         <Button {...buttonProps} onClick={() => setOpen(true)} loading={loading}>
           {label}
         </Button>
       </div>
+      : <></>
     }
   </>
-  );
-};
+  )
+}
 
 export default CampaignResourceSelection;
