@@ -465,8 +465,6 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     ${campaign.customCSS}
   `;
 
-  const Discount = (discount) => <span className={`salestorm-${discount.type === '%' ? 'percentage' : 'price'}`}>{discount.type === '%' ? `${discount.value}%` : ''}</span>
-
   return (
     <div id="salestorm-upselling-container">
       <style>{campaignCSS}</style>
