@@ -38,16 +38,6 @@ class MyApp extends App {
 
   render() {
     const { Component, pageProps } = this.props;
-    const shopOrigin =
-      // eslint-disable-next-line no-undef
-      NODE_ENV === 'localdevelopment'
-        ? 'prestige-google-review-test.myshopify.com'
-        : Cookies.get('shopOrigin');
-    const BridgeProvider =
-      // eslint-disable-next-line no-undef
-      NODE_ENV === 'localdevelopment'
-        ? ({ children }) => <div>{children}</div>
-        : Provider;
     return (
       <AppProvider
         i18n={translations}
@@ -56,11 +46,11 @@ class MyApp extends App {
           colorScheme: 'light',
         }}
       >
-        <BridgeProvider
+        <Provider
           config={{
             // eslint-disable-next-line no-undef
             apiKey: API_KEY,
-            shopOrigin,
+            shopOrigin: Cookies.get('shopOrigin'),
             forceRedirect: true,
           }}
         >
@@ -89,7 +79,7 @@ class MyApp extends App {
               </Frame>
             </ApolloProvider>
           </AppContext.Provider>
-        </BridgeProvider>
+        </Provider>
       </AppProvider>
     );
   }
