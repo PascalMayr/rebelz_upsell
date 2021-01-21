@@ -118,6 +118,16 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
           });
         }
 
+        document.querySelectorAll('.salestorm-product-select').forEach(selectElement => {
+          selectElement.addEventListener('change', () => {
+            const selectedValue = selectElement.value;
+            const selectedVariant = ${JSON.stringify(renderedProduct)}.variants.edges.find(variant => variant.node.legacyResourceId === selectedValue);
+            if (selectedVariant.node.image && selectedVariant.node.image) {
+              document.querySelector('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
+            }
+          })
+        });
+
       }
     }
     catch(error) {
