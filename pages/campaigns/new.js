@@ -243,7 +243,7 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title="How and what would you like to sell more ?">
+            <Card.Section title="Add a upselling product and set an upselling offer.">
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',
