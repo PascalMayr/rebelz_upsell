@@ -200,7 +200,7 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title="Where would you like to sell more?">
+            <Card.Section title="1.) Where would you like to sell more?">
               <div className='salestorm-card-section-subtitle'>
                 Customers will see this campaign
                 {campaign.trigger === 'add_to_cart'
@@ -244,7 +244,7 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title="Add a upselling product and set an upselling discount offer.">
+            <Card.Section title="2.) Add a upselling product and set an upselling discount offer.">
               <div className='salestorm-card-section-subtitle'>
                 <Checkbox checked={campaign.multiCurrencySupport} onChange={(value) => setCampaignProperty(value, 'multiCurrencySupport')} />
                 Multi currency support&nbsp;<span><strong>{campaign.multiCurrencySupport ? 'enabled' : 'disabled'}</strong></span>.
@@ -277,7 +277,7 @@ const New = (props) => {
           <Layout>
             <Layout.Section>
               <Card>
-                <Card.Section title="Check, customize and try your Upselling Campaign.">
+                <Card.Section title="3.) Check, customize and try your Upselling Campaign before publishing it.">
                   <CampaignPreview
                     campaign={campaign}
                     preview={preview}
