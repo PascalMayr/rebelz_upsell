@@ -57,51 +57,60 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
           const baseCurrencyCode = "${renderedProduct && renderedProduct.discount && renderedProduct.discount.type}";
 
           let currentCurrencyCode = baseCurrencyCode;
+          let currentCurrencyCodeFound = false;
 
-          if (window.afterpay_shop_currency && window.afterpay_shop_currency !== "") {
+          if (window.afterpay_shop_currency && window.afterpay_shop_currency !== "" && !currentCurrencyCodeFound) {
             currentCurrencyCode = window.afterpay_shop_currency;
+            currentCurrencyCodeFound = true;
           }
-          if (window.shop_currency && window.shop_currency !== "") {
+          if (window.shop_currency && window.shop_currency !== "" && !currentCurrencyCodeFound) {
             currentCurrencyCode = window.shop_currency;
+            currentCurrencyCodeFound = true;
           }
-          if (window.mlvedaShopCurrency && window.mlvedaShopCurrency !== "") {
+          if (window.mlvedaShopCurrency && window.mlvedaShopCurrency !== "" && !currentCurrencyCodeFound) {
             currentCurrencyCode = window.mlvedaShopCurrency;
+            currentCurrencyCodeFound = true;
           }
-          if (window.Currency && window.Currency.currentCurrency && window.Currency.currentCurrency !== "") {
-            currentCurrencyCode = window.Currency.currentCurrency
+          if (window.Currency && window.Currency.currentCurrency && window.Currency.currentCurrency !== "" && !currentCurrencyCodeFound) {
+            currentCurrencyCode = window.Currency.currentCurrency;
+            currentCurrencyCodeFound = true;
           }
-          if (window.Currency && window.Currency.shop_currency && window.Currency.shop_currency !== "") {
-            currentCurrencyCode = window.Currency.shop_currency
+          if (window.Currency && window.Currency.shop_currency && window.Currency.shop_currency !== "" && !currentCurrencyCodeFound) {
+            currentCurrencyCode = window.Currency.shop_currency;
+            currentCurrencyCodeFound = true;
           }
           if (window.localStorage) {
-            if (localStorage.getItem('currency') && localStorage.getItem('currency') !== "") {
+            if (localStorage.getItem('currency') && localStorage.getItem('currency') !== "" && !currentCurrencyCodeFound) {
               currentCurrencyCode = localStorage.getItem('currency');
+              currentCurrencyCodeFound = true;
             }
-            if (localStorage.getItem('GIP_USER_CURRENCY') && localStorage.getItem('GIP_USER_CURRENCY') !== "") {
+            if (localStorage.getItem('GIP_USER_CURRENCY') && localStorage.getItem('GIP_USER_CURRENCY') !== "" && !currentCurrencyCodeFound) {
               currentCurrencyCode = localStorage.getItem('GIP_USER_CURRENCY');
+              currentCurrencyCodeFound = true;
+            }
+            if (localStorage.getItem('currencyWidget') && localStorage.getItem('currencyWidget') !== "" && !currentCurrencyCodeFound) {
+              currentCurrencyCode = localStorage.getItem('currencyWidget');
+              currentCurrencyCodeFound = true;
             }
           }
-          if (window.Shopify && window.Shopify.currency && window.Shopify.currency.active !== "") {
+          if (window.Shopify && window.Shopify.currency && window.Shopify.currency.active !== "" && !currentCurrencyCodeFound) {
             currentCurrencyCode = Shopify.currency.active;
+            currentCurrencyCodeFound = true;
           }
 
           const currencyFormatter = new Intl.NumberFormat([], {
             style: 'currency',
             currency: currentCurrencyCode,
-            maximumSignificantDigits: 2
+            maximumSignificantDigits: 3
           });
 
-          const getConversionRate = async () => {
-            const exchangeRatesAPIEndpoint = 'https://api.exchangeratesapi.io/latest?base=' + baseCurrencyCode;
-            const response = await fetch(exchangeRatesAPIEndpoint);
-            const jsonResponse = await response.json();
-            const rate = jsonResponse && jsonResponse.rates && jsonResponse.rates[currentCurrencyCode] ? jsonResponse.rates[currentCurrencyCode] : 1;
-            return rate;
-          }
+
           document.querySelectorAll('.salestorm-price').forEach(async priceElement => {
-            const converstionRate = await getConversionRate();
             const priceValue = ${renderedProduct && renderedProduct.discount && renderedProduct.discount.value ? renderedProduct.discount.value : 0};
-            const convertedPriceValue = ${campaign.multiCurrencySupport} ? priceValue * converstionRate : priceValue;
+            let convertedPriceValue = priceValue;
+            if (window.Currency && window.Currency.rates && window.Currency.convert && ${campaign.multiCurrencySupport}) {
+              convertedPriceValue = window.Currency.convert(priceValue, baseCurrencyCode, currentCurrencyCode);
+            }
             priceElement.innerText = currencyFormatter.format(convertedPriceValue);
           });
         }
