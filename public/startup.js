@@ -239,10 +239,9 @@
 
   const initShopifyMultiCurrencyConversionScript = () => {
     if (!(window.Currency && window.Currency.rates && window.Currency.convert)) {
-      const head = document.head || document.getElementsByTagName('head')[0];
       const script = document.createElement('script');
       script.src = 'https://cdn.shopify.com/s/javascripts/currencies.js';
-      head.appendChild(script);
+      document.head.appendChild(script);
     }
   }
 
