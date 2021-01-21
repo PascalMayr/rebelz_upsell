@@ -237,7 +237,17 @@
     };
   };
 
+  const initShopifyMultiCurrencyConversionScript = () => {
+    if (!(window.Currency && window.Currency.rates && window.Currency.convert)) {
+      const head = document.head || document.getElementsByTagName('head')[0];
+      const script = document.createElement('script');
+      script.src = 'https://cdn.shopify.com/s/javascripts/currencies.js';
+      head.appendChild(script);
+    }
+  }
+
   const init = () => {
+    initShopifyMultiCurrencyConversionScript();
     // These 2 monkey patches are needed so we can detect products being added on the add to cart form
     // The issue is that if that add to cart is really a form, we don't have a way to tell if any other
     // JS is already adding the product to the cart, so we have to monitor XHR and fetch requests.
