@@ -4,6 +4,8 @@ import '../styles/components_campaign_preview.css';
 import { MobileCancelMajor, SelectMinor } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 import tinycolor from 'tinycolor2';
+import { gql } from 'apollo-boost';
+import { useQuery } from 'react-apollo';
 
 const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
 
@@ -31,23 +33,78 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     });
   }
 
+  const GET_STORE_CURRENCY = gql`
+    query storeCurrency {
+      shop {
+        currencyCode
+      }
+    }
+  `;
+
+  const { data } = useQuery(GET_STORE_CURRENCY);
+
   const campaignJS = `
     try {
-      if(typeof document !== 'undefined') {
+      if(typeof document !== 'undefined' && typeof window !== 'undefined') {
+
         const productDetailsMessage = document.querySelector('#salestorm-product-details-message');
         productDetailsMessage && productDetailsMessage.addEventListener('click', () => {
           document.querySelector('#salestorm-product').style.paddingBottom = '0px';
           document.querySelector('#salestorm-product-description').style.display = 'block';
         });
+
         const hidePopup = () => document.querySelector('#salestorm-upselling-container').style.display = 'none';
         const closeButton = document.querySelector('#salestorm-popup-close');
-        closeButton.addEventListener('click', () => {
+        closeButton && closeButton.addEventListener('click', () => {
           hidePopup();
         });
         const closeAction = document.querySelector('#salestorm-popup-footer-close-action');
-        closeAction.addEventListener('click', () => {
+        closeAction && closeAction.addEventListener('click', () => {
           hidePopup();
         });
+
+        const baseCurrencyCode = "${
+          data && data.shop ? data.shop.currencyCode : 'USD'
+        }";
+
+        let currentCurrencyCode = baseCurrencyCode;
+
+        if (window.afterpay_shop_currency) {
+          currentCurrencyCode = window.afterpay_shop_currency;
+        }
+        if (window.shop_currency) {
+          currentCurrencyCode = window.shop_currency;
+        }
+        if (window.Currency && window.Currency.currentCurrency) {
+          currentCurrencyCode = window.Currency.currentCurrency
+        }
+        if (localStorage.getItem('currency')) {
+          currentCurrencyCode = localStorage.getItem('currency');
+        }
+        if (window.Shopify && window.Shopify.currency) {
+          currentCurrencyCode = Shopify.currency.active;
+        }
+
+        const currencyFormatter = new Intl.NumberFormat([], {
+          style: 'currency',
+          currency: currentCurrencyCode,
+        });
+
+        const getConversionRate = async () => {
+          const exchangeRatesAPIEndpoint = 'https://api.exchangeratesapi.io/latest?base=' + baseCurrencyCode;
+          const response = await fetch(exchangeRatesAPIEndpoint);
+          const jsonResponse = await response.json();
+          const rate = jsonResponse && jsonResponse.rates && jsonResponse.rates[currentCurrencyCode] ? jsonResponse.rates[currentCurrencyCode] : 1;
+          return rate;
+        }
+
+        document.querySelectorAll('.salestorm-price').forEach(async priceElement => {
+          const converstionRate = await getConversionRate();
+          const priceValue = ${renderedProduct ? renderedProduct.discount.value : 0};
+          const convertedPriceValue = priceValue * converstionRate;
+          priceElement.innerText = currencyFormatter.format(convertedPriceValue);
+        });
+
       }
     }
     catch(error) {
@@ -65,7 +122,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       console.log('%cA Salestorm Javascript Error occured in the preview', 'color: orange;');
       console.log(error);
     }
-  }, [campaign]);
+  }, [campaign, data]);
 
   const customJS = `
     try {
@@ -417,42 +474,47 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
                 <div id="salestorm-product-image" />
               </div>
               <div id="salestorm-product-action-container">
-                <h3>GET 5% DISCOUNT!</h3>
-                <p>Get this product with a 5% Discount.</p>
-                {Object.keys(renderedProductVariantsByOption).map((option) => {
-                  const productVariants = renderedProductVariantsByOption[option];
-                  if (productVariants.length > 1) {
-                    return (
-                      <div className="salestorm-product-select-container" key={option}>
-                        <select
-                          className="salestorm-product-select"
-                          key={option}
-                        >
-                          <option selected disabled value={option}>{option}</option>
-                          {renderedProductVariantsByOption[option].map((productVariant) => (
-                            <option
-                              value={productVariant.legacyResourceId}
-                              key={productVariant.title}
-                            >
-                              {productVariant.title}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="salestorm-product-select-arrow">
-                          <Icon source={SelectMinor} />
-                        </div>
-                      </div>
-                    )
-                  }
-                  })}
-                <button id="salestorm-claim-offer-button">
-                  Claim Offer!
-                </button>
                 {
-                  renderedProduct && renderedProduct.descriptionHtml !== '' &&
-                  <p id="salestorm-product-details-message">
-                    See product details
-                  </p>
+                  renderedProduct &&
+                  <>
+                    <h3>GET <span className="salestorm-price"></span> DISCOUNT!</h3>
+                    <p>Get this product with a <span className="salestorm-price"></span> Discount.</p>
+                    {Object.keys(renderedProductVariantsByOption).map((option) => {
+                      const productVariants = renderedProductVariantsByOption[option];
+                      if (productVariants.length > 1) {
+                        return (
+                          <div className="salestorm-product-select-container" key={option}>
+                            <select
+                              className="salestorm-product-select"
+                              key={option}
+                            >
+                              <option selected disabled value={option}>{option}</option>
+                              {renderedProductVariantsByOption[option].map((productVariant) => (
+                                <option
+                                  value={productVariant.legacyResourceId}
+                                  key={productVariant.title}
+                                >
+                                  {productVariant.title}
+                                </option>
+                              ))}
+                            </select>
+                            <div className="salestorm-product-select-arrow">
+                              <Icon source={SelectMinor} />
+                            </div>
+                          </div>
+                        )
+                      }
+                      })}
+                    <button id="salestorm-claim-offer-button">
+                      Claim Offer!
+                    </button>
+                    {
+                      renderedProduct.descriptionHtml !== '' &&
+                      <p id="salestorm-product-details-message">
+                        See product details
+                      </p>
+                    }
+                  </>
                 }
               </div>
             </div>
