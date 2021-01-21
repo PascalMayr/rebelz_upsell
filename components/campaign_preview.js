@@ -53,47 +53,52 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
           hidePopup();
         });
 
-        const baseCurrencyCode = "${
-          renderedProduct ? renderedProduct.discount.type : 'USD'
-        }";
+        if (${renderedProduct && renderedProduct.discount.type !== '%'}) {
+          const baseCurrencyCode = "${renderedProduct.discount.type}";
 
-        let currentCurrencyCode = baseCurrencyCode;
+          let currentCurrencyCode = baseCurrencyCode;
 
-        if (window.afterpay_shop_currency) {
-          currentCurrencyCode = window.afterpay_shop_currency;
-        }
-        if (window.shop_currency) {
-          currentCurrencyCode = window.shop_currency;
-        }
-        if (window.Currency && window.Currency.currentCurrency) {
-          currentCurrencyCode = window.Currency.currentCurrency
-        }
-        if (localStorage.getItem('currency')) {
-          currentCurrencyCode = localStorage.getItem('currency');
-        }
-        if (window.Shopify && window.Shopify.currency) {
-          currentCurrencyCode = Shopify.currency.active;
-        }
+          if (window.afterpay_shop_currency) {
+            currentCurrencyCode = window.afterpay_shop_currency;
+          }
+          if (window.shop_currency) {
+            currentCurrencyCode = window.shop_currency;
+          }
+          if (window.Currency && window.Currency.currentCurrency) {
+            currentCurrencyCode = window.Currency.currentCurrency
+          }
+          if (localStorage.getItem('currency')) {
+            currentCurrencyCode = localStorage.getItem('currency');
+          }
+          if (window.Shopify && window.Shopify.currency) {
+            currentCurrencyCode = Shopify.currency.active;
+          }
 
-        const currencyFormatter = new Intl.NumberFormat([], {
-          style: 'currency',
-          currency: currentCurrencyCode,
-        });
+          const currencyFormatter = new Intl.NumberFormat([], {
+            style: 'currency',
+            currency: currentCurrencyCode,
+            maximumSignificantDigits: 1
+          });
 
-        const getConversionRate = async () => {
-          const exchangeRatesAPIEndpoint = 'https://api.exchangeratesapi.io/latest?base=' + baseCurrencyCode;
-          const response = await fetch(exchangeRatesAPIEndpoint);
-          const jsonResponse = await response.json();
-          const rate = jsonResponse && jsonResponse.rates && jsonResponse.rates[currentCurrencyCode] ? jsonResponse.rates[currentCurrencyCode] : 1;
-          return rate;
+          const getConversionRate = async () => {
+            const exchangeRatesAPIEndpoint = 'https://api.exchangeratesapi.io/latest?base=' + baseCurrencyCode;
+            const response = await fetch(exchangeRatesAPIEndpoint);
+            const jsonResponse = await response.json();
+            const rate = jsonResponse && jsonResponse.rates && jsonResponse.rates[currentCurrencyCode] ? jsonResponse.rates[currentCurrencyCode] : 1;
+            return rate;
+          }
+          document.querySelectorAll('.salestorm-price').forEach(async priceElement => {
+            const converstionRate = await getConversionRate();
+            const priceValue = ${renderedProduct.discount.value};
+            const convertedPriceValue = priceValue * converstionRate;
+            priceElement.innerText = currencyFormatter.format(convertedPriceValue);
+          });
         }
-
-        document.querySelectorAll('.salestorm-price').forEach(async priceElement => {
-          const converstionRate = await getConversionRate();
-          const priceValue = ${renderedProduct ? renderedProduct.discount.value : 0};
-          const convertedPriceValue = priceValue * converstionRate;
-          priceElement.innerText = currencyFormatter.format(convertedPriceValue);
-        });
+        else {
+          document.querySelectorAll('.salestorm-price').forEach(priceElement => {
+            priceElement.innerText = "${renderedProduct.discount.value}%";
+          });
+        }
 
       }
     }
@@ -442,6 +447,8 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     ${campaign.customCSS}
   `;
 
+  const Discount = (discount) => <span className={`salestorm-${discount.type === '%' ? 'percentage' : 'price'}`}>{discount.type === '%' ? `${discount.value}%` : ''}</span>
+
   return (
     <div id="salestorm-upselling-container">
       <style>{campaignCSS}</style>
@@ -467,8 +474,8 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
                 {
                   renderedProduct &&
                   <>
-                    <h3>GET <span className="salestorm-price"></span> DISCOUNT!</h3>
-                    <p>Get this product with a <span className="salestorm-price"></span> Discount.</p>
+                    <h3>GET <span className='salestorm-price'></span> DISCOUNT!</h3>
+                    <p>Get this product with a <span className='salestorm-price'></span> Discount.</p>
                     {Object.keys(renderedProductVariantsByOption).map((option) => {
                       const productVariants = renderedProductVariantsByOption[option];
                       if (productVariants.length > 1) {

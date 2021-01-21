@@ -5,7 +5,7 @@ import {
   MobileCancelMajor,
   ImageMajor
 } from '@shopify/polaris-icons';
-import { ApolloConsumer } from 'react-apollo';
+import { ApolloConsumer, useQuery } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import '../styles/components_resource_selection.css';
 
@@ -62,8 +62,9 @@ const CampaignResourceSelection = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [currencyCode, setCurrencyCode] = useState('USD');
   const { label } = buttonProps;
+  const { data } = useQuery(GET_STORE_CURRENCY);
+  const currencyCode = data && data.shop ? data.shop.currencyCode : 'USD';
   return (
   <>
     <div className='salestorm-resources'>
@@ -144,15 +145,6 @@ const CampaignResourceSelection = ({
               onCancel={() => setOpen(false)}
               onSelection={async (selectPayload) => {
                 setOpen(false);
-                try {
-                  const storeCurrency = await client.query({
-                    query: GET_STORE_CURRENCY,
-                  });
-                  setCurrencyCode(storeCurrency && storeCurrency.data ? storeCurrency.data.shop.currencyCode : 'USD');
-                }
-                catch (error) {
-                  console.log(`Failed to load store currency code: ${error}`);
-                }
                 if (resourcePickerProps.resourceType === 'Product') {
                   setLoading(true);
                   const products = await Promise.all(selectPayload.selection.map(async (resource) => {
