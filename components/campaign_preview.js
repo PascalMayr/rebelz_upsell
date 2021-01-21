@@ -118,6 +118,10 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
           });
         }
 
+        if (${!renderedProduct}) {
+          document.querySelector('#salestorm-product-image').style.backgroundImage = "";
+        }
+
         document.querySelectorAll('.salestorm-product-select').forEach(selectElement => {
           selectElement.addEventListener('change', () => {
             const selectedValue = selectElement.value;
