@@ -33,16 +33,6 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     });
   }
 
-  const GET_STORE_CURRENCY = gql`
-    query storeCurrency {
-      shop {
-        currencyCode
-      }
-    }
-  `;
-
-  const { data } = useQuery(GET_STORE_CURRENCY);
-
   const campaignJS = `
     try {
       if(typeof document !== 'undefined' && typeof window !== 'undefined') {
@@ -64,7 +54,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
         });
 
         const baseCurrencyCode = "${
-          data && data.shop ? data.shop.currencyCode : 'USD'
+          renderedProduct ? renderedProduct.discount.type : 'USD'
         }";
 
         let currentCurrencyCode = baseCurrencyCode;
@@ -122,7 +112,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       console.log('%cA Salestorm Javascript Error occured in the preview', 'color: orange;');
       console.log(error);
     }
-  }, [campaign, data]);
+  }, [campaign]);
 
   const customJS = `
     try {

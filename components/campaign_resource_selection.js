@@ -8,7 +8,6 @@ import {
 import { ApolloConsumer } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import '../styles/components_resource_selection.css';
-import getSymbolFromCurrency from 'currency-symbol-map';
 
 const GET_PRODUCT = gql`
   query Product($id: ID!) {
@@ -46,16 +45,24 @@ const GET_PRODUCT = gql`
   }
 `;
 
+const GET_STORE_CURRENCY = gql`
+  query storeCurrency {
+    shop {
+      currencyCode
+    }
+  }
+`;
+
 const CampaignResourceSelection = ({
   resourcePickerProps,
   buttonProps,
   resources = [],
   onResourceMutation,
-  applyDiscount,
-  currencyCode = 'EUR'
+  applyDiscount
 }) => {
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [currencyCode, setCurrencyCode] = useState('USD');
   const { label } = buttonProps;
   return (
   <>
@@ -100,7 +107,7 @@ const CampaignResourceSelection = ({
                       />
                       <Select
                         options={[
-                          { label: getSymbolFromCurrency(currencyCode), value: getSymbolFromCurrency(currencyCode) },
+                          { label: currencyCode, value: currencyCode },
                           { label: '%', value: '%'}
                         ]}
                         onChange={(value) => {
@@ -137,6 +144,15 @@ const CampaignResourceSelection = ({
               onCancel={() => setOpen(false)}
               onSelection={async (selectPayload) => {
                 setOpen(false);
+                try {
+                  const storeCurrency = await client.query({
+                    query: GET_STORE_CURRENCY,
+                  });
+                  setCurrencyCode(storeCurrency && storeCurrency.data ? storeCurrency.data.shop.currencyCode : 'USD');
+                }
+                catch (error) {
+                  console.log(`Failed to load store currency code: ${error}`);
+                }
                 if (resourcePickerProps.resourceType === 'Product') {
                   setLoading(true);
                   const products = await Promise.all(selectPayload.selection.map(async (resource) => {
@@ -148,7 +164,7 @@ const CampaignResourceSelection = ({
                           id
                       }});
                       const product_data = product.data.product;
-                      return applyDiscount ? {...product_data, discount: { type: getSymbolFromCurrency(currencyCode), value: 5 }} : product_data;
+                      return applyDiscount ? {...product_data, discount: { type: currencyCode, value: 5 }} : product_data;
                     } catch (error) {
                       console.log(`Failed to load product data for product: ${title}`);
                     }
