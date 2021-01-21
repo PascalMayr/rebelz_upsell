@@ -64,11 +64,22 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
           if (window.shop_currency && window.shop_currency !== "") {
             currentCurrencyCode = window.shop_currency;
           }
+          if (window.mlvedaShopCurrency && window.mlvedaShopCurrency !== "") {
+            currentCurrencyCode = window.mlvedaShopCurrency;
+          }
           if (window.Currency && window.Currency.currentCurrency && window.Currency.currentCurrency !== "") {
             currentCurrencyCode = window.Currency.currentCurrency
           }
-          if (localStorage.getItem('currency') && localStorage.getItem('currency') !== "") {
-            currentCurrencyCode = localStorage.getItem('currency');
+          if (window.Currency && window.Currency.shop_currency && window.Currency.shop_currency !== "") {
+            currentCurrencyCode = window.Currency.shop_currency
+          }
+          if (window.localStorage) {
+            if (localStorage.getItem('currency') && localStorage.getItem('currency') !== "") {
+              currentCurrencyCode = localStorage.getItem('currency');
+            }
+            if (localStorage.getItem('GIP_USER_CURRENCY') && localStorage.getItem('GIP_USER_CURRENCY') !== "") {
+              currentCurrencyCode = localStorage.getItem('GIP_USER_CURRENCY');
+            }
           }
           if (window.Shopify && window.Shopify.currency && window.Shopify.currency !== "") {
             currentCurrencyCode = Shopify.currency.active;
