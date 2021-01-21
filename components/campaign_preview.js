@@ -77,7 +77,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
           const currencyFormatter = new Intl.NumberFormat([], {
             style: 'currency',
             currency: currentCurrencyCode,
-            maximumSignificantDigits: 1
+            maximumSignificantDigits: 2
           });
 
           const getConversionRate = async () => {
@@ -89,7 +89,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
           }
           document.querySelectorAll('.salestorm-price').forEach(async priceElement => {
             const converstionRate = await getConversionRate();
-            const priceValue = ${renderedProduct.discount.value};
+            const priceValue = ${renderedProduct.discount.value ? renderedProduct.discount.value : 0};
             const convertedPriceValue = priceValue * converstionRate;
             priceElement.innerText = currencyFormatter.format(convertedPriceValue);
           });
