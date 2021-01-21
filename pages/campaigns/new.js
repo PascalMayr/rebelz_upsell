@@ -244,7 +244,7 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title="Add a upselling product and set an upselling offer.">
+            <Card.Section title="Add a upselling product and set an upselling discount offer.">
               <div className='salestorm-card-section-subtitle'>
                 <Checkbox checked={campaign.multiCurrencySupport} onChange={(value) => setCampaignProperty(value, 'multiCurrencySupport')} />
                 Multi currency support&nbsp;<span><strong>{campaign.multiCurrencySupport ? 'enabled' : 'disabled'}</strong></span>.
