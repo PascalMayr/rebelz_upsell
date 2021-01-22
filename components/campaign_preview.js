@@ -19,7 +19,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
   if (renderedProduct) {
     renderedProduct.variants.edges.forEach((edge) => {
       const variant = edge.node;
-      edge.node.selectedOptions.forEach((selectedOption) => {
+      variant.selectedOptions.forEach((selectedOption) => {
         let currentSelectedOption = renderedProductVariantsByOption[selectedOption.name];
         if (currentSelectedOption) {
           currentSelectedOption.push(variant);
