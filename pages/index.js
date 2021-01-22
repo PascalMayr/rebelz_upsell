@@ -195,7 +195,7 @@ const Index = ({
                   <h3 className='campaign-title'>
                     <TextStyle variation='strong'>{name}</TextStyle>
                   </h3>
-                  <Badge status={published ? 'info' : 'attention'}>
+                  <Badge status={published ? 'success' : 'attention'}>
                     {published ? 'Published' : 'Unpublished'}
                   </Badge>
                 </ResourceItem>

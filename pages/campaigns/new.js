@@ -1,5 +1,5 @@
 import { useState, useCallback, useContext } from 'react';
-import { Page, Card, Layout, TextField, Checkbox } from '@shopify/polaris';
+import { Page, Card, Layout, TextField, Checkbox, Badge } from '@shopify/polaris';
 import { MobilePlusMajor } from '@shopify/polaris-icons';
 
 import '../../styles/pages_campaigns_index.css';
@@ -121,6 +121,7 @@ const New = (props) => {
   return (
     <Page
       title={props.campaign ? 'Update campaign' : 'Create new campaign'}
+      titleMetadata={<Badge status={campaign.published ? 'success' : 'attention'}>{campaign.published ? 'Published' : 'Unpublished'}</Badge>}
       breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
       primaryAction={{
         content: campaign.published ? 'Unpublish campaign' : 'Publish campaign',
