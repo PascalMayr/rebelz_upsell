@@ -376,7 +376,8 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     }
     #salestorm-popup-footer-checkout-action .Polaris-Icon {
       margin-left: 0.2em !important;
-      width: 18px !important;
+      width: 15px !important;
+      padding-top: 2px;
       fill: ${styles.popup.color} !important;
     }
     #salestorm-product {
