@@ -36,7 +36,6 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       if(typeof document !== 'undefined' && typeof window !== 'undefined') {
         const productDetailsMessage = document.querySelector('#salestorm-product-details-message');
         productDetailsMessage && productDetailsMessage.addEventListener('click', () => {
-          document.querySelector('#salestorm-product').style.paddingBottom = '0px';
           document.querySelector('#salestorm-product-description').style.display = 'block';
         });
 
