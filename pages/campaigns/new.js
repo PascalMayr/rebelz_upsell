@@ -87,8 +87,8 @@ const New = (props) => {
     customCSS: '',
     customJS: '',
     animation: {
-      type: 'animate__fadeInUp',
-      delay: 1,
+      type: 'animate__fadeInDown',
+      delay: 0,
       speed: 'normal'
     },
     multiCurrencySupport: true,
