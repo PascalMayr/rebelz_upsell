@@ -187,7 +187,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     #salestorm-product {
       flex-direction: column !important;
       padding: 8px !important;
-      padding-bottom: 0px !important;
+      padding-bottom: 0px;
     }
     #salestorm-product-image {
       padding-top: 200px !important;
@@ -202,7 +202,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     #salestorm-product {
       flex-direction: column !important;
       padding: 24px !important;
-      padding-bottom: 0px !important;
+      padding-bottom: 0px;
     }
     #salestorm-product-image {
       padding-top: 300px !important;
