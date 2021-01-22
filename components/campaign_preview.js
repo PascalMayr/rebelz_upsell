@@ -185,36 +185,36 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
 
   const campaignMobileCSS = `
     #salestorm-product {
-      flex-direction: column !important;
-      padding: 8px !important;
+      flex-direction: column;
+      padding: 8px;
       padding-bottom: 0px;
     }
     #salestorm-product-image {
-      padding-top: 200px !important;
+      padding-top: 200px;
     }
     #salestorm-product-image-container {
-      width: 100% !important;
-      height: 200px !important;
+      width: 100%;
+      height: 200px;
     }
   `;
 
   const campaignTabletCSS = `
     #salestorm-product {
-      flex-direction: column !important;
-      padding: 24px !important;
+      flex-direction: column;
+      padding: 24px;
       padding-bottom: 0px;
     }
     #salestorm-product-image {
-      padding-top: 300px !important;
+      padding-top: 300px;
     }
     #salestorm-product-image-container {
-      width: 100% !important;
-      height: 300px !important;
+      width: 100%;
+      height: 300px;
     }
     #salestorm-product-action-container {
-      width: 100% !important;
-      height: initial !important;
-      padding-top: 16px !important;
+      width: 100%;
+      height: initial;
+      padding-top: 16px;
     }
     #salestorm-product-action-container > h3 {
       font-size: 18px !important;
@@ -231,7 +231,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       margin-top: 10px !important;
     }
     #salestorm-popup-footer-close-action {
-      display: none !important;
+      display: none;
     }
     #salestorm-popup-footer-checkout-action {
       margin: 0 auto !important;
@@ -284,7 +284,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     body {
       margin: 0px;
       padding: 0px;
-      line-height: 2rem;
+      line-height: 2rem !important;
       text-transform: initial;
       letter-spacing: initial;
     }
@@ -305,16 +305,17 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       margin: 0px !important;
       padding: 0px !important;
       font-weight: 400;
+      line-height: 20px !important;
       text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
     }
     #salestorm-overlay-container {
       contain: layout;
-      display: flex !important;
-      justify-content: center !important;
-      align-items: center !important;
-      width: 100% !important;
-      height: 100% !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
       z-index: 99999 !important;
       transition: 0.25s ease;
       ${styleObjectToStyleString(styles.overlay)};
@@ -333,10 +334,10 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     }
     #salestorm-popup-close {
       contain: layout;
-      cursor: pointer !important;
-      display: flex !important;
-      justify-content: center !important;
-      align-items: center !important;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       transition: 0.25s ease;
       ${styleObjectToStyleString(styles.secondaryButtons)};
     }
@@ -354,10 +355,10 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       ).lighten(10)};
     }
     #salestorm-popup-header {
-      width: 100% !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: space-between !important;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 16px !important;
     }
     #salestorm-popup-header-title {
@@ -365,53 +366,53 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       max-width: 75% !important;
     }
     #salestorm-popup-footer {
-      width: 100% !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: space-between !important;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 16px !important;
     }
     #salestorm-popup-footer-close-action {
-      cursor: pointer !important;
+      cursor: pointer;
     }
     #salestorm-popup-footer-checkout-action {
-      cursor: pointer !important;
-      display: flex !important;
-      align-items: center !important;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
     }
     #salestorm-popup-footer-checkout-action .Polaris-Icon {
       margin-left: 0.2em !important;
       width: 15px !important;
-      padding-top: 2px;
+      padding-top: 2px !important;
       fill: ${styles.popup.color} !important;
     }
     #salestorm-product {
       padding: 30px;
-      display: flex !important;
-      justify-content: space-between !important;
-      align-items: center !important;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     #salestorm-product-image-container {
-      width: 254px !important;
-      height: 254px !important;
+      width: 254px;
+      height: 254px;
     }
     #salestorm-product-image {
-      padding-top: 254px !important;
-      border-radius: 4px !important;
+      padding-top: 254px;
+      border-radius: 3px;
       background-color: ${tinycolor(
         styles.popup.backgroundColor
-      ).lighten(10)} !important;
+      ).lighten(10)};
       background-image: url(${renderedProduct && renderedProduct.images.edges.length > 0 && renderedProduct.images.edges[0].node.transformedSrc});
-      background-size: cover !important;
-      background-position: center !important;
+      background-size: cover;
+      background-position: center;
     }
     #salestorm-product-action-container {
-      width: 254px !important;
+      width: 254px;
       text-align: center !important;
     }
     #salestorm-product-action-container > h3 {
       font-size: 23px !important;
-      font-weight: bold !important;
+      font-weight: bold;
       margin-top: 0px !important;
     }
     #salestorm-product-action-container > * {
@@ -422,29 +423,30 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     }
     #salestorm-product-action-container > p {
       margin-bottom: 8px !important;
-      font-size: 14px !important;
+      font-size: 16px !important;
     }
     .salestorm-product-select-container {
       position: relative !important;
-      border-radius: 3px !important;
-      border-color: inherit !important;
-      border-width: 1px !important;
+      border-radius: 3px;
+      border-color: inherit;
+      border-width: 0px;
       border-style: solid;
     }
     .salestorm-product-select {
-      padding: 10px 16px !important;
+      padding: 10px 16px;
       background-color: ${tinycolor(styles.popup.backgroundColor).darken(10)};
-      width: 100% !important;
-      border-width: 0px !important;
-      text-indent: 0.01px !important;
-      cursor: pointer !important;
-      appearance: none !important;
-      color: inherit !important;
-      font-family: inherit !important;
+      width: 100%;
+      border-width: 0px;
+      border-radius: 3px;
+      text-indent: 0.01px;
+      cursor: pointer;
+      color: inherit;
+      font-family: inherit;
       font-size: 14px !important;
       z-index: 100002 !important;
-      -webkit-appearance: none !important;
-      -moz-appearance: none !important;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
       text-indent: 0.01px;
       text-overflow: '';
     }
@@ -457,26 +459,27 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       fill: ${styles.popup.color} !important;
     }
     #salestorm-claim-offer-button {
-      width: 100% !important;
-      padding: 16px 24px !important;
-      font-size: 17px !important;
-      font-weight: bold !important;
-      cursor: pointer !important;
+      width: 100%;
+      padding: 16px 24px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
       transition: 0.25s ease;
       ${styleObjectToStyleString(campaign.styles.primaryButtons)};
     }
     #salestorm-claim-offer-button:hover {
       background-color: ${tinycolor(
         styles.primaryButtons.backgroundColor
-      ).darken(10)} !important;
+      ).darken(10)};
     }
     #salestorm-product-details-message{
-      color: inherit !important;
-      text-decoration: underline !important;
-      cursor: pointer !important;
+      color: inherit;
+      text-decoration: underline;
+      cursor: pointer;
     }
     #salestorm-product-description {
-      padding: 16px 30px !important;
+      padding: 16px 30px;
+      padding-top: 0px;
       display: none;
     }
     ${['tablet', 'mobile'].includes(preview) ? campaignTabletCSS : ''}
