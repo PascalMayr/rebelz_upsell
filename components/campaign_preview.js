@@ -4,8 +4,6 @@ import '../styles/components_campaign_preview.css';
 import { MobileCancelMajor, SelectMinor } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 import tinycolor from 'tinycolor2';
-import { gql } from 'apollo-boost';
-import { useQuery } from 'react-apollo';
 
 const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
 
