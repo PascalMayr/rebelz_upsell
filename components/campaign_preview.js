@@ -547,7 +547,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
                       }
                       })}
                     <button id="salestorm-claim-offer-button">
-                      Claim Offer!
+                      Claim offer!
                     </button>
                     {
                       renderedProduct.descriptionHtml !== '' &&
