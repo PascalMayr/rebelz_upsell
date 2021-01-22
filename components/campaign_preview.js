@@ -4,6 +4,7 @@ import '../styles/components_campaign_preview.css';
 import { MobileCancelMajor, SelectMinor, ArrowRightMinor } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 import tinycolor from 'tinycolor2';
+import CampaignPreviewPlaceholder from './campaign_preview_placeholder';
 
 const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
 
@@ -15,7 +16,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
   };
 
   const renderedProductVariantsByOption = {};
-  const renderedProduct = campaign.products.selling[0];
+  const renderedProduct = campaign.products.selling.length > 0 ? campaign.products.selling[0] : CampaignPreviewPlaceholder;
   if (renderedProduct) {
     renderedProduct.variants.edges.forEach((edge) => {
       const variant = edge.node;
