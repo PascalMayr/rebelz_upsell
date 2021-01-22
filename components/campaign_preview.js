@@ -121,7 +121,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
           });
         }
 
-        if (${!renderedProduct}) {
+        if (${!campaign.products.selling.length == 0}) {
           document.querySelector('#salestorm-product-image').style.backgroundImage = "";
         }
 
