@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { kebabCasify } from 'casify';
 import '../styles/components_campaign_preview.css';
-import { MobileCancelMajor, SelectMinor } from '@shopify/polaris-icons';
+import { MobileCancelMajor, SelectMinor, ArrowRightMinor } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 import tinycolor from 'tinycolor2';
 
@@ -371,6 +371,13 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     }
     #salestorm-popup-footer-checkout-action {
       cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+    #salestorm-popup-footer-checkout-action .Polaris-Icon {
+      margin-left: 0.2em !important;
+      width: 18px !important;
+      fill: ${styles.popup.color} !important;
     }
     #salestorm-product {
       padding: 30px;
@@ -550,7 +557,8 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
             <div id="salestorm-popup-footer">
               <div id="salestorm-popup-footer-close-action">No thanks</div>
               <div id="salestorm-popup-footer-checkout-action">
-                Go to checkout &#8594;
+                Go to checkout
+                <Icon source={ArrowRightMinor} />
               </div>
             </div>
           </div>
