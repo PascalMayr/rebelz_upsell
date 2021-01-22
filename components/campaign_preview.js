@@ -452,7 +452,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     }
     .salestorm-product-select-arrow > span {
       position: absolute !important;
-      top: 22% !important;
+      top: 22.5% !important;
       right: 5px !important;
       width: 21px !important;
       height: 21px !important;
