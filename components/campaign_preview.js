@@ -36,7 +36,13 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       if(typeof document !== 'undefined' && typeof window !== 'undefined') {
         const productDetailsMessage = document.querySelector('#salestorm-product-details-message');
         productDetailsMessage && productDetailsMessage.addEventListener('click', () => {
-          document.querySelector('#salestorm-product-description').style.display = 'block';
+          const descriptionElement = document.querySelector('#salestorm-product-description');
+          if (descriptionElement.style.display == 'none' || descriptionElement.style.display == '') {
+            descriptionElement.style.display = 'block';
+          }
+          else {
+            descriptionElement.style.display = 'none';
+          }
         });
 
         const hidePopup = () => document.querySelector('#salestorm-upselling-container').style.display = 'none';
