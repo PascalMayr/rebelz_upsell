@@ -92,6 +92,14 @@ const New = (props) => {
       speed: 'normal'
     },
     multiCurrencySupport: true,
+    texts: {
+      title: 'GET {{Discount}} DISCOUNT!',
+      subtitle: 'Get this product with a {{Discount}} Discount.',
+      claimOfferButton: 'Claim offer!',
+      seeProductDetails: 'See product details',
+      noThanks: 'No thanks',
+      goToCheckout: 'Go to checkout',
+    },
     ...props.campaign,
   });
   const [preview, setPreview] = useState('desktop');

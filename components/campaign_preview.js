@@ -518,8 +518,8 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
                 {
                   renderedProduct &&
                   <>
-                    <h3>GET <span className='salestorm-price'></span> DISCOUNT!</h3>
-                    <p>Get this product with a <span className='salestorm-price'></span> Discount.</p>
+                    <h3 dangerouslySetInnerHTML={{__html: campaign.texts.title.replace('{{Discount}}', '<span class="salestorm-price"></span>')}}/>
+                    <p dangerouslySetInnerHTML={{__html: campaign.texts.subtitle.replace('{{Discount}}', '<span class="salestorm-price"></span>')}}></p>
                     {Object.keys(renderedProductVariantsByOption).map((option) => {
                       const productVariants = renderedProductVariantsByOption[option];
                       if (productVariants.length > 1) {
@@ -547,12 +547,12 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
                       }
                       })}
                     <button id="salestorm-claim-offer-button">
-                      Claim offer!
+                      {campaign.texts.claimOfferButton}
                     </button>
                     {
                       renderedProduct.descriptionHtml !== '' &&
                       <p id="salestorm-product-details-message">
-                        See product details
+                        {campaign.texts.seeProductDetails}
                       </p>
                     }
                   </>
@@ -564,9 +564,9 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
               <div id="salestorm-product-description" dangerouslySetInnerHTML={{ __html: renderedProduct.descriptionHtml }} />
             }
             <div id="salestorm-popup-footer">
-              <div id="salestorm-popup-footer-close-action">No thanks</div>
+              <div id="salestorm-popup-footer-close-action">{campaign.texts.noThanks}</div>
               <div id="salestorm-popup-footer-checkout-action">
-                Go to checkout
+                {campaign.texts.goToCheckout}
                 <Icon source={ArrowRightMinor} />
               </div>
             </div>
