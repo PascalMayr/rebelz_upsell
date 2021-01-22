@@ -34,16 +34,6 @@ const CampaignFormatter = ({
         ],
       },
       {
-        id: 'overlay',
-        content: 'Overlay',
-        accessibilityLabel: 'Overlay',
-        panelID: 'overlay-panel',
-        styleChoices: [
-          { label: 'Background', value: 'background', default: true },
-          { label: 'Border', value: 'border' },
-        ],
-      },
-      {
         id: 'secondaryButtons',
         content: 'Close Button',
         accessibilityLabel: 'Close Button',
@@ -65,6 +55,16 @@ const CampaignFormatter = ({
           { label: 'Border', value: 'border' },
           { label: 'Box Shadow', value: 'boxShadow' },
           { label: 'Text', value: 'color' },
+        ],
+      },
+      {
+        id: 'overlay',
+        content: 'Overlay',
+        accessibilityLabel: 'Overlay',
+        panelID: 'overlay-panel',
+        styleChoices: [
+          { label: 'Background', value: 'background', default: true },
+          { label: 'Border', value: 'border' },
         ],
       },
       {
