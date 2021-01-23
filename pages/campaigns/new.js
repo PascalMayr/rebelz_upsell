@@ -95,10 +95,10 @@ const New = (props) => {
     texts: {
       title: 'GET {{Discount}} DISCOUNT!',
       subtitle: 'Get this product with a {{Discount}} Discount.',
-      claimOfferButton: 'Claim offer!',
-      seeProductDetails: 'See product details',
-      noThanks: 'No thanks',
-      goToCheckout: 'Go to checkout',
+      addToCartAction: 'Claim offer!',
+      seeProductDetailsAction: 'See product details',
+      dismissAction: 'No thanks',
+      checkoutAction: 'Go to checkout',
     },
     ...props.campaign,
   });

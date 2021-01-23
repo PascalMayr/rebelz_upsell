@@ -548,12 +548,12 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
                       }
                       })}
                     <button id="salestorm-claim-offer-button">
-                      {campaign.texts.claimOfferButton}
+                      {campaign.texts.addToCartAction}
                     </button>
                     {
                       renderedProduct.descriptionHtml !== '' &&
                       <p id="salestorm-product-details-message">
-                        {campaign.texts.seeProductDetails}
+                        {campaign.texts.seeProductDetailsAction}
                       </p>
                     }
                   </>
@@ -565,9 +565,9 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
               <div id="salestorm-product-description" dangerouslySetInnerHTML={{ __html: renderedProduct.descriptionHtml }} />
             }
             <div id="salestorm-popup-footer">
-              <div id="salestorm-popup-footer-close-action">{campaign.texts.noThanks}</div>
+              <div id="salestorm-popup-footer-close-action">{campaign.texts.dismissAction}</div>
               <div id="salestorm-popup-footer-checkout-action">
-                {campaign.texts.goToCheckout}
+                {campaign.texts.checkoutAction}
                 <Icon source={ArrowRightMinor} />
               </div>
             </div>
