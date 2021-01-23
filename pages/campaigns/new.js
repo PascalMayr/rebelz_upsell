@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext } from 'react';
+import { useState, useCallback, useContext, useEffect } from 'react';
 import { Page, Card, Layout, TextField, Checkbox, Badge } from '@shopify/polaris';
 import { MobilePlusMajor } from '@shopify/polaris-icons';
 
@@ -117,7 +117,14 @@ const New = (props) => {
       });
     }
   }
-  )
+  );
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.onbeforeunload = () => {
+        return "Please check if you've saved your campaign before leaving.";
+      }
+    }
+  }, [])
   return (
     <Page
       title={props.campaign ? 'Update campaign' : 'Create new campaign'}
