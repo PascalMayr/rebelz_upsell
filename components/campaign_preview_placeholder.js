@@ -1,7 +1,7 @@
 const CampaignPreviewPlaceholder = {
   legacyResourceId: "6169782747321",
   title:"The Mini Handbag by rothys",
-  descriptionHtml: "",
+  descriptionHtml: "A small structured staple. Crafted with ocean-bound marine plastic, this bag features a top handle and removable strap—so you can create the style you need for any occasion.",
   images: {
     edges:[
       {
