@@ -42,7 +42,7 @@ const SalestormColorPicker = ({
           backgroundColor: getColorFromColorPicker(colorForPicker, colorMode),
         }}
       >
-        <TextField value={color} onChange={(value) => onTextChange(value)} placeholder='Insert a rgba value' />
+        <TextField value={color} onChange={(value) => onTextChange(value)} placeholder='Insert a rgba or hex value' />
       </div>
     </div>
   );
