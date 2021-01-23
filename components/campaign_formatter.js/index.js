@@ -14,6 +14,8 @@ import BackgroundFormatter from './background_formatter';
 import BorderFormatter from './border_formatter';
 import BoxShadowFormatter from './boxshadow_formatter';
 import TextFormatter from './text_formatter';
+import { startCasify } from 'casify';
+
 
 const CampaignFormatter = ({
   campaign,
@@ -21,6 +23,13 @@ const CampaignFormatter = ({
 }) => {
   const tabs = useMemo(
     () => [
+      {
+        id: 'texts',
+        content: 'Texts',
+        accessibilityLabel: 'Texts',
+        panelID: 'texts-panel',
+        styleChoices: [],
+      },
       {
         id: 'popup',
         content: 'Popup',
@@ -35,8 +44,8 @@ const CampaignFormatter = ({
       },
       {
         id: 'secondaryButtons',
-        content: 'Close Button',
-        accessibilityLabel: 'Close Button',
+        content: 'Close Action',
+        accessibilityLabel: 'Close Action',
         panelID: 'secondaryButtons-panel',
         styleChoices: [
           { label: 'Background', value: 'background', default: true },
@@ -47,8 +56,8 @@ const CampaignFormatter = ({
       },
       {
         id: 'primaryButtons',
-        content: 'Claim Offer Button',
-        accessibilityLabel: 'Claim Offer Button',
+        content: 'Add to cart Action',
+        accessibilityLabel: 'Add to cart Action',
         panelID: 'primaryButtons-panel',
         styleChoices: [
           { label: 'Background', value: 'background', default: true },
@@ -199,6 +208,28 @@ const CampaignFormatter = ({
     <>
       <Tabs tabs={tabs} selected={tab} onSelect={handleTabChange}>
         <div id="salestorm-formatter">
+          {
+            id === 'texts' &&
+            <div className='salestorm-texts'>
+              {Object.keys(campaign.texts).map((textKey, index) => {
+                const label = Object.keys(startCasify({[textKey]: textKey}))[0];
+                return (
+                  <div key={textKey} className='salestorm-text'>
+                    <TextField
+                      key={textKey}
+                      label={label}
+                      placeholder={label}
+                      value={campaign.texts[textKey]}
+                      onChange={(value) => {
+                        setCampaignProperty({ ...campaign.texts, [textKey]: value }, 'texts')
+                      }}
+                    />
+                  </div>
+                )
+              })
+              }
+            </div>
+          }
           {
             id === 'customCSS' &&
             <TextField
