@@ -45,6 +45,7 @@ const Pricing = ({ store }) => {
     'Customize all Fonts and Styles',
     'Autopilot',
     'Analytics',
+    'Complete & clean removal of all code on uninstall',
     'Premium Support',
   ];
   const onPlanSelect = async (name) => {
