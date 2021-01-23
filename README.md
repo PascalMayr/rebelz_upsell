@@ -94,3 +94,16 @@ npm run serve
 3. Check the status of the shopify system:
 [shopifystatus.com](https://shopifystatus.com)
 [status.shopify.com](https://status.shopify.com)
+
+## Support guides
+
+### The popup is not showing prices with the right currency
+
+It could be that the current displayed currency in the merchants storefront is not used in the popup.
+In such a case you need to investigate how to get the current three digit currency code applied by other JS in the merchant store.
+The solution could be to find a global defined 'currency' variabe where the current Currency code is stored or to check the localStorage of the storefront.
+As soon as you've found where the current displayed currency code is stored you need to assign it to our global variable like this:
+
+```
+window.Salestorm.currentCurrencyCode = localStorage.getItem('currentDisplayedCurrencyCode')
+```
