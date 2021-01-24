@@ -37,18 +37,18 @@ const Pricing = ({ store }) => {
   }, [store.plan_name]);
 
   const featureList = [
-    'Product upsell funnels',
-    'Cart upsell funnels',
-    'Post-Purchase upsell funnels',
-    '100% responsive',
-    'No branding',
-    'Quick setup',
-    'Customize all texts, fonts and styles',
-    'Autopilot mode',
+    'Product Upsell Funnels',
+    'Cart Upsell Funnels',
+    'Post-Purchase Upsell Funnels',
+    'No Branding',
+    'Quick Setup',
+    '100% Responsive',
+    'Customize all Texts, Fonts and Styles',
+    'AI Autopilot mode',
     'Analytics',
     'Multi currency support',
-    'Complete & clean removal of all code on uninstall',
-    'Premium support',
+    'Premium Support',
+    'Complete & Clean Uninstall',
   ];
   const onPlanSelect = async (name) => {
     setLoading(name);
@@ -175,7 +175,7 @@ const Pricing = ({ store }) => {
                 />
                 <div className='salestorm-pricing-contact-us'>
                   <TextStyle>Need a bigger plan?</TextStyle>
-                  <a href="mailto:support@salestorm.cc">
+                  <a href="mailto:support@salestorm.cc?subject=Plan%20Upgrade%20Inquiry">
                     <Button primary>Contact us</Button>
                   </a>
                 </div>
