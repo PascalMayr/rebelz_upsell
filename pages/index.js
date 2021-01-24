@@ -7,6 +7,7 @@ import {
   ResourceItem,
   TextStyle,
   Layout,
+  Heading,
 } from '@shopify/polaris';
 import { CircleTickOutlineMinor } from '@shopify/polaris-icons';
 import Image from 'next/image';
@@ -17,9 +18,9 @@ import { useCallback, useState, useContext } from 'react';
 import toggleStoreEnabled from '../services/toggle_store_enabled';
 import CampaignDeleteModal from '../components/campaign_delete_modal';
 import db from '../server/db';
+import config from '../config';
 
 import { AppContext } from './_app';
-import config from '../config';
 
 export async function getServerSideProps(ctx) {
   const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [
@@ -67,7 +68,9 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
     <div className="no-campaigns-container">
       <div className="no-campaigns-image-section">
         <Image src="/imagination.svg" alt="me" width="250" height="250" />
-        <p>Follow the steps below to get started.</p>
+        <Heading>Welcome to Salestorm Thunder ⚡️</Heading>
+        <br/>
+        <p>Follow the steps below to create your first funnel campaign</p>
         <br />
       </div>
       <div className="no-campaigns-stepper-section">
@@ -105,8 +108,6 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
   return (
     <Page
       fullWidth
-      title="All Campaigns"
-      subtitle="Create new upsell funnel campaigns and boost your sales."
       titleMetadata={
         <Badge status={priceStatus} progress={priceProgress}>
           <div className="salestorm-pricing-badge">
