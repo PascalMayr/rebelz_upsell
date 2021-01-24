@@ -1,5 +1,12 @@
 import { useState, useCallback, useContext, useEffect } from 'react';
-import { Page, Card, Layout, TextField, Checkbox, Badge } from '@shopify/polaris';
+import {
+  Page,
+  Card,
+  Layout,
+  TextField,
+  Checkbox,
+  Badge,
+} from '@shopify/polaris';
 import { MobilePlusMajor } from '@shopify/polaris-icons';
 
 import '../../styles/pages_campaigns_index.css';
@@ -55,7 +62,7 @@ const New = (props) => {
         backgroundRepeat: 'repeat',
         backgroundOrigin: 'padding-box',
         boxShadow: '0px 0px 0px rgb(0, 0, 0)',
-        fill: 'rgb(255, 255, 255)'
+        fill: 'rgb(255, 255, 255)',
       },
       primaryButtons: {
         margin: '0px',
@@ -89,7 +96,7 @@ const New = (props) => {
     animation: {
       type: 'animate__fadeInDown',
       delay: 0,
-      speed: 'normal'
+      speed: 'normal',
     },
     multiCurrencySupport: true,
     texts: {
@@ -109,26 +116,35 @@ const New = (props) => {
   );
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
-  const _getResourcePickerInitialSelectedProducts = (products) => products.map(product => {
-    if (product) {
-      return ({
-        id: product.id,
-        variants: product.variants.edges.map(edge => edge.node.id)
-      });
-    }
-  }
-  );
+  const _getResourcePickerInitialSelectedProducts = (products) =>
+    products.map((product) => {
+      if (product) {
+        return {
+          id: product.id,
+          variants: product.variants.edges.map((edge) => edge.node.id),
+        };
+      } else {
+        return { id: '', variants: [''] };
+      }
+    });
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (
+      typeof window !== 'undefined' &&
+      process.env.NODE_ENV === 'production'
+    ) {
       window.onbeforeunload = () => {
         return "Please check if you've saved your campaign before leaving.";
-      }
+      };
     }
-  }, [])
+  }, []);
   return (
     <Page
       title={props.campaign ? 'Update campaign' : 'Create new campaign'}
-      titleMetadata={<Badge status={campaign.published ? 'success' : 'attention'}>{campaign.published ? 'Published' : 'Unpublished'}</Badge>}
+      titleMetadata={
+        <Badge status={campaign.published ? 'success' : 'attention'}>
+          {campaign.published ? 'Published' : 'Unpublished'}
+        </Badge>
+      }
       breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
       primaryAction={{
         content: campaign.published ? 'Unpublish campaign' : 'Publish campaign',
@@ -217,7 +233,7 @@ const New = (props) => {
         <Card.Section>
           <Card>
             <Card.Section title="1.) Where would you like to sell more?">
-              <div className='salestorm-card-section-subtitle'>
+              <div className="salestorm-card-section-subtitle">
                 Customers will see this campaign
                 {campaign.trigger === 'add_to_cart'
                   ? ' after clicking Add to cart on the specified target products.'
@@ -237,10 +253,12 @@ const New = (props) => {
                 resourcePickerProps={{
                   resourceType: 'Product',
                   selectMultiple: true,
-                  initialSelectionIds: _getResourcePickerInitialSelectedProducts(campaign.products.targets),
+                  initialSelectionIds: _getResourcePickerInitialSelectedProducts(
+                    campaign.products.targets
+                  ),
                   showVariants: false,
                   showDraftBadge: true,
-                  showArchivedBadge: true
+                  showArchivedBadge: true,
                 }}
                 buttonProps={{
                   primary: true,
@@ -261,15 +279,28 @@ const New = (props) => {
         <Card.Section>
           <Card>
             <Card.Section title="2.) Add a upselling product and set an upselling discount offer.">
-              <div className='salestorm-card-section-subtitle'>
-                <Checkbox checked={campaign.multiCurrencySupport} onChange={(value) => setCampaignProperty(value, 'multiCurrencySupport')} />
-                Multi currency support&nbsp;<span><strong>{campaign.multiCurrencySupport ? 'enabled' : 'disabled'}</strong></span>.
+              <div className="salestorm-card-section-subtitle">
+                <Checkbox
+                  checked={campaign.multiCurrencySupport}
+                  onChange={(value) =>
+                    setCampaignProperty(value, 'multiCurrencySupport')
+                  }
+                />
+                Multi currency support&nbsp;
+                <span>
+                  <strong>
+                    {campaign.multiCurrencySupport ? 'enabled' : 'disabled'}
+                  </strong>
+                </span>
+                .
               </div>
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',
                   selectMultiple: false,
-                  initialSelectionIds: _getResourcePickerInitialSelectedProducts(campaign.products.selling),
+                  initialSelectionIds: _getResourcePickerInitialSelectedProducts(
+                    campaign.products.selling
+                  ),
                   showVariants: false,
                 }}
                 buttonProps={{
@@ -294,10 +325,7 @@ const New = (props) => {
             <Layout.Section>
               <Card>
                 <Card.Section title="3.) Check, customize and try your Upselling Campaign before publishing it.">
-                  <CampaignPreview
-                    campaign={campaign}
-                    preview={preview}
-                  />
+                  <CampaignPreview campaign={campaign} preview={preview} />
                   <CampaignPreviewSwitch
                     onSwitch={(value) => setPreview(value)}
                   />
