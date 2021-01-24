@@ -170,7 +170,9 @@ const Pricing = ({ store }) => {
                 />
                 <div className='salestorm-pricing-contact-us'>
                   <TextStyle>Need a bigger plan?</TextStyle>
-                  <Button primary>Contact us</Button>
+                  <a href="mailto:support@salestorm.cc">
+                    <Button primary>Contact us</Button>
+                  </a>
                 </div>
               </Card.Section>
             </Card>

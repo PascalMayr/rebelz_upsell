@@ -65,6 +65,16 @@
   margin-top: 2rem;
 }
 
-.salestorm-pricing-contact-us > button {
+.salestorm-pricing-contact-us > span {
+  opacity: 0.8;
+}
+
+.salestorm-pricing-contact-us > a {
   margin-top: 1rem;
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+}
+
+.salestorm-pricing-contact-us > a:visited {
+  color: rgb(255, 255, 255);
 }
