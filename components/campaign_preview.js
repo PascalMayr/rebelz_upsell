@@ -120,7 +120,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
         }
       }
 
-      if (${!campaign.products.selling.length === 0}) {
+      if (${campaign.products.selling.length === 0}) {
         document.querySelector('#salestorm-product-image').style.backgroundImage = "";
       }
 
