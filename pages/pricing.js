@@ -168,6 +168,10 @@ const Pricing = ({ store }) => {
                     );
                   }}
                 />
+                <div className='salestorm-pricing-contact-us'>
+                  <TextStyle>Need a bigger plan?</TextStyle>
+                  <Button primary>Contact us</Button>
+                </div>
               </Card.Section>
             </Card>
           </Layout.Section>
