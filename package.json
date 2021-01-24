@@ -33,7 +33,7 @@
     "@shopify/polaris-icons": "^4.1.0",
     "@zeit/next-css": "^1.0.1",
     "apollo-boost": "^0.4.4",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "casify": "^2.0.0",
     "cross-env": "^7.0.2",
     "currency-symbol-map": "^4.0.4",
