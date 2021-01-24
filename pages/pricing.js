@@ -173,6 +173,7 @@ const Pricing = ({ store }) => {
           </Layout.Section>
         </Layout>
         <br />
+        <p className="salestorm-plans-note">Cancel or change your plan anytime, no strings attached.</p>
       </div>
     </Page>
   );

@@ -51,3 +51,8 @@
 .salestorm-plan-views {
   opacity: 0.8;
 }
+
+.salestorm-plans-note {
+  text-align: center;
+  margin-top: 4rem;
+}
