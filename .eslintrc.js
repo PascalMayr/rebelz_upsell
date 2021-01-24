@@ -14,7 +14,6 @@ module.exports = {
     '@shopify/strict-component-boundaries': 'off',
     'id-length': 'off',
     'promise/catch-or-return': 'off',
-    'require-atomic-updates': 'off'
   },
   overrides: [
     {

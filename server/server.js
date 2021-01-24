@@ -28,6 +28,7 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 
+// eslint-disable-next-line promise/catch-or-return
 app.prepare().then(() => {
   const server = new Koa();
   const router = new Router();
@@ -184,7 +185,7 @@ app.prepare().then(() => {
       products,
       customCSS,
       customJS,
-      animation
+      animation,
     } = ctx.request.body;
     let campaign;
     if (ctx.request.body.id) {
