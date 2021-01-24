@@ -130,6 +130,7 @@ const New = (props) => {
   useEffect(() => {
     if (
       typeof window !== 'undefined' &&
+      // eslint-disable-next-line no-undef
       process.env.NODE_ENV === 'production'
     ) {
       window.onbeforeunload = () => {
