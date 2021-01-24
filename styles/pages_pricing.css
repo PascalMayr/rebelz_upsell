@@ -2,6 +2,14 @@
   align-items: center;
 }
 
+.plans-container .Polaris-ResourceList .Polaris-ResourceItem {
+  cursor: auto;
+}
+
+.plans-container .Polaris-ResourceList .Polaris-ResourceItem:hover {
+  background-color: rgb(255, 255, 255);
+}
+
 .plans-container .Polaris-Card__Section .Polaris-Heading {
   text-align: center;
   font-size: 2.3rem;
@@ -53,10 +61,6 @@
   align-items: center;
   flex-direction: column;
   margin-top: 3rem;
-}
-
-.salestorm-pricing-contact-us > span {
-  opacity: 0.8;
 }
 
 .salestorm-pricing-contact-us > a {
