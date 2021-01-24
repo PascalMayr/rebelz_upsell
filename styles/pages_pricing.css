@@ -1,25 +1,53 @@
-.plans-container {
-  margin-top: 3em;
+.plans-container .Polaris-Layout {
+  align-items: center;
 }
 
-.plans-container .Polaris-Heading {
+.plans-container .Polaris-Card__Section .Polaris-Heading {
   text-align: center;
-  font-size: 2rem;
-  padding-top: 2rem;
+  font-size: 2.3rem;
+  padding-top: 1rem;
+  padding-bottom: 1.5rem;
+  text-align: center;
+}
+
+.plans-container > .Polaris-Heading {
+  text-align: center;
+  font-size: 3rem;
+  padding-top: 4rem;
+  padding-bottom: 6rem;
 }
 
 .plans-container .Polaris-List {
   list-style: none;
-  margin-top: 1rem;
-  min-height: 240px;
+  padding: 0px !important;
+  margin: 0px !important;
+  padding-left: 3rem !important;
 }
 
 .plans-container .Polaris-List__Item {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+}
+
+.plans-container .Polaris-ResourceItem__Container {
+  padding: 1.5rem 1rem;
 }
 
 .plans-container .salestorm-pricing-card-checkmark {
   color: rgb(0, 128, 96);
   margin-right: 0.5em;
   font-weight: bold;
+}
+
+.salestorm-plan {
+  display: flex;
+  flex-direction: column;
+}
+
+.salestorm-plan .Polaris-TextStyle--variationStrong {
+  font-size: 1.7rem;
+  margin-bottom: 5px;
+}
+
+.salestorm-plan-views {
+  opacity: 0.8;
 }

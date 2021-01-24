@@ -37,16 +37,18 @@ const Pricing = ({ store }) => {
   }, [store.plan_name]);
 
   const featureList = [
-    'Product Upsell Funnels',
-    'Cart Upsell Funnels',
-    'Post-Purchase Upsell Funnels',
-    '100% Responsive',
-    'No Branding',
-    'Customize all Fonts and Styles',
-    'Autopilot',
+    'Product upsell funnels',
+    'Cart upsell funnels',
+    'Post-Purchase upsell funnels',
+    '100% responsive',
+    'No branding',
+    'Quick setup',
+    'Customize all texts, fonts and styles',
+    'Autopilot mode',
     'Analytics',
+    'Multi currency support',
     'Complete & clean removal of all code on uninstall',
-    'Premium Support',
+    'Premium support',
   ];
   const onPlanSelect = async (name) => {
     setLoading(name);
@@ -91,14 +93,11 @@ const Pricing = ({ store }) => {
       breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
     >
       <div className="plans-container">
+        <Heading element="h1">
+          All features included in every plan.
+        </Heading>
         <Layout>
           <Layout.Section oneHalf>
-            <Heading element="h1">
-              Simple Pricing that grows with your business
-            </Heading>
-            <Heading subtitle>
-              All Features included in every Plan. Always.
-            </Heading>
             <List className="pricing-list" style={{ listStyle: 'none' }}>
               {featureList.map((listItem) => (
                 <List.Item key={listItem}>
@@ -110,15 +109,13 @@ const Pricing = ({ store }) => {
           </Layout.Section>
           <Layout.Section oneHalf>
             <Card>
-              <Card.Header>
-                <Heading element="h1">Choose Your Plan</Heading>
-              </Card.Header>
               <Card.Section>
+                <Heading element="h1">Choose your plan</Heading>
                 <ResourceList
                   resourceName={{ singular: 'plan', plural: 'plans' }}
                   items={config.plans}
                   renderItem={(plan) => {
-                    const { name, limit } = plan;
+                    const { name, limit, amount } = plan;
                     const isThisPlanActive = activePlanName === name;
                     const isThisTheFreePlan = config.planNames.free === name;
                     let planLabel;
@@ -146,23 +143,26 @@ const Pricing = ({ store }) => {
                         accessibilityLabel={`View details for ${name}`}
                       >
                         <Stack distribution="equalSpacing">
-                          <TextStyle variation="strong">{name}</TextStyle>
-                          <span>
-                            <TextStyle variation="strong">
+                          <div className='salestorm-plan'>
+                            <TextStyle variation="strong">{name}</TextStyle>
+                            <span>$ {amount}/month</span>
+                            <span className='salestorm-plan-views'>
                               {new Intl.NumberFormat().format(limit)}
-                            </TextStyle>
-                            &nbsp;views/month
-                          </span>
-                          {hasButton ? (
-                            <Button
-                              primary
-                              disabled={Boolean(loading)}
-                              loading={loading === name}
-                              onClick={() => onPlanSelect(name)}
-                            >
-                              {planLabel}
-                            </Button>
-                          ) : (<span>{planLabel}</span>)}
+                              &nbsp;views/month
+                            </span>
+                          </div>
+                          <div>
+                            {hasButton ? (
+                              <Button
+                                primary
+                                disabled={Boolean(loading)}
+                                loading={loading === name}
+                                onClick={() => onPlanSelect(name)}
+                              >
+                                {planLabel}
+                              </Button>
+                            ) : (<span >{planLabel}</span>)}
+                          </div>
                         </Stack>
                       </ResourceItem>
                     );
@@ -173,7 +173,6 @@ const Pricing = ({ store }) => {
           </Layout.Section>
         </Layout>
         <br />
-        <p>Cancel or change your plan anytime, no strings attached.</p>
       </div>
     </Page>
   );
