@@ -77,7 +77,7 @@ CREATE EXTENSION citext;
 
 4.) Copy the content without comments of animate.min.css into the campaign_preview components style tag.
 
-## Troubleshooting authentication problems
+## Troubleshooting authentication/authorization problems
 
 1. Connect to the right dev store with the right account
 
@@ -95,7 +95,17 @@ npm run serve
 [shopifystatus.com](https://shopifystatus.com)
 [status.shopify.com](https://status.shopify.com)
 
+4. Make sure you are currently logged in into the store backend. For development stores, you have to login via the Partner dashboard.
+
+5. If any API endpoint gives you a 403, check if you set the right SCOPES ENV and are allowed to access that resource.
+
 ## Support guides
+
+### My campaign does not appear
+
+We currently have to check the database manually to figure out why. If it should be shown according to the database, trigger the popup in the storefront and check the Javascript console.
+
+Also possible is that the users internet is too slow and our popup isn't ready to be displayed yet, as not all data is received yet.
 
 ### The popup is not showing prices with the right currency
 

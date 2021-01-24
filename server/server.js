@@ -118,14 +118,22 @@ app.prepare().then(() => {
         if (store.rowCount === 0) {
           const scriptid = await getScriptTagId(ctx);
           await db.query(
-            'INSERT INTO stores(domain, scriptid) VALUES($1, $2)',
+            `INSERT INTO stores${db.insertColumns('domain', 'scriptId')}`,
             [shop, scriptid]
           );
         }
         await db.query(
           `
-          INSERT INTO users(id, domain, associated_user_scope, first_name, last_name, email, account_owner, locale)
-          VALUES($1, $2, $3, $4, $5, $6, $7, $8)
+          INSERT INTO users${db.insertColumns(
+            'id',
+            'domain',
+            'associated_user_scope',
+            'first_name',
+            'last_name',
+            'email',
+            'account_owner',
+            'locale'
+          )}
           ON CONFLICT (id) DO UPDATE SET
           associated_user_scope = $3,
           first_name = $4,
@@ -199,7 +207,19 @@ app.prepare().then(() => {
       );
     } else {
       campaign = await db.query(
-        'INSERT INTO campaigns(domain, styles, trigger, "sellType", name, products, "customCSS", "customJS", animation, "multiCurrencySupport", texts) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *',
+        `INSERT INTO campaigns${db.insertColumns(
+          'domain',
+          'styles',
+          'trigger',
+          '"sellType"',
+          'name',
+          'products',
+          '"customCSS"',
+          '"customJS"',
+          'animation',
+          '"multiCurrencySupport"',
+          'texts'
+        )} RETURNING *`,
         [
           ctx.session.shop,
           styles,

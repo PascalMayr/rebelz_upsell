@@ -15,8 +15,15 @@ const pool = new Pool({
   database: params.pathname.split('/')[1],
 });
 
+const insertColumns = (...cols) => {
+  const columns = cols.join(',');
+  const dollarValues = cols.map((_col, i) => `$${i + 1}`).join(',');
+  return `(${columns}) VALUES(${dollarValues})`;
+};
+
 const db = {
   query: (...args) => pool.query(...args),
+  insertColumns,
 };
 
 export default db;
