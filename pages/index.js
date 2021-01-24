@@ -6,7 +6,7 @@ import {
   ResourceList,
   ResourceItem,
   TextStyle,
-  Layout
+  Layout,
 } from '@shopify/polaris';
 import { CircleTickOutlineMinor } from '@shopify/polaris-icons';
 import Image from 'next/image';
@@ -19,6 +19,7 @@ import CampaignDeleteModal from '../components/campaign_delete_modal';
 import db from '../server/db';
 
 import { AppContext } from './_app';
+import config from '../config';
 
 export async function getServerSideProps(ctx) {
   const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [
@@ -31,13 +32,7 @@ export async function getServerSideProps(ctx) {
   return { props: { campaigns: campaigns.rows, store: stores.rows[0] } };
 }
 
-const Index = ({
-  campaigns,
-  store,
-  totalRevenue = 0,
-  appName = 'App',
-  plan = 'free_plan',
-}) => {
+const Index = ({ campaigns, store, appName = 'App' }) => {
   const context = useContext(AppContext);
 
   const [persistedCampaigns, setPersistedCampaigns] = useState(campaigns);
@@ -65,8 +60,8 @@ const Index = ({
   const enabledStatus = enabled ? 'enabled' : 'disabled';
   const enabledButtonStatus = enabled ? 'Disable' : 'Enable';
 
-  const priceStatus = plan === 'free_plan' ? 'new' : 'success';
-  const priceProgress = plan === 'free_plan' ? 'incomplete' : 'complete';
+  const priceStatus = store.plan_name ? 'success' : 'new';
+  const priceProgress = store.plan_name ? 'complete' : 'incomplete';
 
   const emptyStateMarkup = (
     <div className="no-campaigns-container">
@@ -111,11 +106,13 @@ const Index = ({
     <Page
       fullWidth
       title="All Campaigns"
-      subtitle="Create new campaigns and boost your sales."
+      subtitle="Create new upsell funnel campaigns and boost your sales."
       titleMetadata={
         <Badge status={priceStatus} progress={priceProgress}>
-          <div className='salestorm-pricing-badge'>
-            <NextLink href='/pricing' >{plan.replace('_', ' ').toUpperCase()}</NextLink>
+          <div className="salestorm-pricing-badge">
+            <NextLink href="/pricing">{`${
+              store.plan_name || config.planNames.free.toUpperCase()
+            } Plan`}</NextLink>
           </div>
         </Badge>
       }
@@ -137,7 +134,11 @@ const Index = ({
     >
       <div className="salestorm-enabled-satus-container">
         <div id="salestorm-enabled-status-inner-container">
-          <Button onClick={toggleEnabled} primary={!enabled} loading={toggleEnableLoading}>
+          <Button
+            onClick={toggleEnabled}
+            primary={!enabled}
+            loading={toggleEnableLoading}
+          >
             {enabledButtonStatus}
           </Button>
           <span className="salestorm-enabled-status">
@@ -151,25 +152,43 @@ const Index = ({
       <Layout>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title='Total Revenue'>
-              <p className='salestorm-analytics-subheading'>The total impact our app made on your store.</p>
-              <div className='salestorm-analytics-value'>
-                <p>
-
-                </p>
+            <Card.Section title="Total Revenue">
+              <p className="salestorm-analytics-subheading">
+                The total impact our app made on your store since.
+              </p>
+              <div className="salestorm-analytics-value">
+                <p></p>
               </div>
             </Card.Section>
           </Card>
         </Layout.Section>
         <Layout.Section oneThird>
-
+          <Card>
+            <Card.Section title="AOV">
+              <p className="salestorm-analytics-subheading">
+                Average order value increase by since
+              </p>
+              <div className="salestorm-analytics-value">
+                <p></p>
+              </div>
+            </Card.Section>
+          </Card>
         </Layout.Section>
         <Layout.Section oneThird>
-
+          <Card>
+            <Card.Section title="Funnels enabled">
+              <p className="salestorm-analytics-subheading">
+                Total number of active funnels.
+              </p>
+              <div className="salestorm-analytics-value">
+                <p></p>
+              </div>
+            </Card.Section>
+          </Card>
         </Layout.Section>
       </Layout>
       <Card>
-        <div className='salestorm-campaigns-overview'>
+        <div className="salestorm-campaigns-overview">
           <ResourceList
             resourceName={{ singular: 'campaign', plural: 'campaigns' }}
             emptyState={emptyStateMarkup}
@@ -188,12 +207,12 @@ const Index = ({
                       content: 'Delete campaign',
                       destructive: true,
                       onAction: () => setDeleteModalCampaign(campaign),
-                      size: 'slim'
-                    }
+                      size: 'slim',
+                    },
                   ]}
                 >
-                  <h3 className='campaign-title'>
-                    <TextStyle variation='strong'>{name}</TextStyle>
+                  <h3 className="campaign-title">
+                    <TextStyle variation="strong">{name}</TextStyle>
                   </h3>
                   <Badge status={published ? 'info' : 'attention'}>
                     {published ? 'Published' : 'Unpublished'}
@@ -203,7 +222,7 @@ const Index = ({
             }}
           />
         </div>
-        { deleteModalCampaign &&
+        {deleteModalCampaign && (
           <CampaignDeleteModal
             campaign={deleteModalCampaign}
             onClose={closeDeleteModal}
@@ -216,7 +235,7 @@ const Index = ({
               )
             }
           />
-        }
+        )}
       </Card>
     </Page>
   );

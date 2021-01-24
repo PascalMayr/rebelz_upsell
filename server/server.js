@@ -15,8 +15,16 @@ import Router from 'koa-router';
 import Cors from '@koa/cors';
 import session from 'koa-session';
 
-import { createClient, getScriptTagId } from './handlers';
+import config from '../config';
+
 import db from './db';
+import {
+  createClient,
+  getScriptTagId,
+  getSubscriptionUrl,
+  cancelSubscription,
+  registerWebhooks,
+} from './handlers';
 
 dotenv.config();
 
@@ -77,6 +85,37 @@ app.prepare().then(() => {
     ctx.status = 200;
   });
 
+  router.post('/webhooks/app_subscriptions/update', webhook, async (ctx) => {
+    const shop = ctx.request.headers['x-shopify-shop-domain'];
+    const {
+      name,
+      status,
+      admin_graphql_api_id: subscriptionId,
+    } = ctx.request.body.app_subscription;
+    const storeData = await db.query('SELECT * FROM stores WHERE domain = $1', [
+      shop,
+    ]);
+    const store = storeData.rows[0];
+    const configPlan = config.plans.find((p) => p.name === name);
+    if (status === 'ACTIVE') {
+      await db.query(
+        'UPDATE stores SET plan_name = $1, "subscriptionId" = $2, plan_limit = $3 WHERE domain = $4',
+        [name, subscriptionId, configPlan.limit, shop]
+      );
+    } else if (store.subscriptionId === subscriptionId) {
+      const freePlan = config.plans.find(
+        (p) => p.name === config.planNames.free
+      );
+      await db.query(
+        'UPDATE stores SET plan_name = NULL, "subscriptionId" = NULL, plan_limit = $1 WHERE domain = $2',
+        [freePlan.limit, shop]
+      );
+    }
+
+    ctx.body = {};
+    ctx.status = 200;
+  });
+
   server.use(
     session(
       {
@@ -112,15 +151,28 @@ app.prepare().then(() => {
         } = associatedUser;
         server.context.client = await createClient(shop, accessToken);
 
-        const store = await db.query(
-          'SELECT * FROM stores WHERE domain = $1',
-          [shop]
-        );
+        const store = await db.query('SELECT * FROM stores WHERE domain = $1', [
+          shop,
+        ]);
         if (store.rowCount === 0) {
           const scriptid = await getScriptTagId(ctx);
+          const freePlan = config.plans.find(
+            (p) => p.name === config.planNames.free
+          );
           await db.query(
-            `INSERT INTO stores${db.insertColumns('domain', 'scriptId')}`,
-            [shop, scriptid]
+            `INSERT INTO stores${db.insertColumns(
+              'domain',
+              'scriptId',
+              'plan_limit'
+            )}`,
+            [shop, scriptid, freePlan.limit]
+          );
+          registerWebhooks(
+            shop,
+            accessToken,
+            'APP_SUBSCRIPTIONS_UPDATE',
+            '/webhooks/app_subscriptions/update',
+            ApiVersion.October20
           );
         }
         await db.query(
@@ -168,6 +220,7 @@ app.prepare().then(() => {
       version: ApiVersion.October20,
     })
   );
+
   server.use(bodyParser());
   router.get('(.*)', verifyRequest(), async (ctx) => {
     await handle(ctx.req, ctx.res);
@@ -269,6 +322,37 @@ app.prepare().then(() => {
     ]);
 
     ctx.status = 200;
+  });
+
+  router.patch('/api/plan', verifyRequest(), async (ctx) => {
+    const { plan } = ctx.request.body;
+    const { shop, accessToken } = ctx.session;
+    const storeData = await db.query('SELECT * FROM stores WHERE domain = $1', [
+      ctx.session.shop,
+    ]);
+    const store = storeData.rows[0];
+    server.context.client = await createClient(shop, accessToken);
+
+    if (store.plan_name === plan) {
+      await cancelSubscription(ctx, store.subscriptionId);
+      const freePlan = config.plans.find(
+        (p) => p.name === config.planNames.free
+      );
+      await db.query(
+        'UPDATE stores SET plan_name = NULL, "subscriptionId" = NULL, plan_limit = $1 WHERE domain = $2',
+        [freePlan.limit, ctx.session.shop]
+      );
+
+      ctx.body = {};
+      ctx.status = 200;
+    } else {
+      const currentPlan = config.plans.find(
+        (configPlan) => configPlan.name === plan
+      );
+      const { confirmationUrl } = await getSubscriptionUrl(ctx, currentPlan);
+
+      ctx.body = { confirmationUrl };
+    }
   });
 
   server.use(Cors({ credentials: true }));

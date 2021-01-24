@@ -1,50 +1,53 @@
 import 'isomorphic-fetch';
 import { gql } from 'apollo-boost';
 
-export function RECURRING_CREATE(url) {
+export function RECURRING_CREATE() {
   return gql`
-    mutation {
+    mutation(
+      $url: URL!
+      $test: Boolean!
+      $name: String!
+      $amount: Decimal!
+      $currency: CurrencyCode!
+    ) {
       appSubscriptionCreate(
-          name: "Super Duper Plan"
-          returnUrl: "${url}"
-          test: true
-          lineItems: [
-          {
-            plan: {
-              appUsagePricingDetails: {
-                  cappedAmount: { amount: 10, currencyCode: USD }
-                  terms: "$1 for 1000 emails"
-              }
-            }
-          }
+        name: $name
+        returnUrl: $url
+        test: $test
+        lineItems: [
           {
             plan: {
               appRecurringPricingDetails: {
-                  price: { amount: 10, currencyCode: USD }
+                price: { amount: $amount, currencyCode: $currency }
               }
             }
           }
-          ]
-        ) {
-            userErrors {
-              field
-              message
-            }
-            confirmationUrl
-            appSubscription {
-              id
-            }
+        ]
+      ) {
+        userErrors {
+          field
+          message
         }
-    }`;
+        confirmationUrl
+        appSubscription {
+          id
+        }
+      }
+    }
+  `;
 }
 
-export const getSubscriptionUrl = async (ctx) => {
+export const getSubscriptionUrl = async (ctx, { name, amount, currency }) => {
   const { client } = ctx;
-  const confirmationUrl = await client
-    .mutate({
-      mutation: RECURRING_CREATE(process.env.HOST),
-    })
-    .then((response) => response.data.appSubscriptionCreate.confirmationUrl);
-
-  return ctx.redirect(confirmationUrl);
+  const response = await client.mutate({
+    mutation: RECURRING_CREATE(),
+    variables: {
+      url: process.env.HOST,
+      test: process.env.NODE_ENV !== 'production',
+      name,
+      amount,
+      currency,
+    },
+  });
+  return response.data.appSubscriptionCreate;
 };
