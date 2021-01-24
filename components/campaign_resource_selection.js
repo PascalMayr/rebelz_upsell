@@ -202,18 +202,23 @@ const CampaignResourceSelection = ({
           />
         )}
       </ApolloConsumer>
-      {resourcePickerProps.selectMultiple ||
-        (resources.length === 0 && (
-          <div className="salestorm-add-resource-button-container">
-            <Button
-              {...buttonProps}
-              onClick={() => setOpen(true)}
-              loading={loading}
-            >
-              {label}
-            </Button>
-          </div>
-        ))}
+      <div
+        className="salestorm-add-resource-button-container"
+        style={{
+          display:
+            !resourcePickerProps.selectMultiple && resources.length === 1
+              ? 'none'
+              : 'flex',
+        }}
+      >
+        <Button
+          {...buttonProps}
+          onClick={() => setOpen(true)}
+          loading={loading}
+        >
+          {label}
+        </Button>
+      </div>
     </>
   );
 };
