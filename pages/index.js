@@ -106,7 +106,7 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
     <Page
       fullWidth
       title="All Campaigns"
-      subtitle="Create new campaigns and boost your sales."
+      subtitle="Create new upsell funnel campaigns and boost your sales."
       titleMetadata={
         <Badge status={priceStatus} progress={priceProgress}>
           <div className="salestorm-pricing-badge">
@@ -154,7 +154,7 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
           <Card>
             <Card.Section title="Total Revenue">
               <p className="salestorm-analytics-subheading">
-                The total impact our app made on your store.
+                The total impact our app made on your store since.
               </p>
               <div className="salestorm-analytics-value">
                 <p></p>
@@ -162,8 +162,30 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
             </Card.Section>
           </Card>
         </Layout.Section>
-        <Layout.Section oneThird></Layout.Section>
-        <Layout.Section oneThird></Layout.Section>
+        <Layout.Section oneThird>
+          <Card>
+            <Card.Section title="AOV">
+              <p className="salestorm-analytics-subheading">
+                Average order value increase by since
+              </p>
+              <div className="salestorm-analytics-value">
+                <p></p>
+              </div>
+            </Card.Section>
+          </Card>
+        </Layout.Section>
+        <Layout.Section oneThird>
+          <Card>
+            <Card.Section title="Funnels enabled">
+              <p className="salestorm-analytics-subheading">
+                Total number of active funnels.
+              </p>
+              <div className="salestorm-analytics-value">
+                <p></p>
+              </div>
+            </Card.Section>
+          </Card>
+        </Layout.Section>
       </Layout>
       <Card>
         <div className="salestorm-campaigns-overview">
