@@ -110,7 +110,7 @@ const Pricing = ({ store }) => {
           <Layout.Section oneHalf>
             <Card>
               <Card.Section>
-                <Heading element="h1">Choose your plan</Heading>
+                <Heading element="h1">Choose your monthly plan</Heading>
                 <ResourceList
                   resourceName={{ singular: 'plan', plural: 'plans' }}
                   items={config.plans}
@@ -143,26 +143,31 @@ const Pricing = ({ store }) => {
                         accessibilityLabel={`View details for ${name}`}
                       >
                         <Stack distribution="equalSpacing">
-                          <div className='salestorm-plan'>
+                          <div>
                             <TextStyle variation="strong">{name}</TextStyle>
-                            <span>$ {amount}/month</span>
                             <span className='salestorm-plan-views'>
                               {new Intl.NumberFormat().format(limit)}
-                              &nbsp;views/month
+                              &nbsp;views
                             </span>
                           </div>
                           <div>
-                            {hasButton ? (
-                              <Button
-                                primary
-                                disabled={Boolean(loading)}
-                                loading={loading === name}
-                                onClick={() => onPlanSelect(name)}
-                              >
-                                {planLabel}
-                              </Button>
-                            ) : (<span >{planLabel}</span>)}
+                            {
+                              new Intl.NumberFormat('en-US', {
+                                style: 'currency',
+                                currency: 'USD'
+                              }).format(amount)
+                            } / month
                           </div>
+                          {hasButton ? (
+                            <Button
+                              primary
+                              disabled={Boolean(loading)}
+                              loading={loading === name}
+                              onClick={() => onPlanSelect(name)}
+                            >
+                              {planLabel}
+                            </Button>
+                          ) : (<span >{planLabel}</span>)}
                         </Stack>
                       </ResourceItem>
                     );
