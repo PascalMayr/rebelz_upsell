@@ -159,7 +159,11 @@ app.prepare().then(() => {
             (p) => p.name === config.planNames.free
           );
           await db.query(
-            'INSERT INTO stores(domain, scriptid, plan_limit) VALUES($1, $2, $3)',
+            `INSERT INTO stores${db.insertColumns(
+              'domain',
+              'scriptId',
+              'plan_limit'
+            )}`,
             [shop, scriptid, freePlan.limit]
           );
           registerWebhooks(
@@ -172,8 +176,16 @@ app.prepare().then(() => {
         }
         await db.query(
           `
-          INSERT INTO users(id, domain, associated_user_scope, first_name, last_name, email, account_owner, locale)
-          VALUES($1, $2, $3, $4, $5, $6, $7, $8)
+          INSERT INTO users${db.insertColumns(
+            'id',
+            'domain',
+            'associated_user_scope',
+            'first_name',
+            'last_name',
+            'email',
+            'account_owner',
+            'locale'
+          )}
           ON CONFLICT (id) DO UPDATE SET
           associated_user_scope = $3,
           first_name = $4,
@@ -246,7 +258,18 @@ app.prepare().then(() => {
       );
     } else {
       campaign = await db.query(
-        'INSERT INTO campaigns(domain, styles, trigger, sell_type, name, "mobileStyles", products, "customCSS", "customJS", animation) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
+        `INSERT INTO campaigns${db.insertColumns(
+          'domain',
+          'styles',
+          'trigger',
+          'sell_type',
+          'name',
+          '"mobileStyles"',
+          'products',
+          '"customCSS"',
+          '"customJS"',
+          'animation'
+        )} RETURNING *`,
         [
           ctx.session.shop,
           styles,
