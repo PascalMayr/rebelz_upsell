@@ -152,7 +152,7 @@ const Pricing = ({ store }) => {
                           </div>
                           <div>
                             {
-                              new Intl.NumberFormat('en-US', {
+                              new Intl.NumberFormat([], {
                                 style: 'currency',
                                 currency: 'USD'
                               }).format(amount)
