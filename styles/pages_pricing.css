@@ -101,6 +101,10 @@
   width: 100%;
 }
 
+.plans-container .Polaris-Stack .Polaris-Stack__Item:nth-child(3) > button {
+  max-width: 106px;
+}
+
 .salestorm-plan-status {
   display: flex;
   justify-content: center;
