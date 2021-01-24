@@ -44,9 +44,9 @@ const Pricing = ({ store }) => {
     'Quick Setup',
     '100% Responsive',
     'Customize all Texts, Fonts and Styles',
-    'AI Autopilot mode',
+    'AI Autopilot Mode',
     'Analytics',
-    'Multi currency support',
+    'Multi Currency Support',
     'Premium Support',
     'Complete & Clean Uninstall',
   ];
