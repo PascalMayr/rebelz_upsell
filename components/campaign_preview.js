@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { kebabCasify } from 'casify';
 import '../styles/components_campaign_preview.css';
 import {
@@ -19,28 +19,28 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       .join(';');
   };
 
-  const renderedProductVariantsByOption = {};
   const renderedProduct =
     campaign.products.selling.length > 0
       ? campaign.products.selling[0]
       : CampaignPreviewPlaceholder;
-  if (renderedProduct) {
+
+  const [
+    renderedProductVariantsByOption,
+    setRenderedProductVariantsByOption,
+  ] = useState({});
+
+  useEffect(() => {
+    const ProductVariationsByOptionHelper = {};
     renderedProduct.variants.edges.forEach((edge) => {
       const variant = edge.node;
       variant.selectedOptions.forEach((selectedOption) => {
-        let currentSelectedOption =
-          renderedProductVariantsByOption[selectedOption.name];
-        if (currentSelectedOption) {
-          currentSelectedOption.push(variant);
-        } else {
-          currentSelectedOption = [variant];
-        }
-        renderedProductVariantsByOption[
-          selectedOption.name
-        ] = currentSelectedOption;
+        ProductVariationsByOptionHelper[selectedOption.name] = (
+          ProductVariationsByOptionHelper[selectedOption.name] || []
+        ).concat([variant]);
       });
     });
-  }
+    setRenderedProductVariantsByOption(ProductVariationsByOptionHelper);
+  }, [renderedProduct]);
 
   const campaignJS = `
     try {
