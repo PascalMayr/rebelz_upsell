@@ -231,29 +231,31 @@ app.prepare().then(() => {
   router.post('/api/save-campaign', verifyRequest(), async (ctx) => {
     const {
       styles,
-      mobileStyles,
       trigger,
-      sell_type,
+      sellType,
       name,
       products,
       customCSS,
       customJS,
       animation,
+      multiCurrencySupport,
+      texts,
     } = ctx.request.body;
     let campaign;
     if (ctx.request.body.id) {
       campaign = await db.query(
-        'UPDATE campaigns SET styles = $1, trigger = $2, sell_type = $3, name = $4, "mobileStyles" = $5, products = $6, "customCSS" = $7, "customJS" = $8, animation = $9 WHERE id = $10 RETURNING *',
+        'UPDATE campaigns SET styles = $1, trigger = $2, "sellType" = $3, name = $4, products = $5, "customCSS" = $6, "customJS" = $7, animation = $8, "multiCurrencySupport" = $9, texts = $10 WHERE id = $11 RETURNING *',
         [
           styles,
           trigger,
-          sell_type,
+          sellType,
           name,
-          mobileStyles,
           products,
           customCSS,
           customJS,
           animation,
+          multiCurrencySupport,
+          texts,
           ctx.request.body.id,
         ]
       );
@@ -263,25 +265,27 @@ app.prepare().then(() => {
           'domain',
           'styles',
           'trigger',
-          'sell_type',
+          '"sellType"',
           'name',
-          '"mobileStyles"',
           'products',
           '"customCSS"',
           '"customJS"',
-          'animation'
+          'animation',
+          '"multiCurrencySupport"',
+          'texts'
         )} RETURNING *`,
         [
           ctx.session.shop,
           styles,
           trigger,
-          sell_type,
+          sellType,
           name,
-          mobileStyles,
           products,
           customCSS,
           customJS,
           animation,
+          multiCurrencySupport,
+          texts,
         ]
       );
     }
@@ -336,7 +340,7 @@ app.prepare().then(() => {
     if (store.plan_name === plan) {
       await cancelSubscription(ctx, store.subscriptionId);
       const freePlan = config.plans.find(
-        (p) => p.name === config.planNames.free
+        (configPlan) => configPlan.name === config.planNames.free
       );
       await db.query(
         'UPDATE stores SET plan_name = NULL, "subscriptionId" = NULL, plan_limit = $1 WHERE domain = $2',

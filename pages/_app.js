@@ -64,6 +64,7 @@ class MyApp extends App {
                   s.src="https://client.crisp.chat/l.js";
                   s.async=1;d.getElementsByTagName("head")[0].appendChild(s);
                 </script>
+                <script src='https://cdn.shopify.com/s/javascripts/currencies.js' />
               </Head>
               <Frame>
                 <Component {...pageProps} />

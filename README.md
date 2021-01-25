@@ -60,7 +60,7 @@ CREATE EXTENSION citext;
 4. Run the migrations and test on shopify with:
 
 ```sh
-~/ $ shopify serve
+~/ $ npm run serve
 ```
 
 ### Add new Animations
@@ -71,16 +71,14 @@ CREATE EXTENSION citext;
 ~/ $ git clone git@github.com:animate-css/animate.css.git
 ```
 
-1.)
-
+2.)
 ```sh
 ~/ $ cd animate.css/source
 ```
 
-2.) Modify the @imports in the /source/animate.css file according to your needs;
+3.) Modify the @imports in the /source/animate.css file according to your needs;
 
-3.)
-
+4.)
 ```sh
 ~/ $ cd .. && yarn start
 ```
@@ -98,7 +96,7 @@ shopify connect
 2. Run the server again and choose 'Yes' when the cli asks to update the Application URL
 
 ```
-shopify serve
+npm run serve
 ```
 
 3. Check the status of the shopify system:

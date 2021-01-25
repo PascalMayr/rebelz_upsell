@@ -36,7 +36,6 @@
     "axios": "^0.21.1",
     "casify": "^2.0.0",
     "cross-env": "^7.0.2",
-    "currency-symbol-map": "^4.0.4",
     "dotenv": "^8.2.0",
     "graphql": "^15.4.0",
     "isomorphic-fetch": "^3.0.0",

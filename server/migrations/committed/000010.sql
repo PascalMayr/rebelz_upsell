@@ -1,12 +1,6 @@
 --! Previous: sha1:49248b774c5580db43d828df598c633f308bcc3a
---! Hash: sha1:125483da7592f963a081073e850729d290b842a3
+--! Hash: sha1:c88d3832387567fa50949d5742df6fa323c5a89c
 
 -- Enter migration here
-ALTER TABLE stores DROP COLUMN IF EXISTS plan_name CASCADE;
-ALTER TABLE stores ADD COLUMN plan_name TEXT;
-
-ALTER TABLE stores DROP COLUMN IF EXISTS "subscriptionId" CASCADE;
-ALTER TABLE stores ADD COLUMN "subscriptionId" TEXT;
-
-ALTER TABLE stores DROP COLUMN IF EXISTS plan_limit CASCADE;
-ALTER TABLE stores ADD COLUMN plan_limit BIGINT DEFAULT 0;
+ALTER TABLE campaigns DROP COLUMN IF EXISTS sell_type CASCADE;
+ALTER TABLE campaigns ADD COLUMN "sellType" TEXT;

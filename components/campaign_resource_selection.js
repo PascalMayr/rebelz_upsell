@@ -10,10 +10,9 @@ import {
   Icon,
 } from '@shopify/polaris';
 import { MobileCancelMajor, ImageMajor } from '@shopify/polaris-icons';
-import { ApolloConsumer } from 'react-apollo';
+import { ApolloConsumer, useQuery } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import '../styles/components_resource_selection.css';
-import getSymbolFromCurrency from 'currency-symbol-map';
 
 const GET_PRODUCT = gql`
   query Product($id: ID!) {
@@ -25,41 +24,36 @@ const GET_PRODUCT = gql`
       images(first: 1) {
         edges {
           node {
+            transformedSrc(maxHeight: 500)
             altText
-            transformedSrc(maxWidth: 75)
           }
         }
       }
       variants(first: 10) {
         edges {
           node {
+            title
+            id
+            legacyResourceId
             selectedOptions {
               name
             }
-            product {
-              id
-              legacyResourceId
-              title
-              priceRange {
-                maxVariantPrice {
-                  amount
-                  currencyCode
-                }
-              }
-              images(first: 1) {
-                edges {
-                  node {
-                    altText
-                    transformedSrc(maxWidth: 500)
-                  }
-                }
-              }
+            image {
+              transformedSrc(maxHeight: 500)
             }
           }
         }
       }
       updatedAt
       createdAt
+    }
+  }
+`;
+
+const GET_STORE_CURRENCY = gql`
+  query storeCurrency {
+    shop {
+      currencyCode
     }
   }
 `;
@@ -74,6 +68,13 @@ const CampaignResourceSelection = ({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { label } = buttonProps;
+  const { data } = useQuery(GET_STORE_CURRENCY);
+  const currencyCode = data && data.shop && data.shop.currencyCode;
+  const removeResource = (id) => {
+    onResourceMutation(
+      resources.filter((findResource) => findResource.id !== id)
+    );
+  };
   return (
     <>
       <div className="salestorm-resources">
@@ -81,15 +82,21 @@ const CampaignResourceSelection = ({
           items={resources}
           renderItem={(resource) => {
             const { title, id, images, discount } = resource;
-            const {
-              node: {
-                product: {
-                  priceRange: {
-                    maxVariantPrice: { currencyCode },
-                  },
-                },
-              },
-            } = resource.variants.edges[0];
+            let thumbnail;
+            if (images.edges.length > 0) {
+              thumbnail = (
+                <img
+                  src={images.edges[0].node.transformedSrc}
+                  alt={images.edges[0].node.altText}
+                />
+              );
+            } else {
+              thumbnail = (
+                <div className="salestorm-resource-image-placeholder">
+                  <Icon source={ImageMajor} />
+                </div>
+              );
+            }
             return (
               <ResourceItem
                 id={id}
@@ -97,16 +104,7 @@ const CampaignResourceSelection = ({
               >
                 <div className="salestorm-resource-item">
                   <div className="salestorm-resource-item-info">
-                    {images.edges.length > 0 ? (
-                      <img
-                        src={images.edges[0].node.transformedSrc}
-                        alt={images.edges[0].node.altText}
-                      />
-                    ) : (
-                      <div className="salestorm-resource-image-placeholder">
-                        <Icon source={ImageMajor} />
-                      </div>
-                    )}
+                    {thumbnail}
                     <TextStyle variation="strong">{title}</TextStyle>
                   </div>
                   <div className="salestorm-resource-actions">
@@ -115,31 +113,32 @@ const CampaignResourceSelection = ({
                         <TextField
                           value={`${discount.value}`}
                           onChange={(value) => {
-                            let helperResources = resources.map((resource) => {
-                              if (resource.id === id) {
-                                resource.discount.value = value;
+                            const helperResources = resources.map(
+                              (helperResource) => {
+                                if (helperResource.id === id) {
+                                  helperResource.discount.value = value;
+                                }
+                                return helperResource;
                               }
-                              return resource;
-                            });
+                            );
                             onResourceMutation(helperResources);
                           }}
                           placeholder="Discount"
                         />
                         <Select
                           options={[
-                            {
-                              label: getSymbolFromCurrency(currencyCode),
-                              value: getSymbolFromCurrency(currencyCode),
-                            },
+                            { label: currencyCode, value: currencyCode },
                             { label: '%', value: '%' },
                           ]}
                           onChange={(value) => {
-                            let helperResources = resources.map((resource) => {
-                              if (resource.id === id) {
-                                resource.discount.type = value;
+                            const helperResources = resources.map(
+                              (helperResource) => {
+                                if (helperResource.id === id) {
+                                  helperResource.discount.type = value;
+                                }
+                                return helperResource;
                               }
-                              return resource;
-                            });
+                            );
                             onResourceMutation(helperResources);
                           }}
                           value={discount.type}
@@ -148,13 +147,8 @@ const CampaignResourceSelection = ({
                     )}
                     <div
                       className="salestorm-resource-remove"
-                      onClick={() => {
-                        onResourceMutation(
-                          resources.filter(
-                            (findResource) => findResource.id !== id
-                          )
-                        );
-                      }}
+                      onClick={() => removeResource(id)}
+                      onKeyDown={() => removeResource(id)}
                     >
                       <Icon source={MobileCancelMajor} />
                     </div>
@@ -177,32 +171,26 @@ const CampaignResourceSelection = ({
                 setLoading(true);
                 const products = await Promise.all(
                   selectPayload.selection.map(async (resource) => {
-                    const { id } = resource;
-                    const product = await client.query({
-                      query: GET_PRODUCT,
-                      variables: {
-                        id,
-                      },
-                    });
-                    const product_data = product.data.product;
-                    const {
-                      node: {
-                        product: {
-                          priceRange: {
-                            maxVariantPrice: { currencyCode },
-                          },
+                    const { id, title } = resource;
+                    try {
+                      const product = await client.query({
+                        query: GET_PRODUCT,
+                        variables: {
+                          id,
                         },
-                      },
-                    } = product_data.variants.edges[0];
-                    return applyDiscount
-                      ? {
-                          ...product_data,
-                          discount: {
-                            type: getSymbolFromCurrency(currencyCode),
-                            value: 5,
-                          },
-                        }
-                      : product_data;
+                      });
+                      const productData = product.data.product;
+                      return applyDiscount
+                        ? {
+                            ...productData,
+                            discount: { type: currencyCode, value: 5 },
+                          }
+                        : productData;
+                    } catch (error) {
+                      console.log(
+                        `Failed to load product data for product: ${title}`
+                      );
+                    }
                   })
                 );
                 setLoading(false);
@@ -214,19 +202,23 @@ const CampaignResourceSelection = ({
           />
         )}
       </ApolloConsumer>
-      {resourcePickerProps.selectMultiple || resources.length === 0 ? (
-        <div className="salestorm-add-resource-button-container">
-          <Button
-            {...buttonProps}
-            onClick={() => setOpen(true)}
-            loading={loading}
-          >
-            {label}
-          </Button>
-        </div>
-      ) : (
-        <></>
-      )}
+      <div
+        className="salestorm-add-resource-button-container"
+        style={{
+          display:
+            !resourcePickerProps.selectMultiple && resources.length === 1
+              ? 'none'
+              : 'flex',
+        }}
+      >
+        <Button
+          {...buttonProps}
+          onClick={() => setOpen(true)}
+          loading={loading}
+        >
+          {label}
+        </Button>
+      </div>
     </>
   );
 };

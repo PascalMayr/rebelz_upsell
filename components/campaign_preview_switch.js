@@ -1,6 +1,6 @@
 import '../styles/components_preview_switch.css';
 import { Button } from '@shopify/polaris';
-import { DesktopMajor, MobileMajor } from '@shopify/polaris-icons';
+import { DesktopMajor, TabletMajor, MobileMajor } from '@shopify/polaris-icons';
 import { useState } from 'react';
 
 const CampaignPreviewSwitch = ({ onSwitch }) => {
@@ -17,6 +17,13 @@ const CampaignPreviewSwitch = ({ onSwitch }) => {
         onClick={() => handleSwitch('desktop')}
       >
         Desktop
+      </Button>
+      <Button
+        icon={TabletMajor}
+        primary={selected === 'tablet'}
+        onClick={() => handleSwitch('tablet')}
+      >
+        Tablet
       </Button>
       <Button
         icon={MobileMajor}

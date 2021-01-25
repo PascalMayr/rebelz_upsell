@@ -12,6 +12,21 @@
   margin-top: 2em;
 }
 
-.salestorm-subtitle {
-  color: rgb(109, 113, 117)
+.salestorm-card-section-subtitle {
+  color: rgb(109, 113, 117);
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.salestorm-rerender-container {
+  min-height: 500px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.salestorm-rerender-container .Polaris-Button {
+  margin: 0 auto;
 }

@@ -1,6 +1,14 @@
-import { useState, useCallback, useContext } from 'react';
-import { Page, Card, Layout, TextField } from '@shopify/polaris';
-import { MobilePlusMajor } from '@shopify/polaris-icons';
+import { useState, useCallback, useContext, useEffect } from 'react';
+import {
+  Page,
+  Card,
+  Layout,
+  TextField,
+  Checkbox,
+  Badge,
+  Button,
+} from '@shopify/polaris';
+import { MobilePlusMajor, ResetMinor } from '@shopify/polaris-icons';
 
 import '../../styles/pages_campaigns_index.css';
 import saveCampaign from '../../services/save_campaign';
@@ -15,8 +23,7 @@ import CampaignResourceSelection from '../../components/campaign_resource_select
 
 const New = (props) => {
   const context = useContext(AppContext);
-  const initialStyles = (screen) => {
-    const isDesktop = screen === 'desktop';
+  const initialStyles = () => {
     return {
       popup: {
         margin: '0px',
@@ -30,10 +37,10 @@ const New = (props) => {
         backgroundOrigin: 'padding-box',
         borderColor: 'rgb(0, 128, 96)',
         boxShadow: '0px 0px 0px rgb(0, 0, 0)',
-        width: isDesktop ? '600px' : '95%',
+        width: '600px',
         position: 'relative',
         color: 'rgb(255, 255, 255)',
-        fontFamily: "'Arial', sans-serif",
+        fontFamily: "'Open Sans', sans-serif",
       },
       overlay: {
         borderRadius: '0px',
@@ -51,36 +58,35 @@ const New = (props) => {
         borderWidth: '0px 0px 0px 0px',
         borderStyle: 'solid',
         borderColor: 'rgb(0, 128, 96)',
-        backgroundColor: 'rgb(39, 41, 45)',
+        backgroundColor: 'rgb(67, 67, 67)',
         backgroundImage: 'url()',
         backgroundRepeat: 'repeat',
         backgroundOrigin: 'padding-box',
         boxShadow: '0px 0px 0px rgb(0, 0, 0)',
-        fill: 'rgb(255, 255, 255)'
+        fill: 'rgb(255, 255, 255)',
       },
       primaryButtons: {
         margin: '0px',
         borderRadius: '2px',
         borderWidth: '0px 0px 0px 0px',
         borderStyle: 'solid',
-        backgroundColor: 'rgb(39, 41, 45)',
+        backgroundColor: 'rgb(248, 152, 58)',
         backgroundImage: 'url()',
         backgroundRepeat: 'repeat',
         backgroundOrigin: 'padding-box',
         borderColor: 'rgb(0, 128, 96)',
         boxShadow: '0px 0px 0px rgb(255, 255, 255)',
         position: 'relative',
-        fontFamily: "'Arial', sans-serif",
+        fontFamily: "'Open Sans', sans-serif",
         color: 'rgb(255, 255, 255)',
       },
     };
   };
   const [campaign, setCampaign] = useState({
-    styles: initialStyles('desktop'),
-    mobileStyles: initialStyles('mobile'),
+    styles: initialStyles(),
     published: false,
     trigger: 'add_to_cart',
-    sell_type: 'up-sell',
+    sellType: 'up-sell',
     name: '',
     products: {
       targets: [],
@@ -89,30 +95,48 @@ const New = (props) => {
     customCSS: '',
     customJS: '',
     animation: {
-      type: 'animate__fadeInUp',
-      delay: 1,
-      speed: ''
+      type: 'animate__fadeInDown',
+      delay: 0,
+      speed: 'normal',
+    },
+    multiCurrencySupport: true,
+    texts: {
+      title: 'GET {{Discount}} DISCOUNT!',
+      subtitle: 'Get this product with a {{Discount}} Discount.',
+      addToCartAction: 'Claim offer!',
+      seeProductDetailsAction: 'See product details',
+      dismissAction: 'No thanks',
+      checkoutAction: 'Go to checkout',
     },
     ...props.campaign,
   });
   const [preview, setPreview] = useState('desktop');
-  const isPreviewDesktop = preview === 'desktop';
   const setCampaignProperty = useCallback(
     (value, id) => setCampaign({ ...campaign, [id]: value }),
     [campaign]
   );
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
-  const _getResourcePickerInitialSelectedProducts = (products) => products.map(product => (
-    {
-      id: product.id,
-      variants: product.variants.edges.map(edge => edge.node.product.id)
-    }
-    )
-  )
+  const [rerenderButtonVisible, setRerenderButtonVisibile] = useState(false);
+  const _getResourcePickerInitialSelectedProducts = (products) =>
+    products.map((product) => {
+      if (product) {
+        return {
+          id: product.id,
+          variants: product.variants.edges.map((edge) => edge.node.id),
+        };
+      } else {
+        return { id: '', variants: [''] };
+      }
+    });
   return (
     <Page
       title={props.campaign ? 'Update campaign' : 'Create new campaign'}
+      titleMetadata={
+        <Badge status={campaign.published ? 'success' : 'attention'}>
+          {campaign.published ? 'Published' : 'Unpublished'}
+        </Badge>
+      }
       breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
       primaryAction={{
         content: campaign.published ? 'Unpublish campaign' : 'Publish campaign',
@@ -200,55 +224,33 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title="Where would you like to sell more?">
-              <p className='salestorm-subtitle'>
+            <Card.Section title="1.) Where would you like to sell more?">
+              <div className="salestorm-card-section-subtitle">
                 Customers will see this campaign
-                {
-                  campaign.trigger === 'add_to_cart' ? ' after clicking Add to cart' : campaign.trigger === 'checkout' ? ' after clicking Checkout' : campaign.trigger === 'thank_you' ? ' after their purchase' : ''
-                }
-              </p>
+                {campaign.trigger === 'add_to_cart'
+                  ? ' after clicking Add to cart on the specified target products.'
+                  : campaign.trigger === 'checkout'
+                  ? ' after clicking Checkout with the specified target products in cart.'
+                  : campaign.trigger === 'thank_you'
+                  ? ' after purchasing the specified target products.'
+                  : ''}
+              </div>
               <SalestormTriggers
                 trigger={campaign.trigger}
                 setCampaignProperty={setCampaignProperty}
               />
             </Card.Section>
-          </Card>
-        </Card.Section>
-        <Card.Section>
-          <Layout>
-            <Layout.Section>
-              <Card>
-                <Card.Section title="PREVIEW">
-                  <CampaignPreview
-                    campaign={campaign}
-                    isPreviewDesktop={isPreviewDesktop}
-                  />
-                  <CampaignPreviewSwitch
-                    onSwitch={(value) => setPreview(value)}
-                  />
-                </Card.Section>
-              </Card>
-            </Layout.Section>
-          </Layout>
-        </Card.Section>
-        <Card.Section>
-          <CampaignFormatter
-            campaign={campaign}
-            isPreviewDesktop={isPreviewDesktop}
-            setCampaignProperty={setCampaignProperty}
-          />
-        </Card.Section>
-        <Card.Section>
-          <Card>
-            <Card.Section title={`Set Target Products`}>
+            <Card.Section>
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',
                   selectMultiple: true,
-                  initialSelectionIds: _getResourcePickerInitialSelectedProducts(campaign.products.targets),
+                  initialSelectionIds: _getResourcePickerInitialSelectedProducts(
+                    campaign.products.targets
+                  ),
                   showVariants: false,
                   showDraftBadge: true,
-                  showArchivedBadge: true
+                  showArchivedBadge: true,
                 }}
                 buttonProps={{
                   primary: true,
@@ -268,12 +270,29 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title="Set Upselling Products">
+            <Card.Section title="2.) Add a upselling product and set an upselling discount offer.">
+              <div className="salestorm-card-section-subtitle">
+                <Checkbox
+                  checked={campaign.multiCurrencySupport}
+                  onChange={(value) =>
+                    setCampaignProperty(value, 'multiCurrencySupport')
+                  }
+                />
+                Multi currency support&nbsp;
+                <span>
+                  <strong>
+                    {campaign.multiCurrencySupport ? 'enabled' : 'disabled'}
+                  </strong>
+                </span>
+                .
+              </div>
               <CampaignResourceSelection
                 resourcePickerProps={{
                   resourceType: 'Product',
                   selectMultiple: false,
-                  initialSelectionIds: _getResourcePickerInitialSelectedProducts(campaign.products.selling),
+                  initialSelectionIds: _getResourcePickerInitialSelectedProducts(
+                    campaign.products.selling
+                  ),
                   showVariants: false,
                 }}
                 buttonProps={{
@@ -292,6 +311,46 @@ const New = (props) => {
               />
             </Card.Section>
           </Card>
+        </Card.Section>
+        <Card.Section>
+          <Layout>
+            <Layout.Section>
+              <Card>
+                <Card.Section title="3.) Check, customize and try your Upselling Campaign before publishing it.">
+                  {rerenderButtonVisible && (
+                    <div className='salestorm-rerender-container'>
+                      <Button
+                        onClick={() => {
+                          document.querySelector(
+                            '#salestorm-upselling-container'
+                          ).style.display = 'block';
+                          setRerenderButtonVisibile(false);
+                        }}
+                        primary
+                        icon={ResetMinor}
+                      >
+                        show again
+                      </Button>
+                    </div>
+                  )}
+                  <CampaignPreview
+                    campaign={campaign}
+                    preview={preview}
+                    setRerenderButtonVisibile={setRerenderButtonVisibile}
+                  />
+                  <CampaignPreviewSwitch
+                    onSwitch={(value) => setPreview(value)}
+                  />
+                </Card.Section>
+                <Card.Section>
+                  <CampaignFormatter
+                    campaign={campaign}
+                    setCampaignProperty={setCampaignProperty}
+                  />
+                </Card.Section>
+              </Card>
+            </Layout.Section>
+          </Layout>
         </Card.Section>
       </Card>
     </Page>
