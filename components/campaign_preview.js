@@ -11,7 +11,11 @@ import tinycolor from 'tinycolor2';
 
 import CampaignPreviewPlaceholder from './campaign_preview_placeholder';
 
-const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
+const CampaignPreview = ({
+  campaign: { styles },
+  campaign,
+  preview = 'desktop',
+}) => {
   const styleObjectToStyleString = (styleObject) => {
     const kebabCaseStyles = kebabCasify(styleObject);
     return Object.keys(kebabCaseStyles)
@@ -503,13 +507,16 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       padding-top: 0px;
       display: none;
     }
-    ${['tablet', 'mobile'].includes(preview) ? campaignTabletCSS : ''}
-    ${preview === 'mobile' ? campaignMobileCSS : ''}
-    @media only screen and (max-width: 600px) {
-      ${campaignTabletCSS}
-    }
-    @media only screen and (max-width: 450px) {
-      ${campaignMobileCSS}
+    ${(preview === 'tablet' || preview === 'mobile') && campaignTabletCSS}
+    ${preview === 'mobile' && campaignMobileCSS}
+    ${
+      preview === 'desktop' &&
+      `@media only screen and (max-width: 600px) {
+        ${campaignTabletCSS}
+      }
+      @media only screen and (max-width: 450px) {
+        ${campaignMobileCSS}
+      }`
     }
     ${campaign.customCSS}
   `;
