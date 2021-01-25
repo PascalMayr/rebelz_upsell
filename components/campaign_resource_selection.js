@@ -70,6 +70,11 @@ const CampaignResourceSelection = ({
   const { label } = buttonProps;
   const { data } = useQuery(GET_STORE_CURRENCY);
   const currencyCode = data && data.shop && data.shop.currencyCode;
+  const removeResource = (id) => {
+    onResourceMutation(
+      resources.filter((findResource) => findResource.id !== id)
+    );
+  };
   return (
     <>
       <div className="salestorm-resources">
@@ -142,13 +147,8 @@ const CampaignResourceSelection = ({
                     )}
                     <div
                       className="salestorm-resource-remove"
-                      onClick={() => {
-                        onResourceMutation(
-                          resources.filter(
-                            (findResource) => findResource.id !== id
-                          )
-                        );
-                      }}
+                      onClick={() => removeResource(id)}
+                      onKeyDown={() => removeResource(id)}
                     >
                       <Icon source={MobileCancelMajor} />
                     </div>

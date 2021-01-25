@@ -204,6 +204,7 @@ const CampaignPreview = ({
       // eslint-disable-next-line no-eval
       eval(customJS);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(
         '%cA Salestorm Javascript Error occured in the preview',
         'color: orange;'

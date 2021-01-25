@@ -238,12 +238,14 @@
   };
 
   const initShopifyMultiCurrencyConversionScript = () => {
-    if (!(window.Currency && window.Currency.rates && window.Currency.convert)) {
+    if (
+      !(window.Currency && window.Currency.rates && window.Currency.convert)
+    ) {
       const script = document.createElement('script');
       script.src = 'https://cdn.shopify.com/s/javascripts/currencies.js';
       document.head.appendChild(script);
     }
-  }
+  };
 
   const init = () => {
     initShopifyMultiCurrencyConversionScript();
