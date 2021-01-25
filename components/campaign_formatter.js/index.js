@@ -238,7 +238,7 @@ const CampaignFormatter = ({
               onChange={(value) => {
                 setCampaignProperty(value, 'customCSS')
               }}
-              multiline={6}
+              multiline={9}
             />
           }
           {
@@ -249,7 +249,7 @@ const CampaignFormatter = ({
               onChange={(value) => {
                 setCampaignProperty(value, 'customJS')
               }}
-              multiline={6}
+              multiline={9}
             />
           }
           {
