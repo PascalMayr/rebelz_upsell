@@ -42,7 +42,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     setRenderedProductVariantsByOption(ProductVariationsByOptionHelper);
   }, [renderedProduct]);
 
-  const campaignJS = `
+  const campaignJSExecutedOnce = `
     try {
       const productDetailsMessage = document.querySelector('#salestorm-product-details-message');
       productDetailsMessage && productDetailsMessage.addEventListener('click', () => {
@@ -55,7 +55,15 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       closeButton && closeButton.addEventListener('click', hidePopup);
       const closeAction = document.querySelector('#salestorm-popup-footer-close-action');
       closeAction && closeAction.addEventListener('click', hidePopup);
+    }
+    catch(error) {
+      console.log('%cA Salestorm Javascript Error occured', 'color: orange;');
+      console.error(error);
+    }
+  `;
 
+  const campaignJS = `
+    try {
       const findDisplayCurrencyCode = () => {
         if (window.afterpay_shop_currency && window.afterpay_shop_currency !== "") {
           return window.afterpay_shop_currency;
@@ -86,7 +94,6 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
         if (window.Shopify && window.Shopify.currency && window.Shopify.currency.active !== "") {
           return Shopify.currency.active;
         }
-
         return null;
       };
 
@@ -120,9 +127,10 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
         }
       }
 
-      if (${campaign.products.selling.length === 0}) {
-        document.querySelector('#salestorm-product-image').style.backgroundImage = "";
-      }
+      document.querySelector('#salestorm-product-image').style.backgroundImage = 'url('+"${
+        renderedProduct.images.edges.length > 0 &&
+        renderedProduct.images.edges[0].node.transformedSrc
+      }"+')';
 
       document.querySelectorAll('.salestorm-product-select').forEach(selectElement => {
         selectElement.addEventListener('change', () => {
@@ -143,7 +151,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
     }
   `;
 
-  /* Will be just executed once in the Preview */
+  /* Will be just executed with every new selling product in the Preview */
   useEffect(() => {
     try {
       // eslint-disable-next-line no-eval
@@ -153,9 +161,26 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
         '%cA Salestorm Javascript Error occured in the preview',
         'color: orange;'
       );
+      // eslint-disable-next-line no-console
       console.error(error);
     }
-  }, [campaign, campaignJS]);
+  }, [renderedProduct, renderedProductVariantsByOption, campaignJS]);
+
+  /* Will be just executed once in the Preview */
+  useEffect(() => {
+    try {
+      // eslint-disable-next-line no-eval
+      eval(campaignJSExecutedOnce);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(
+        '%cA Salestorm Javascript Error occured in the preview',
+        'color: orange;'
+      );
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+  }, [campaignJSExecutedOnce]);
 
   const customJS = `
     try {
@@ -177,6 +202,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
         '%cA Salestorm Javascript Error occured in the preview',
         'color: orange;'
       );
+      // eslint-disable-next-line no-console
       console.error(error);
     }
   }, [customJS]);
@@ -398,10 +424,6 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
       padding-top: 254px;
       border-radius: 3px;
       background-color: ${tinycolor(styles.popup.backgroundColor).lighten(10)};
-      background-image: url(${
-        renderedProduct.images.edges.length > 0 &&
-        renderedProduct.images.edges[0].node.transformedSrc
-      });
       background-size: cover;
       background-position: center;
     }
@@ -597,6 +619,7 @@ const CampaignPreview = ({ campaign: { styles }, campaign, preview }) => {
         </div>
       </div>
       <script type="text/javascript">
+        {campaignJSExecutedOnce}
         {campaignJS}
         {customJS}
       </script>
