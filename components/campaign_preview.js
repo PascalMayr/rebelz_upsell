@@ -322,8 +322,14 @@ const CampaignPreview = ({
       text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
     }
-    #salestorm-upselling-container div:focus {
+    #salestorm-upselling-container * {
+      -webkit-tap-highlight-color: ${styles.primaryButtons.backgroundColor};
+    }
+    #salestorm-upselling-container *:focus {
       outline: none;
+    }
+    #salestorm-upselling-container *::selection {
+      background-color: ${styles.primaryButtons.backgroundColor};
     }
     #salestorm-upselling-container h3 {
       text-rendering: optimizeLegibility;
