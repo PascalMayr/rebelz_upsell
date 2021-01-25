@@ -129,17 +129,6 @@ const New = (props) => {
         return { id: '', variants: [''] };
       }
     });
-  useEffect(() => {
-    if (
-      typeof window !== 'undefined' &&
-      // eslint-disable-next-line no-undef
-      process.env.NODE_ENV === 'production'
-    ) {
-      window.onbeforeunload = () => {
-        return "Please check if you've saved your campaign before leaving.";
-      };
-    }
-  }, []);
   return (
     <Page
       title={props.campaign ? 'Update campaign' : 'Create new campaign'}
