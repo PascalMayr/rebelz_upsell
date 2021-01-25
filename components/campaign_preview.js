@@ -516,16 +516,17 @@ const CampaignPreview = ({
       padding-top: 0px;
       display: none;
     }
-    ${(preview === 'tablet' || preview === 'mobile') && campaignTabletCSS}
-    ${preview === 'mobile' && campaignMobileCSS}
+    ${preview === 'tablet' || preview === 'mobile' ? campaignTabletCSS : ''}
+    ${preview === 'mobile' ? campaignMobileCSS : ''}
     ${
-      preview === 'desktop' &&
-      `@media only screen and (max-width: 600px) {
+      preview === 'desktop'
+        ? `@media only screen and (max-width: 680px) {
         ${campaignTabletCSS}
       }
       @media only screen and (max-width: 450px) {
         ${campaignMobileCSS}
       }`
+        : ''
     }
     ${campaign.customCSS}
   `;
