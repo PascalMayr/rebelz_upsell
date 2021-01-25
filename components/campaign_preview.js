@@ -15,6 +15,8 @@ const CampaignPreview = ({
   campaign: { styles },
   campaign,
   preview = 'desktop',
+  // eslint-disable-next-line no-empty-function
+  setRerenderButtonVisibile = () => {},
 }) => {
   const styleObjectToStyleString = (styleObject) => {
     const kebabCaseStyles = kebabCasify(styleObject);
@@ -540,7 +542,11 @@ const CampaignPreview = ({
               <div id="salestorm-popup-header-title">
                 {renderedProduct.title}
               </div>
-              <div id="salestorm-popup-close">
+              <div
+                id="salestorm-popup-close"
+                onClick={setRerenderButtonVisibile}
+                onKeyDown={setRerenderButtonVisibile}
+              >
                 <Icon source={MobileCancelMajor} />
               </div>
             </div>
@@ -620,7 +626,11 @@ const CampaignPreview = ({
               />
             )}
             <div id="salestorm-popup-footer">
-              <div id="salestorm-popup-footer-close-action">
+              <div
+                id="salestorm-popup-footer-close-action"
+                onClick={setRerenderButtonVisibile}
+                onKeyDown={setRerenderButtonVisibile}
+              >
                 {campaign.texts.dismissAction}
               </div>
               <div id="salestorm-popup-footer-checkout-action">

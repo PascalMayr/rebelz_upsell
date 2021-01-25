@@ -6,8 +6,9 @@ import {
   TextField,
   Checkbox,
   Badge,
+  Button,
 } from '@shopify/polaris';
-import { MobilePlusMajor } from '@shopify/polaris-icons';
+import { MobilePlusMajor, ResetMinor } from '@shopify/polaris-icons';
 
 import '../../styles/pages_campaigns_index.css';
 import saveCampaign from '../../services/save_campaign';
@@ -116,6 +117,7 @@ const New = (props) => {
   );
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
+  const [rerenderButtonVisible, setRerenderButtonVisibile] = useState(false);
   const _getResourcePickerInitialSelectedProducts = (products) =>
     products.map((product) => {
       if (product) {
@@ -326,7 +328,27 @@ const New = (props) => {
             <Layout.Section>
               <Card>
                 <Card.Section title="3.) Check, customize and try your Upselling Campaign before publishing it.">
-                  <CampaignPreview campaign={campaign} preview={preview} />
+                  {rerenderButtonVisible && (
+                    <div className='salestorm-rerender-container'>
+                      <Button
+                        onClick={() => {
+                          document.querySelector(
+                            '#salestorm-upselling-container'
+                          ).style.display = 'block';
+                          setRerenderButtonVisibile(false);
+                        }}
+                        primary
+                        icon={ResetMinor}
+                      >
+                        show again
+                      </Button>
+                    </div>
+                  )}
+                  <CampaignPreview
+                    campaign={campaign}
+                    preview={preview}
+                    setRerenderButtonVisibile={setRerenderButtonVisibile}
+                  />
                   <CampaignPreviewSwitch
                     onSwitch={(value) => setPreview(value)}
                   />
