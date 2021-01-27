@@ -14,7 +14,12 @@ import bodyParser from 'koa-bodyparser';
 import Router from 'koa-router';
 import Cors from '@koa/cors';
 import session from 'koa-session';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import { AppProvider } from '@shopify/polaris';
+import translations from '@shopify/polaris/locales/en.json';
 
+import CampaignPreview from '../components/campaign_preview';
 import config from '../config';
 
 import db from './db';
@@ -55,13 +60,26 @@ app.prepare().then(() => {
     );
     const campaign = campaigns.rows.find((row) => {
       return row.products.targets.some((targetProduct) =>
-        products.includes(targetProduct.legacyResourceId)
+        products.includes(parseInt(targetProduct.legacyResourceId, 10))
       );
     });
 
     if (campaign) {
-      // TODO: Render popup here
-      ctx.body = { html: campaign.message };
+      const campaignMarkupHTML = await ReactDOMServer.renderToStaticMarkup(
+        <AppProvider i18n={translations}>
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
+                #salestorm-overlay-container {
+                  position: absolute;
+                  top: 0px;
+                }`,
+            }}
+          />
+          <CampaignPreview campaign={campaign} />
+        </AppProvider>
+      );
+      ctx.body = campaignMarkupHTML;
       ctx.status = 200;
     } else {
       ctx.status = 404;

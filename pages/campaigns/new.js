@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext, useEffect } from 'react';
+import { useState, useCallback, useContext } from 'react';
 import {
   Page,
   Card,
@@ -11,6 +11,7 @@ import {
 import { MobilePlusMajor, ResetMinor } from '@shopify/polaris-icons';
 
 import '../../styles/pages_campaigns_index.css';
+import '../../styles/components_campaign_preview.css';
 import saveCampaign from '../../services/save_campaign';
 import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';

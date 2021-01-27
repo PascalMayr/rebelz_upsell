@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { kebabCasify } from 'casify';
-import '../styles/components_campaign_preview.css';
 import {
   MobileCancelMajor,
   SelectMinor,
@@ -30,29 +29,23 @@ const CampaignPreview = ({
       ? campaign.products.selling[0]
       : CampaignPreviewPlaceholder;
 
-  const [
-    renderedProductVariantsByOption,
-    setRenderedProductVariantsByOption,
-  ] = useState({});
+  const renderedProductVariantsByOption = useMemo(() => ({}), []);
 
-  useEffect(() => {
-    const ProductVariationsByOptionHelper = {};
-    renderedProduct.variants.edges.forEach((edge) => {
-      const variant = edge.node;
-      variant.selectedOptions.forEach((selectedOption) => {
-        ProductVariationsByOptionHelper[selectedOption.name] = (
-          ProductVariationsByOptionHelper[selectedOption.name] || []
-        ).concat([variant]);
-      });
+  renderedProduct.variants.edges.forEach((edge) => {
+    const variant = edge.node;
+    variant.selectedOptions.forEach((selectedOption) => {
+      renderedProductVariantsByOption[selectedOption.name] = (
+        renderedProductVariantsByOption[selectedOption.name] || []
+      ).concat([variant]);
     });
-    setRenderedProductVariantsByOption(ProductVariationsByOptionHelper);
-  }, [renderedProduct]);
+  });
 
   const campaignJSExecutedOnce = `
     try {
       const productDetailsMessage = document.querySelector('#salestorm-product-details-message');
-      productDetailsMessage && productDetailsMessage.addEventListener('click', () => {
-        const descriptionElement = document.querySelector('#salestorm-product-description');
+      const descriptionElement = document.querySelector('#salestorm-product-description');
+      descriptionElement.style.display = 'none';
+      productDetailsMessage.addEventListener('click', () => {
         descriptionElement.style.display = descriptionElement.style.display === 'block' ? 'none' : 'block';
       });
 
@@ -337,12 +330,16 @@ const CampaignPreview = ({
     #salestorm-upselling-container h3 {
       text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
+      font-family: ${styles.popup.fontFamily} !important;
+      color: ${styles.popup.color} !important;
     }
     #salestorm-upselling-container p {
       margin: 0px !important;
       padding: 0px !important;
       font-weight: 400;
       line-height: 20px !important;
+      font-family: ${styles.popup.fontFamily} !important;
+      color: ${styles.popup.color} !important;
       text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
     }
@@ -365,6 +362,8 @@ const CampaignPreview = ({
       z-index: 100000 !important;
       transition: 0.25s ease;
       overflow-y: scroll;
+      font-family: ${styles.popup.fontFamily} !important;
+      color: ${styles.popup.color} !important;
       -ms-overflow-style: none;
       scrollbar-width: none;
       ${styleObjectToStyleString(styles.popup)};
@@ -420,7 +419,7 @@ const CampaignPreview = ({
     #salestorm-popup-footer-checkout-action .Polaris-Icon {
       margin-left: 0.2em !important;
       width: 15px !important;
-      padding-top: 2px !important;
+      padding-top: 3px !important;
       fill: ${styles.popup.color} !important;
     }
     #salestorm-product {
@@ -469,6 +468,8 @@ const CampaignPreview = ({
     .salestorm-product-select {
       padding: 10px 16px;
       background-color: ${tinycolor(styles.popup.backgroundColor).darken(10)};
+      background-image: url() !important;import React from 'react';
+      export default campaign_preview;
       width: 100%;
       border-width: 0px;
       border-radius: 3px;
@@ -497,6 +498,8 @@ const CampaignPreview = ({
       padding: 16px 24px;
       font-size: 17px;
       font-weight: bold;
+      font-family: ${campaign.styles.primaryButtons.fontFamily} !important;
+      color: ${campaign.styles.primaryButtons.color} !important;
       cursor: pointer;
       transition: 0.25s ease;
       ${styleObjectToStyleString(campaign.styles.primaryButtons)};
@@ -533,7 +536,7 @@ const CampaignPreview = ({
 
   return (
     <div id="salestorm-upselling-container">
-      <style>{campaignCSS}</style>
+      <style dangerouslySetInnerHTML={{ __html: campaignCSS }} />
       <div className={`salestorm-${preview}-preview-container`}>
         <div id="salestorm-overlay-container">
           <div
@@ -580,13 +583,18 @@ const CampaignPreview = ({
                     return (
                       <div
                         className="salestorm-product-select-container"
-                        key={option}
+                        key={`${option}-select-container`}
                       >
                         <select
                           className="salestorm-product-select"
-                          key={option}
+                          key={`${option}-select`}
                         >
-                          <option selected disabled value={option}>
+                          <option
+                            selected
+                            disabled
+                            value={option}
+                            key={`${option}-select-default-option`}
+                          >
                             {option}
                           </option>
                           {renderedProductVariantsByOption[option].map(
@@ -643,11 +651,12 @@ const CampaignPreview = ({
           </div>
         </div>
       </div>
-      <script type="text/javascript">
-        {campaignJSExecutedOnce}
-        {campaignJS}
-        {customJS}
-      </script>
+      <script
+        id="salestorm-popup-script"
+        dangerouslySetInnerHTML={{
+          __html: `(function popupJS (){${campaignJSExecutedOnce}${campaignJS}${customJS}})`,
+        }}
+      />
     </div>
   );
 };
