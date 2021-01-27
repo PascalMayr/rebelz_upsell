@@ -41,13 +41,13 @@
     '[name=add]',
   ];
   const checkoutButtonSelector = ['[name="checkout"]', 'a[href^="/checkout"]'];
-  const popupId = 'salestorm';
+  const popupId = 'salestorm-overlay-container';
   const productAddEvent = new Event('salestorm-product-add');
 
   const fetchCampaign = async (trigger, products) => {
     try {
       const response = await fetch(
-        'https://020eba19ad4c.ngrok.io/api/get-matching-campaign',
+        'https://loop.salestorm.cc:8081/api/get-matching-campaign',
         {
           credentials: 'include',
           method: 'POST',
@@ -62,8 +62,8 @@
         }
       );
       if (response.ok) {
-        const campaign = await response.json();
-        popups[trigger] = campaign.html;
+        const campaign = await response.text();
+        popups[trigger] = campaign;
       } else {
         popups[trigger] = null;
       }
@@ -79,7 +79,17 @@
     const oldPopup = document.getElementById(popupId);
     if (oldPopup) oldPopup.remove();
     document.body.insertAdjacentHTML('beforeend', popups[trigger]);
-    document.getElementById(popupId).style.display = 'block';
+    const popupJS = document.querySelector('#salestorm-popup-script').innerText;
+    if (popupJS) {
+      try {
+        // eslint-disable-next-line no-eval
+        eval(`${popupJS}();`);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
+    }
+    document.getElementById(popupId).style.display = 'flex';
   };
 
   const searchAddToCartForm = (addToCartButton) => {
@@ -225,7 +235,7 @@
       password
     ) {
       checkForProductAdd(url);
-      return oldOpen.apply(this, method, url, async, user, password);
+      return oldOpen.apply(this, [method, url, async, user, password]);
     };
   };
 
