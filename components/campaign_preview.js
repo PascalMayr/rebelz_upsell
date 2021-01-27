@@ -49,7 +49,7 @@ const CampaignPreview = ({
         descriptionElement.style.display = descriptionElement.style.display === 'block' ? 'none' : 'block';
       });
 
-      const hidePopup = () => document.querySelector('#salestorm-upselling-container').style.display = 'none';
+      const hidePopup = () => document.querySelector('#salestorm-overlay-container').style.display = 'none';
       const closeButton = document.querySelector('#salestorm-popup-close');
       closeButton && closeButton.addEventListener('click', hidePopup);
       const closeAction = document.querySelector('#salestorm-popup-footer-close-action');

@@ -129,7 +129,7 @@
       document.addEventListener(
         'click',
         (e) => {
-          if (!e.target.matches(addToCartButtonSelector)) return;
+          if (!addToCartButton.contains(e.target)) return;
 
           showPopup(triggers.addToCart);
 
