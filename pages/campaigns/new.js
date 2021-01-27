@@ -130,14 +130,13 @@ const New = (props) => {
         return { id: '', variants: [''] };
       }
     });
+  const title = props.campaign ? 'Update campaign' : 'Create new campaign';
+  const badgeStatus = campaign.published ? 'success' : 'attention';
+  const contentStatus = campaign.published ? 'Published' : 'Unpublished';
   return (
     <Page
-      title={props.campaign ? 'Update campaign' : 'Create new campaign'}
-      titleMetadata={
-        <Badge status={campaign.published ? 'success' : 'attention'}>
-          {campaign.published ? 'Published' : 'Unpublished'}
-        </Badge>
-      }
+      title={title}
+      titleMetadata={<Badge status={badgeStatus}>{contentStatus}</Badge>}
       breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
       primaryAction={{
         content: campaign.published ? 'Unpublish campaign' : 'Publish campaign',
@@ -319,7 +318,7 @@ const New = (props) => {
               <Card>
                 <Card.Section title="3.) Check, customize and try your Upselling Campaign before publishing it.">
                   {rerenderButtonVisible && (
-                    <div className='salestorm-rerender-container'>
+                    <div className="salestorm-rerender-container">
                       <Button
                         onClick={() => {
                           document.querySelector(
