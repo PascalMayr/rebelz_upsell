@@ -186,8 +186,8 @@ const CampaignFormatter = ({
   ];
 
   const animationSpeeds = [
-    { label: 'Slow', value: 'slow' },
     { label: 'Slower', value: 'slower' },
+    { label: 'Slow', value: 'slow' },
     { label: 'Normal', value: 'normal' },
     { label: 'Fast', value: 'fast' },
     { label: 'Faster', value: 'faster' },
