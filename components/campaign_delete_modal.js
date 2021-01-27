@@ -50,7 +50,7 @@ const CampaignDeleteModal = ({ campaign, removeFromList, onClose }) => {
       <Modal.Section>
         <TextContainer>
           <p>
-            Please click &quot;Delete&quot; if you really want to delete&nsbp;
+            Please click &quot;Delete&quot; if you really want to delete{' '}
             {campaign.name}.
           </p>
         </TextContainer>
