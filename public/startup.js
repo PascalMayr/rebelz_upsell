@@ -120,7 +120,7 @@
       const addToCartButton = document.querySelector(addToCartButtonSelector);
       const addToCartForm = searchFormFromChild(addToCartButton);
       if (addToCartForm)
-        addToCartForm.addEventListener('submit', (ev) => ev.preventDefault());
+        addToCartForm.addEventListener('submit', (event) => event.preventDefault());
       let doFormSubmitWithFetch;
       const disableFormSubmitWithFetch = () => (doFormSubmitWithFetch = false);
 
