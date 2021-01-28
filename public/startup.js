@@ -92,17 +92,17 @@
     document.getElementById(popupId).style.display = 'flex';
   };
 
-  const searchAddToCartForm = (addToCartButton) => {
-    let addToCartForm;
-    let target = addToCartButton;
+  const searchFormFromChild = (child) => {
+    let formElement;
+    let target = child;
     while (target) {
       if (target.tagName && target.tagName.toUpperCase() === 'FORM') {
-        addToCartForm = target;
+        formElement = target;
         break;
       }
       target = target.parentNode;
     }
-    return addToCartForm;
+    return formElement;
   };
 
   const handleProductPage = async (productPage) => {
