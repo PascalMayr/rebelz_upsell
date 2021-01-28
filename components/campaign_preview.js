@@ -53,7 +53,11 @@ const CampaignPreview = ({
         descriptionElement.style.display = descriptionElement.style.display === 'block' ? 'none' : 'block';
       });
 
-      const hidePopup = () => document.querySelector('#salestorm-overlay-container').style.display = 'none';
+      const hidePopup = () => {
+        document.querySelector('#salestorm-overlay-container').style.display = 'none';
+        const oldHiddenCampaigns = window.Salestorm.hiddenCampaigns ? window.Salestorm.hiddenCampaigns : [];
+        window.Salestorm.hiddenCampaigns = oldHiddenCampaigns.concat([${campaign.id}]);
+      }
       const closeButton = document.querySelector('#salestorm-popup-close');
       closeButton && closeButton.addEventListener('click', hidePopup);
       const closeAction = document.querySelector('#salestorm-popup-footer-close-action');
