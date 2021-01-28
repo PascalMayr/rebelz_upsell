@@ -67,15 +67,6 @@ app.prepare().then(() => {
     if (campaign) {
       const campaignMarkupHTML = await ReactDOMServer.renderToStaticMarkup(
         <AppProvider i18n={translations}>
-          <style
-            dangerouslySetInnerHTML={{
-              __html: `
-                #salestorm-overlay-container {
-                  position: absolute;
-                  top: 0px;
-                }`,
-            }}
-          />
           <CampaignPreview campaign={campaign} />
         </AppProvider>
       );
