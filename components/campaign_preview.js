@@ -108,7 +108,7 @@ const CampaignPreview = ({
         const salestormPrices = document.querySelectorAll('.salestorm-price');
         if (${renderedProduct.discount.type !== '%'}) {
           const baseCurrencyCode = "${renderedProduct.discount.type}";
-          window.Salestorm =  { currentCurrencyCode: findDisplayCurrencyCode() || baseCurrencyCode };
+          window.Salestorm.currentCurrencyCode = findDisplayCurrencyCode() || baseCurrencyCode;
 
           const currencyFormatter = new Intl.NumberFormat([], {
             style: 'currency',
