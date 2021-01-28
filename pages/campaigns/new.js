@@ -322,8 +322,8 @@ const New = (props) => {
                       <Button
                         onClick={() => {
                           document.querySelector(
-                            '#salestorm-upselling-container'
-                          ).style.display = 'block';
+                            '#salestorm-overlay-container'
+                          ).style.display = 'flex';
                           setRerenderButtonVisibile(false);
                         }}
                         primary
