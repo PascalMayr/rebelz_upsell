@@ -277,8 +277,9 @@
       handleProductPage(productPage);
     } else if (thankYouPage) {
       handleThankYouPage();
+    } else {
+      handleCart();
     }
-    handleCart();
   };
 
   init();
