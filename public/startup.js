@@ -264,6 +264,7 @@
   };
 
   const init = () => {
+    window.Salestorm = {};
     initShopifyMultiCurrencyConversionScript();
     // These 2 monkey patches are needed so we can detect products being added on the add to cart form
     // The issue is that if that add to cart is really a form, we don't have a way to tell if any other
