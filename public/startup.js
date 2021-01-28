@@ -137,13 +137,13 @@
       const addToCartButton = document.querySelector(addToCartButtonSelector);
       const addToCartForm = searchFormFromChild(addToCartButton);
       if (addToCartForm)
-        addToCartForm.addEventListener('submit', (event) => event.preventDefault());
+        addToCartForm.addEventListener('submit', (event) =>
+          event.preventDefault()
+        );
       let doFormSubmitWithFetch;
       const disableFormSubmitWithFetch = () => (doFormSubmitWithFetch = false);
-
       // Listening to the click event on the document in the capture phase
       // This is so that hopefully it gets executed before any other click listener
-
       addEarlyClickListener(addToCartButtonSelector, () => {
         showPopup(triggers.addToCart);
         if (addToCartForm) {
