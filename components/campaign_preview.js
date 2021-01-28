@@ -158,21 +158,6 @@ const CampaignPreview = ({
     }
   `;
 
-  /* Will be just executed with every new selling product in the Preview */
-  useEffect(() => {
-    try {
-      // eslint-disable-next-line no-eval
-      eval(campaignJS);
-    } catch (error) {
-      console.log(
-        '%cA Salestorm Javascript Error occured in the preview',
-        'color: orange;'
-      );
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
-  }, [renderedProduct, campaignJS, campaign.texts]);
-
   /* Will be just executed once in the Preview */
   useEffect(() => {
     try {
@@ -188,6 +173,21 @@ const CampaignPreview = ({
       console.error(error);
     }
   }, [campaignJSExecutedOnce]);
+
+  /* Will be just executed with every new selling product in the Preview */
+  useEffect(() => {
+    try {
+      // eslint-disable-next-line no-eval
+      eval(campaignJS);
+    } catch (error) {
+      console.log(
+        '%cA Salestorm Javascript Error occured in the preview',
+        'color: orange;'
+      );
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+  }, [renderedProduct, campaignJS, campaign.texts]);
 
   const customJS = `
     try {
