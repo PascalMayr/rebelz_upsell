@@ -143,24 +143,18 @@
 
       // Listening to the click event on the document in the capture phase
       // This is so that hopefully it gets executed before any other click listener
-      document.addEventListener(
-        'click',
-        (e) => {
-          if (!addToCartButton.contains(e.target)) return;
 
-          showPopup(triggers.addToCart);
-
-          if (addToCartForm) {
-            doFormSubmitWithFetch = true;
-            document.addEventListener(
-              productAddEvent.type,
-              disableFormSubmitWithFetch
-            );
-          }
-          return true;
-        },
-        true
-      );
+      addEarlyClickListener(addToCartButtonSelector, () => {
+        showPopup(triggers.addToCart);
+        if (addToCartForm) {
+          doFormSubmitWithFetch = true;
+          document.addEventListener(
+            productAddEvent.type,
+            disableFormSubmitWithFetch
+          );
+        }
+        return true;
+      });
       // The same listener, but in the bubbling phase, so that it hopefully gets executed last
       document.addEventListener('click', (e) => {
         if (!e.target.matches(addToCartButtonSelector)) return;
@@ -179,55 +173,50 @@
     }
   };
 
-  const contiouslyFetchCartAndUpdateCampaign = () => {
-    let previousItems;
-    let hasClickListener = false;
-    return setInterval(async () => {
-      if (document.visibilityState !== 'visible') return;
-
-      const response = await fetch('/cart.js');
-      const cart = await response.json();
-      const currentItems = cart.items;
-      if (
-        !previousItems ||
-        JSON.stringify(currentItems) !== JSON.stringify(previousItems)
-      ) {
-        previousItems = currentItems;
-        const hasCampaign = await fetchCampaign(
-          triggers.checkout,
-          currentItems.map((item) => item.product_id)
-        );
-        if (hasCampaign && !hasClickListener) {
-          document.querySelector(checkoutButtonSelector).addEventListener(
-            'click',
-            (e) => {
-              e.preventDefault();
-              showPopup(triggers.checkout);
-            },
-            true
-          );
-          hasClickListener = true;
-        }
-      }
-    }, 3000);
+  const getCartItems = async () => {
+    const response = await fetch('/cart.js');
+    const cart = await response.json();
+    return cart.items;
   };
 
-  const handleCart = () => {
-    // The current checkout button, which might appear and disappear at any point
-    let currentCheckoutButton;
-    let cartFetchInterval;
-    // Check for a cart drawer or popup to appear
-    setInterval(function () {
-      const newCheckoutButton = document.querySelector(checkoutButtonSelector);
-      if (newCheckoutButton && newCheckoutButton !== currentCheckoutButton) {
-        currentCheckoutButton = newCheckoutButton;
-        if (cartFetchInterval) {
-          clearInterval(cartFetchInterval);
-          cartFetchInterval = null;
+  const handleCart = async () => {
+    let currentItemsInCart = await getCartItems();
+    let hasClickListener = false;
+    let hasCampaign = await fetchCampaign(
+      triggers.checkout,
+      currentItemsInCart.map((item) => item.product_id)
+    );
+    if (hasCampaign && !hasClickListener) {
+      hasClickListener = addEarlyClickListener(
+        checkoutButtonSelector,
+        (event) => {
+          showPopup(triggers.checkout);
+          event.preventDefault();
+          event.stopPropagation();
+          return false;
         }
-        cartFetchInterval = contiouslyFetchCartAndUpdateCampaign();
+      );
+    }
+    setInterval(async () => {
+      if (document.visibilityState !== 'visible') return;
+
+      currentItemsInCart = await getCartItems();
+      hasCampaign = await fetchCampaign(
+        triggers.checkout,
+        currentItemsInCart.map((item) => item.product_id)
+      );
+      if (hasCampaign && !hasClickListener) {
+        hasClickListener = addEarlyClickListener(
+          checkoutButtonSelector,
+          (event) => {
+            showPopup(triggers.checkout);
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+          }
+        );
       }
-    }, 300);
+    }, 3000);
   };
 
   const handleThankYouPage = async () => {
