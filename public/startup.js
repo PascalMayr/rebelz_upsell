@@ -118,7 +118,7 @@
     const hasCampaign = await fetchCampaign(triggers.addToCart, [productId]);
     if (hasCampaign) {
       const addToCartButton = document.querySelector(addToCartButtonSelector);
-      const addToCartForm = searchAddToCartForm(addToCartButton);
+      const addToCartForm = searchFormFromChild(addToCartButton);
       if (addToCartForm)
         addToCartForm.addEventListener('submit', (ev) => ev.preventDefault());
       let doFormSubmitWithFetch;
