@@ -44,6 +44,8 @@ const CampaignPreview = ({
 
   const campaignJSExecutedOnce = `
     try {
+      window.Salestorm = window.Salestorm ? window.Salestorm : {};
+
       const productDetailsMessage = document.querySelector('#salestorm-product-details-message');
       const descriptionElement = document.querySelector('#salestorm-product-description');
       descriptionElement.style.display = 'none';
