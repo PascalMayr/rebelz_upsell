@@ -105,6 +105,23 @@
     return formElement;
   };
 
+  const addEarlyClickListener = (selector, callback) => {
+    const targetElement = document.querySelector(selector);
+    if (targetElement) {
+      document.addEventListener(
+        'click',
+        (event) => {
+          if (targetElement.contains(event.target)) {
+            callback(event);
+          }
+        },
+        true
+      );
+      return true;
+    }
+    return false;
+  };
+
   const handleProductPage = async (productPage) => {
     let productId;
     // Many shopify themes have this meta global which includes the product ID
