@@ -14,11 +14,17 @@ const CampaignPreviewPlaceholder = {
       },
     ],
   },
+  options:[
+    {
+      name: 'Color',
+      values: ['Red', 'Blue'],
+    },
+  ],
   variants: {
     edges: [
       {
         node: {
-          selectedOptions: [{ name: 'Color' }],
+          selectedOptions: [{ name: 'Color', value: 'Red' }],
           title: 'Red',
           legacyResourceId: '38752185811129',
           image: {
@@ -30,7 +36,7 @@ const CampaignPreviewPlaceholder = {
       },
       {
         node: {
-          selectedOptions: [{ name: 'Color' }],
+          selectedOptions: [{ name: 'Color', value: 'Blue' }],
           title: 'Blue',
           legacyResourceId: '38752185811121',
           image: {

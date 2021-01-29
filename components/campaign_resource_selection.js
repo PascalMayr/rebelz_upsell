@@ -21,6 +21,12 @@ const GET_PRODUCT = gql`
       legacyResourceId
       title
       descriptionHtml
+      options(first: 3) {
+        values
+        name
+        position
+      }
+      legacyResourceId
       images(first: 1) {
         edges {
           node {
@@ -37,6 +43,7 @@ const GET_PRODUCT = gql`
             legacyResourceId
             selectedOptions {
               name
+              value
             }
             image {
               transformedSrc(maxHeight: 500)

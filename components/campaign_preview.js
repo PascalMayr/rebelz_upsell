@@ -29,19 +29,6 @@ const CampaignPreview = ({
       ? campaign.products.selling[0]
       : CampaignPreviewPlaceholder;
 
-  const getVariantsByOption = (product) => {
-    const helper = {};
-    product.variants.edges.forEach((edge) => {
-      const variant = edge.node;
-      variant.selectedOptions.forEach((selectedOption) => {
-        helper[selectedOption.name] = (
-          helper[selectedOption.name] || []
-        ).concat([variant]);
-      });
-    });
-    return helper;
-  };
-
   const campaignJSExecutedOnce = `
     try {
       window.Salestorm = window.Salestorm ? window.Salestorm : {};
@@ -144,7 +131,7 @@ const CampaignPreview = ({
           const selectedValue = selectElement.value;
           const selectedVariant = ${JSON.stringify(
             renderedProduct
-          )}.variants.edges.find(variant => variant.node.legacyResourceId === selectedValue);
+          )}.variants.edges.find(variant => variant.node.selectedOptions.find(option => option.value === selectedValue));
           if (selectedVariant && selectedVariant.node && selectedVariant.node.image) {
             document.querySelector('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
           }
@@ -598,50 +585,40 @@ const CampaignPreview = ({
                     ),
                   }}
                 />
-                {Object.keys(getVariantsByOption(renderedProduct)).map(
-                  (option) => {
-                    const productVariants = getVariantsByOption(
-                      renderedProduct
-                    )[option];
-                    if (productVariants.length > 1) {
-                      return (
-                        <div
-                          className="salestorm-product-select-container"
-                          key={`${option}-select-container`}
+                {renderedProduct.options.map((option) => {
+                  if (option.name === 'Title') {
+                    return null;
+                  } else {
+                    return (
+                      <div
+                        className="salestorm-product-select-container"
+                        key={`${option.name}-select-container`}
+                      >
+                        <select
+                          className="salestorm-product-select"
+                          key={`${option.name}-select`}
                         >
-                          <select
-                            className="salestorm-product-select"
-                            key={`${option}-select`}
+                          <option
+                            selected
+                            disabled
+                            value={option.name}
+                            key={`${option.name}-select-default-option`}
                           >
-                            <option
-                              selected
-                              disabled
-                              value={option}
-                              key={`${option}-select-default-option`}
-                            >
-                              {option}
+                            {option.name}
+                          </option>
+                          {option.values.map((value) => (
+                            <option value={value} key={value}>
+                              {value}
                             </option>
-                            {getVariantsByOption(renderedProduct)[option].map(
-                              (productVariant) => (
-                                <option
-                                  value={productVariant.legacyResourceId}
-                                  key={productVariant.title}
-                                >
-                                  {productVariant.title}
-                                </option>
-                              )
-                            )}
-                          </select>
-                          <div className="salestorm-product-select-arrow">
-                            <Icon source={SelectMinor} />
-                          </div>
+                          ))}
+                        </select>
+                        <div className="salestorm-product-select-arrow">
+                          <Icon source={SelectMinor} />
                         </div>
-                      );
-                    } else {
-                      return null;
-                    }
+                      </div>
+                    );
                   }
-                )}
+                })}
                 <button type="button" id="salestorm-claim-offer-button">
                   {campaign.texts.addToCartAction}
                 </button>
