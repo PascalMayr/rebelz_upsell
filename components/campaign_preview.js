@@ -15,7 +15,7 @@ const CampaignPreview = ({
   campaign,
   preview,
   // eslint-disable-next-line no-empty-function
-  setRerenderButtonVisibile = () => {},
+  setRerenderButton = () => {},
 }) => {
   const styleObjectToStyleString = (styleObject) => {
     const kebabCaseStyles = kebabCasify(styleObject);
@@ -543,6 +543,11 @@ const CampaignPreview = ({
     ? `salestorm-${preview}-preview-container`
     : 'salestorm-desktop-preview-container';
 
+  const onPreviewHide = () => {
+    document.querySelector(`.${previewContainerClass}`).style.display = 'none';
+    setRerenderButton(true, previewContainerClass);
+  };
+
   return (
     <div id="salestorm-upselling-container">
       <style dangerouslySetInnerHTML={{ __html: campaignCSS }} />
@@ -558,8 +563,8 @@ const CampaignPreview = ({
               </div>
               <div
                 id="salestorm-popup-close"
-                onClick={setRerenderButtonVisibile}
-                onKeyDown={setRerenderButtonVisibile}
+                onClick={onPreviewHide}
+                onKeyDown={onPreviewHide}
               >
                 <Icon source={MobileCancelMajor} />
               </div>
@@ -640,8 +645,8 @@ const CampaignPreview = ({
             <div id="salestorm-popup-footer">
               <div
                 id="salestorm-popup-footer-close-action"
-                onClick={setRerenderButtonVisibile}
-                onKeyDown={setRerenderButtonVisibile}
+                onClick={onPreviewHide}
+                onKeyDown={onPreviewHide}
               >
                 {campaign.texts.dismissAction}
               </div>

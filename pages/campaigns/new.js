@@ -118,7 +118,10 @@ const New = (props) => {
   );
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
-  const [rerenderButtonVisible, setRerenderButtonVisibile] = useState(false);
+  const [rerenderButton, setRerenderButton] = useState({
+    visible: false,
+    previewClass: '',
+  });
   const _getResourcePickerInitialSelectedProducts = (products) =>
     products.map((product) => {
       if (product) {
@@ -317,14 +320,20 @@ const New = (props) => {
             <Layout.Section>
               <Card>
                 <Card.Section title="3.) Check, customize and try your Upselling Campaign before publishing it.">
-                  {rerenderButtonVisible && (
+                  {rerenderButton.visible && (
                     <div className="salestorm-rerender-container">
                       <Button
                         onClick={() => {
                           document.querySelector(
                             '#salestorm-overlay-container'
                           ).style.display = 'flex';
-                          setRerenderButtonVisibile(false);
+                          document.querySelector(
+                            `.${rerenderButton.previewClass}`
+                          ).style.display = 'block';
+                          setRerenderButton({
+                            visible: false,
+                            previewClass: '',
+                          });
                         }}
                         primary
                         icon={ResetMinor}
@@ -336,7 +345,9 @@ const New = (props) => {
                   <CampaignPreview
                     campaign={campaign}
                     preview={preview}
-                    setRerenderButtonVisibile={setRerenderButtonVisibile}
+                    setRerenderButton={(visible, previewClass) =>
+                      setRerenderButton({ visible, previewClass })
+                    }
                   />
                   <CampaignPreviewSwitch
                     onSwitch={(value) => setPreview(value)}
