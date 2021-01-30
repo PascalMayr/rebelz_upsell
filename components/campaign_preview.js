@@ -95,11 +95,14 @@ const CampaignPreview = ({
         const salestormPrices = document.querySelectorAll('.salestorm-price');
         if (${renderedProduct.discount.type !== '%'}) {
           const baseCurrencyCode = "${renderedProduct.discount.type}";
-          window.Salestorm.currentCurrencyCode = findDisplayCurrencyCode() || baseCurrencyCode;
+          window.Salestorm.currentCurrencyCode = (${
+            campaign.multiCurrencySupport
+          } && findDisplayCurrencyCode() )|| baseCurrencyCode;
 
           const currencyFormatter = new Intl.NumberFormat([], {
             style: 'currency',
             currency: window.Salestorm.currentCurrencyCode,
+            currencyDisplay: 'narrowSymbol',
             maximumSignificantDigits: 3
           });
 
@@ -109,7 +112,7 @@ const CampaignPreview = ({
             if (window.Currency && window.Currency.rates && window.Currency.convert && ${
               campaign.multiCurrencySupport
             }) {
-              convertedPriceValue = window.Currency.convert(priceValue, baseCurrencyCode, window.Salestorm.currentCurrencyCode);
+              convertedPriceValue = Math.round(window.Currency.convert(priceValue, baseCurrencyCode, window.Salestorm.currentCurrencyCode));
             }
             priceElement.innerText = currencyFormatter.format(convertedPriceValue);
           });
