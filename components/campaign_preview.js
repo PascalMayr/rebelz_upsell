@@ -96,6 +96,9 @@ const CampaignPreview = ({
             return localStorage.getItem('currencyWidget');
           }
         }
+        if (document.getElementById('baCurrSelector')) {
+          return document.getElementById('baCurrSelector').value;
+        }
         if (window.Shopify && window.Shopify.currency && window.Shopify.currency.active !== "") {
           return Shopify.currency.active;
         }
