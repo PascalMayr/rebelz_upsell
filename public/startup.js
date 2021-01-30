@@ -42,7 +42,10 @@
   ];
   const checkoutButtonSelector = ['[name="checkout"]', 'a[href^="/checkout"]'];
   const popupId = 'salestorm-overlay-container';
-  const productAddEvent = new Event('salestorm-product-add');
+  const continueOriginalClickEvent = new Event(
+    'salestorm-continue-original-click-event'
+  );
+  let productsAddedByXHROrFetch = false;
 
   const fetchCampaign = async (trigger, products) => {
     try {
@@ -90,11 +93,16 @@
       }
     }
     document.getElementById(popupId).style.display = 'flex';
+    if (window.Salestorm.hidePopup) {
+      document.addEventListener(window.Salestorm.hidePopup.type, () =>
+        document.dispatchEvent(continueOriginalClickEvent)
+      );
+    }
   };
 
-  const searchFormFromChild = (child) => {
+  const searchFormFromTarget = (initialTarget) => {
     let formElement;
-    let target = child;
+    let target = initialTarget;
     while (target) {
       if (target.tagName && target.tagName.toUpperCase() === 'FORM') {
         formElement = target;
@@ -105,7 +113,7 @@
     return formElement;
   };
 
-  const addEarlyClickListener = (selector, callback) => {
+  const addEarlyClickListener = (selector, callback, capture = true) => {
     const targetElement = document.querySelector(selector);
     if (targetElement) {
       document.addEventListener(
@@ -115,7 +123,7 @@
             callback(event);
           }
         },
-        true
+        capture
       );
       return true;
     }
@@ -134,41 +142,20 @@
     }
     const hasCampaign = await fetchCampaign(triggers.addToCart, [productId]);
     if (hasCampaign) {
-      const addToCartButton = document.querySelector(addToCartButtonSelector);
-      const addToCartForm = searchFormFromChild(addToCartButton);
-      if (addToCartForm)
-        addToCartForm.addEventListener('submit', (event) =>
-          event.preventDefault()
-        );
-      let doFormSubmitWithFetch;
-      const disableFormSubmitWithFetch = () => (doFormSubmitWithFetch = false);
-      // Listening to the click event on the document in the capture phase
-      // This is so that hopefully it gets executed before any other click listener
-      addEarlyClickListener(addToCartButtonSelector, () => {
-        showPopup(triggers.addToCart);
-        if (addToCartForm) {
-          doFormSubmitWithFetch = true;
-          document.addEventListener(
-            productAddEvent.type,
-            disableFormSubmitWithFetch
-          );
-        }
-        return true;
-      });
-      // The same listener, but in the bubbling phase, so that it hopefully gets executed last
-      document.addEventListener('click', (e) => {
-        if (!e.target.matches(addToCartButtonSelector)) return;
-
-        if (doFormSubmitWithFetch) {
-          fetch(addToCartForm.action, {
-            method: addToCartForm.method || 'POST',
-            body: new FormData(addToCartForm),
+      let displayedCampaign = false;
+      addEarlyClickListener(addToCartButtonSelector, (event) => {
+        if (!displayedCampaign) {
+          showPopup(triggers.addToCart);
+          event.preventDefault();
+          event.stopPropagation();
+          document.addEventListener(continueOriginalClickEvent.type, () => {
+            displayedCampaign = true;
+            if (!productsAddedByXHROrFetch) {
+              event.target.click();
+            }
           });
         }
-        document.removeEventListener(
-          productAddEvent.type,
-          disableFormSubmitWithFetch
-        );
+        return true;
       });
     }
   };
@@ -180,43 +167,30 @@
   };
 
   const handleCart = async () => {
-    let currentItemsInCart = await getCartItems();
-    let hasClickListener = false;
-    let hasCampaign = await fetchCampaign(
+    const currentItemsInCart = await getCartItems();
+    const hasCampaign = await fetchCampaign(
       triggers.checkout,
       currentItemsInCart.map((item) => item.product_id)
     );
-    if (hasCampaign && !hasClickListener) {
-      hasClickListener = addEarlyClickListener(
-        checkoutButtonSelector,
-        (event) => {
+    if (hasCampaign) {
+      let displayedCampaign = false;
+      addEarlyClickListener(checkoutButtonSelector, (event) => {
+        if (!displayedCampaign) {
           showPopup(triggers.checkout);
           event.preventDefault();
           event.stopPropagation();
-          return false;
+          document.addEventListener(continueOriginalClickEvent.type, () => {
+            displayedCampaign = true;
+            const checkoutForm = searchFormFromTarget(event.target);
+            if (checkoutForm) {
+              checkoutForm.requestSubmit();
+            }
+            event.target.click();
+          });
         }
-      );
+        return true;
+      });
     }
-    setInterval(async () => {
-      if (document.visibilityState !== 'visible') return;
-
-      currentItemsInCart = await getCartItems();
-      hasCampaign = await fetchCampaign(
-        triggers.checkout,
-        currentItemsInCart.map((item) => item.product_id)
-      );
-      if (hasCampaign && !hasClickListener) {
-        hasClickListener = addEarlyClickListener(
-          checkoutButtonSelector,
-          (event) => {
-            showPopup(triggers.checkout);
-            event.preventDefault();
-            event.stopPropagation();
-            return false;
-          }
-        );
-      }
-    }, 3000);
   };
 
   const handleThankYouPage = async () => {
@@ -228,7 +202,9 @@
   };
 
   const checkForProductAdd = (url) => {
-    if (url && url.match(/cart\/add/)) document.dispatchEvent(productAddEvent);
+    if (url && url.match(/cart\/add/)) {
+      productsAddedByXHROrFetch = true;
+    }
   };
 
   const initXHRMonkeyPatch = () => {
@@ -264,7 +240,6 @@
   };
 
   const init = () => {
-    window.Salestorm = {};
     initShopifyMultiCurrencyConversionScript();
     // These 2 monkey patches are needed so we can detect products being added on the add to cart form
     // The issue is that if that add to cart is really a form, we don't have a way to tell if any other
