@@ -148,6 +148,12 @@
           showPopup(triggers.addToCart);
           event.preventDefault();
           event.stopPropagation();
+          const handleCartDrawers = setInterval(() => {
+            if (document.querySelector(checkoutButtonSelector)) {
+              handleCart();
+              clearInterval(handleCartDrawers);
+            }
+          }, 500);
           document.addEventListener(continueOriginalClickEvent.type, () => {
             displayedCampaign = true;
             if (!productsAddedByXHROrFetch) {
@@ -172,6 +178,7 @@
       triggers.checkout,
       currentItemsInCart.map((item) => item.product_id)
     );
+    // TODO: check for a campaign with cart items every 3 seconds so the user does not need to reload the page
     if (hasCampaign) {
       let displayedCampaign = false;
       addEarlyClickListener(checkoutButtonSelector, (event) => {
