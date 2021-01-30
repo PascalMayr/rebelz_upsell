@@ -40,18 +40,24 @@ const CampaignPreview = ({
         descriptionElement.style.display = descriptionElement.style.display === 'block' ? 'none' : 'block';
       });
 
+      window.Salestorm.hidePopup = new Event(
+        'salestorm-hide-popup-event'
+      );
+
       const hidePopup = () => {
+        document.dispatchEvent(window.Salestorm.hidePopup);
         document.querySelector('#salestorm-overlay-container').style.display = 'none';
-        const oldHiddenCampaigns = window.Salestorm.hiddenCampaigns ? window.Salestorm.hiddenCampaigns : [];
-        window.Salestorm.hiddenCampaigns = oldHiddenCampaigns.concat([${campaign.id}]);
-      }
+      };
+
       const closeButton = document.querySelector('#salestorm-popup-close');
       closeButton && closeButton.addEventListener('click', hidePopup);
       const closeAction = document.querySelector('#salestorm-popup-footer-close-action');
       closeAction && closeAction.addEventListener('click', hidePopup);
+      const checkoutAction = document.querySelector('#salestorm-popup-footer-checkout-action');
+      checkoutAction && checkoutAction.addEventListener('click', hidePopup);
       document.addEventListener("keydown", event => {
         if(event.key === "Escape") {
-          hidePopup();
+          document.querySelector('#salestorm-overlay-container').style.display = 'none';
         }
       });
     }
