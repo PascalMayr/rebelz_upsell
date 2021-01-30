@@ -49,6 +49,11 @@ const CampaignPreview = ({
       closeButton && closeButton.addEventListener('click', hidePopup);
       const closeAction = document.querySelector('#salestorm-popup-footer-close-action');
       closeAction && closeAction.addEventListener('click', hidePopup);
+      document.addEventListener("keydown", event => {
+        if(event.key === "Escape") {
+          hidePopup();
+        }
+      });
     }
     catch(error) {
       console.log('%cA Salestorm Javascript Error occured', 'color: orange;');
