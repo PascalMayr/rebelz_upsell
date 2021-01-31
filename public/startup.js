@@ -173,31 +173,41 @@
   };
 
   const handleCart = async () => {
-    const currentItemsInCart = await getCartItems();
-    const hasCampaign = await fetchCampaign(
-      triggers.checkout,
-      currentItemsInCart.map((item) => item.product_id)
-    );
-    // TODO: check for a campaign with cart items every 3 seconds so the user does not need to reload the page
-    if (hasCampaign) {
-      let displayedCampaign = false;
-      addEarlyClickListener(checkoutButtonSelector, (event) => {
-        if (!displayedCampaign) {
-          showPopup(triggers.checkout);
-          event.preventDefault();
-          event.stopPropagation();
-          document.addEventListener(continueOriginalClickEvent.type, () => {
-            displayedCampaign = true;
-            const checkoutForm = searchFormFromTarget(event.target);
-            if (checkoutForm) {
-              checkoutForm.requestSubmit();
-            }
-            event.target.click();
-          });
-        }
-        return true;
-      });
-    }
+    let hasCampaign;
+    const checkAndHandleCartCampaign = async () => {
+      const currentItemsInCart = await getCartItems();
+      hasCampaign = await fetchCampaign(
+        triggers.checkout,
+        currentItemsInCart.map((item) => item.product_id)
+      );
+      if (hasCampaign) {
+        let displayedCampaign = false;
+        addEarlyClickListener(checkoutButtonSelector, (event) => {
+          if (!displayedCampaign) {
+            showPopup(triggers.checkout);
+            event.preventDefault();
+            event.stopPropagation();
+            document.addEventListener(continueOriginalClickEvent.type, () => {
+              displayedCampaign = true;
+              const checkoutForm = searchFormFromTarget(event.target);
+              if (checkoutForm) {
+                checkoutForm.requestSubmit();
+              }
+              event.target.click();
+            });
+          }
+          return true;
+        });
+      }
+    };
+    await checkAndHandleCartCampaign();
+    const checkAndHandleCartCampaignInterval = setInterval(async () => {
+      if (hasCampaign) {
+        clearInterval(checkAndHandleCartCampaignInterval);
+      } else {
+        await checkAndHandleCartCampaign();
+      }
+    }, 3000);
   };
 
   const handleThankYouPage = async () => {
