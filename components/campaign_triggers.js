@@ -2,12 +2,18 @@ import Image from 'next/image';
 import { RadioButton } from '@shopify/polaris';
 import '../styles/components_salestorm_triggers.css';
 
-const CampaignTriggers = ({ trigger, setCampaignProperty }) => {
+const CampaignTriggers = ({ campaign, setCampaignProperty }) => {
+  const trigger = campaign.trigger;
+  const changeTrigger = (newTrigger) => {
+    setCampaignProperty(newTrigger, 'trigger');
+  };
+  console.log(campaign);
   return (
     <div className="salestorm-triggers">
       <div
         className="salestorm-triggers-option"
-        onClick={() => setCampaignProperty('add_to_cart', 'trigger')}
+        onClick={() => changeTrigger('add_to_cart')}
+        onKeyDown={() => changeTrigger('add_to_cart')}
       >
         <Image
           src="/add_to_cart.svg"
@@ -20,13 +26,13 @@ const CampaignTriggers = ({ trigger, setCampaignProperty }) => {
           id="add_to_cart"
           checked={trigger === 'add_to_cart'}
           name="triggers"
-          onChange={(_checked, value) => setCampaignProperty(value, 'trigger')}
+          onChange={(_checked, value) => changeTrigger(value)}
         />
       </div>
       <div
         className="salestorm-triggers-option"
-        onClick={() => setCampaignProperty('checkout', 'trigger')}
-        onKeyDown={() => {}}
+        onClick={() => changeTrigger('checkout')}
+        onKeyDown={() => changeTrigger('checkout')}
       >
         <Image
           src="/before_checkout.svg"
@@ -39,26 +45,23 @@ const CampaignTriggers = ({ trigger, setCampaignProperty }) => {
           id="checkout"
           checked={trigger === 'checkout'}
           name="triggers"
-          onChange={(_checked, value) => setCampaignProperty(value, 'trigger')}
+          onChange={(_checked, value) => changeTrigger(value)}
         />
       </div>
       <div
         className="salestorm-triggers-option"
-        onClick={() => setCampaignProperty('thank_you', 'trigger')}
-        onKeyDown={() => {}}
+        onClick={() => changeTrigger('thank_you')}
+        onKeyDown={() => changeTrigger('thank_you')}
       >
-        <Image
-          src="/thank_you.svg"
-          alt="Thank you"
-          width="150"
-          height="150"
-        />
+        <Image src="/thank_you.svg" alt="Thank you" width="150" height="150" />
         <RadioButton
           label="On the Thank you page"
           id="thank_you"
           checked={trigger === 'thank_you'}
           name="triggers"
-          onChange={(_checked, value) => setCampaignProperty(value, 'trigger')}
+          onChange={(_checked, value) => {
+            changeTrigger(value);
+          }}
         />
       </div>
     </div>
