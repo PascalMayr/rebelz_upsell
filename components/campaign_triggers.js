@@ -7,7 +7,6 @@ const CampaignTriggers = ({ campaign, setCampaignProperty }) => {
   const changeTrigger = (newTrigger) => {
     setCampaignProperty(newTrigger, 'trigger');
   };
-  console.log(campaign);
   return (
     <div className="salestorm-triggers">
       <div
