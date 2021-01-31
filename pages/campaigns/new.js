@@ -114,7 +114,7 @@ const New = (props) => {
   });
   const [preview, setPreview] = useState('desktop');
   const setCampaignProperty = useCallback(
-    (value, id) => setCampaign({ ...campaign, [id]: value }),
+    (value, id, state = {}) => setCampaign({ ...campaign, [id]: value, ...state }),
     [campaign]
   );
   const [publishLoading, setPublishLoading] = useState(false);

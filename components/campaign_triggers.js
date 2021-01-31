@@ -5,7 +5,15 @@ import '../styles/components_salestorm_triggers.css';
 const CampaignTriggers = ({ campaign, setCampaignProperty }) => {
   const trigger = campaign.trigger;
   const changeTrigger = (newTrigger) => {
-    setCampaignProperty(newTrigger, 'trigger');
+    const checkoutActionText =
+      newTrigger === 'add_to_cart'
+        ? 'Go to cart'
+        : newTrigger === 'checkout'
+        ? 'Go to checkout'
+        : 'Continue shopping';
+    setCampaignProperty(newTrigger, 'trigger', {
+      texts: { ...campaign.texts, checkoutAction: checkoutActionText },
+    });
   };
   return (
     <div className="salestorm-triggers">
