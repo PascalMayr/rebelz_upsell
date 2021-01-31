@@ -143,17 +143,44 @@ const CampaignPreview = ({
         renderedProduct.images.edges[0].node.transformedSrc
       }"+')';
 
-      document.querySelectorAll('.salestorm-product-select').forEach(selectElement => {
-        selectElement.addEventListener('change', () => {
-          const selectedValue = selectElement.value;
+      if (${JSON.stringify(renderedProduct)}.options[0].name !== 'Title') {
+        const sortStringArrayAlphabetically = array => array.sort((a, b) => a.length - b.length);
+        const findAndSetSelectedVariant = () => {
+          const currentSelectionState = Array.from(document.querySelectorAll('.salestorm-product-select')).map(selectElement => selectElement.value);
+          console.log(currentSelectionState)
           const selectedVariant = ${JSON.stringify(
             renderedProduct
-          )}.variants.edges.find(variant => variant.node.selectedOptions.find(option => option.value === selectedValue));
-          if (selectedVariant && selectedVariant.node && selectedVariant.node.image) {
-            document.querySelector('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
+          )}.variants.edges.find(variant => {
+            const variantOptionValues = variant.node.selectedOptions.map(selectedOption => selectedOption.value);
+            return JSON.stringify(sortStringArrayAlphabetically(variantOptionValues)) === JSON.stringify(sortStringArrayAlphabetically(currentSelectionState));
+          });
+          const claimOfferButton = document.querySelector('#salestorm-claim-offer-button');
+          if (selectedVariant) {
+            if (selectedVariant.node && selectedVariant.node.image) {
+              document.querySelector('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
+            }
+            claimOfferButton.innerText = "${campaign.texts.addToCartAction}";
+            claimOfferButton.disabled = false;
+            claimOfferButton.style.opacity = 1;
           }
-        })
-      });
+          else {
+            claimOfferButton.innerText = "${
+              campaign.texts.addToCartUnavailableVariation
+            }";
+            claimOfferButton.disabled = true;
+            claimOfferButton.style.opacity = 0.7;
+          }
+        }
+
+        findAndSetSelectedVariant();
+
+        document.querySelectorAll('.salestorm-product-select').forEach(selectElement => {
+          selectElement.addEventListener('change', () => {
+            const selectedValue = selectElement.value;
+            findAndSetSelectedVariant();
+          })
+        });
+      }
 
     }
     catch(error) {
@@ -620,14 +647,6 @@ const CampaignPreview = ({
                           className="salestorm-product-select"
                           key={`${option.name}-select`}
                         >
-                          <option
-                            selected
-                            disabled
-                            value={option.name}
-                            key={`${option.name}-select-default-option`}
-                          >
-                            {option.name}
-                          </option>
                           {option.values.map((value) => (
                             <option value={value} key={value}>
                               {value}
