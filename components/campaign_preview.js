@@ -31,7 +31,7 @@ const CampaignPreview = ({
 
   const campaignJSExecutedOnce = `
     try {
-      window.Salestorm = window.Salestorm ? window.Salestorm : {};
+      window.Salestorm = window.Salestorm ? window.Salestorm : { popupId: "salestorm-overlay-container"};
 
       const productDetailsMessage = document.querySelector('#salestorm-product-details-message');
       const descriptionElement = document.querySelector('#salestorm-product-description');
@@ -501,7 +501,7 @@ const CampaignPreview = ({
       margin-bottom: 16px !important;
     }
     #salestorm-product-action-container > p {
-      margin-bottom: 8px !important;
+      margin-bottom: 10px !important;
       font-size: 16px !important;
     }
     .salestorm-product-select-container {
