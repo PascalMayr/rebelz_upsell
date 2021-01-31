@@ -255,7 +255,7 @@
     initFetchMonkeyPatch();
     const path = window.location.pathname;
     const productPage = path.match(/\/products\/[^?/#]+/);
-    const thankYouPage = path.match(/\/thank_you$/);
+    const thankYouPage = path.match(/\/thank_you/);
     if (productPage) {
       handleProductPage(productPage);
     } else if (thankYouPage) {
