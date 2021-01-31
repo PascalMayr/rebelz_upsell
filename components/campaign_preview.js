@@ -147,7 +147,6 @@ const CampaignPreview = ({
         const sortStringArrayAlphabetically = array => array.sort((a, b) => a.length - b.length);
         const findAndSetSelectedVariant = () => {
           const currentSelectionState = Array.from(document.querySelectorAll('.salestorm-product-select')).map(selectElement => selectElement.value);
-          console.log(currentSelectionState)
           const selectedVariant = ${JSON.stringify(
             renderedProduct
           )}.variants.edges.find(variant => {
