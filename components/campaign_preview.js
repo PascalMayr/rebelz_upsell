@@ -116,7 +116,7 @@ const CampaignPreview = ({
           const currencyFormatter = new Intl.NumberFormat([], {
             style: 'currency',
             currency: window.Salestorm.currentCurrencyCode,
-            currencyDisplay: 'narrowSymbol',
+            currencyDisplay: 'symbol',
             maximumSignificantDigits: 3
           });
 
