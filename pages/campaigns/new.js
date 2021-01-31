@@ -240,7 +240,7 @@ const New = (props) => {
                   : ''}
               </div>
               <SalestormTriggers
-                trigger={campaign.trigger}
+                campaign={campaign}
                 setCampaignProperty={setCampaignProperty}
               />
             </Card.Section>
