@@ -519,7 +519,6 @@ const CampaignPreview = ({
       width: 100%;
       border-width: 0px;
       border-radius: 3px;
-      text-indent: 0.01px;
       cursor: pointer;
       color: inherit;
       font-family: inherit;
