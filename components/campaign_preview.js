@@ -538,6 +538,10 @@ const CampaignPreview = ({
       height: 21px !important;
       fill: ${styles.popup.color} !important;
     }
+    .salestorm-product-select > option {
+      background-color: ${styles.popup.backgroundColor} !important;
+      color: ${styles.popup.color} !important;
+    }
     #salestorm-claim-offer-button {
       width: 100%;
       padding: 16px 24px;
