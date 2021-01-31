@@ -158,16 +158,16 @@ const CampaignPreview = ({
             if (selectedVariant.node && selectedVariant.node.image) {
               document.querySelector('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
             }
+            claimOfferButton.classList.remove('disabled')
             claimOfferButton.innerHTML = "${campaign.texts.addToCartAction}";
             claimOfferButton.disabled = false;
-            claimOfferButton.style.opacity = 1;
           }
           else {
             claimOfferButton.innerHTML = "${
               campaign.texts.addToCartUnavailableVariation
             }";
+            claimOfferButton.classList.add('disabled')
             claimOfferButton.disabled = true;
-            claimOfferButton.style.opacity = 0.7;
           }
         }
 
@@ -542,7 +542,11 @@ const CampaignPreview = ({
       background-color: ${styles.popup.backgroundColor} !important;
       color: ${styles.popup.color} !important;
     }
+    #salestorm-claim-offer-button .disabled {
+      opacity: 0.7;
+    }
     #salestorm-claim-offer-button {
+      opacity: 1;
       width: 100%;
       padding: 16px 24px;
       font-size: 17px;
