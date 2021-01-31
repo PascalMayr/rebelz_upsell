@@ -158,12 +158,12 @@ const CampaignPreview = ({
             if (selectedVariant.node && selectedVariant.node.image) {
               document.querySelector('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
             }
-            claimOfferButton.innerText = "${campaign.texts.addToCartAction}";
+            claimOfferButton.innerHTML = "${campaign.texts.addToCartAction}";
             claimOfferButton.disabled = false;
             claimOfferButton.style.opacity = 1;
           }
           else {
-            claimOfferButton.innerText = "${
+            claimOfferButton.innerHTML = "${
               campaign.texts.addToCartUnavailableVariation
             }";
             claimOfferButton.disabled = true;
@@ -662,13 +662,20 @@ const CampaignPreview = ({
                     );
                   }
                 })}
-                <button type="button" id="salestorm-claim-offer-button">
-                  {campaign.texts.addToCartAction}
-                </button>
+                <button
+                  type="button"
+                  id="salestorm-claim-offer-button"
+                  dangerouslySetInnerHTML={{
+                    __html: campaign.texts.addToCartAction,
+                  }}
+                />
                 {renderedProduct.descriptionHtml !== '' && (
-                  <p id="salestorm-product-details-message">
-                    {campaign.texts.seeProductDetailsAction}
-                  </p>
+                  <p
+                    id="salestorm-product-details-message"
+                    dangerouslySetInnerHTML={{
+                      __html: campaign.texts.seeProductDetailsAction,
+                    }}
+                  />
                 )}
               </div>
             </div>
@@ -683,13 +690,18 @@ const CampaignPreview = ({
             <div id="salestorm-popup-footer">
               <div
                 id="salestorm-popup-footer-close-action"
+                dangerouslySetInnerHTML={{
+                  __html: campaign.texts.dismissAction,
+                }}
                 onClick={onPreviewHide}
                 onKeyDown={onPreviewHide}
-              >
-                {campaign.texts.dismissAction}
-              </div>
+              />
               <div id="salestorm-popup-footer-checkout-action">
-                {campaign.texts.checkoutAction}
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: campaign.texts.checkoutAction,
+                  }}
+                />
                 <Icon source={ArrowRightMinor} />
               </div>
             </div>
