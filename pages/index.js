@@ -16,7 +16,7 @@ import NextLink from 'next/link';
 import { useCallback, useState, useContext } from 'react';
 
 import toggleStoreEnabled from '../services/toggle_store_enabled';
-import CampaignDeleteModal from '../components/campaign_delete_modal';
+import DeleteModal from '../components/delete_modal';
 import db from '../server/db';
 import config from '../config';
 
@@ -224,7 +224,7 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
           />
         </div>
         {deleteModalCampaign && (
-          <CampaignDeleteModal
+          <DeleteModal
             campaign={deleteModalCampaign}
             onClose={closeDeleteModal}
             removeFromList={(deletedCampaign) =>
