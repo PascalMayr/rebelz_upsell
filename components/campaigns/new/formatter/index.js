@@ -1,11 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import {
-  ChoiceList,
-  TextField,
-  Tabs,
-  Select,
-  Button,
-} from '@shopify/polaris';
+import { ChoiceList, TextField, Tabs, Select, Button } from '@shopify/polaris';
 import { ReplayMinor } from '@shopify/polaris-icons';
 
 import SalestormColorPicker from './color_picker';
@@ -14,13 +8,10 @@ import BackgroundFormatter from './background';
 import BorderFormatter from './border';
 import BoxShadowFormatter from './box_shadow';
 import TextFormatter from './text';
+
 import { startCasify } from 'casify';
 
-
-const Formatter = ({
-  campaign,
-  setCampaignProperty
-}) => {
+const Formatter = ({ campaign, setCampaignProperty }) => {
   const tabs = useMemo(
     () => [
       {
@@ -208,94 +199,103 @@ const Formatter = ({
     <>
       <Tabs tabs={tabs} selected={tab} onSelect={handleTabChange}>
         <div id="salestorm-formatter">
-          {
-            id === 'texts' &&
-            <div className='salestorm-texts'>
+          {id === 'texts' && (
+            <div className="salestorm-texts">
               {Object.keys(campaign.texts).map((textKey, index) => {
-                const label = Object.keys(startCasify({[textKey]: textKey}))[0];
+                const label = Object.keys(
+                  startCasify({ [textKey]: textKey })
+                )[0];
                 return (
-                  <div key={textKey} className='salestorm-text'>
+                  <div key={textKey} className="salestorm-text">
                     <TextField
                       key={textKey}
                       label={label}
                       PlaceholderPreview={label}
                       value={campaign.texts[textKey]}
                       onChange={(value) => {
-                        setCampaignProperty({ ...campaign.texts, [textKey]: value }, 'texts')
+                        setCampaignProperty(
+                          { ...campaign.texts, [textKey]: value },
+                          'texts'
+                        );
                       }}
                     />
                   </div>
-                )
-              })
-              }
+                );
+              })}
             </div>
-          }
-          {
-            id === 'customCSS' &&
+          )}
+          {id === 'customCSS' && (
             <TextField
-              PlaceholderPreview='/* Use this field to add custom CSS &hearts; */'
+              PlaceholderPreview="/* Use this field to add custom CSS &hearts; */"
               value={campaign.customCSS}
               onChange={(value) => {
-                setCampaignProperty(value, 'customCSS')
+                setCampaignProperty(value, 'customCSS');
               }}
               multiline={9}
             />
-          }
-          {
-            id === 'customJS' &&
+          )}
+          {id === 'customJS' && (
             <TextField
-              PlaceholderPreview='/* Use this field to add custom Javascript &hearts; */'
+              PlaceholderPreview="/* Use this field to add custom Javascript &hearts; */"
               value={campaign.customJS}
               onChange={(value) => {
-                setCampaignProperty(value, 'customJS')
+                setCampaignProperty(value, 'customJS');
               }}
               multiline={9}
             />
-          }
-          {
-            id === 'animation' &&
-            <div className='salestorm-formatter-styles-animation-container'>
-              <div className='salestorm-formatter-styles-animation'>
+          )}
+          {id === 'animation' && (
+            <div className="salestorm-formatter-styles-animation-container">
+              <div className="salestorm-formatter-styles-animation">
                 <Select
-                  label='Incoming Animation'
+                  label="Incoming Animation"
                   options={animationTypes}
                   onChange={(value) => {
-                    setCampaignProperty({ ...campaign.animation, type: value}, 'animation');
+                    setCampaignProperty(
+                      { ...campaign.animation, type: value },
+                      'animation'
+                    );
                   }}
                   value={campaign.animation.type}
                 />
                 <TextField
-                  label='Animation delay in seconds'
-                  type='number'
+                  label="Animation delay in seconds"
+                  type="number"
                   onChange={(value) => {
                     if (value >= 0) {
-                      setCampaignProperty({ ...campaign.animation, delay: value}, 'animation');
+                      setCampaignProperty(
+                        { ...campaign.animation, delay: value },
+                        'animation'
+                      );
                     }
                   }}
                   value={`${campaign.animation.delay}`}
                 />
               </div>
-              <div className='salestorm-formatter-styles-animation'>
+              <div className="salestorm-formatter-styles-animation">
                 <Select
-                  label='Animation Speed'
+                  label="Animation Speed"
                   options={animationSpeeds}
                   onChange={(value) => {
-                    setCampaignProperty({ ...campaign.animation, speed: value}, 'animation');
+                    setCampaignProperty(
+                      { ...campaign.animation, speed: value },
+                      'animation'
+                    );
                   }}
                   value={campaign.animation.speed}
                 />
-                <div className='salestorm-formatter-styles-animation-repeat'>
-                  <Button icon={ReplayMinor} primary onClick={_replayAnimation}>Replay incoming Animation</Button>
+                <div className="salestorm-formatter-styles-animation-repeat">
+                  <Button icon={ReplayMinor} primary onClick={_replayAnimation}>
+                    Replay incoming Animation
+                  </Button>
                 </div>
               </div>
             </div>
-          }
-          {
-            styleChoices.length > 0 &&
+          )}
+          {styleChoices.length > 0 && (
             <div className="salestorm-formatter-colors">
               <div className="salestorm-formatter-choces">
-                {
-                  styleChoices.length > 1 &&
+                {styleChoices.length > 1 && (
                   <ChoiceList
                     choices={styleChoices}
                     selected={styleChoice.value}
@@ -307,7 +307,7 @@ const Formatter = ({
                       );
                     }}
                   />
-                }
+                )}
               </div>
               {['border', 'background', 'boxShadow', 'fill', 'color'].includes(
                 styleChoice.value
@@ -338,12 +338,15 @@ const Formatter = ({
                     setStyleProperty={setStyleProperty}
                   />
                 )}
-                {
-                  styleChoice.value === 'color' && <TextFormatter styles={styles} setStyleProperty={setStyleProperty} />
-                }
+                {styleChoice.value === 'color' && (
+                  <TextFormatter
+                    styles={styles}
+                    setStyleProperty={setStyleProperty}
+                  />
+                )}
               </div>
             </div>
-          }
+          )}
         </div>
       </Tabs>
     </>

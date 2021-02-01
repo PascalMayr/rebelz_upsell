@@ -42,7 +42,11 @@ const ColorPickerFormatter = ({
           backgroundColor: getColorFromColorPicker(colorForPicker, colorMode),
         }}
       >
-        <TextField value={color} onChange={(value) => onTextChange(value)} PlaceholderPreview='Insert a rgba or hex value' />
+        <TextField
+          value={color}
+          onChange={(value) => onTextChange(value)}
+          PlaceholderPreview="Insert a rgba or hex value"
+        />
       </div>
     </div>
   );
