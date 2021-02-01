@@ -99,7 +99,7 @@ const ResourceSelectionCampaign = ({
               );
             } else {
               thumbnail = (
-                <div className="salestorm-resource-image-PlaceholderPreview">
+                <div className="salestorm-resource-image-placeholder">
                   <Icon source={ImageMajor} />
                 </div>
               );
