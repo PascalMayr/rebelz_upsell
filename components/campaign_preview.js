@@ -395,7 +395,7 @@ const CampaignPreview = ({
       justify-content: center;
       align-items: center;
       width: 100%;
-      height: 100%;
+      height: ${preview === undefined ? '100vh' : '100%'};
       z-index: 99999 !important;
       transition: 0.25s ease;
       ${styleObjectToStyleString(styles.overlay)};
