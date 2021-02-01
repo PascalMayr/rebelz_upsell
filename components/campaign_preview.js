@@ -210,6 +210,7 @@ const CampaignPreview = ({
       // eslint-disable-next-line no-eval
       eval(campaignJS);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(
         '%cA Salestorm Javascript Error occured in the preview',
         'color: orange;'
@@ -716,12 +717,6 @@ const CampaignPreview = ({
           </div>
         </div>
       </div>
-      <script
-        id="salestorm-popup-script"
-        dangerouslySetInnerHTML={{
-          __html: `(function popupJS (){${campaignJSExecutedOnce}${campaignJS}${customJS}})`,
-        }}
-      />
     </div>
   );
 };
