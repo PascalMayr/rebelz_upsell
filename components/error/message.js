@@ -1,4 +1,4 @@
-const ErrorMessage = ({ whileMessage = 'while loading', suggestions = [] }) => (
+const MessageError = ({ whileMessage = 'while loading', suggestions = [] }) => (
   <div className="text-center">
     <h2>
       It looks like an <b>error occurred</b> {whileMessage}.
@@ -32,4 +32,4 @@ const ErrorMessage = ({ whileMessage = 'while loading', suggestions = [] }) => (
   </div>
 );
 
-export default ErrorMessage;
+export default MessageError;

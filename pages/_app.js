@@ -12,7 +12,7 @@ import '../styles/pages/_app.css';
 import Head from 'next/head';
 import { withErrorBoundary } from 'react-error-boundary';
 
-import ErrorCommonFallBack from '../components/error/error_common_fallback';
+import AppError from '../components/error/_app';
 
 const client = new ApolloClient({
   fetch,
@@ -87,6 +87,6 @@ class MyApp extends App {
 }
 
 export default withErrorBoundary(MyApp, {
-  FallbackComponent: ErrorCommonFallBack,
+  FallbackComponent: AppError,
 });
 export { AppContext };
