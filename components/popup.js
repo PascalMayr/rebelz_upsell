@@ -716,6 +716,12 @@ const Popup = ({
           </div>
         </div>
       </div>
+      <script
+        id="salestorm-popup-script"
+        dangerouslySetInnerHTML={{
+          __html: `(function popupJS () {${campaignJSExecutedOnce}${campaignJS}${customJS}})`,
+        }}
+      />
     </div>
   );
 };
