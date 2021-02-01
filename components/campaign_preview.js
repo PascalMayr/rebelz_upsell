@@ -27,7 +27,7 @@ const CampaignPreview = ({
   const renderedProduct =
     campaign.products.selling.length > 0
       ? campaign.products.selling[0]
-      : CampaignPreviewPlaceholder;
+      : PlaceholderPreview;
 
   const campaignJSExecutedOnce = `
     try {
