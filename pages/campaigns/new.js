@@ -18,7 +18,7 @@ import SalestormTriggers from '../../components/campaigns/new/triggers';
 import { AppContext } from '../_app';
 import Formatter from '../../components/campaigns/new/formatter/index.js';
 import MobileDesktopSwitchPreview from '../../components/campaigns/new/preview/mobile_desktop_switch';
-import CampaignPreview from '../../components/campaign_preview';
+import Popup from '../../components/popup';
 import ResourceSelectionCampaign from '../../components/campaigns/new/resource_selection';
 
 const New = (props) => {
@@ -342,7 +342,7 @@ const New = (props) => {
                       </Button>
                     </div>
                   )}
-                  <CampaignPreview
+                  <Popup
                     campaign={campaign}
                     preview={preview}
                     setRerenderButton={(visible, previewClass) =>

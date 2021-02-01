@@ -10,7 +10,7 @@ import tinycolor from 'tinycolor2';
 
 import PlaceholderPreview from './campaigns/new/preview/placeholder';
 
-const CampaignPreview = ({
+const Popup = ({
   campaign: { styles },
   campaign,
   preview,
@@ -721,4 +721,4 @@ const CampaignPreview = ({
   );
 };
 
-export default CampaignPreview;
+export default Popup;

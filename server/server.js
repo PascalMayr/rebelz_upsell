@@ -19,7 +19,7 @@ import ReactDOMServer from 'react-dom/server';
 import { AppProvider } from '@shopify/polaris';
 import translations from '@shopify/polaris/locales/en.json';
 
-import CampaignPreview from '../components/campaign_preview';
+import Popup from '../components/popup';
 import config from '../config';
 
 import db from './db';
@@ -67,7 +67,7 @@ app.prepare().then(() => {
     if (campaign) {
       const campaignMarkupHTML = await ReactDOMServer.renderToStaticMarkup(
         <AppProvider i18n={translations}>
-          <CampaignPreview campaign={campaign} />
+          <Popup campaign={campaign} />
         </AppProvider>
       );
       ctx.body = campaignMarkupHTML;
