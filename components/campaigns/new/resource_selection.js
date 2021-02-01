@@ -12,7 +12,7 @@ import {
 import { MobileCancelMajor, ImageMajor } from '@shopify/polaris-icons';
 import { ApolloConsumer, useQuery } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import '../styles/components_resource_selection.css';
+import '../../../styles/components_resource_selection.css';
 
 const GET_PRODUCT = gql`
   query Product($id: ID!) {
