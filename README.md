@@ -86,7 +86,7 @@ If you get any problem loading the startup script or the app in the admin panel 
 ~/ $ cd .. && yarn start
 ```
 
-4.) Copy the content without comments of animate.min.css into the campaign_preview components style tag.
+4.) Copy the content without comments of animate.min.css into the popup components style tag.
 
 ## Troubleshooting authentication/authorization problems
 

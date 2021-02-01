@@ -515,8 +515,7 @@ const Popup = ({
     .salestorm-product-select {
       padding: 10px 16px;
       background-color: ${tinycolor(styles.popup.backgroundColor).darken(10)};
-      background-image: url() !important;import React from 'react';
-      export default campaign_preview;
+      background-image: url() !important;
       width: 100%;
       border-width: 0px;
       border-radius: 3px;
