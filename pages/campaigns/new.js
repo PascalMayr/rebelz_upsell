@@ -10,12 +10,11 @@ import {
 } from '@shopify/polaris';
 import { MobilePlusMajor, ResetMinor } from '@shopify/polaris-icons';
 
-import '../../styles/pages_campaigns_index.css';
-import '../../styles/components_campaign_preview.css';
+import '../../styles/pages/campaigns/new.css';
 import saveCampaign from '../../services/save_campaign';
 import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';
-import SalestormTriggers from '../../components/campaigns/new/campaign_triggers';
+import SalestormTriggers from '../../components/campaigns/new/triggers';
 import { AppContext } from '../_app';
 import Formatter from '../../components/campaigns/new/formatter/index.js';
 import MobileDesktopSwitchPreview from '../../components/campaigns/new/preview/mobile_desktop_switch';

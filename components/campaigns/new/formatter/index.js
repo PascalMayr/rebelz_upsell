@@ -9,7 +9,7 @@ import {
 import { ReplayMinor } from '@shopify/polaris-icons';
 
 import SalestormColorPicker from './color_picker';
-import '../../../../styles/components_salestorm_campaign_formatter.css';
+import '../../../../styles/components/new/formatter/index.css';
 import BackgroundFormatter from './background';
 import BorderFormatter from './border';
 import BoxShadowFormatter from './box_shadow';

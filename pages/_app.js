@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 import { createContext } from 'react';
 import '@shopify/polaris/dist/styles.css';
 import translations from '@shopify/polaris/locales/en.json';
-import '../styles/_app.css';
+import '../styles/pages/_app.css';
 import Head from 'next/head';
 import { withErrorBoundary } from 'react-error-boundary';
 

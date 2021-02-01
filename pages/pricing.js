@@ -17,7 +17,7 @@ import setPlan from '../services/set-plan';
 import db from '../server/db';
 
 import { AppContext } from './_app';
-import '../styles/pages_pricing.css';
+import '../styles/pages/pricing.css';
 
 export async function getServerSideProps(ctx) {
   const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [

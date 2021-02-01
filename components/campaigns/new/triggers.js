@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { RadioButton } from '@shopify/polaris';
-import '../../../styles/components_salestorm_triggers.css';
+import '../../../styles/components/new/triggers.css';
 
-const CampaignTriggers = ({ campaign, setCampaignProperty }) => {
+const TriggersCampaign = ({ campaign, setCampaignProperty }) => {
   const trigger = campaign.trigger;
   const changeTrigger = (newTrigger) => {
     const checkoutActionText =
@@ -75,4 +75,4 @@ const CampaignTriggers = ({ campaign, setCampaignProperty }) => {
   );
 };
 
-export default CampaignTriggers;
+export default TriggersCampaign;
