@@ -1,9 +1,9 @@
-import '../styles/components_preview_switch.css';
+import '../../../../styles/components_preview_switch.css';
 import { Button } from '@shopify/polaris';
 import { DesktopMajor, TabletMajor, MobileMajor } from '@shopify/polaris-icons';
 import { useState } from 'react';
 
-const CampaignPreviewSwitch = ({ onSwitch }) => {
+const MobileDesktopSwitchPreview = ({ onSwitch }) => {
   const [selected, setSelected] = useState('desktop');
   const handleSwitch = (value) => {
     setSelected(value);
@@ -36,4 +36,4 @@ const CampaignPreviewSwitch = ({ onSwitch }) => {
   );
 };
 
-export default CampaignPreviewSwitch;
+export default MobileDesktopSwitchPreview;

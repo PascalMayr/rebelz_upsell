@@ -15,12 +15,12 @@ import '../../styles/components_campaign_preview.css';
 import saveCampaign from '../../services/save_campaign';
 import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';
-import SalestormTriggers from '../../components/campaign_triggers';
+import SalestormTriggers from '../../components/campaigns/new/campaign_triggers';
 import { AppContext } from '../_app';
-import CampaignFormatter from '../../components/campaign_formatter.js';
-import CampaignPreviewSwitch from '../../components/campaign_preview_switch';
+import Formatter from '../../components/campaigns/new/formatter/index.js';
+import MobileDesktopSwitchPreview from '../../components/campaigns/new/preview/mobile_desktop_switch';
 import CampaignPreview from '../../components/campaign_preview';
-import CampaignResourceSelection from '../../components/campaign_resource_selection';
+import ResourceSelectionCampaign from '../../components/campaigns/new/resource_selection';
 
 const New = (props) => {
   const context = useContext(AppContext);
@@ -221,7 +221,7 @@ const New = (props) => {
       <Card>
         <Card.Section>
           <TextField
-            placeholder="Campaign name"
+            PlaceholderPreview="Campaign name"
             onChange={(value) => setCampaignProperty(value, 'name')}
             value={campaign.name}
           />
@@ -245,7 +245,7 @@ const New = (props) => {
               />
             </Card.Section>
             <Card.Section>
-              <CampaignResourceSelection
+              <ResourceSelectionCampaign
                 resourcePickerProps={{
                   resourceType: 'Product',
                   selectMultiple: true,
@@ -290,7 +290,7 @@ const New = (props) => {
                 </span>
                 .
               </div>
-              <CampaignResourceSelection
+              <ResourceSelectionCampaign
                 resourcePickerProps={{
                   resourceType: 'Product',
                   selectMultiple: false,
@@ -350,12 +350,12 @@ const New = (props) => {
                       setRerenderButton({ visible, previewClass })
                     }
                   />
-                  <CampaignPreviewSwitch
+                  <MobileDesktopSwitchPreview
                     onSwitch={(value) => setPreview(value)}
                   />
                 </Card.Section>
                 <Card.Section>
-                  <CampaignFormatter
+                  <Formatter
                     campaign={campaign}
                     setCampaignProperty={setCampaignProperty}
                   />

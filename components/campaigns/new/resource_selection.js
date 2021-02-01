@@ -65,7 +65,7 @@ const GET_STORE_CURRENCY = gql`
   }
 `;
 
-const CampaignResourceSelection = ({
+const ResourceSelectionCampaign = ({
   resourcePickerProps,
   buttonProps,
   resources = [],
@@ -99,7 +99,7 @@ const CampaignResourceSelection = ({
               );
             } else {
               thumbnail = (
-                <div className="salestorm-resource-image-placeholder">
+                <div className="salestorm-resource-image-PlaceholderPreview">
                   <Icon source={ImageMajor} />
                 </div>
               );
@@ -130,7 +130,7 @@ const CampaignResourceSelection = ({
                             );
                             onResourceMutation(helperResources);
                           }}
-                          placeholder="Discount"
+                          PlaceholderPreview="Discount"
                         />
                         <Select
                           options={[
@@ -230,4 +230,4 @@ const CampaignResourceSelection = ({
   );
 };
 
-export default CampaignResourceSelection;
+export default ResourceSelectionCampaign;

@@ -8,7 +8,7 @@ import {
 import { Icon } from '@shopify/polaris';
 import tinycolor from 'tinycolor2';
 
-import CampaignPreviewPlaceholder from './campaign_preview_placeholder';
+import PlaceholderPreview from './campaigns/new/preview/placeholder';
 
 const CampaignPreview = ({
   campaign: { styles },

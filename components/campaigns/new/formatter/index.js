@@ -8,16 +8,16 @@ import {
 } from '@shopify/polaris';
 import { ReplayMinor } from '@shopify/polaris-icons';
 
-import SalestormColorPicker from './salestorm_color_picker';
-import '../../styles/components_salestorm_campaign_formatter.css';
-import BackgroundFormatter from './background_formatter';
-import BorderFormatter from './border_formatter';
-import BoxShadowFormatter from './boxshadow_formatter';
-import TextFormatter from './text_formatter';
+import SalestormColorPicker from './color_picker';
+import '../../../../styles/components_salestorm_campaign_formatter.css';
+import BackgroundFormatter from './background';
+import BorderFormatter from './border';
+import BoxShadowFormatter from './box_shadow';
+import TextFormatter from './text';
 import { startCasify } from 'casify';
 
 
-const CampaignFormatter = ({
+const Formatter = ({
   campaign,
   setCampaignProperty
 }) => {
@@ -218,7 +218,7 @@ const CampaignFormatter = ({
                     <TextField
                       key={textKey}
                       label={label}
-                      placeholder={label}
+                      PlaceholderPreview={label}
                       value={campaign.texts[textKey]}
                       onChange={(value) => {
                         setCampaignProperty({ ...campaign.texts, [textKey]: value }, 'texts')
@@ -233,7 +233,7 @@ const CampaignFormatter = ({
           {
             id === 'customCSS' &&
             <TextField
-              placeholder='/* Use this field to add custom CSS &hearts; */'
+              PlaceholderPreview='/* Use this field to add custom CSS &hearts; */'
               value={campaign.customCSS}
               onChange={(value) => {
                 setCampaignProperty(value, 'customCSS')
@@ -244,7 +244,7 @@ const CampaignFormatter = ({
           {
             id === 'customJS' &&
             <TextField
-              placeholder='/* Use this field to add custom Javascript &hearts; */'
+              PlaceholderPreview='/* Use this field to add custom Javascript &hearts; */'
               value={campaign.customJS}
               onChange={(value) => {
                 setCampaignProperty(value, 'customJS')
@@ -350,4 +350,4 @@ const CampaignFormatter = ({
   );
 };
 
-export default CampaignFormatter;
+export default Formatter;

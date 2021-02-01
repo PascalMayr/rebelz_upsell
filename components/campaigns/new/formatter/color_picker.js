@@ -1,5 +1,5 @@
 import { ColorPicker, TextField } from '@shopify/polaris';
-import '../../styles/components_salestorm_color_picker.css';
+import '../../../../styles/components_salestorm_color_picker.css';
 import tinycolor from 'tinycolor2';
 
 const getColorFromColorPicker = (pickedColor, colorModel) => {
@@ -15,7 +15,7 @@ const getColorFromColorPicker = (pickedColor, colorModel) => {
   }
 };
 
-const SalestormColorPicker = ({
+const ColorPickerFormatter = ({
   onChange,
   color,
   allowAlpha = false,
@@ -42,10 +42,10 @@ const SalestormColorPicker = ({
           backgroundColor: getColorFromColorPicker(colorForPicker, colorMode),
         }}
       >
-        <TextField value={color} onChange={(value) => onTextChange(value)} placeholder='Insert a rgba or hex value' />
+        <TextField value={color} onChange={(value) => onTextChange(value)} PlaceholderPreview='Insert a rgba or hex value' />
       </div>
     </div>
   );
 };
 
-export default SalestormColorPicker;
+export default ColorPickerFormatter;

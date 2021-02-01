@@ -1,4 +1,4 @@
-const CampaignPreviewPlaceholder = {
+const PlaceholderPreview = {
   legacyResourceId: '6169782747321',
   title: 'The Mini Handbag by rothys',
   descriptionHtml:
@@ -54,4 +54,4 @@ const CampaignPreviewPlaceholder = {
   },
 };
 
-export default CampaignPreviewPlaceholder;
+export default PlaceholderPreview;
