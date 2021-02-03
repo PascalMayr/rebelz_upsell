@@ -24,9 +24,12 @@ const WebComponentPreviewPopup = ({ campaign, styles }) => {
       webComponentRef.current &&
       webComponentRef.current.shadowRoot
     ) {
-      webComponentRef.current.shadowRoot.querySelector(
+      const webComponentStyleTag = webComponentRef.current.shadowRoot.querySelector(
         '#salestorm-popup-styles'
-      ).innerHTML = styles;
+      );
+      if (webComponentStyleTag) {
+        webComponentStyleTag.innerHTML = styles;
+      }
     }
   }, [styles]);
 
