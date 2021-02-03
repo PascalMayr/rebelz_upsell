@@ -32,8 +32,6 @@ const setWebComponentDomDefinitionPopup = (templateID) => `
       this.shadow.appendChild(templateContent.cloneNode(true));
     }
 
-    addCssDynamic() {}
-
     setupClickListeners() {
       const productDetailsMessage = this.shadow.querySelector('#salestorm-campaign-text-seeProductDetailsAction');
       const descriptionElement = this.shadow.querySelector('#salestorm-product-description');
