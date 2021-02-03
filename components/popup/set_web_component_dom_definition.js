@@ -2,6 +2,10 @@ const setWebComponentDomDefinitionPopup = (templateID) => `
   class SalestormPopupComponent extends HTMLElement {
     shadow;
 
+    static get observedAttributes() {
+      return ['visible'];
+    }
+
     constructor() {
       super();
 
@@ -23,7 +27,16 @@ const setWebComponentDomDefinitionPopup = (templateID) => `
 
     adoptedCallback() {}
 
-    attributeChangedCallback(_name, _oldValue, _newValue) {}
+    attributeChangedCallback(name, _oldValue, newValue) {
+      if (name === "visible") {
+        if (newValue === "true") {
+          this.shadow.querySelector('#salestorm-overlay-container').style.display = 'flex';
+        }
+        else {
+          this.hidePopup();
+        }
+      }
+    }
 
     setupShadow() {
       this.shadow = this.attachShadow({ mode: 'open' });
