@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext } from 'react';
+import { useState, useCallback, useContext, useEffect } from 'react';
 import {
   Page,
   Card,
@@ -137,9 +137,16 @@ const New = (props) => {
   const title = props.campaign ? 'Update campaign' : 'Create new campaign';
   const badgeStatus = campaign.published ? 'success' : 'attention';
   const contentStatus = campaign.published ? 'Published' : 'Unpublished';
-  const previewContainerClass = preview
-    ? `salestorm-${preview}-preview-container`
-    : 'salestorm-desktop-preview-container';
+  const previewContainerClass =
+    preview && !rerenderButton ? `salestorm-${preview}-preview-container` : '';
+
+  useEffect(() => {
+    if (window.Salestorm && window.Salestorm.hidePopup) {
+      document.addEventListener(window.Salestorm.hidePopup.type, () => {
+        setRerenderButton(true);
+      });
+    }
+  }, []);
   return (
     <Page
       title={title}
@@ -329,6 +336,9 @@ const New = (props) => {
                       <Button
                         onClick={() => {
                           setRerenderButton(false);
+                          document
+                            .getElementsByTagName('salestorm-popup')[0]
+                            .setAttribute('visible', 'true');
                         }}
                         primary
                         icon={ResetMinor}
@@ -337,19 +347,16 @@ const New = (props) => {
                       </Button>
                     </div>
                   )}
-                  {!rerenderButton && (
-                    <div className={previewContainerClass}>
-                      <WebComponentTemplatePopup
-                        campaign={campaign}
-                        setRerenderButton={setRerenderButton}
-                        styles={getWebComponentStylesPopup(campaign, preview)}
-                      />
-                      <WebComponentPreviewPopup
-                        campaign={campaign}
-                        styles={getWebComponentStylesPopup(campaign, preview)}
-                      />
-                    </div>
-                  )}
+                  <div className={previewContainerClass}>
+                    <WebComponentTemplatePopup
+                      campaign={campaign}
+                      styles={getWebComponentStylesPopup(campaign, preview)}
+                    />
+                    <WebComponentPreviewPopup
+                      campaign={campaign}
+                      styles={getWebComponentStylesPopup(campaign, preview)}
+                    />
+                  </div>
                   <MobileDesktopSwitchPreview
                     onSwitch={(value) => setPreview(value)}
                   />
