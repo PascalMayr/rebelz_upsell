@@ -83,7 +83,6 @@ const getWebComponentStylesPopup = (campaign, preview) => {
     }
     #salestorm-overlay-container {
       contain: layout;
-      display: flex !important;
       justify-content: center !important;
       align-items: center !important;
       width: 100% !important;
@@ -242,7 +241,7 @@ const getWebComponentStylesPopup = (campaign, preview) => {
     #salestorm-popup-footer-checkout-action .Polaris-Icon {
       margin-left: 0.2em !important;
       width: 15px !important;
-      padding-top: 3px !important;
+      padding-top: 4.5px !important;
       fill: ${styles.popup.color} !important;
     }
     #salestorm-product {
