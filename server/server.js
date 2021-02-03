@@ -19,7 +19,7 @@ import ReactDOMServer from 'react-dom/server';
 import { AppProvider } from '@shopify/polaris';
 import translations from '@shopify/polaris/locales/en.json';
 
-import Popup from '../components/popup';
+import Popup from '../components/popup/popup';
 import config from '../config';
 
 import db from './db';

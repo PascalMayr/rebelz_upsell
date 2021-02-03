@@ -18,7 +18,10 @@ import SalestormTriggers from '../../components/campaigns/new/triggers';
 import { AppContext } from '../_app';
 import Formatter from '../../components/campaigns/new/formatter/index.js';
 import MobileDesktopSwitchPreview from '../../components/campaigns/new/preview/mobile_desktop_switch';
-import Popup from '../../components/popup';
+import Popup from '../../components/popup/popup';
+import WebComponentTemplatePopup from '../../components/popup/web_component_template';
+import getWebComponentStylesPopup from '../../components/popup/get_web_component_styles';
+import WebComponentPreviewPopup from '../../components/popup/web_component_preview';
 import ResourceSelectionCampaign from '../../components/campaigns/new/resource_selection';
 
 const New = (props) => {
@@ -113,15 +116,13 @@ const New = (props) => {
   });
   const [preview, setPreview] = useState('desktop');
   const setCampaignProperty = useCallback(
-    (value, id, state = {}) => setCampaign({ ...campaign, [id]: value, ...state }),
+    (value, id, state = {}) =>
+      setCampaign({ ...campaign, [id]: value, ...state }),
     [campaign]
   );
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
-  const [rerenderButton, setRerenderButton] = useState({
-    visible: false,
-    previewClass: '',
-  });
+  const [rerenderButton, setRerenderButton] = useState(false);
   const _getResourcePickerInitialSelectedProducts = (products) =>
     products.map((product) => {
       if (product) {
@@ -136,6 +137,9 @@ const New = (props) => {
   const title = props.campaign ? 'Update campaign' : 'Create new campaign';
   const badgeStatus = campaign.published ? 'success' : 'attention';
   const contentStatus = campaign.published ? 'Published' : 'Unpublished';
+  const previewContainerClass = preview
+    ? `salestorm-${preview}-preview-container`
+    : 'salestorm-desktop-preview-container';
   return (
     <Page
       title={title}
@@ -320,20 +324,11 @@ const New = (props) => {
             <Layout.Section>
               <Card>
                 <Card.Section title="3.) Check, customize and try your Upselling Campaign before publishing it.">
-                  {rerenderButton.visible && (
+                  {rerenderButton && (
                     <div className="salestorm-rerender-container">
                       <Button
                         onClick={() => {
-                          document.querySelector(
-                            '#salestorm-overlay-container'
-                          ).style.display = 'flex';
-                          document.querySelector(
-                            `.${rerenderButton.previewClass}`
-                          ).style.display = 'block';
-                          setRerenderButton({
-                            visible: false,
-                            previewClass: '',
-                          });
+                          setRerenderButton(false);
                         }}
                         primary
                         icon={ResetMinor}
@@ -342,13 +337,19 @@ const New = (props) => {
                       </Button>
                     </div>
                   )}
-                  <Popup
-                    campaign={campaign}
-                    preview={preview}
-                    setRerenderButton={(visible, previewClass) =>
-                      setRerenderButton({ visible, previewClass })
-                    }
-                  />
+                  {!rerenderButton && (
+                    <div className={previewContainerClass}>
+                      <WebComponentTemplatePopup
+                        campaign={campaign}
+                        setRerenderButton={setRerenderButton}
+                        styles={getWebComponentStylesPopup(campaign, preview)}
+                      />
+                      <WebComponentPreviewPopup
+                        campaign={campaign}
+                        styles={getWebComponentStylesPopup(campaign, preview)}
+                      />
+                    </div>
+                  )}
                   <MobileDesktopSwitchPreview
                     onSwitch={(value) => setPreview(value)}
                   />

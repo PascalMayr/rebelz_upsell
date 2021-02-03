@@ -8,7 +8,7 @@ import {
 import { Icon } from '@shopify/polaris';
 import tinycolor from 'tinycolor2';
 
-import PlaceholderPreview from './campaigns/new/preview/placeholder';
+import PlaceholderPreview from '../campaigns/new/preview/placeholder';
 
 const Popup = ({
   campaign: { styles },
@@ -33,7 +33,7 @@ const Popup = ({
     try {
       window.Salestorm = window.Salestorm ? window.Salestorm : { popupId: "salestorm-overlay-container"};
 
-      const productDetailsMessage = document.querySelector('#salestorm-product-details-message');
+      const productDetailsMessage = document.querySelector('#salestorm-campaign-text-seeProductDetailsAction');
       const descriptionElement = document.querySelector('#salestorm-product-description');
       descriptionElement.style.display = 'none';
       productDetailsMessage.addEventListener('click', () => {
@@ -51,7 +51,7 @@ const Popup = ({
 
       const closeButton = document.querySelector('#salestorm-popup-close');
       closeButton && closeButton.addEventListener('click', hidePopup);
-      const closeAction = document.querySelector('#salestorm-popup-footer-close-action');
+      const closeAction = document.querySelector('#salestorm-campaign-text-dismissAction');
       closeAction && closeAction.addEventListener('click', hidePopup);
       const checkoutAction = document.querySelector('#salestorm-popup-footer-checkout-action');
       checkoutAction && checkoutAction.addEventListener('click', hidePopup);
@@ -153,7 +153,7 @@ const Popup = ({
             const variantOptionValues = variant.node.selectedOptions.map(selectedOption => selectedOption.value);
             return JSON.stringify(sortStringArrayAlphabetically(variantOptionValues)) === JSON.stringify(sortStringArrayAlphabetically(currentSelectionState));
           });
-          const claimOfferButton = document.querySelector('#salestorm-claim-offer-button');
+          const claimOfferButton = document.querySelector('#salestorm-campaign-text-addToCartAction');
           if (selectedVariant) {
             if (selectedVariant.node && selectedVariant.node.image) {
               document.querySelector('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
@@ -300,7 +300,7 @@ const Popup = ({
       margin-bottom: 10px !important;
       margin-top: 10px !important;
     }
-    #salestorm-popup-footer-close-action {
+    #salestorm-campaign-text-dismissAction {
       display: none;
     }
     #salestorm-popup-footer-checkout-action {
@@ -455,7 +455,7 @@ const Popup = ({
       justify-content: space-between;
       padding: 16px !important;
     }
-    #salestorm-popup-footer-close-action {
+    #salestorm-campaign-text-dismissAction {
       cursor: pointer;
     }
     #salestorm-popup-footer-checkout-action {
@@ -542,7 +542,7 @@ const Popup = ({
       background-color: ${styles.popup.backgroundColor} !important;
       color: ${styles.popup.color} !important;
     }
-    #salestorm-claim-offer-button {
+    #salestorm-campaign-text-addToCartAction {
       opacity: 1;
       width: 100%;
       padding: 16px 24px;
@@ -554,7 +554,7 @@ const Popup = ({
       transition: 0.25s ease;
       ${styleObjectToStyleString(campaign.styles.primaryButtons)};
     }
-    #salestorm-claim-offer-button:hover {
+    #salestorm-campaign-text-addToCartAction:hover {
       background-color: ${tinycolor(
         styles.primaryButtons.backgroundColor
       ).darken(10)};
@@ -566,7 +566,7 @@ const Popup = ({
     .offer-button-disabled:hover {
       background-color: ${styles.primaryButtons.backgroundColor} !important;
     }
-    #salestorm-product-details-message{
+    #salestorm-campaign-text-seeProductDetailsAction{
       color: inherit;
       text-decoration: underline;
       cursor: pointer;
@@ -593,125 +593,114 @@ const Popup = ({
     ${campaign.customCSS}
   `;
 
-  const previewContainerClass = preview
-    ? `salestorm-${preview}-preview-container`
-    : 'salestorm-desktop-preview-container';
-
-  const onPreviewHide = () => {
-    document.querySelector(`.${previewContainerClass}`).style.display = 'none';
-    setRerenderButton(true, previewContainerClass);
-  };
-
   return (
     <div id="salestorm-upselling-container">
       <style dangerouslySetInnerHTML={{ __html: campaignCSS }} />
-      <div className={previewContainerClass}>
-        <div id="salestorm-overlay-container">
-          <div
-            id="salestorm-popup"
-            className={`animate__animated ${campaign.animation.type} animate__delay-${campaign.animation.delay}s animate__${campaign.animation.speed}`}
-          >
-            <div id="salestorm-popup-header">
-              <div id="salestorm-popup-header-title">
-                {renderedProduct.title}
-              </div>
-              <div
-                id="salestorm-popup-close"
-                onClick={onPreviewHide}
-                onKeyDown={onPreviewHide}
-              >
-                <Icon source={MobileCancelMajor} />
-              </div>
+      <div id="salestorm-overlay-container">
+        <div
+          id="salestorm-popup"
+          className={`animate__animated ${campaign.animation.type} animate__delay-${campaign.animation.delay}s animate__${campaign.animation.speed}`}
+        >
+          <div id="salestorm-popup-header">
+            <div id="salestorm-popup-header-title">
+              {renderedProduct.title}
             </div>
-            <div id="salestorm-product">
-              <div id="salestorm-product-image-container">
-                <div id="salestorm-product-image" />
-              </div>
-              <div id="salestorm-product-action-container">
-                <h3
-                  dangerouslySetInnerHTML={{
-                    __html: campaign.texts.title.replace(
-                      '{{Discount}}',
-                      '<span class="salestorm-price"></span>'
-                    ),
-                  }}
-                />
-                <p
-                  dangerouslySetInnerHTML={{
-                    __html: campaign.texts.subtitle.replace(
-                      '{{Discount}}',
-                      '<span class="salestorm-price"></span>'
-                    ),
-                  }}
-                />
-                {renderedProduct.options.map((option) => {
-                  if (option.name === 'Title') {
-                    return null;
-                  } else {
-                    return (
-                      <div
-                        className="salestorm-product-select-container"
-                        key={`${option.name}-select-container`}
+            <div
+              id="salestorm-popup-close"
+              onClick={setRerenderButton}
+              onKeyDown={setRerenderButton}
+            >
+              <Icon source={MobileCancelMajor} />
+            </div>
+          </div>
+          <div id="salestorm-product">
+            <div id="salestorm-product-image-container">
+              <div id="salestorm-product-image" />
+            </div>
+            <div id="salestorm-product-action-container">
+              <h3
+                dangerouslySetInnerHTML={{
+                  __html: campaign.texts.title.replace(
+                    '{{Discount}}',
+                    '<span class="salestorm-price"></span>'
+                  ),
+                }}
+              />
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: campaign.texts.subtitle.replace(
+                    '{{Discount}}',
+                    '<span class="salestorm-price"></span>'
+                  ),
+                }}
+              />
+              {renderedProduct.options.map((option) => {
+                if (option.name === 'Title') {
+                  return null;
+                } else {
+                  return (
+                    <div
+                      className="salestorm-product-select-container"
+                      key={`${option.name}-select-container`}
+                    >
+                      <select
+                        className="salestorm-product-select"
+                        key={`${option.name}-select`}
                       >
-                        <select
-                          className="salestorm-product-select"
-                          key={`${option.name}-select`}
-                        >
-                          {option.values.map((value) => (
-                            <option value={value} key={value}>
-                              {value}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="salestorm-product-select-arrow">
-                          <Icon source={SelectMinor} />
-                        </div>
+                        {option.values.map((value) => (
+                          <option value={value} key={value}>
+                            {value}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="salestorm-product-select-arrow">
+                        <Icon source={SelectMinor} />
                       </div>
-                    );
-                  }
-                })}
-                <button
-                  type="button"
-                  id="salestorm-claim-offer-button"
+                    </div>
+                  );
+                }
+              })}
+              <button
+                type="button"
+                id="salestorm-campaign-text-addToCartAction"
+                dangerouslySetInnerHTML={{
+                  __html: campaign.texts.addToCartAction,
+                }}
+              />
+              {renderedProduct.descriptionHtml !== '' && (
+                <p
+                  id="salestorm-campaign-text-seeProductDetailsAction"
                   dangerouslySetInnerHTML={{
-                    __html: campaign.texts.addToCartAction,
+                    __html: campaign.texts.seeProductDetailsAction,
                   }}
                 />
-                {renderedProduct.descriptionHtml !== '' && (
-                  <p
-                    id="salestorm-product-details-message"
-                    dangerouslySetInnerHTML={{
-                      __html: campaign.texts.seeProductDetailsAction,
-                    }}
-                  />
-                )}
-              </div>
+              )}
             </div>
-            {renderedProduct.descriptionHtml !== '' && (
-              <div
-                id="salestorm-product-description"
+          </div>
+          {renderedProduct.descriptionHtml !== '' && (
+            <div
+              id="salestorm-product-description"
+              dangerouslySetInnerHTML={{
+                __html: renderedProduct.descriptionHtml,
+              }}
+            />
+          )}
+          <div id="salestorm-popup-footer">
+            <div
+              id="salestorm-campaign-text-dismissAction"
+              dangerouslySetInnerHTML={{
+                __html: campaign.texts.dismissAction,
+              }}
+              onClick={setRerenderButton}
+              onKeyDown={setRerenderButton}
+            />
+            <div id="salestorm-popup-footer-checkout-action">
+              <span
                 dangerouslySetInnerHTML={{
-                  __html: renderedProduct.descriptionHtml,
+                  __html: campaign.texts.checkoutAction,
                 }}
               />
-            )}
-            <div id="salestorm-popup-footer">
-              <div
-                id="salestorm-popup-footer-close-action"
-                dangerouslySetInnerHTML={{
-                  __html: campaign.texts.dismissAction,
-                }}
-                onClick={onPreviewHide}
-                onKeyDown={onPreviewHide}
-              />
-              <div id="salestorm-popup-footer-checkout-action">
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: campaign.texts.checkoutAction,
-                  }}
-                />
-                <Icon source={ArrowRightMinor} />
-              </div>
+              <Icon source={ArrowRightMinor} />
             </div>
           </div>
         </div>
