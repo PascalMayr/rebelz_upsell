@@ -11,12 +11,7 @@ import PlaceholderPreview from '../campaigns/new/preview/placeholder';
 const processCampaignTexts = (text) =>
   text.replace('{{Discount}}', '<span class="salestorm-price"></span>');
 
-const WebComponentTemplatePopup = ({
-  campaign,
-  styles,
-  // eslint-disable-next-line no-empty-function
-  setRerenderButton = () => {},
-}) => {
+const WebComponentTemplatePopup = ({ campaign, styles }) => {
   const renderedProduct =
     campaign.products.selling.length > 0
       ? campaign.products.selling[0]
@@ -35,11 +30,7 @@ const WebComponentTemplatePopup = ({
         >
           <div id="salestorm-popup-header">
             <div id="salestorm-popup-header-title">{renderedProduct.title}</div>
-            <div
-              id="salestorm-popup-close"
-              onClick={setRerenderButton}
-              onKeyDown={setRerenderButton}
-            >
+            <div id="salestorm-popup-close">
               <Icon source={MobileCancelMajor} />
             </div>
           </div>
@@ -128,8 +119,6 @@ const WebComponentTemplatePopup = ({
               dangerouslySetInnerHTML={{
                 __html: processCampaignTexts(campaign.texts.dismissAction),
               }}
-              onClick={setRerenderButton}
-              onKeyDown={setRerenderButton}
             />
             <div id="salestorm-popup-footer-checkout-action">
               <span
