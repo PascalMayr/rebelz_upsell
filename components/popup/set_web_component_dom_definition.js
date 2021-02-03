@@ -28,8 +28,9 @@ const setWebComponentDomDefinitionPopup = (templateID) => `
     setupShadow() {
       this.shadow = this.attachShadow({ mode: 'open' });
       const template = document.getElementById("${templateID}");
-      const templateContent = template.content;
-      this.shadow.appendChild(templateContent.cloneNode(true));
+      if (template) {
+        this.shadow.appendChild(template.content.cloneNode(true));
+      }
     }
 
     setupClickListeners() {
