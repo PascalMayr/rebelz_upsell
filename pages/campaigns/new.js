@@ -224,7 +224,7 @@ const New = (props) => {
       <Card>
         <Card.Section>
           <TextField
-            PlaceholderPreview="Campaign name"
+            placeholder="Campaign name"
             onChange={(value) => setCampaignProperty(value, 'name')}
             value={campaign.name}
           />

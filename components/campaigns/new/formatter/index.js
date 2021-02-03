@@ -210,7 +210,7 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
                     <TextField
                       key={textKey}
                       label={label}
-                      PlaceholderPreview={label}
+                      placeholder={label}
                       value={campaign.texts[textKey]}
                       onChange={(value) => {
                         setCampaignProperty(
@@ -226,7 +226,7 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
           )}
           {id === 'customCSS' && (
             <TextField
-              PlaceholderPreview="/* Use this field to add custom CSS &hearts; */"
+              placeholder="/* Use this field to add custom CSS &hearts; */"
               value={campaign.customCSS}
               onChange={(value) => {
                 setCampaignProperty(value, 'customCSS');
@@ -236,7 +236,7 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
           )}
           {id === 'customJS' && (
             <TextField
-              PlaceholderPreview="/* Use this field to add custom Javascript &hearts; */"
+              placeholder="/* Use this field to add custom Javascript &hearts; */"
               value={campaign.customJS}
               onChange={(value) => {
                 setCampaignProperty(value, 'customJS');

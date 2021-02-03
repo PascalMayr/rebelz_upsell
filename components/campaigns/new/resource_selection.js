@@ -130,7 +130,7 @@ const ResourceSelectionCampaign = ({
                             );
                             onResourceMutation(helperResources);
                           }}
-                          PlaceholderPreview="Discount"
+                          placeholder="Discount"
                         />
                         <Select
                           options={[
