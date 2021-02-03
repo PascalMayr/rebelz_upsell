@@ -43,12 +43,13 @@ const Pricing = ({ store }) => {
     'No Branding',
     'Quick Setup',
     '100% Responsive',
+    '100% Non Theme Breaking',
     'Customize all Texts, Fonts and Styles',
     'AI Autopilot Mode',
     'Analytics',
     'Multi Currency Support',
     'Premium Support',
-    'Complete & Clean Uninstall',
+    'Complete & Clean Automatic Uninstall',
   ];
   const onPlanSelect = async (name) => {
     setLoading(name);
