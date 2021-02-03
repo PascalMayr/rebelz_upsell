@@ -350,7 +350,6 @@ const getWebComponentStylesPopup = (campaign, preview) => {
     #salestorm-product-description {
       padding: 16px 30px;
       padding-top: 0px;
-      display: none;
     }
     ${preview === 'tablet' || preview === 'mobile' ? campaignTabletCSS : ''}
     ${preview === 'mobile' ? campaignMobileCSS : ''}
