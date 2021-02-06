@@ -108,6 +108,7 @@ const ResourceSelectionCampaign = ({
               <ResourceItem
                 id={id}
                 accessibilityLabel={`View details for ${title}`}
+                key={`${id}-resource`}
               >
                 <div className="salestorm-resource-item">
                   <div className="salestorm-resource-item-info">
