@@ -5,7 +5,8 @@ import TitleProduct from './product/title';
 import VariantsProduct from './product/variants';
 import DescriptionProduct from './product/description';
 import getRenderedProductPopup from './get_rendered_product';
-import { processCampaignTexts, getAnimationClass } from './template';
+import getAnimationClassPopup from './get_animation_class';
+import processCampaignTextsPopup from './process_campaign_texts';
 
 const PreviewPopup = ({ campaign, styles }) => {
   // this component serves for the preview to update the shown web component
@@ -52,7 +53,7 @@ const PreviewPopup = ({ campaign, styles }) => {
           currentRenderedTextElement &&
           currentRenderedTextElement.innerHTML !== campaign.texts[textKey]
         ) {
-          currentRenderedTextElement.innerHTML = processCampaignTexts(
+          currentRenderedTextElement.innerHTML = processCampaignTextsPopup(
             campaign.texts[textKey]
           );
         }
@@ -70,7 +71,9 @@ const PreviewPopup = ({ campaign, styles }) => {
         '#salestorm-popup'
       );
       if (popupContainerElement) {
-        popupContainerElement.class = getAnimationClass(campaign.animation);
+        popupContainerElement.class = getAnimationClassPopup(
+          campaign.animation
+        );
       }
     } else {
       return null;

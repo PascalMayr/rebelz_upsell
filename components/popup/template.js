@@ -6,12 +6,8 @@ import TitleProduct from './product/title';
 import VariantsProduct from './product/variants';
 import DescriptionProduct from './product/description';
 import getRenderedProductPopup from './get_rendered_product';
-
-const processCampaignTexts = (text) =>
-  text.replace('{{Discount}}', '<span class="salestorm-price"></span>');
-
-const getAnimationClass = (animation) =>
-  `animate__animated ${animation.type} animate__delay-${animation.delay}s animate__${animation.speed}`;
+import getAnimationClassPopup from './get_animation_class';
+import processCampaignTextsPopup from './process_campaign_texts';
 
 const TemplatePopup = ({ campaign, styles }) => {
   const renderedProduct = getRenderedProductPopup(campaign);
@@ -25,7 +21,7 @@ const TemplatePopup = ({ campaign, styles }) => {
         />
         <div
           id="salestorm-popup"
-          className={getAnimationClass(campaign.animation)}
+          className={getAnimationClassPopup(campaign.animation)}
         >
           <div id="salestorm-popup-header">
             <slot name="product-title">
@@ -42,13 +38,13 @@ const TemplatePopup = ({ campaign, styles }) => {
             <div id="salestorm-product-action-container">
               <h3
                 dangerouslySetInnerHTML={{
-                  __html: processCampaignTexts(campaign.texts.title),
+                  __html: processCampaignTextsPopup(campaign.texts.title),
                 }}
                 id="salestorm-campaign-text-title"
               />
               <p
                 dangerouslySetInnerHTML={{
-                  __html: processCampaignTexts(campaign.texts.subtitle),
+                  __html: processCampaignTextsPopup(campaign.texts.subtitle),
                 }}
                 id="salestorm-campaign-text-subtitle"
               />
@@ -61,13 +57,15 @@ const TemplatePopup = ({ campaign, styles }) => {
                 type="button"
                 id="salestorm-campaign-text-addToCartAction"
                 dangerouslySetInnerHTML={{
-                  __html: processCampaignTexts(campaign.texts.addToCartAction),
+                  __html: processCampaignTextsPopup(
+                    campaign.texts.addToCartAction
+                  ),
                 }}
               />
               {renderedProduct.descriptionHtml !== '' && (
                 <p
                   dangerouslySetInnerHTML={{
-                    __html: processCampaignTexts(
+                    __html: processCampaignTextsPopup(
                       campaign.texts.seeProductDetailsAction
                     ),
                   }}
@@ -85,13 +83,15 @@ const TemplatePopup = ({ campaign, styles }) => {
             <div
               id="salestorm-campaign-text-dismissAction"
               dangerouslySetInnerHTML={{
-                __html: processCampaignTexts(campaign.texts.dismissAction),
+                __html: processCampaignTextsPopup(campaign.texts.dismissAction),
               }}
             />
             <div id="salestorm-popup-footer-checkout-action">
               <span
                 dangerouslySetInnerHTML={{
-                  __html: processCampaignTexts(campaign.texts.checkoutAction),
+                  __html: processCampaignTextsPopup(
+                    campaign.texts.checkoutAction
+                  ),
                 }}
                 id="salestorm-campaign-text-checkoutAction"
               />
@@ -104,5 +104,4 @@ const TemplatePopup = ({ campaign, styles }) => {
   );
 };
 
-export { processCampaignTexts, getAnimationClass };
 export default TemplatePopup;
