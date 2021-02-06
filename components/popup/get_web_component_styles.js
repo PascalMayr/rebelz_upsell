@@ -271,17 +271,18 @@ const getWebComponentStylesPopup = (campaign, preview) => {
       margin-top: 0px !important;
     }
     #salestorm-product-action-container > * {
-      margin-bottom: 16px !important;
+      margin-bottom: 12px !important;
     }
     #salestorm-product-action-container > button {
       margin-bottom: 16px !important;
     }
     #salestorm-product-action-container > p {
-      margin-bottom: 10px !important;
+      margin-bottom: 12px !important;
       font-size: 16px !important;
     }
     .salestorm-product-select-container {
       position: relative !important;
+      margin-bottom: 10px;
       border-radius: 3px;
       border-color: inherit;
       border-width: 0px;
