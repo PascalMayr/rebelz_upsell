@@ -4,9 +4,9 @@ import { Icon } from '@shopify/polaris';
 
 import PlaceholderPreview from '../campaigns/new/preview/placeholder';
 
-import WebComponentProductTitlePopup from './web_component_product_title';
-import WebComponentProductVariationsPopup from './web_component_product_variations';
-import WebComponentProductDescriptionPopup from './web_component_product_description';
+import TitleProduct from './product/title';
+import VariantsProduct from './product/variants';
+import DescriptionProduct from './product/description';
 
 const processCampaignTexts = (text) =>
   text.replace('{{Discount}}', '<span class="salestorm-price"></span>');
@@ -14,7 +14,7 @@ const processCampaignTexts = (text) =>
 const getAnimationClass = (animation) =>
   `animate__animated ${animation.type} animate__delay-${animation.delay}s animate__${animation.speed}`;
 
-const WebComponentTemplatePopup = ({ campaign, styles }) => {
+const TemplatePopup = ({ campaign, styles }) => {
   const renderedProduct =
     campaign.products.selling.length > 0
       ? campaign.products.selling[0]
@@ -33,9 +33,7 @@ const WebComponentTemplatePopup = ({ campaign, styles }) => {
         >
           <div id="salestorm-popup-header">
             <slot name="product-title">
-              <WebComponentProductTitlePopup>
-                {renderedProduct.title}
-              </WebComponentProductTitlePopup>
+              <TitleProduct>{renderedProduct.title}</TitleProduct>
             </slot>
             <div id="salestorm-popup-close">
               <Icon source={MobileCancelMajor} />
@@ -60,9 +58,7 @@ const WebComponentTemplatePopup = ({ campaign, styles }) => {
               />
               <div>
                 <slot name="product-variations">
-                  <WebComponentProductVariationsPopup
-                    options={renderedProduct.options}
-                  />
+                  <VariantsProduct options={renderedProduct.options} />
                 </slot>
               </div>
               <button
@@ -85,7 +81,7 @@ const WebComponentTemplatePopup = ({ campaign, styles }) => {
             </div>
           </div>
           <slot name="product-description">
-            <WebComponentProductDescriptionPopup
+            <DescriptionProduct
               descriptionHtml={renderedProduct.descriptionHtml}
             />
           </slot>
@@ -113,4 +109,4 @@ const WebComponentTemplatePopup = ({ campaign, styles }) => {
 };
 
 export { processCampaignTexts, getAnimationClass };
-export default WebComponentTemplatePopup;
+export default TemplatePopup;

@@ -2,23 +2,23 @@ import React, { useEffect, useRef } from 'react';
 
 import PlaceholderPreview from '../campaigns/new/preview/placeholder';
 
-import setWebComponentDomDefinitionPopup from './set_web_component_dom_definition';
-import WebComponentProductTitlePopup from './web_component_product_title';
-import WebComponentProductVariationsPopup from './web_component_product_variations';
-import WebComponentProductDescriptionPopup from './web_component_product_description';
+import defineCustomElementPopup from './define_custom_element';
+import TitleProduct from './product/title';
+import VariantsProduct from './product/variants';
+import DescriptionProduct from './product/description';
 import {
   processCampaignTexts,
   getAnimationClass,
-} from './web_component_template';
+} from './template';
 
-const WebComponentPreviewPopup = ({ campaign, styles }) => {
+const PreviewPopup = ({ campaign, styles }) => {
   // this component serves for the preview to update the shown web component
   // all updates which happen here are also applied to the template trough react
   const webComponentRef = useRef();
   useEffect(() => {
     try {
       // eslint-disable-next-line no-eval
-      eval(setWebComponentDomDefinitionPopup('salestorm-popup-template'));
+      eval(defineCustomElementPopup('salestorm-popup-template'));
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
@@ -88,18 +88,18 @@ const WebComponentPreviewPopup = ({ campaign, styles }) => {
 
   return (
     <salestorm-popup ref={webComponentRef}>
-      <WebComponentProductTitlePopup slot="product-title">
+      <TitleProduct slot="product-title">
         {renderedProduct.title}
-      </WebComponentProductTitlePopup>
-      <WebComponentProductVariationsPopup
+      </TitleProduct>
+      <VariantsProduct
         slot="product-variations"
         options={renderedProduct.options}
       />
-      <WebComponentProductDescriptionPopup slot="product-description">
+      <DescriptionProduct slot="product-description">
         {renderedProduct.descriptionHtml}
-      </WebComponentProductDescriptionPopup>
+      </DescriptionProduct>
     </salestorm-popup>
   );
 };
 
-export default WebComponentPreviewPopup;
+export default PreviewPopup;

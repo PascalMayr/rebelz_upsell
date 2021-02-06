@@ -602,9 +602,7 @@ const Popup = ({
           className={`animate__animated ${campaign.animation.type} animate__delay-${campaign.animation.delay}s animate__${campaign.animation.speed}`}
         >
           <div id="salestorm-popup-header">
-            <div id="salestorm-popup-header-title">
-              {renderedProduct.title}
-            </div>
+            <div id="salestorm-popup-header-title">{renderedProduct.title}</div>
             <div
               id="salestorm-popup-close"
               onClick={setRerenderButton}

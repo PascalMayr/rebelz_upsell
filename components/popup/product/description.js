@@ -1,4 +1,4 @@
-const WebComponentProductDescriptionPopup = ({ slot, children }) => (
+const DescriptionProduct = ({ slot, children }) => (
   <>
     {children !== '' && (
       <div
@@ -12,4 +12,4 @@ const WebComponentProductDescriptionPopup = ({ slot, children }) => (
   </>
 );
 
-export default WebComponentProductDescriptionPopup;
+export default DescriptionProduct;

@@ -19,9 +19,9 @@ import { AppContext } from '../_app';
 import Formatter from '../../components/campaigns/new/formatter/index.js';
 import MobileDesktopSwitchPreview from '../../components/campaigns/new/preview/mobile_desktop_switch';
 import Popup from '../../components/popup/popup';
-import WebComponentTemplatePopup from '../../components/popup/web_component_template';
+import TemplatePopup from '../../components/popup/template';
 import getStylesPopup from '../../components/popup/get_styles';
-import WebComponentPreviewPopup from '../../components/popup/web_component_preview';
+import PreviewPopup from '../../components/popup/preview';
 import ResourceSelectionCampaign from '../../components/campaigns/new/resource_selection';
 
 const New = (props) => {
@@ -348,11 +348,11 @@ const New = (props) => {
                     </div>
                   )}
                   <div className={previewContainerClass}>
-                    <WebComponentTemplatePopup
+                    <TemplatePopup
                       campaign={campaign}
                       styles={getStylesPopup(campaign, preview)}
                     />
-                    <WebComponentPreviewPopup
+                    <PreviewPopup
                       campaign={campaign}
                       styles={getStylesPopup(campaign, preview)}
                     />

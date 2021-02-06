@@ -1,7 +1,7 @@
 import { SelectMinor } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 
-const WebComponentProductVariationsPopup = ({ slot, options = [] }) => (
+const VariantsProduct = ({ slot, options = [] }) => (
   <div slot={slot}>
     {options.map((option) => {
       if (option.name === 'Title') {
@@ -41,4 +41,4 @@ const WebComponentProductVariationsPopup = ({ slot, options = [] }) => (
   </div>
 );
 
-export default WebComponentProductVariationsPopup;
+export default VariantsProduct;
