@@ -20,7 +20,7 @@ import Formatter from '../../components/campaigns/new/formatter/index.js';
 import MobileDesktopSwitchPreview from '../../components/campaigns/new/preview/mobile_desktop_switch';
 import Popup from '../../components/popup/popup';
 import WebComponentTemplatePopup from '../../components/popup/web_component_template';
-import getStyles from '../../components/popup/get_styles';
+import getStylesPopup from '../../components/popup/get_styles';
 import WebComponentPreviewPopup from '../../components/popup/web_component_preview';
 import ResourceSelectionCampaign from '../../components/campaigns/new/resource_selection';
 
@@ -350,11 +350,11 @@ const New = (props) => {
                   <div className={previewContainerClass}>
                     <WebComponentTemplatePopup
                       campaign={campaign}
-                      styles={getStyles(campaign, preview)}
+                      styles={getStylesPopup(campaign, preview)}
                     />
                     <WebComponentPreviewPopup
                       campaign={campaign}
-                      styles={getStyles(campaign, preview)}
+                      styles={getStylesPopup(campaign, preview)}
                     />
                   </div>
                   <MobileDesktopSwitchPreview

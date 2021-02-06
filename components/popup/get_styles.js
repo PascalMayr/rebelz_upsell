@@ -1,7 +1,7 @@
 import tinycolor from 'tinycolor2';
 import { kebabCasify } from 'casify';
 
-const getStyles = (campaign, preview) => {
+const getStylesPopup = (campaign, preview) => {
 
   const { styles } = campaign;
 
@@ -370,4 +370,4 @@ const getStyles = (campaign, preview) => {
   return campaignCSS
 }
 
-export default getStyles
+export default getStylesPopup
