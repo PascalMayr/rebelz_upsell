@@ -16,6 +16,7 @@ const setWebComponentDomDefinitionPopup = (templateID) => `
       window.Salestorm = {
         popupId: "${templateID}",
         hidePopup: new Event('salestorm-hide-popup-event'),
+        hideProductDetails: new Event('salestorm-hide-product-details'),
       };
       this.setupClickListeners();
       this.setupKeyListeners();
@@ -52,6 +53,7 @@ const setWebComponentDomDefinitionPopup = (templateID) => `
       if (descriptionElement && productDetailsMessage) {
         descriptionElement.style.display = 'none';
         productDetailsMessage.addEventListener('click', () => {
+          document.dispatchEvent(window.Salestorm.hideProductDetails);
           descriptionElement.style.display = descriptionElement.style.display === 'block' ? 'none' : 'block';
         });
       }
