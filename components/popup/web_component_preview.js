@@ -17,7 +17,6 @@ const WebComponentPreviewPopup = ({ campaign, styles }) => {
     }
   }, []);
 
-  // updating styles in the preview
   useEffect(() => {
     if (
       webComponentRef &&
@@ -33,7 +32,6 @@ const WebComponentPreviewPopup = ({ campaign, styles }) => {
     }
   }, [styles]);
 
-  // updating texts in the preview
   useEffect(() => {
     if (
       webComponentRef &&
