@@ -4,7 +4,7 @@ import defineCustomElementPopup from './define_custom_element';
 import TitleProduct from './product/title';
 import VariantsProduct from './product/variants';
 import DescriptionProduct from './product/description';
-import getRenderedProduct from './get_rendered_product';
+import getRenderedProductPopup from './get_rendered_product';
 import { processCampaignTexts, getAnimationClass } from './template';
 
 const PreviewPopup = ({ campaign, styles }) => {
@@ -77,7 +77,7 @@ const PreviewPopup = ({ campaign, styles }) => {
     }
   }, [campaign.animation]);
 
-  const renderedProduct = getRenderedProduct(campaign);
+  const renderedProduct = getRenderedProductPopup(campaign);
 
   return (
     <salestorm-popup ref={webComponentRef}>
