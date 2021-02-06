@@ -1,15 +1,18 @@
 import React from 'react';
-import {
-  MobileCancelMajor,
-  SelectMinor,
-  ArrowRightMinor,
-} from '@shopify/polaris-icons';
+import { MobileCancelMajor, ArrowRightMinor } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 
 import PlaceholderPreview from '../campaigns/new/preview/placeholder';
 
+import WebComponentProductTitlePopup from './web_component_product_title';
+import WebComponentProductVariationsPopup from './web_component_product_variations';
+import WebComponentProductDescriptionPopup from './web_component_product_description';
+
 const processCampaignTexts = (text) =>
   text.replace('{{Discount}}', '<span class="salestorm-price"></span>');
+
+const getAnimationClass = (animation) =>
+  `animate__animated ${animation.type} animate__delay-${animation.delay}s animate__${animation.speed}`;
 
 const WebComponentTemplatePopup = ({ campaign, styles }) => {
   const renderedProduct =
@@ -26,10 +29,14 @@ const WebComponentTemplatePopup = ({ campaign, styles }) => {
         />
         <div
           id="salestorm-popup"
-          className={`animate__animated ${campaign.animation.type} animate__delay-${campaign.animation.delay}s animate__${campaign.animation.speed}`}
+          className={getAnimationClass(campaign.animation)}
         >
           <div id="salestorm-popup-header">
-            <div id="salestorm-popup-header-title">{renderedProduct.title}</div>
+            <slot name="product-title">
+              <WebComponentProductTitlePopup>
+                {renderedProduct.title}
+              </WebComponentProductTitlePopup>
+            </slot>
             <div id="salestorm-popup-close">
               <Icon source={MobileCancelMajor} />
             </div>
@@ -51,41 +58,13 @@ const WebComponentTemplatePopup = ({ campaign, styles }) => {
                 }}
                 id="salestorm-campaign-text-subtitle"
               />
-              {renderedProduct.options.map((option) => {
-                if (option.name === 'Title') {
-                  return null;
-                } else {
-                  return (
-                    <div
-                      className="salestorm-product-select-container"
-                      key={`${option.name}-select-container`}
-                    >
-                      <select
-                        className="salestorm-product-select"
-                        key={`${option.name}-select`}
-                      >
-                        {option.values.map((value) => (
-                          <option
-                            value={value}
-                            key={`${option.name}-${value}-select-option`}
-                          >
-                            {value}
-                          </option>
-                        ))}
-                      </select>
-                      <div
-                        className="salestorm-product-select-arrow"
-                        key={`${option.name}-select-arrow`}
-                      >
-                        <Icon
-                          source={SelectMinor}
-                          key={`${option.name}-select-arrow-icon`}
-                        />
-                      </div>
-                    </div>
-                  );
-                }
-              })}
+              <div>
+                <slot name="product-variations">
+                  <WebComponentProductVariationsPopup
+                    options={renderedProduct.options}
+                  />
+                </slot>
+              </div>
               <button
                 type="button"
                 id="salestorm-campaign-text-addToCartAction"
@@ -105,14 +84,11 @@ const WebComponentTemplatePopup = ({ campaign, styles }) => {
               )}
             </div>
           </div>
-          {renderedProduct.descriptionHtml !== '' && (
-            <div
-              id="salestorm-product-description"
-              dangerouslySetInnerHTML={{
-                __html: renderedProduct.descriptionHtml,
-              }}
+          <slot name="product-description">
+            <WebComponentProductDescriptionPopup
+              descriptionHtml={renderedProduct.descriptionHtml}
             />
-          )}
+          </slot>
           <div id="salestorm-popup-footer">
             <div
               id="salestorm-campaign-text-dismissAction"
@@ -136,5 +112,5 @@ const WebComponentTemplatePopup = ({ campaign, styles }) => {
   );
 };
 
-export { processCampaignTexts };
+export { processCampaignTexts, getAnimationClass };
 export default WebComponentTemplatePopup;

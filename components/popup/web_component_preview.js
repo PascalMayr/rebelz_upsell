@@ -1,7 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 
+import PlaceholderPreview from '../campaigns/new/preview/placeholder';
+
 import setWebComponentDomDefinitionPopup from './set_web_component_dom_definition';
-import { processCampaignTexts } from './web_component_template';
+import WebComponentProductTitlePopup from './web_component_product_title';
+import WebComponentProductVariationsPopup from './web_component_product_variations';
+import WebComponentProductDescriptionPopup from './web_component_product_description';
+import {
+  processCampaignTexts,
+  getAnimationClass,
+} from './web_component_template';
 
 const WebComponentPreviewPopup = ({ campaign, styles }) => {
   // this component serves for the preview to update the shown web component
@@ -29,6 +37,8 @@ const WebComponentPreviewPopup = ({ campaign, styles }) => {
       if (webComponentStyleTag) {
         webComponentStyleTag.innerHTML = styles;
       }
+    } else {
+      return null;
     }
   }, [styles]);
 
@@ -54,7 +64,42 @@ const WebComponentPreviewPopup = ({ campaign, styles }) => {
     }
   }, [campaign.texts]);
 
-  return <salestorm-popup ref={webComponentRef} />;
+  useEffect(() => {
+    if (
+      webComponentRef &&
+      webComponentRef.current &&
+      webComponentRef.current.shadowRoot
+    ) {
+      const popupContainerElement = webComponentRef.current.shadowRoot.querySelector(
+        '#salestorm-popup'
+      );
+      if (popupContainerElement) {
+        popupContainerElement.class = getAnimationClass(campaign.animation);
+      }
+    } else {
+      return null;
+    }
+  }, [campaign.animation]);
+
+  const renderedProduct =
+    campaign.products.selling.length > 0
+      ? campaign.products.selling[0]
+      : PlaceholderPreview;
+
+  return (
+    <salestorm-popup ref={webComponentRef}>
+      <WebComponentProductTitlePopup slot="product-title">
+        {renderedProduct.title}
+      </WebComponentProductTitlePopup>
+      <WebComponentProductVariationsPopup
+        slot="product-variations"
+        options={renderedProduct.options}
+      />
+      <WebComponentProductDescriptionPopup slot="product-description">
+        {renderedProduct.descriptionHtml}
+      </WebComponentProductDescriptionPopup>
+    </salestorm-popup>
+  );
 };
 
 export default WebComponentPreviewPopup;
