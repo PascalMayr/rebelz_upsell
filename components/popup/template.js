@@ -2,11 +2,10 @@ import React from 'react';
 import { MobileCancelMajor, ArrowRightMinor } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 
-import PlaceholderPreview from '../campaigns/new/preview/placeholder';
-
 import TitleProduct from './product/title';
 import VariantsProduct from './product/variants';
 import DescriptionProduct from './product/description';
+import getRenderedProduct from './get_rendered_product';
 
 const processCampaignTexts = (text) =>
   text.replace('{{Discount}}', '<span class="salestorm-price"></span>');
@@ -15,10 +14,7 @@ const getAnimationClass = (animation) =>
   `animate__animated ${animation.type} animate__delay-${animation.delay}s animate__${animation.speed}`;
 
 const TemplatePopup = ({ campaign, styles }) => {
-  const renderedProduct =
-    campaign.products.selling.length > 0
-      ? campaign.products.selling[0]
-      : PlaceholderPreview;
+  const renderedProduct = getRenderedProduct(campaign);
 
   return (
     <template id="salestorm-popup-template">

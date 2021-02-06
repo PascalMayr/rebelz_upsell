@@ -1,15 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 
-import PlaceholderPreview from '../campaigns/new/preview/placeholder';
-
 import defineCustomElementPopup from './define_custom_element';
 import TitleProduct from './product/title';
 import VariantsProduct from './product/variants';
 import DescriptionProduct from './product/description';
-import {
-  processCampaignTexts,
-  getAnimationClass,
-} from './template';
+import getRenderedProduct from './get_rendered_product';
+import { processCampaignTexts, getAnimationClass } from './template';
 
 const PreviewPopup = ({ campaign, styles }) => {
   // this component serves for the preview to update the shown web component
@@ -81,16 +77,11 @@ const PreviewPopup = ({ campaign, styles }) => {
     }
   }, [campaign.animation]);
 
-  const renderedProduct =
-    campaign.products.selling.length > 0
-      ? campaign.products.selling[0]
-      : PlaceholderPreview;
+  const renderedProduct = getRenderedProduct(campaign);
 
   return (
     <salestorm-popup ref={webComponentRef}>
-      <TitleProduct slot="product-title">
-        {renderedProduct.title}
-      </TitleProduct>
+      <TitleProduct slot="product-title">{renderedProduct.title}</TitleProduct>
       <VariantsProduct
         slot="product-variations"
         options={renderedProduct.options}
