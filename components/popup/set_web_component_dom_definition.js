@@ -82,6 +82,43 @@ const setWebComponentDomDefinitionPopup = (templateID) => `
       document.dispatchEvent(window.Salestorm.hidePopup);
       this.shadow.querySelector('#salestorm-overlay-container').style.display = 'none';
     }
+
+    findDisplayCurrencyCode() {
+      if (window.afterpay_shop_currency && window.afterpay_shop_currency !== "") {
+        return window.afterpay_shop_currency;
+      }
+      if (window.shop_currency && window.shop_currency !== "") {
+        return window.shop_currency;
+      }
+      if (window.mlvedaShopCurrency && window.mlvedaShopCurrency !== "") {
+        return window.mlvedaShopCurrency;
+      }
+      if (window.Currency && window.Currency.currentCurrency && window.Currency.currentCurrency !== "") {
+        return window.Currency.currentCurrency;
+      }
+      if (window.Currency && window.Currency.shop_currency && window.Currency.shop_currency !== "") {
+        return window.Currency.shop_currency;
+      }
+      if (window.localStorage) {
+        if (localStorage.getItem('currency') && localStorage.getItem('currency') !== "") {
+          return localStorage.getItem('currency');
+        }
+        if (localStorage.getItem('GIP_USER_CURRENCY') && localStorage.getItem('GIP_USER_CURRENCY') !== "") {
+          return localStorage.getItem('GIP_USER_CURRENCY');
+        }
+        if (localStorage.getItem('currencyWidget') && localStorage.getItem('currencyWidget') !== "") {
+          return localStorage.getItem('currencyWidget');
+        }
+      }
+      if (document.getElementById('baCurrSelector')) {
+        return document.getElementById('baCurrSelector').value;
+      }
+      if (window.Shopify && window.Shopify.currency && window.Shopify.currency.active !== "") {
+        return Shopify.currency.active;
+      }
+      return null;
+    }
+
   }
   if (!customElements.get('salestorm-popup')) {
     customElements.define('salestorm-popup', SalestormPopupComponent);
