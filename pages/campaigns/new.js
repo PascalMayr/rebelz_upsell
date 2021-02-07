@@ -16,7 +16,7 @@ import publishCampaign from '../../services/publish_campaign';
 import unpublishCampaign from '../../services/unpublish_campaign';
 import SalestormTriggers from '../../components/campaigns/new/triggers';
 import { AppContext } from '../_app';
-import Formatter from '../../components/campaigns/new/formatter/index.js';
+import Formatter from '../../components/campaigns/new/formatter';
 import MobileDesktopSwitchPreview from '../../components/campaigns/new/preview/mobile_desktop_switch';
 import Popup from '../../components/popup/popup';
 import getStylesPopup from '../../components/popup/get_styles';
