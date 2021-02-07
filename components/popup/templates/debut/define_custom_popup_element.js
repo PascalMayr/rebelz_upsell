@@ -1,4 +1,4 @@
-const defineCustomElementPopup = (popupID) => `
+const defineCustomPopupElementDebut = (popupID) => `
   class SalestormPopupComponent extends HTMLElement {
     shadow;
 
@@ -136,4 +136,4 @@ const defineCustomElementPopup = (popupID) => `
   }
 `;
 
-export default defineCustomElementPopup;
+export default defineCustomPopupElementDebut;
