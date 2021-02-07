@@ -15,6 +15,9 @@ const getStylesPopup = (
   const getGoogleFontValue = (value) => getFontValue(value).replace(' ', '+');
 
   const campaignCSS = `
+    .d-none {
+      display: none;
+    }
     ${
       preview
         ? ''

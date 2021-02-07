@@ -78,11 +78,12 @@ const TemplateDebut = ({ campaign, preview, onStyleChange = () => {} }) => {
                 <VariantsProduct options={renderedProduct.options} />
               </div>
               <button
+                id="salestorm-claim-offer-button"
                 type="button"
-                id="salestorm-campaign-text-addToCartAction"
                 dangerouslySetInnerHTML={{
                   __html: processCampaignTextsPopup(
-                    campaign.texts.addToCartAction
+                    `<span id="salestorm-campaign-text-addToCartAction">${campaign.texts.addToCartAction}</span>
+                    <span id="salestorm-campaign-text-addToCartUnavailableVariation" class="d-none">${campaign.texts.addToCartUnavailableVariation}</span>`
                   ),
                 }}
               />

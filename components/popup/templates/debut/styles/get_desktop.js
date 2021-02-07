@@ -189,7 +189,7 @@ const getDesktopStyles = (campaign, preview) => {
     background-color: ${styles.popup.backgroundColor} !important;
     color: ${styles.popup.color} !important;
   }
-  #salestorm-campaign-text-addToCartAction {
+  #salestorm-claim-offer-button {
     opacity: 1;
     width: 100%;
     padding: 16px 24px;
@@ -201,7 +201,7 @@ const getDesktopStyles = (campaign, preview) => {
     transition: 0.25s ease;
     ${convertStyleObjectToStyleStringPopup(campaign.styles.primaryButtons)};
   }
-  #salestorm-campaign-text-addToCartAction:hover {
+  #salestorm-claim-offer-button:hover {
     background-color: ${tinycolor(styles.primaryButtons.backgroundColor).darken(
       10
     )};

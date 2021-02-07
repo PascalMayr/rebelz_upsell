@@ -147,7 +147,7 @@ const Popup = ({
             const variantOptionValues = variant.node.selectedOptions.map(selectedOption => selectedOption.value);
             return JSON.stringify(sortStringArrayAlphabetically(variantOptionValues)) === JSON.stringify(sortStringArrayAlphabetically(currentSelectionState));
           });
-          const claimOfferButton = document.querySelector('#salestorm-campaign-text-addToCartAction');
+          const claimOfferButton = document.querySelector('#salestorm-claim-offer-button');
           if (selectedVariant) {
             if (selectedVariant.node && selectedVariant.node.image) {
               document.querySelector('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
@@ -536,7 +536,7 @@ const Popup = ({
       background-color: ${styles.popup.backgroundColor} !important;
       color: ${styles.popup.color} !important;
     }
-    #salestorm-campaign-text-addToCartAction {
+    #salestorm-claim-offer-button {
       opacity: 1;
       width: 100%;
       padding: 16px 24px;
@@ -548,7 +548,7 @@ const Popup = ({
       transition: 0.25s ease;
       ${convertStyleObjectToStyleStringPopup(campaign.styles.primaryButtons)};
     }
-    #salestorm-campaign-text-addToCartAction:hover {
+    #salestorm-claim-offer-button:hover {
       background-color: ${tinycolor(
         styles.primaryButtons.backgroundColor
       ).darken(10)};
@@ -654,7 +654,7 @@ const Popup = ({
               })}
               <button
                 type="button"
-                id="salestorm-campaign-text-addToCartAction"
+                id="salestorm-claim-offer-button"
                 dangerouslySetInnerHTML={{
                   __html: campaign.texts.addToCartAction,
                 }}

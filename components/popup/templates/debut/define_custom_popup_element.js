@@ -49,9 +49,8 @@ const defineCustomPopupElementDebut = `
       const productDetailsMessage = this.shadow.querySelector('#salestorm-campaign-text-seeProductDetailsAction');
       const descriptionElement = this.shadow.querySelector('#salestorm-product-description');
       if (descriptionElement && productDetailsMessage) {
-        descriptionElement.style.display = 'none';
         productDetailsMessage.addEventListener('click', () => {
-          descriptionElement.style.display = descriptionElement.style.display === 'block' ? 'none' : 'block';
+          descriptionElement.classList.toggle('d-none');
         });
       }
 
@@ -95,11 +94,21 @@ const defineCustomPopupElementDebut = `
         return JSON.stringify(sortStringArrayAlphabetically(variantOptionValues)) === JSON.stringify(sortStringArrayAlphabetically(currentSelectionState));
       });
 
-      const claimOfferButton = this.shadow.querySelector('#salestorm-campaign-text-addToCartAction');
+      const claimOfferButton = this.shadow.querySelector('#salestorm-claim-offer-button');
       if (selectedVariant) {
         if (selectedVariant.node && selectedVariant.node.image) {
           this.shadow.querySelector('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
         }
+        claimOfferButton.classList.disable = false;
+        claimOfferButton.classList.remove('offer-button-disabled');
+        this.shadow.querySelector('#salestorm-campaign-text-addToCartAction').classList.remove('d-none');
+        this.shadow.querySelector('#salestorm-campaign-text-addToCartUnavailableVariation').classList.add('d-none');
+      }
+      else {
+        claimOfferButton.classList.disable = true;
+        claimOfferButton.classList.add('offer-button-disabled');
+        this.shadow.querySelector('#salestorm-campaign-text-addToCartAction').classList.add('d-none');
+        this.shadow.querySelector('#salestorm-campaign-text-addToCartUnavailableVariation').classList.remove('d-none');
       }
     }
 
