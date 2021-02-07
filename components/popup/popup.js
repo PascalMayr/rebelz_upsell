@@ -307,7 +307,7 @@ const Popup = ({
       margin: 0 auto !important;
       font-size: 16px !important;
     }
-    #salestorm-popup-header-title {
+    #salestorm-product-title {
       max-width: 75% !important;
     }
     #salestorm-product-description {
@@ -444,7 +444,7 @@ const Popup = ({
       justify-content: space-between;
       padding: 16px !important;
     }
-    #salestorm-popup-header-title {
+    #salestorm-product-title {
       font-size: 23px !important;
       max-width: 75% !important;
     }
@@ -602,7 +602,7 @@ const Popup = ({
           className={`animate__animated ${campaign.animation.type} animate__delay-${campaign.animation.delay}s animate__${campaign.animation.speed}`}
         >
           <div id="salestorm-popup-header">
-            <div id="salestorm-popup-header-title">{renderedProduct.title}</div>
+            <div id="salestorm-product-title">{renderedProduct.title}</div>
             <div
               id="salestorm-popup-close"
               onClick={setRerenderButton}
