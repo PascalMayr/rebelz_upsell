@@ -1,7 +1,6 @@
 const defineCustomElementPopup = (popupID) => `
   class SalestormPopupComponent extends HTMLElement {
     shadow;
-    renderedProduct = 'test';
 
     constructor() {
       super();
