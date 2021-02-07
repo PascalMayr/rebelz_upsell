@@ -1,8 +1,8 @@
 import { SelectMinor } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 
-const VariantsProduct = ({ slot, options = [] }) => (
-  <div slot={slot}>
+const VariantsProduct = ({ options = [], ...props }) => (
+  <div id="salestorm-product-variants" {...props}>
     {options.map((option) => {
       if (option.name === 'Title') {
         return null;

@@ -1,5 +1,5 @@
-const TitleProduct = ({ slot, children }) => (
-  <div id="salestorm-popup-header-title" slot={slot}>
+const TitleProduct = ({ children, ...props }) => (
+  <div id="salestorm-product-title" {...props}>
     {children}
   </div>
 );

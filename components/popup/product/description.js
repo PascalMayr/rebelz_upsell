@@ -1,15 +1,11 @@
-const DescriptionProduct = ({ slot, children }) => (
-  <>
-    {children !== '' && (
-      <div
-        slot={slot}
-        id="salestorm-product-description"
-        dangerouslySetInnerHTML={{
-          __html: children,
-        }}
-      />
-    )}
-  </>
+const DescriptionProduct = ({ descriptionHtml, ...props }) => (
+  <div
+    id="salestorm-product-description"
+    dangerouslySetInnerHTML={{
+      __html: descriptionHtml,
+    }}
+    {...props}
+  />
 );
 
 export default DescriptionProduct;
