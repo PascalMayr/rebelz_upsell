@@ -89,7 +89,7 @@ If you get any problem loading the startup script or the app in the admin panel 
 ~/ $ cd .. && yarn start
 ```
 
-4.) Copy the content without comments of animate.min.css into the popup components style tag.
+4.) Copy the content without comments of animate.min.css into the get_styles js file.
 
 ## Troubleshooting authentication/authorization problems
 
