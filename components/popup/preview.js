@@ -17,12 +17,7 @@ const PreviewPopup = ({ campaign, styles }) => {
   useEffect(() => {
     try {
       // eslint-disable-next-line no-eval
-      eval(
-        defineCustomElementPopup(
-          'salestorm-popup-template',
-          getRenderedProductPopup(campaign)
-        )
-      );
+      eval(defineCustomElementPopup('salestorm-popup-template'));
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
