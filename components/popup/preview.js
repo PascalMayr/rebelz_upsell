@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 
 import defineCustomElementPopup from './define_custom_element';
 import getAnimationClassPopup from './get_animation_class';
-import getRenderedProductPopup from './get_rendered_product';
 import processCampaignTextsPopup from './process_campaign_texts';
 import TemplateDebut from './templates/debut/template';
 
