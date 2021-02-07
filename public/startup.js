@@ -64,8 +64,15 @@
         }
       );
       if (response.ok) {
-        const campaign = await response.text();
-        popups[trigger] = campaign;
+        const campaign = await response.json();
+        popups[trigger] = campaign.html;
+        if (campaign.js) {
+          try {
+            eval(campaign.js);
+          } catch(error) {
+            console.log(error)
+          }
+        }
       } else {
         popups[trigger] = null;
       }

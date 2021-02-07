@@ -20,6 +20,7 @@ import { AppProvider } from '@shopify/polaris';
 import translations from '@shopify/polaris/locales/en.json';
 
 import Popup from '../components/popup/preview';
+import defineCustomPopupElementDebut from '../components/popup/templates/debut/define_custom_popup_element';
 import config from '../config';
 
 import db from './db';
@@ -63,14 +64,17 @@ app.prepare().then(() => {
         products.includes(parseInt(targetProduct.legacyResourceId, 10))
       );
     });
-    console.log(campaign)
+
     if (campaign) {
-      const campaignMarkupHTML = await ReactDOMServer.renderToStaticMarkup(
+      const html = await ReactDOMServer.renderToStaticMarkup(
         <AppProvider i18n={translations}>
           <Popup campaign={campaign} />
         </AppProvider>
       );
-      ctx.body = campaignMarkupHTML;
+      ctx.body = {
+        html,
+        js: defineCustomPopupElementDebut,
+      };
       ctx.status = 200;
     } else {
       ctx.status = 404;
