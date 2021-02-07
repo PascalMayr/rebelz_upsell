@@ -61,7 +61,7 @@ const PreviewPopup = ({ campaign, styles }) => {
         '#salestorm-popup'
       );
       if (popupContainerElement) {
-        popupContainerElement.class = getAnimationClassPopup(
+        popupContainerElement.className = getAnimationClassPopup(
           campaign.animation
         );
       }
