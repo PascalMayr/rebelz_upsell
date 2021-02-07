@@ -19,7 +19,6 @@ import { AppContext } from '../_app';
 import Formatter from '../../components/campaigns/new/formatter';
 import MobileDesktopSwitchPreview from '../../components/campaigns/new/preview/mobile_desktop_switch';
 import Popup from '../../components/popup/popup';
-import getStylesPopup from '../../components/popup/get_styles';
 import PreviewPopup from '../../components/popup/preview';
 import ResourceSelectionCampaign from '../../components/campaigns/new/resource_selection';
 
@@ -349,7 +348,7 @@ const New = (props) => {
                   <div className={previewContainerClass}>
                     <PreviewPopup
                       campaign={campaign}
-                      styles={getStylesPopup(campaign, preview)}
+                      preview={preview}
                     />
                   </div>
                   <MobileDesktopSwitchPreview

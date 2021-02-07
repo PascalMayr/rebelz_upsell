@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 
+import getStylesPopup from './get_styles';
 import getAnimationClassPopup from './get_animation_class';
 import getRenderedProductPopup from './get_rendered_product';
 import processCampaignTextsPopup from './process_campaign_texts';
 import TemplateDebut from './templates/debut/template';
 
-const PreviewPopup = ({ campaign, styles }) => {
+const PreviewPopup = ({ campaign, preview }) => {
   // this component serves for the preview to update the shown web component
   // all updates which happen here are also applied to the template trough react
   const webComponentRef = useRef();
@@ -13,6 +14,8 @@ const PreviewPopup = ({ campaign, styles }) => {
     webComponentRef &&
     webComponentRef.current &&
     webComponentRef.current.shadowRoot;
+
+  const styles = getStylesPopup(campaign, preview);
 
   useEffect(() => {
     if (webComponentRefShadow) {
