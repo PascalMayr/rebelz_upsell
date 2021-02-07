@@ -1,4 +1,4 @@
-const defineCustomPopupElementDebut = (popupID) => `
+const defineCustomPopupElementDebut = `
   class SalestormPopupComponent extends HTMLElement {
     shadow;
 
@@ -13,7 +13,6 @@ const defineCustomPopupElementDebut = (popupID) => `
 
     connectedCallback() {
       window.Salestorm = {
-        popupId: "${popupID}",
         hidePopup: new Event('salestorm-hide-popup-event')
       };
       this.setupClickListeners();

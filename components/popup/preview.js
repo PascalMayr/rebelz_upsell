@@ -4,7 +4,6 @@ import getAnimationClassPopup from './get_animation_class';
 import getRenderedProductPopup from './get_rendered_product';
 import processCampaignTextsPopup from './process_campaign_texts';
 import TemplateDebut from './templates/debut/template';
-import defineCustomPopupElementDebut from './templates/debut/define_custom_popup_element';
 
 const PreviewPopup = ({ campaign, styles }) => {
   // this component serves for the preview to update the shown web component
@@ -14,15 +13,6 @@ const PreviewPopup = ({ campaign, styles }) => {
     webComponentRef &&
     webComponentRef.current &&
     webComponentRef.current.shadowRoot;
-  useEffect(() => {
-    try {
-      // eslint-disable-next-line no-eval
-      eval(defineCustomPopupElementDebut('salestorm-popup-template'));
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
-  }, []);
 
   useEffect(() => {
     if (webComponentRefShadow) {

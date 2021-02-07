@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MobileCancelMajor, ArrowRightMinor } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 
@@ -9,8 +9,20 @@ import getRenderedProductPopup from '../../get_rendered_product';
 import getAnimationClassPopup from '../../get_animation_class';
 import processCampaignTextsPopup from '../../process_campaign_texts';
 
+import defineCustomPopupElementDebut from './define_custom_popup_element';
+
 const TemplateDebut = ({ campaign, styles }) => {
   const renderedProduct = getRenderedProductPopup(campaign);
+  useEffect(() => {
+    // initialising the
+    try {
+      // eslint-disable-next-line no-eval
+      eval(defineCustomPopupElementDebut);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+  }, []);
   return (
     <>
       <div id="salestorm-overlay-container">
