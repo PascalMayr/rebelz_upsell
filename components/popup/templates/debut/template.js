@@ -8,11 +8,25 @@ import DescriptionProduct from '../../product/description';
 import getRenderedProductPopup from '../../get_rendered_product';
 import getAnimationClassPopup from '../../get_animation_class';
 import processCampaignTextsPopup from '../../process_campaign_texts';
+import getStylesPopup from '../../get_styles';
 
+import getMobileStyles from './styles/get_mobile';
+import getTabletStyles from './styles/get_tablet';
+import getDesktopStyles from './styles/get_desktop';
 import defineCustomPopupElementDebut from './define_custom_popup_element';
 
-const TemplateDebut = ({ campaign, styles }) => {
+const TemplateDebut = ({ campaign, preview, onStyleChange = () => {} }) => {
   const renderedProduct = getRenderedProductPopup(campaign);
+  const mobileStyles = getMobileStyles(campaign, preview);
+  const tabletStyles = getTabletStyles(campaign, preview);
+  const desktopStyles = getDesktopStyles(campaign, preview);
+  const styles = getStylesPopup(
+    campaign,
+    preview,
+    mobileStyles,
+    tabletStyles,
+    desktopStyles
+  );
   useEffect(() => {
     // initialising the
     try {
@@ -23,6 +37,9 @@ const TemplateDebut = ({ campaign, styles }) => {
       console.error(error);
     }
   }, []);
+  useEffect(() => {
+    onStyleChange(styles)
+  }, [styles, onStyleChange]);
   return (
     <>
       <div id="salestorm-overlay-container">

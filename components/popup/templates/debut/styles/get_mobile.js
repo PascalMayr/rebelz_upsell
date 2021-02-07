@@ -1,4 +1,4 @@
-const MobileStyles = `
+const getMobileStyles = () => `
   #salestorm-product {
     flex-direction: column;
     padding: 8px;
@@ -13,4 +13,4 @@ const MobileStyles = `
   }
 `;
 
-export default MobileStyles;
+export default getMobileStyles;

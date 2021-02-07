@@ -100,6 +100,7 @@ const New = (props) => {
       delay: 0,
       speed: 'normal',
     },
+    template: 'debut',
     multiCurrencySupport: true,
     texts: {
       title: 'GET {{Discount}} DISCOUNT!',

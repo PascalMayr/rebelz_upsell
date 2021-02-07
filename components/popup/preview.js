@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 
-import getStylesPopup from './get_styles';
 import getAnimationClassPopup from './get_animation_class';
 import getRenderedProductPopup from './get_rendered_product';
 import processCampaignTextsPopup from './process_campaign_texts';
-import TemplateDebut from './templates/debut/template';
+import TemplateLoader from './templates';
 
 const PreviewPopup = ({ campaign, preview }) => {
   // this component serves for the preview to update the shown web component
@@ -15,9 +14,7 @@ const PreviewPopup = ({ campaign, preview }) => {
     webComponentRef.current &&
     webComponentRef.current.shadowRoot;
 
-  const styles = getStylesPopup(campaign, preview);
-
-  useEffect(() => {
+  const onStyleChange = (styles) => {
     if (webComponentRefShadow) {
       const popupStyles = webComponentRefShadow.querySelector(
         '#salestorm-popup-styles'
@@ -28,7 +25,7 @@ const PreviewPopup = ({ campaign, preview }) => {
     } else {
       return null;
     }
-  }, [styles, webComponentRefShadow]);
+  };
 
   useEffect(() => {
     if (webComponentRefShadow) {
@@ -70,7 +67,11 @@ const PreviewPopup = ({ campaign, preview }) => {
       ref={webComponentRef}
       product={JSON.stringify(renderedProduct)}
     >
-      <TemplateDebut campaign={campaign} styles={styles} />
+      <TemplateLoader
+        campaign={campaign}
+        preview={preview}
+        onStyleChange={onStyleChange}
+      />
     </salestorm-popup>
   );
 };

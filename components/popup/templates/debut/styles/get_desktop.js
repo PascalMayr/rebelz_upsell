@@ -1,6 +1,10 @@
 import tinycolor from 'tinycolor2';
 
-const DesktopStyles = (styles, preview) => `
+import convertStyleObjectToStyleStringPopup from '../../../convert_style_object_to_style_string';
+
+const getDesktopStyles = (campaign, preview) => {
+  const { styles } = campaign;
+  return `
   #salestorm-overlay-container div {
     box-sizing: border-box;
     font-weight: 400;
@@ -41,7 +45,7 @@ const DesktopStyles = (styles, preview) => `
     height: ${preview === undefined ? '100vh' : '100%'};
     z-index: 99999 !important;
     transition: 0.25s ease;
-    ${styleObjectToStyleString(styles.overlay)};
+    ${convertStyleObjectToStyleStringPopup(styles.overlay)};
   }
   #salestorm-popup::-webkit-scrollbar {
     display: none;
@@ -55,7 +59,7 @@ const DesktopStyles = (styles, preview) => `
     color: ${styles.popup.color} !important;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    ${styleObjectToStyleString(styles.popup)};
+    ${convertStyleObjectToStyleStringPopup(styles.popup)};
   }
   #salestorm-popup-close {
     contain: layout;
@@ -64,7 +68,7 @@ const DesktopStyles = (styles, preview) => `
     justify-content: center;
     align-items: center;
     transition: 0.25s ease;
-    ${styleObjectToStyleString(styles.secondaryButtons)};
+    ${convertStyleObjectToStyleStringPopup(styles.secondaryButtons)};
   }
   #salestorm-popup-close > span {
     width: 16px !important;
@@ -195,12 +199,12 @@ const DesktopStyles = (styles, preview) => `
     color: ${campaign.styles.primaryButtons.color} !important;
     cursor: pointer;
     transition: 0.25s ease;
-    ${styleObjectToStyleString(campaign.styles.primaryButtons)};
+    ${convertStyleObjectToStyleStringPopup(campaign.styles.primaryButtons)};
   }
   #salestorm-campaign-text-addToCartAction:hover {
-    background-color: ${tinycolor(
-      styles.primaryButtons.backgroundColor
-    ).darken(10)};
+    background-color: ${tinycolor(styles.primaryButtons.backgroundColor).darken(
+      10
+    )};
   }
   .offer-button-disabled {
     opacity: 0.7 !important;
@@ -219,5 +223,6 @@ const DesktopStyles = (styles, preview) => `
     padding-top: 0px;
   }
 `;
+};
 
-export default DesktopStyles;
+export default getDesktopStyles;

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { kebabCasify } from 'casify';
 import {
   MobileCancelMajor,
   SelectMinor,
@@ -10,6 +9,8 @@ import tinycolor from 'tinycolor2';
 
 import PlaceholderPreview from '../campaigns/new/preview/placeholder';
 
+import convertStyleObjectToStyleStringPopup from './convert_style_object_to_style_string';
+
 const Popup = ({
   campaign: { styles },
   campaign,
@@ -17,13 +18,6 @@ const Popup = ({
   // eslint-disable-next-line no-empty-function
   setRerenderButton = () => {},
 }) => {
-  const styleObjectToStyleString = (styleObject) => {
-    const kebabCaseStyles = kebabCasify(styleObject);
-    return Object.keys(kebabCaseStyles)
-      .map((styleKey) => `${styleKey}: ${kebabCaseStyles[styleKey]}`)
-      .join(';');
-  };
-
   const renderedProduct =
     campaign.products.selling.length > 0
       ? campaign.products.selling[0]
@@ -399,7 +393,7 @@ const Popup = ({
       height: ${preview === undefined ? '100vh' : '100%'};
       z-index: 99999 !important;
       transition: 0.25s ease;
-      ${styleObjectToStyleString(styles.overlay)};
+      ${convertStyleObjectToStyleStringPopup(styles.overlay)};
     }
     #salestorm-popup::-webkit-scrollbar {
       display: none;
@@ -413,7 +407,7 @@ const Popup = ({
       color: ${styles.popup.color} !important;
       -ms-overflow-style: none;
       scrollbar-width: none;
-      ${styleObjectToStyleString(styles.popup)};
+      ${convertStyleObjectToStyleStringPopup(styles.popup)};
     }
     #salestorm-popup-close {
       contain: layout;
@@ -422,7 +416,7 @@ const Popup = ({
       justify-content: center;
       align-items: center;
       transition: 0.25s ease;
-      ${styleObjectToStyleString(styles.secondaryButtons)};
+      ${convertStyleObjectToStyleStringPopup(styles.secondaryButtons)};
     }
     #salestorm-popup-close > span {
       width: 16px !important;
@@ -552,7 +546,7 @@ const Popup = ({
       color: ${campaign.styles.primaryButtons.color} !important;
       cursor: pointer;
       transition: 0.25s ease;
-      ${styleObjectToStyleString(campaign.styles.primaryButtons)};
+      ${convertStyleObjectToStyleStringPopup(campaign.styles.primaryButtons)};
     }
     #salestorm-campaign-text-addToCartAction:hover {
       background-color: ${tinycolor(
