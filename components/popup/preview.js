@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import defineCustomElementPopup from './define_custom_element';
 import getAnimationClassPopup from './get_animation_class';
+import getRenderedProductPopup from './get_rendered_product';
 import processCampaignTextsPopup from './process_campaign_texts';
 import TemplateDebut from './templates/debut/template';
 
@@ -69,8 +70,13 @@ const PreviewPopup = ({ campaign, styles }) => {
     }
   }, [campaign.animation, webComponentRefShadow]);
 
+  const renderedProduct = getRenderedProductPopup(campaign);
+
   return (
-    <salestorm-popup ref={webComponentRef}>
+    <salestorm-popup
+      ref={webComponentRef}
+      product={JSON.stringify(renderedProduct)}
+    >
       <TemplateDebut campaign={campaign} styles={styles} />
     </salestorm-popup>
   );

@@ -8,7 +8,7 @@ const defineCustomElementPopup = (popupID) => `
     }
 
     static get observedAttributes() {
-      return ['visible'];
+      return ['visible', 'product'];
     }
 
     connectedCallback() {
@@ -36,6 +36,9 @@ const defineCustomElementPopup = (popupID) => `
           this.hidePopup();
         }
       }
+      if (name === 'product') {
+        this.updateProduct(JSON.parse(newValue));
+      }
     }
 
     setupShadow() {
@@ -49,7 +52,6 @@ const defineCustomElementPopup = (popupID) => `
       if (descriptionElement && productDetailsMessage) {
         descriptionElement.style.display = 'none';
         productDetailsMessage.addEventListener('click', () => {
-          document.dispatchEvent(window.Salestorm.hideProductDetails);
           descriptionElement.style.display = descriptionElement.style.display === 'block' ? 'none' : 'block';
         });
       }
@@ -84,6 +86,48 @@ const defineCustomElementPopup = (popupID) => `
 
     hidePopup() {
       document.dispatchEvent(window.Salestorm.hidePopup);
+    }
+
+    setSelectedProductVariant(product) {
+      const sortStringArrayAlphabetically = array => array.sort((a, b) => a.length - b.length);
+      const currentSelectionState = Array.from(this.shadow.querySelectorAll('.salestorm-product-select')).map(selectElement => selectElement.value);
+      const selectedVariant = product.variants.edges.find(variant => {
+        const variantOptionValues = variant.node.selectedOptions.map(selectedOption => selectedOption.value);
+        return JSON.stringify(sortStringArrayAlphabetically(variantOptionValues)) === JSON.stringify(sortStringArrayAlphabetically(currentSelectionState));
+      });
+
+      const claimOfferButton = this.shadow.querySelector('#salestorm-campaign-text-addToCartAction');
+      if (selectedVariant) {
+        if (selectedVariant.node && selectedVariant.node.image) {
+          this.shadow.querySelector('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
+        }
+      }
+    }
+
+    updateProduct(product) {
+      const elementUpdateSelectors = ['#salestorm-product-title', '#salestorm-product-variants', '#salestorm-product-description'];
+      for (let elementUpdateSelector of elementUpdateSelectors) {
+        const updatedNode = document.querySelector(elementUpdateSelector);
+        const oldNode = this.shadow.querySelector(elementUpdateSelector);
+        if (updatedNode && oldNode) {
+          oldNode.replaceWith(updatedNode);
+        }
+      }
+
+      if (product) {
+        const mainProductImage = product.images.edges.length > 0 && product.images.edges[0].node.transformedSrc;
+        if (mainProductImage) {
+          this.shadow.querySelector('#salestorm-product-image').style.backgroundImage = "url("+mainProductImage+")";
+        }
+        this.setSelectedProductVariant(product);
+        this.shadow.querySelectorAll('.salestorm-product-select').forEach(selectElement => {
+          selectElement.addEventListener('change', () => {
+            const selectedValue = selectElement.value;
+            this.setSelectedProductVariant(product);
+          })
+        });
+      }
+
     }
 
   }
