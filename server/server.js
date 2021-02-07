@@ -19,7 +19,7 @@ import ReactDOMServer from 'react-dom/server';
 import { AppProvider } from '@shopify/polaris';
 import translations from '@shopify/polaris/locales/en.json';
 
-import Popup from '../components/popup/popup';
+import Popup from '../components/popup/preview';
 import config from '../config';
 
 import db from './db';
@@ -63,7 +63,7 @@ app.prepare().then(() => {
         products.includes(parseInt(targetProduct.legacyResourceId, 10))
       );
     });
-
+    console.log(campaign)
     if (campaign) {
       const campaignMarkupHTML = await ReactDOMServer.renderToStaticMarkup(
         <AppProvider i18n={translations}>

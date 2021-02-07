@@ -41,7 +41,6 @@
     '[name=add]',
   ];
   const checkoutButtonSelector = ['[name="checkout"]', 'a[href^="/checkout"]'];
-  const popupId = 'salestorm-overlay-container';
   const continueOriginalClickEvent = new Event(
     'salestorm-continue-original-click-event'
   );
@@ -79,20 +78,13 @@
   };
 
   const showPopup = (trigger) => {
-    const oldPopup = document.getElementById(popupId);
-    if (oldPopup) oldPopup.remove();
+    const oldPopup = document.getElementsByTagName('salestorm-popup');
+    if (oldPopup && oldPopup[0]) oldPopup[0].remove();
     document.body.insertAdjacentHTML('beforeend', popups[trigger]);
-    const popupJS = document.querySelector('#salestorm-popup-script').innerText;
-    if (popupJS) {
-      try {
-        // eslint-disable-next-line no-eval
-        eval(`${popupJS}();`);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      }
+    const newPopup = document.getElementsByTagName('salestorm-popup');
+    if (newPopup && newPopup[0]) {
+      newPopup.setAttribute('visible', 'true');
     }
-    document.getElementById(popupId).style.display = 'flex';
     if (window.Salestorm.hidePopup) {
       document.addEventListener(window.Salestorm.hidePopup.type, () =>
         document.dispatchEvent(continueOriginalClickEvent)

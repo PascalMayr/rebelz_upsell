@@ -1,3 +1,5 @@
+import React from 'react';
+
 import TemplateDebut from './debut/template';
 
 const TemplateLoader = ({ template, ...props }) => {
