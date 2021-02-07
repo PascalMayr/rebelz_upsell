@@ -210,7 +210,9 @@ const New = (props) => {
               const savedCampaign = await saveCampaign(campaign);
               context.setToast({
                 shown: true,
-                content: 'Successfully saved draft campaign',
+                content: campaign.published
+                  ? 'Successfully saved campaign'
+                  : 'Successfully saved draft campaign',
                 isError: false,
               });
               setCampaign({ ...campaign, ...savedCampaign.data });
@@ -347,10 +349,7 @@ const New = (props) => {
                     </div>
                   )}
                   <div className={previewContainerClass}>
-                    <PreviewPopup
-                      campaign={campaign}
-                      preview={preview}
-                    />
+                    <PreviewPopup campaign={campaign} preview={preview} />
                   </div>
                   <MobileDesktopSwitchPreview
                     onSwitch={(value) => setPreview(value)}
