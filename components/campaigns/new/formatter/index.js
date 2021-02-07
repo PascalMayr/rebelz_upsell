@@ -16,9 +16,9 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
     () => [
       {
         id: 'texts',
-        content: 'Texts',
-        accessibilityLabel: 'Texts',
-        panelID: 'texts-panel',
+        content: 'Texts & Actions',
+        accessibilityLabel: 'Texts & Actions',
+        panelID: 'texts-actions-panel',
         styleChoices: [],
       },
       {
