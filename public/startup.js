@@ -83,7 +83,7 @@
     document.body.insertAdjacentHTML('beforeend', popups[trigger]);
     const newPopup = document.getElementsByTagName('salestorm-popup');
     if (newPopup && newPopup[0]) {
-      newPopup.setAttribute('visible', 'true');
+      newPopup[0].setAttribute('visible', 'true');
     }
     if (window.Salestorm.hidePopup) {
       document.addEventListener(window.Salestorm.hidePopup.type, () =>
