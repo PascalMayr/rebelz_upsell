@@ -40,6 +40,9 @@ CREATE EXTENSION citext;
 14. Install and enable the ["Disable Content-Security-Policy" Chrome Extension](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden).
 
 ***Note:***
+In Firefox you can go to about:config and disable "security.csp.enable".
+
+***Note:***
 If you get any problem loading the startup script or the app in the admin panel try to refresh the page, turn off/on the chrome extension or try to access https://loop.salestorm.cc and type again "thisisunsafe".
 
 ## Development guides
