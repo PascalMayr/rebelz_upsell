@@ -14,8 +14,7 @@ const defineCustomElementPopup = (popupID) => `
     connectedCallback() {
       window.Salestorm = {
         popupId: "${popupID}",
-        hidePopup: new Event('salestorm-hide-popup-event'),
-        hideProductDetails: new Event('salestorm-hide-product-details'),
+        hidePopup: new Event('salestorm-hide-popup-event')
       };
       this.setupClickListeners();
       this.setupKeyListeners();
