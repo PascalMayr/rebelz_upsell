@@ -117,6 +117,13 @@ const defineCustomPopupElementDebut = `
         const mainProductImage = product.images.edges.length > 0 && product.images.edges[0].node.transformedSrc;
         if (mainProductImage) {
           this.shadow.querySelector('#salestorm-product-image').style.backgroundImage = "url("+mainProductImage+")";
+        } else {
+          this.shadow.querySelector('#salestorm-product-image').style.backgroundImage = "";
+        }
+        if (product.descriptionHtml === '') {
+          this.shadow.querySelector('#salestorm-campaign-text-seeProductDetailsAction').style.display = 'none';
+        } else {
+          this.shadow.querySelector('#salestorm-campaign-text-seeProductDetailsAction').style.display = 'block';
         }
         this.setSelectedProductVariant(product);
         this.shadow.querySelectorAll('.salestorm-product-select').forEach(selectElement => {
