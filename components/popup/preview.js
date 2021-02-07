@@ -1,21 +1,28 @@
 import React, { useEffect, useRef } from 'react';
 
 import defineCustomElementPopup from './define_custom_element';
-import TitleProduct from './product/title';
-import VariantsProduct from './product/variants';
-import DescriptionProduct from './product/description';
-import getRenderedProductPopup from './get_rendered_product';
 import getAnimationClassPopup from './get_animation_class';
+import getRenderedProductPopup from './get_rendered_product';
 import processCampaignTextsPopup from './process_campaign_texts';
+import TemplateDebut from './templates/debut/template';
 
 const PreviewPopup = ({ campaign, styles }) => {
   // this component serves for the preview to update the shown web component
   // all updates which happen here are also applied to the template trough react
   const webComponentRef = useRef();
+  const webComponentRefShadow =
+    webComponentRef &&
+    webComponentRef.current &&
+    webComponentRef.current.shadowRoot;
   useEffect(() => {
     try {
       // eslint-disable-next-line no-eval
-      eval(defineCustomElementPopup('salestorm-popup-template'));
+      eval(
+        defineCustomElementPopup(
+          'salestorm-popup-template',
+          getRenderedProductPopup(campaign)
+        )
+      );
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
@@ -23,51 +30,39 @@ const PreviewPopup = ({ campaign, styles }) => {
   }, []);
 
   useEffect(() => {
-    if (
-      webComponentRef &&
-      webComponentRef.current &&
-      webComponentRef.current.shadowRoot
-    ) {
-      const webComponentStyleTag = webComponentRef.current.shadowRoot.querySelector(
+    if (webComponentRefShadow) {
+      const popupStyles = webComponentRefShadow.querySelector(
         '#salestorm-popup-styles'
       );
-      if (webComponentStyleTag) {
-        webComponentStyleTag.innerHTML = styles;
+      if (popupStyles) {
+        popupStyles.innerHTML = styles;
       }
     } else {
       return null;
     }
-  }, [styles]);
+  }, [styles, webComponentRefShadow]);
 
   useEffect(() => {
-    if (
-      webComponentRef &&
-      webComponentRef.current &&
-      webComponentRef.current.shadowRoot
-    ) {
+    if (webComponentRefShadow) {
       Object.keys(campaign.texts).forEach((textKey) => {
-        const currentRenderedTextElement = webComponentRef.current.shadowRoot.querySelector(
+        const campaignTextElement = webComponentRefShadow.querySelector(
           `#salestorm-campaign-text-${textKey}`
         );
         if (
-          currentRenderedTextElement &&
-          currentRenderedTextElement.innerHTML !== campaign.texts[textKey]
+          campaignTextElement &&
+          campaignTextElement.innerHTML !== campaign.texts[textKey]
         ) {
-          currentRenderedTextElement.innerHTML = processCampaignTextsPopup(
+          campaignTextElement.innerHTML = processCampaignTextsPopup(
             campaign.texts[textKey]
           );
         }
       });
     }
-  }, [campaign.texts]);
+  }, [campaign.texts, webComponentRefShadow]);
 
   useEffect(() => {
-    if (
-      webComponentRef &&
-      webComponentRef.current &&
-      webComponentRef.current.shadowRoot
-    ) {
-      const popupContainerElement = webComponentRef.current.shadowRoot.querySelector(
+    if (webComponentRefShadow) {
+      const popupContainerElement = webComponentRefShadow.querySelector(
         '#salestorm-popup'
       );
       if (popupContainerElement) {
@@ -78,20 +73,11 @@ const PreviewPopup = ({ campaign, styles }) => {
     } else {
       return null;
     }
-  }, [campaign.animation]);
-
-  const renderedProduct = getRenderedProductPopup(campaign);
+  }, [campaign.animation, webComponentRefShadow]);
 
   return (
     <salestorm-popup ref={webComponentRef}>
-      <TitleProduct slot="product-title">{renderedProduct.title}</TitleProduct>
-      <VariantsProduct
-        slot="product-variations"
-        options={renderedProduct.options}
-      />
-      <DescriptionProduct slot="product-description">
-        {renderedProduct.descriptionHtml}
-      </DescriptionProduct>
+      <TemplateDebut campaign={campaign} styles={styles} />
     </salestorm-popup>
   );
 };

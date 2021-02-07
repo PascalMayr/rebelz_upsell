@@ -2,18 +2,17 @@ import React from 'react';
 import { MobileCancelMajor, ArrowRightMinor } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 
-import TitleProduct from './product/title';
-import VariantsProduct from './product/variants';
-import DescriptionProduct from './product/description';
-import getRenderedProductPopup from './get_rendered_product';
-import getAnimationClassPopup from './get_animation_class';
-import processCampaignTextsPopup from './process_campaign_texts';
+import TitleProduct from '../../product/title';
+import VariantsProduct from '../../product/variants';
+import DescriptionProduct from '../../product/description';
+import getRenderedProductPopup from '../../get_rendered_product';
+import getAnimationClassPopup from '../../get_animation_class';
+import processCampaignTextsPopup from '../../process_campaign_texts';
 
-const TemplatePopup = ({ campaign, styles }) => {
+const TemplateDebut = ({ campaign, styles }) => {
   const renderedProduct = getRenderedProductPopup(campaign);
-
   return (
-    <template id="salestorm-popup-template">
+    <>
       <div id="salestorm-overlay-container">
         <style
           id="salestorm-popup-styles"
@@ -24,9 +23,7 @@ const TemplatePopup = ({ campaign, styles }) => {
           className={getAnimationClassPopup(campaign.animation)}
         >
           <div id="salestorm-popup-header">
-            <slot name="product-title">
-              <TitleProduct>{renderedProduct.title}</TitleProduct>
-            </slot>
+            <TitleProduct>{renderedProduct.title}</TitleProduct>
             <div id="salestorm-popup-close">
               <Icon source={MobileCancelMajor} />
             </div>
@@ -49,9 +46,7 @@ const TemplatePopup = ({ campaign, styles }) => {
                 id="salestorm-campaign-text-subtitle"
               />
               <div>
-                <slot name="product-variations">
-                  <VariantsProduct options={renderedProduct.options} />
-                </slot>
+                <VariantsProduct options={renderedProduct.options} />
               </div>
               <button
                 type="button"
@@ -74,11 +69,9 @@ const TemplatePopup = ({ campaign, styles }) => {
               )}
             </div>
           </div>
-          <slot name="product-description">
-            <DescriptionProduct
-              descriptionHtml={renderedProduct.descriptionHtml}
-            />
-          </slot>
+          <DescriptionProduct
+            descriptionHtml={renderedProduct.descriptionHtml}
+          />
           <div id="salestorm-popup-footer">
             <div
               id="salestorm-campaign-text-dismissAction"
@@ -100,8 +93,8 @@ const TemplatePopup = ({ campaign, styles }) => {
           </div>
         </div>
       </div>
-    </template>
+    </>
   );
 };
 
-export default TemplatePopup;
+export default TemplateDebut;
