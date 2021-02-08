@@ -88,7 +88,8 @@ const defineCustomPopupElementDebut = `
 
     setSelectedProductVariant(product) {
       const sortStringArrayAlphabetically = array => array.sort((a, b) => a.length - b.length);
-      const currentSelectionState = Array.from(this.shadow.querySelectorAll('.salestorm-product-select')).map(selectElement => selectElement.value);
+      const currentRenderedSelects = Array.from(this.shadow.querySelectorAll('.salestorm-product-select'));
+      const currentSelectionState = currentRenderedSelects.map(selectElement => selectElement.value);
       const selectedVariant = product.variants.edges.find(variant => {
         const variantOptionValues = variant.node.selectedOptions.map(selectedOption => selectedOption.value);
         return JSON.stringify(sortStringArrayAlphabetically(variantOptionValues)) === JSON.stringify(sortStringArrayAlphabetically(currentSelectionState));
@@ -105,10 +106,12 @@ const defineCustomPopupElementDebut = `
         this.shadow.querySelector('#salestorm-campaign-text-addToCartUnavailableVariation').classList.add('d-none');
       }
       else {
-        claimOfferButton.classList.disable = true;
-        claimOfferButton.classList.add('offer-button-disabled');
-        this.shadow.querySelector('#salestorm-campaign-text-addToCartAction').classList.add('d-none');
-        this.shadow.querySelector('#salestorm-campaign-text-addToCartUnavailableVariation').classList.remove('d-none');
+        if (currentRenderedSelects.length > 0) {
+          claimOfferButton.classList.disable = true;
+          claimOfferButton.classList.add('offer-button-disabled');
+          this.shadow.querySelector('#salestorm-campaign-text-addToCartAction').classList.add('d-none');
+          this.shadow.querySelector('#salestorm-campaign-text-addToCartUnavailableVariation').classList.remove('d-none');
+        }
       }
     }
 
