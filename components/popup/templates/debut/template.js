@@ -38,7 +38,7 @@ const TemplateDebut = ({ campaign, preview, onStyleChange = () => {} }) => {
     }
   }, []);
   useEffect(() => {
-    onStyleChange(styles)
+    onStyleChange(styles);
   }, [styles, onStyleChange]);
   return (
     <>
