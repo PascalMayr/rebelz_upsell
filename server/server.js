@@ -73,7 +73,7 @@ app.prepare().then(() => {
       );
       ctx.body = {
         html,
-        js: defineCustomPopupElementDebut,
+        js: defineCustomPopupElementDebut(campaign.customJS),
       };
       ctx.status = 200;
     } else {

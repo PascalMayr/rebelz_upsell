@@ -26,6 +26,16 @@ const PreviewPopup = ({ campaign, preview }) => {
     }
   };
 
+  useEffect(() => {
+    try {
+      // eslint-disable-next-line no-eval
+      eval(campaign.customJS);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+  }, [campaign.customJS]);
+
   return (
     <salestorm-popup
       ref={webComponentRef}
