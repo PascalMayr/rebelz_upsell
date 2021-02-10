@@ -102,6 +102,7 @@ const New = (props) => {
     },
     template: 'debut',
     multiCurrencySupport: true,
+    quantityEditable: false,
     texts: {
       title: 'GET {{Discount}} DISCOUNT!',
       subtitle: 'Get this product with a {{Discount}} Discount.',
@@ -297,6 +298,20 @@ const New = (props) => {
                 <span>
                   <strong>
                     {campaign.multiCurrencySupport ? 'enabled' : 'disabled'}
+                  </strong>
+                </span>
+                .
+                &nbsp;
+                <Checkbox
+                  checked={campaign.quantityEditable}
+                  onChange={(value) =>
+                    setCampaignProperty(value, 'quantityEditable')
+                  }
+                />
+                Quantity editable&nbsp;
+                <span>
+                  <strong>
+                    {campaign.quantityEditable ? 'enabled' : 'disabled'}
                   </strong>
                 </span>
                 .

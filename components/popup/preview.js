@@ -43,6 +43,7 @@ const PreviewPopup = ({ campaign, preview }) => {
       texts={JSON.stringify(campaign.texts)}
       multicurrency={campaign.multiCurrencySupport}
       animation={getAnimationClassPopup(campaign.animation)}
+      quantityeditable={campaign.quantityEditable}
     >
       <TemplateLoader
         campaign={campaign}

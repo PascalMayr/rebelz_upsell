@@ -78,7 +78,11 @@ const TemplateDebut = ({ campaign, preview, onStyleChange = () => {} }) => {
                 <VariantsProduct options={renderedProduct.options} />
               </div>
               <div id="salestorm-quantity-selection">
-                <input defaultValue={1} type="number" />
+                <input
+                  defaultValue={1}
+                  type="number"
+                  id="salestorm-product-quantity"
+                />
                 <div id="salestorm-quantity-selection-plus">
                   <Icon source={PlusMinor} />
                 </div>

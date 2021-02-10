@@ -9,7 +9,7 @@ const defineCustomPopupElementDebut = (customJS) => `
     }
 
     static get observedAttributes() {
-      return ['visible', 'product', 'multicurrency', 'texts', 'animation'];
+      return ['visible', 'product', 'multicurrency', 'texts', 'animation', 'quantityeditable'];
     }
 
     attributeChangedCallback(name, _oldValue, newValue) {
@@ -29,6 +29,15 @@ const defineCustomPopupElementDebut = (customJS) => `
       }
       if (name === 'animation') {
         this.updateAnimation(newValue);
+      }
+      if (name === 'quantityeditable') {
+        const quantityInputContainer = this.shadowRoot.querySelector('#salestorm-quantity-selection');
+        if (newValue === "true") {
+          quantityInputContainer.classList.remove('d-none');
+        }
+        else {
+          quantityInputContainer.classList.add('d-none');
+        }
       }
     }
 
