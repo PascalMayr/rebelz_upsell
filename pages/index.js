@@ -126,6 +126,11 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
       }
       secondaryActions={[
         {
+          content: 'Useful Tips & Readings',
+          disabled: false,
+          url: '/tips',
+        },
+        {
           content: 'Upgrade',
           disabled: false,
           url: '/pricing',
