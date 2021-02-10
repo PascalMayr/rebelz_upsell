@@ -203,7 +203,7 @@ const New = (props) => {
       }}
       secondaryActions={[
         {
-          content: campaign.published ? 'Save' : 'Save draft',
+          content: campaign.published ? 'Update' : 'Save draft',
           loading: saveLoading,
           onAction: async () => {
             try {
