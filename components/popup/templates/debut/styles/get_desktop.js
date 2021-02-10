@@ -222,6 +222,48 @@ const getDesktopStyles = (campaign, preview) => {
     padding: 16px 30px;
     padding-top: 0px;
   }
+  #salestorm-quantity-selection {
+    position: relative !important;
+    text-align: left;
+  }
+  #salestorm-quantity-selection > input {
+    margin: 0px;
+    border: 0px;
+    position: relative !important;
+    border-radius: 3px;
+    border-color: inherit;
+    border-width: 0px;
+    border-style: solid;
+    padding: 10px 16px;
+    box-sizing: border-box;
+    width: 100%;
+    background-color: ${tinycolor(styles.popup.backgroundColor).darken(10)};
+    color: ${styles.popup.color};
+    text-align: center;
+    font-size: 16px !important;
+  }
+  #salestorm-quantity-selection-plus {
+    cursor: pointer;
+  }
+  #salestorm-quantity-selection-minus {
+    cursor: pointer;
+  }
+  #salestorm-quantity-selection-plus .Polaris-Icon {
+    position: absolute !important;
+    top: 20%;
+    right: 10px !important;
+    width: 21px !important;
+    height: 21px !important;
+    fill: rgb(255, 255, 255) !important;
+  }
+  #salestorm-quantity-selection-minus .Polaris-Icon {
+    position: absolute !important;
+    top: 20%;
+    left: 10px !important;
+    width: 21px !important;
+    height: 21px !important;
+    fill: rgb(255, 255, 255) !important;
+  }
 `;
 };
 

@@ -39,12 +39,14 @@ const defineCustomPopupElementDebut = `
       this.setupClickListeners();
       this.setupKeyListeners();
       this.setupHidePopupListener();
+      this.setupChangeListeners();
     }
 
     disconnectedCallback() {
       this.removeClickListeners();
       this.removeKeyListeners();
       this.removeHidePopupListener();
+      this.removeChangeListeners();
     }
 
     setupShadow() {
@@ -92,6 +94,10 @@ const defineCustomPopupElementDebut = `
       return this.shadowRoot.querySelector('#salestorm-campaign-text-addToCartUnavailableVariation');
     }
 
+    getQuantityInput() {
+      return this.shadowRoot.querySelector('#salestorm-quantity-selection > input');
+    }
+
     setupClickListeners() {
       const productDetailsMessage = this.getDetailsMessageElement();
       const descriptionElement = this.getProductDescriptionElement();
@@ -105,6 +111,20 @@ const defineCustomPopupElementDebut = `
       dismissAction && dismissAction.addEventListener('click', this.hidePopup);
       const checkoutAction = this.getCheckoutElement();
       checkoutAction && checkoutAction.addEventListener('click', this.hidePopup);
+
+      const quantityInput = this.getQuantityInput();
+      if (quantityInput) {
+        const minus = this.shadowRoot.querySelector('#salestorm-quantity-selection-minus');
+        minus.addEventListener('click', () => {
+          if (quantityInput.value > 1) {
+            quantityInput.value = parseInt(quantityInput.value) - 1;
+          }
+        })
+        const plus = this.shadowRoot.querySelector('#salestorm-quantity-selection-plus');
+        plus.addEventListener('click', () => {
+          quantityInput.value = parseInt(quantityInput.value) + 1;
+        })
+      }
     }
 
     removeClickListeners() {
@@ -150,10 +170,41 @@ const defineCustomPopupElementDebut = `
       })
     }
 
+    setupChangeListeners() {
+      const quantityInput = this.getQuantityInput();
+      if (quantityInput) {
+        quantityInput.addEventListener('change', (event) => {
+          const newValue = event.target.value;
+          if (newValue < 1) {
+            event.target.value = 1;
+            event.target.setAttribute('value', 1);
+          }
+          else {
+            event.target.setAttribute('value', newValue);
+          }
+        })
+      }
+    }
+
+    removeChangeListeners() {
+      const quantityInput = this.getQuantityInput();
+      if (quantityInput) {
+        quantityInput.removeEventListener('change', (event) => {
+          const newValue = event.target.value;
+          if (newValue < 1) {
+            event.target.value = 1;
+            event.target.setAttribute('value', 1);
+          }
+          else {
+            event.target.setAttribute('value', newValue);
+          }
+        })
+      }
+    }
+
     hidePopup() {
       document.dispatchEvent(window.Salestorm.hidePopup);
     }
-
 
     setSelectedProductVariant(product) {
       const sortStringArrayAlphabetically = array => array.sort((a, b) => a.length - b.length);
@@ -284,7 +335,6 @@ const defineCustomPopupElementDebut = `
       }
 
       this.updatePrices(product);
-
     }
 
     updateTexts(texts) {

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { MobileCancelMajor, ArrowRightMinor } from '@shopify/polaris-icons';
+import { MobileCancelMajor, ArrowRightMinor, PlusMinor, MinusMinor } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 
 import TitleProduct from '../../product/title';
@@ -76,6 +76,15 @@ const TemplateDebut = ({ campaign, preview, onStyleChange = () => {} }) => {
               />
               <div>
                 <VariantsProduct options={renderedProduct.options} />
+              </div>
+              <div id="salestorm-quantity-selection">
+                <input defaultValue={1} type="number" />
+                <div id="salestorm-quantity-selection-plus">
+                  <Icon source={PlusMinor} />
+                </div>
+                <div id="salestorm-quantity-selection-minus">
+                  <Icon source={MinusMinor} />
+                </div>
               </div>
               <button
                 id="salestorm-claim-offer-button"

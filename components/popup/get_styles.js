@@ -15,6 +15,14 @@ const getStylesPopup = (
   const getGoogleFontValue = (value) => getFontValue(value).replace(' ', '+');
 
   const campaignCSS = `
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
     .d-none {
       display: none;
     }
