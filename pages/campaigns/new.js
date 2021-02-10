@@ -109,7 +109,7 @@ const New = (props) => {
       addToCartUnavailableVariation: 'Unavailable Variation',
       seeProductDetailsAction: 'See product details',
       dismissAction: 'No thanks',
-      checkoutAction: 'Go to checkout',
+      checkoutAction: 'Go to cart',
     },
     ...props.campaign,
   });
