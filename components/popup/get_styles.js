@@ -14,7 +14,22 @@ const getStylesPopup = (
 
   const getGoogleFontValue = (value) => getFontValue(value).replace(' ', '+');
 
+  // make sure to put @import statements always on top when you edit the campaign CSS
   const campaignCSS = `
+    ${
+      styles.popup.fontFamily.includes('Arial')
+        ? ''
+        : `@import url('https://fonts.googleapis.com/css2?family=${getGoogleFontValue(
+            styles.popup.fontFamily
+          )}');`
+    }
+    ${
+      styles.primaryButtons.fontFamily.includes('Arial')
+        ? ''
+        : `@import url('https://fonts.googleapis.com/css2?family=${getGoogleFontValue(
+            styles.primaryButtons.fontFamily
+          )}');`
+    }
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
       -webkit-appearance: none;
@@ -33,20 +48,6 @@ const getStylesPopup = (
           position: absolute;
           top: 0px;
         }`
-    }
-    ${
-      styles.popup.fontFamily.includes('Arial')
-        ? ''
-        : `@import url('https://fonts.googleapis.com/css2?family=${getGoogleFontValue(
-            styles.popup.fontFamily
-          )}');`
-    }
-    ${
-      styles.primaryButtons.fontFamily.includes('Arial')
-        ? ''
-        : `@import url('https://fonts.googleapis.com/css2?family=${getGoogleFontValue(
-            styles.primaryButtons.fontFamily
-          )}');`
     }
     ${
       preview === 'desktop'
