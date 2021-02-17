@@ -1,0 +1,14 @@
+.salestorm-strategy-settings {
+  display: flex;
+  align-items: flex-end;
+}
+
+.salestorm-strategy-settings > div {
+  margin-right: 1em;
+}
+
+.salestorm-discount {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}

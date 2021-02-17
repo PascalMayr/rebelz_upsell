@@ -1,0 +1,17 @@
+.salestorm-strategies {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.salestorm-strategy-option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.salestorm-general-strategy-settings {
+
+}
