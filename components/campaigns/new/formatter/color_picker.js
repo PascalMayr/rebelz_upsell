@@ -1,5 +1,5 @@
 import { ColorPicker, TextField } from '@shopify/polaris';
-import '../../../../styles/components/new/formatter/color_picker.css';
+import '../../../../styles/components/campaigns/new/formatter/color_picker.css';
 import tinycolor from 'tinycolor2';
 
 const getColorFromColorPicker = (pickedColor, colorModel) => {

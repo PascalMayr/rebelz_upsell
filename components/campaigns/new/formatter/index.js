@@ -1,15 +1,14 @@
 import { useState, useCallback, useMemo } from 'react';
 import { ChoiceList, TextField, Tabs, Select, Button } from '@shopify/polaris';
 import { ReplayMinor } from '@shopify/polaris-icons';
+import { startCasify } from 'casify';
 
 import SalestormColorPicker from './color_picker';
-import '../../../../styles/components/new/formatter/index.css';
+import '../../../../styles/components/campaigns/new/formatter/index.css';
 import BackgroundFormatter from './background';
 import BorderFormatter from './border';
 import BoxShadowFormatter from './box_shadow';
 import TextFormatter from './text';
-
-import { startCasify } from 'casify';
 
 const Formatter = ({ campaign, setCampaignProperty }) => {
   const tabs = useMemo(
