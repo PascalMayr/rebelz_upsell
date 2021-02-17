@@ -1,6 +1,6 @@
-import processCampaignTextsPopup from '../../process_campaign_texts';
+import processCampaignTextsUtil from '../../utils/process_campaign_texts';
 
-const defineCustomPopupElementDebut = (customJS) => `
+const customElement = (customJS) => `
   class SalestormPopupComponent extends HTMLElement {
 
     constructor() {
@@ -12,32 +12,45 @@ const defineCustomPopupElementDebut = (customJS) => `
       return ['visible', 'product', 'multicurrency', 'texts', 'animation', 'quantityeditable'];
     }
 
+    getElement(selector) {
+      return this.shadowRoot.querySelector(selector);
+    }
+
+    getElements(selector) {
+      return this.shadowRoot.querySelectorAll(selector);
+    }
+
     attributeChangedCallback(name, _oldValue, newValue) {
-      if (name === "visible") {
-        if (newValue === "true") {
-          this.shadowRoot.querySelector('#salestorm-overlay-container').style.display = 'flex';
-        }
-        else {
-          this.hidePopup();
-        }
-      }
-      if (name === 'product') {
-        this.updateProduct(JSON.parse(newValue));
-      }
-      if (name === 'texts') {
-        this.updateTexts(JSON.parse(newValue));
-      }
-      if (name === 'animation') {
-        this.updateAnimation(newValue);
-      }
-      if (name === 'quantityeditable') {
-        const quantityInputContainer = this.shadowRoot.querySelector('#salestorm-quantity-selection');
-        if (newValue === "true") {
-          quantityInputContainer.classList.remove('d-none');
-        }
-        else {
-          quantityInputContainer.classList.add('d-none');
-        }
+      switch(name) {
+        case 'visible':
+          if (newValue === "true") {
+            this.getElement('#salestorm-overlay-container').style.display = 'flex';
+          }
+          else {
+            this.hidePopup();
+          };
+        break;
+        case 'product':
+          this.updateProduct(JSON.parse(newValue));
+        break;
+        case 'texts':
+          this.updateTexts(JSON.parse(newValue));
+        break;
+        case 'animation':
+          this.updateAnimation(newValue);
+        break;
+        case 'quantityeditable':
+          const quantityInputContainer = this.getElement('#salestorm-quantity-selection');
+          if (newValue === "true") {
+            quantityInputContainer.classList.remove('d-none');
+          }
+          else {
+            quantityInputContainer.classList.add('d-none');
+          }
+        break;
+        default:
+          console.log('attribute not handled by any function');
+        break;
       }
     }
 
@@ -63,73 +76,29 @@ const defineCustomPopupElementDebut = (customJS) => `
       this.shadowRoot.innerHTML = this.innerHTML;
     }
 
-    toggleDescriptionElement(element) {
-      element.classList.toggle('d-none');
-    }
-
-    getDetailsMessageElement() {
-      return this.shadowRoot.querySelector('#salestorm-campaign-text-seeProductDetailsAction');
-    }
-
-    getCloseButtonElement() {
-      return this.shadowRoot.querySelector('#salestorm-popup-close');
-    }
-
-    getClaimOfferButtonElement() {
-      return this.shadowRoot.querySelector('#salestorm-claim-offer-button');
-    }
-
-    getProductDescriptionElement() {
-      return this.shadowRoot.querySelector('#salestorm-product-description');
-    }
-
-    getDismissActionElement() {
-      return this.shadowRoot.querySelector('#salestorm-campaign-text-dismissAction');
-    }
-
-    getCheckoutElement() {
-      return this.shadowRoot.querySelector('#salestorm-popup-footer-checkout-action');
-    }
-
-    getSelectElements() {
-      return this.shadowRoot.querySelectorAll('.salestorm-product-select');
-    }
-
-    getAddToCartActionElement() {
-      return this.shadowRoot.querySelector('#salestorm-campaign-text-addToCartAction');
-    }
-
-    getAddToCartUnavailableVariationElement() {
-      return this.shadowRoot.querySelector('#salestorm-campaign-text-addToCartUnavailableVariation');
-    }
-
-    getQuantityInput() {
-      return this.shadowRoot.querySelector('#salestorm-quantity-selection > input');
-    }
-
     setupClickListeners() {
-      const productDetailsMessage = this.getDetailsMessageElement();
-      const descriptionElement = this.getProductDescriptionElement();
+      const productDetailsMessage = this.getElement('#salestorm-campaign-text-seeProductDetailsAction');
+      const descriptionElement = this.getElement('#salestorm-product-description');
       if (descriptionElement && productDetailsMessage) {
-        productDetailsMessage.addEventListener('click', () => this.toggleDescriptionElement(descriptionElement));
+        productDetailsMessage.addEventListener('click', () => descriptionElement.classList.toggle('d-none'));
       }
 
-      const closeButton = this.getCloseButtonElement();
+      const closeButton = this.getElement('#salestorm-popup-close');
       closeButton && closeButton.addEventListener('click', this.hidePopup);
-      const dismissAction = this.getDismissActionElement();
+      const dismissAction = this.getElement('#salestorm-campaign-text-dismissAction');
       dismissAction && dismissAction.addEventListener('click', this.hidePopup);
-      const checkoutAction = this.getCheckoutElement();
+      const checkoutAction = this.getElement('#salestorm-popup-footer-checkout-action');
       checkoutAction && checkoutAction.addEventListener('click', this.hidePopup);
 
-      const quantityInput = this.getQuantityInput();
+      const quantityInput = this.getElement('#salestorm-quantity-selection > input');
       if (quantityInput) {
-        const minus = this.shadowRoot.querySelector('#salestorm-quantity-selection-minus');
+        const minus = this.getElement('#salestorm-quantity-selection-minus');
         minus.addEventListener('click', () => {
           if (quantityInput.value > 1) {
             quantityInput.value = parseInt(quantityInput.value) - 1;
           }
         })
-        const plus = this.shadowRoot.querySelector('#salestorm-quantity-selection-plus');
+        const plus = this.getElement('#salestorm-quantity-selection-plus');
         plus.addEventListener('click', () => {
           quantityInput.value = parseInt(quantityInput.value) + 1;
         })
@@ -137,17 +106,17 @@ const defineCustomPopupElementDebut = (customJS) => `
     }
 
     removeClickListeners() {
-      const productDetailsMessage = this.getDetailsMessageElement();
-      const descriptionElement = this.getProductDescriptionElement();
+      const productDetailsMessage = this.getElement('#salestorm-campaign-text-seeProductDetailsAction');
+      const descriptionElement = this.getElement('#salestorm-product-description');
       if (descriptionElement && productDetailsMessage) {
-        productDetailsMessage.removeEventListener('click', this.toggleDescriptionElement);
+        productDetailsMessage.removeEventListener('click', () => descriptionElement.classList.toggle('d-none'));
       }
 
-      const closeButton = this.getCloseButtonElement();
+      const closeButton = this.getElement('#salestorm-popup-close');
       closeButton && closeButton.removeEventListener('click', this.hidePopup);
-      const dismissAction = this.getDismissActionElement();
+      const dismissAction = this.getElement('#salestorm-campaign-text-dismissAction');
       dismissAction && dismissAction.removeEventListener('click', this.hidePopup);
-      const checkoutAction = this.getCheckoutElement();
+      const checkoutAction = this.getElement('#salestorm-popup-footer-checkout-action');
       checkoutAction && checkoutAction.removeEventListener('click', this.hidePopup);
     }
 
@@ -169,18 +138,18 @@ const defineCustomPopupElementDebut = (customJS) => `
 
     setupHidePopupListener() {
       document.addEventListener(window.Salestorm.hidePopup.type, () => {
-        this.shadowRoot.querySelector('#salestorm-overlay-container').style.display = 'none';
+        this.getElement('#salestorm-overlay-container').style.display = 'none';
       })
     }
 
     removeHidePopupListener() {
       document.removeEventListener(window.Salestorm.hidePopup.type, () => {
-        this.shadowRoot.querySelector('#salestorm-overlay-container').style.display = 'none';
+        this.getElement('#salestorm-overlay-container').style.display = 'none';
       })
     }
 
     setupChangeListeners() {
-      const quantityInput = this.getQuantityInput();
+      const quantityInput = this.getElement('#salestorm-quantity-selection > input');
       if (quantityInput) {
         quantityInput.addEventListener('change', (event) => {
           const newValue = event.target.value;
@@ -196,7 +165,7 @@ const defineCustomPopupElementDebut = (customJS) => `
     }
 
     removeChangeListeners() {
-      const quantityInput = this.getQuantityInput();
+      const quantityInput = this.getElement('#salestorm-quantity-selection > input');
       if (quantityInput) {
         quantityInput.removeEventListener('change', (event) => {
           const newValue = event.target.value;
@@ -217,29 +186,29 @@ const defineCustomPopupElementDebut = (customJS) => `
 
     setSelectedProductVariant(product) {
       const sortStringArrayAlphabetically = array => array.sort((a, b) => a.length - b.length);
-      const currentRenderedSelects = Array.from(this.getSelectElements());
+      const currentRenderedSelects = Array.from(this.getElements('.salestorm-product-select'));
       const currentSelectionState = currentRenderedSelects.map(selectElement => selectElement.value);
       const selectedVariant = product.variants.edges.find(variant => {
         const variantOptionValues = variant.node.selectedOptions.map(selectedOption => selectedOption.value);
         return JSON.stringify(sortStringArrayAlphabetically(variantOptionValues)) === JSON.stringify(sortStringArrayAlphabetically(currentSelectionState));
       });
 
-      const claimOfferButton = this.getClaimOfferButtonElement();
+      const claimOfferButton = this.getElement('#salestorm-claim-offer-button');
       if (selectedVariant) {
         if (selectedVariant.node && selectedVariant.node.image) {
-          this.shadowRoot.querySelector('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
+          this.getElement('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
         }
         claimOfferButton.classList.disable = false;
         claimOfferButton.classList.remove('offer-button-disabled');
-        this.getAddToCartActionElement().classList.remove('d-none');
-        this.getAddToCartUnavailableVariationElement().classList.add('d-none');
+        this.getElement('#salestorm-campaign-text-addToCartAction').classList.remove('d-none');
+        this.getElement('#salestorm-campaign-text-addToCartUnavailableVariation').classList.add('d-none');
       }
       else {
         if (currentRenderedSelects.length > 0) {
           claimOfferButton.classList.disable = true;
           claimOfferButton.classList.add('offer-button-disabled');
-          this.getAddToCartActionElement().classList.add('d-none');
-          this.getAddToCartUnavailableVariationElement().classList.remove('d-none');
+          this.getElement('#salestorm-campaign-text-addToCartAction').classList.add('d-none');
+          this.getElement('#salestorm-campaign-text-addToCartUnavailableVariation').classList.remove('d-none');
         }
       }
     }
@@ -282,7 +251,7 @@ const defineCustomPopupElementDebut = (customJS) => `
 
     updatePrices(product) {
       if (Boolean(product.discount)) {
-        const salestormPrices = this.shadowRoot.querySelectorAll('.salestorm-price');
+        const salestormPrices = this.getElements('.salestorm-price');
         const multiCurrencySupport = this.getAttribute("multicurrency") === "true";
         if (product.discount.type !== "%") {
           const baseCurrencyCode = product.discount.type;
@@ -296,7 +265,13 @@ const defineCustomPopupElementDebut = (customJS) => `
           });
 
           salestormPrices.forEach(priceElement => {
-            const priceValue = product.discount.value || 0;
+            let priceValue;
+            if (priceElement.classList.contains('salestorm-discount-value')) {
+              priceValue = product.discount.value || 0;
+            }
+            if (priceElement.classList.contains('salestorm-discounted-price')) {
+              priceValue =  0;
+            }
             let convertedPriceValue = priceValue;
             if (window.Currency && window.Currency.rates && window.Currency.convert && multiCurrencySupport) {
               convertedPriceValue = Math.round(window.Currency.convert(priceValue, baseCurrencyCode, window.Salestorm.currentCurrencyCode));
@@ -316,7 +291,7 @@ const defineCustomPopupElementDebut = (customJS) => `
       const elementUpdateSelectors = ['#salestorm-product-title', '#salestorm-product-variants', '#salestorm-product-description'];
       for (let elementUpdateSelector of elementUpdateSelectors) {
         const updatedNode = document.querySelector(elementUpdateSelector);
-        const oldNode = this.shadowRoot.querySelector(elementUpdateSelector);
+        const oldNode = this.getElement(elementUpdateSelector);
         if (updatedNode && oldNode) {
           oldNode.replaceWith(updatedNode);
         }
@@ -325,17 +300,17 @@ const defineCustomPopupElementDebut = (customJS) => `
       if (product) {
         const mainProductImage = product.images.edges.length > 0 && product.images.edges[0].node.transformedSrc;
         if (mainProductImage) {
-          this.shadowRoot.querySelector('#salestorm-product-image').style.backgroundImage = "url("+mainProductImage+")";
+          this.getElement('#salestorm-product-image').style.backgroundImage = "url("+mainProductImage+")";
         } else {
-          this.shadowRoot.querySelector('#salestorm-product-image').style.backgroundImage = "";
+          this.getElement('#salestorm-product-image').style.backgroundImage = "";
         }
         if (product.descriptionHtml === '') {
-          this.shadowRoot.querySelector('#salestorm-campaign-text-seeProductDetailsAction').style.display = 'none';
+          this.getElement('#salestorm-campaign-text-seeProductDetailsAction').style.display = 'none';
         } else {
-          this.shadowRoot.querySelector('#salestorm-campaign-text-seeProductDetailsAction').style.display = 'block';
+          this.getElement('#salestorm-campaign-text-seeProductDetailsAction').style.display = 'block';
         }
         this.setSelectedProductVariant(product);
-        this.shadowRoot.querySelectorAll('.salestorm-product-select').forEach(selectElement => {
+        this.getElements('.salestorm-product-select').forEach(selectElement => {
           selectElement.addEventListener('change', () => {
             const selectedValue = selectElement.value;
             this.setSelectedProductVariant(product);
@@ -347,16 +322,16 @@ const defineCustomPopupElementDebut = (customJS) => `
     }
 
     updateTexts(texts) {
-      ${processCampaignTextsPopup.toString()}
+      ${processCampaignTextsUtil.toString()}
       Object.keys(texts).forEach((textKey) => {
-        const campaignTextElement = this.shadowRoot.querySelector(
+        const campaignTextElement = this.getElement(
           "#salestorm-campaign-text-" + textKey
         );
         if (
           campaignTextElement &&
           campaignTextElement.innerHTML !== texts[textKey]
         ) {
-          campaignTextElement.innerHTML = processCampaignTextsPopup(
+          campaignTextElement.innerHTML = processCampaignTextsUtil(
             texts[textKey]
           );
         }
@@ -366,7 +341,7 @@ const defineCustomPopupElementDebut = (customJS) => `
     }
 
     updateAnimation(animation) {
-      this.shadowRoot.querySelector('#salestorm-popup').className = animation;
+      this.getElement('#salestorm-popup').className = animation;
     }
 
   }
@@ -376,4 +351,4 @@ const defineCustomPopupElementDebut = (customJS) => `
   ${customJS}
 `;
 
-export default defineCustomPopupElementDebut;
+export default customElement;
