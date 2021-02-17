@@ -1,26 +1,31 @@
 import React, { useEffect } from 'react';
-import { MobileCancelMajor, ArrowRightMinor, PlusMinor, MinusMinor } from '@shopify/polaris-icons';
+import {
+  MobileCancelMajor,
+  ArrowRightMinor,
+  PlusMinor,
+  MinusMinor,
+} from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 
-import TitleProduct from '../../product/title';
-import VariantsProduct from '../../product/variants';
-import DescriptionProduct from '../../product/description';
-import getRenderedProductPopup from '../../get_rendered_product';
-import getAnimationClassPopup from '../../get_animation_class';
-import processCampaignTextsPopup from '../../process_campaign_texts';
-import getStylesPopup from '../../get_styles';
+import getRenderedProductUtil from '../../utils/get_rendered_product';
+import getAnimationClassUtil from '../../utils/get_animation_class';
+import processCampaignTextsUtil from '../../utils/process_campaign_texts';
+import getStylesUtil from '../../utils/get_styles';
 
+import DescriptionProduct from './product/description';
+import VariantsProduct from './product/variants';
+import TitleProduct from './product/title';
 import getMobileStyles from './styles/get_mobile';
 import getTabletStyles from './styles/get_tablet';
 import getDesktopStyles from './styles/get_desktop';
-import defineCustomPopupElementDebut from './define_custom_popup_element';
+import customElement from './custom_element';
 
-const TemplateDebut = ({ campaign, preview, onStyleChange = () => {} }) => {
-  const renderedProduct = getRenderedProductPopup(campaign);
+const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
+  const renderedProduct = getRenderedProductUtil(campaign);
   const mobileStyles = getMobileStyles(campaign, preview);
   const tabletStyles = getTabletStyles(campaign, preview);
   const desktopStyles = getDesktopStyles(campaign, preview);
-  const styles = getStylesPopup(
+  const styles = getStylesUtil(
     campaign,
     preview,
     mobileStyles,
@@ -31,7 +36,7 @@ const TemplateDebut = ({ campaign, preview, onStyleChange = () => {} }) => {
     // initialising the
     try {
       // eslint-disable-next-line no-eval
-      eval(defineCustomPopupElementDebut());
+      eval(customElement());
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
@@ -49,7 +54,7 @@ const TemplateDebut = ({ campaign, preview, onStyleChange = () => {} }) => {
         />
         <div
           id="salestorm-popup"
-          className={getAnimationClassPopup(campaign.animation)}
+          className={getAnimationClassUtil(campaign.animation)}
         >
           <div id="salestorm-popup-header">
             <TitleProduct>{renderedProduct.title}</TitleProduct>
@@ -64,13 +69,13 @@ const TemplateDebut = ({ campaign, preview, onStyleChange = () => {} }) => {
             <div id="salestorm-product-action-container">
               <h3
                 dangerouslySetInnerHTML={{
-                  __html: processCampaignTextsPopup(campaign.texts.title),
+                  __html: processCampaignTextsUtil(campaign.texts.title),
                 }}
                 id="salestorm-campaign-text-title"
               />
               <p
                 dangerouslySetInnerHTML={{
-                  __html: processCampaignTextsPopup(campaign.texts.subtitle),
+                  __html: processCampaignTextsUtil(campaign.texts.subtitle),
                 }}
                 id="salestorm-campaign-text-subtitle"
               />
@@ -78,6 +83,7 @@ const TemplateDebut = ({ campaign, preview, onStyleChange = () => {} }) => {
                 <VariantsProduct options={renderedProduct.options} />
               </div>
               <div id="salestorm-quantity-selection">
+                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                 <input
                   defaultValue={1}
                   type="number"
@@ -90,11 +96,12 @@ const TemplateDebut = ({ campaign, preview, onStyleChange = () => {} }) => {
                   <Icon source={MinusMinor} />
                 </div>
               </div>
+              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
               <button
                 id="salestorm-claim-offer-button"
                 type="button"
                 dangerouslySetInnerHTML={{
-                  __html: processCampaignTextsPopup(
+                  __html: processCampaignTextsUtil(
                     `<span id="salestorm-campaign-text-addToCartAction">${campaign.texts.addToCartAction}</span>
                     <span id="salestorm-campaign-text-addToCartUnavailableVariation" class="d-none">${campaign.texts.addToCartUnavailableVariation}</span>`
                   ),
@@ -103,7 +110,7 @@ const TemplateDebut = ({ campaign, preview, onStyleChange = () => {} }) => {
               {renderedProduct.descriptionHtml !== '' && (
                 <p
                   dangerouslySetInnerHTML={{
-                    __html: processCampaignTextsPopup(
+                    __html: processCampaignTextsUtil(
                       campaign.texts.seeProductDetailsAction
                     ),
                   }}
@@ -119,13 +126,13 @@ const TemplateDebut = ({ campaign, preview, onStyleChange = () => {} }) => {
             <div
               id="salestorm-campaign-text-dismissAction"
               dangerouslySetInnerHTML={{
-                __html: processCampaignTextsPopup(campaign.texts.dismissAction),
+                __html: processCampaignTextsUtil(campaign.texts.dismissAction),
               }}
             />
             <div id="salestorm-popup-footer-checkout-action">
               <span
                 dangerouslySetInnerHTML={{
-                  __html: processCampaignTextsPopup(
+                  __html: processCampaignTextsUtil(
                     campaign.texts.checkoutAction
                   ),
                 }}

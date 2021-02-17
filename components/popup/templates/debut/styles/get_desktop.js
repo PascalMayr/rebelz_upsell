@@ -1,6 +1,6 @@
 import tinycolor from 'tinycolor2';
 
-import convertStyleObjectToStyleStringPopup from '../../../convert_style_object_to_style_string';
+import convertStyleObjectToStyleStringUtil from '../../../utils/convert_style_object_to_style_string';
 
 const getDesktopStyles = (campaign, preview) => {
   const { styles } = campaign;
@@ -45,7 +45,7 @@ const getDesktopStyles = (campaign, preview) => {
     height: ${preview === undefined ? '100vh' : '100%'};
     z-index: 99999 !important;
     transition: 0.25s ease;
-    ${convertStyleObjectToStyleStringPopup(styles.overlay)};
+    ${convertStyleObjectToStyleStringUtil(styles.overlay)};
   }
   #salestorm-popup::-webkit-scrollbar {
     display: none;
@@ -59,7 +59,7 @@ const getDesktopStyles = (campaign, preview) => {
     color: ${styles.popup.color} !important;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    ${convertStyleObjectToStyleStringPopup(styles.popup)};
+    ${convertStyleObjectToStyleStringUtil(styles.popup)};
   }
   #salestorm-popup-close {
     contain: layout;
@@ -68,7 +68,7 @@ const getDesktopStyles = (campaign, preview) => {
     justify-content: center;
     align-items: center;
     transition: 0.25s ease;
-    ${convertStyleObjectToStyleStringPopup(styles.secondaryButtons)};
+    ${convertStyleObjectToStyleStringUtil(styles.secondaryButtons)};
   }
   #salestorm-popup-close > span {
     width: 16px !important;
@@ -199,7 +199,7 @@ const getDesktopStyles = (campaign, preview) => {
     color: ${campaign.styles.primaryButtons.color} !important;
     cursor: pointer;
     transition: 0.25s ease;
-    ${convertStyleObjectToStyleStringPopup(campaign.styles.primaryButtons)};
+    ${convertStyleObjectToStyleStringUtil(campaign.styles.primaryButtons)};
   }
   #salestorm-claim-offer-button:hover {
     background-color: ${tinycolor(styles.primaryButtons.backgroundColor).darken(

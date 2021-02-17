@@ -1,10 +1,10 @@
 import { kebabCasify } from 'casify';
 
-const convertStyleObjectToStyleStringPopup = (styleObject) => {
+const convertStyleObjectToStyleStringUtil = (styleObject) => {
   const kebabCaseStyles = kebabCasify(styleObject);
   return Object.keys(kebabCaseStyles)
     .map((styleKey) => `${styleKey}: ${kebabCaseStyles[styleKey]}`)
     .join(';');
 };
 
-export default convertStyleObjectToStyleStringPopup;
+export default convertStyleObjectToStyleStringUtil;

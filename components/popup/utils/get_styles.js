@@ -1,4 +1,4 @@
-const getStylesPopup = (
+const getStylesUtil = (
   campaign,
   preview,
   mobileStyles = '',
@@ -80,4 +80,4 @@ const getStylesPopup = (
   return campaignCSS;
 };
 
-export default getStylesPopup;
+export default getStylesUtil;

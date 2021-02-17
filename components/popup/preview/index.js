@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 
-import getAnimationClassPopup from './get_animation_class';
-import getRenderedProductPopup from './get_rendered_product';
-import TemplateLoader from './templates';
+import getAnimationClassUtil from '../utils/get_animation_class';
+import getRenderedProductUtil from '../utils/get_rendered_product';
+import TemplateLoader from '../templates';
 
 const PreviewPopup = ({ campaign, preview }) => {
   // this component serves for the preview to update the shown web component
@@ -39,10 +39,10 @@ const PreviewPopup = ({ campaign, preview }) => {
   return (
     <salestorm-popup
       ref={webComponentRef}
-      product={JSON.stringify(getRenderedProductPopup(campaign))}
+      product={JSON.stringify(getRenderedProductUtil(campaign))}
       texts={JSON.stringify(campaign.texts)}
       multicurrency={campaign.multiCurrencySupport}
-      animation={getAnimationClassPopup(campaign.animation)}
+      animation={getAnimationClassUtil(campaign.animation)}
       quantityeditable={campaign.quantityEditable}
     >
       <TemplateLoader

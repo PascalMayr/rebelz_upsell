@@ -48,10 +48,6 @@ const PlaceholderPreview = {
       },
     ],
   },
-  discount: {
-    type: '%',
-    value: 5,
-  },
 };
 
 export default PlaceholderPreview;

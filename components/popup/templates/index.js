@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TemplateDebut from './debut/template';
+import TemplateDebut from './debut/markup';
 
 const TemplateLoader = ({ template, ...props }) => {
   switch (template) {
