@@ -8,12 +8,15 @@ import {
   TextStyle,
   Layout,
   Heading,
+  Tabs,
 } from '@shopify/polaris';
 import { CircleTickOutlineMinor } from '@shopify/polaris-icons';
 import Image from 'next/image';
 import '../styles/pages/index.css';
 import NextLink from 'next/link';
-import { useCallback, useState, useContext } from 'react';
+import { useCallback, useState, useContext, useMemo } from 'react';
+import { useQuery } from 'react-apollo';
+import { gql } from 'apollo-boost';
 
 import toggleStoreEnabled from '../services/toggle_store_enabled';
 import DeleteModal from '../components/delete_modal';
@@ -69,7 +72,7 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
       <div className="no-campaigns-image-section">
         <Image src="/imagination.svg" alt="me" width="250" height="250" />
         <Heading>Welcome to Salestorm Thunder ⚡️</Heading>
-        <br/>
+        <br />
         <p>Follow the steps below to create your first funnel campaign</p>
         <br />
       </div>
@@ -105,15 +108,60 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
     </div>
   );
 
+  const [tab, setTab] = useState(0);
+
+  const tabs = useMemo(() => [
+    {
+      id: 'campaigns',
+      content: 'Campaigns',
+      accessibilityLabel: 'Campaigns',
+      panelID: 'campaigns-panel',
+    },
+    {
+      id: 'design',
+      content: 'Design',
+      accessibilityLabel: 'Design',
+      panelID: 'design-panel',
+    },
+    {
+      id: 'analytics',
+      content: 'Analytics',
+      accessibilityLabel: 'Analytics',
+      panelID: 'analytics-panel',
+    },
+  ]);
+
+  const { id } = tabs[tab];
+
+  const GET_STORE_CURRENCY = gql`
+    query storeCurrency {
+      shop {
+        currencyCode
+      }
+    }
+  `;
+
+  const { data } = useQuery(GET_STORE_CURRENCY);
+  const currencyCode = data && data.shop && data.shop.currencyCode;
+
+  let currencyFormatter;
+  if (currencyCode) {
+    currencyFormatter = new Intl.NumberFormat([], {
+      style: 'currency',
+      currency: currencyCode,
+      currencyDisplay: 'symbol',
+    });
+  }
+
   return (
     <Page
       fullWidth
       titleMetadata={
         <Badge status={priceStatus} progress={priceProgress}>
           <div className="salestorm-pricing-badge">
-            <NextLink href="/pricing">{`${
-              store.plan_name || config.planNames.free.toUpperCase()
-            } Plan`}</NextLink>
+            <NextLink href="/pricing">
+              {`${store.plan_name || config.planNames.free.toUpperCase()} Plan`}
+            </NextLink>
           </div>
         </Badge>
       }
@@ -129,6 +177,7 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
           content: 'Useful Tips & Readings',
           disabled: false,
           url: '/tips',
+          id: 'tips-readings-button',
         },
         {
           content: 'Upgrade',
@@ -160,10 +209,10 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
           <Card>
             <Card.Section title="Total Revenue">
               <p className="salestorm-analytics-subheading">
-                The total impact our app made on your store since.
+                The total impact our App made on your store this month.
               </p>
               <div className="salestorm-analytics-value">
-                <p></p>
+                {currencyFormatter ? currencyFormatter.format(0) : 0}
               </div>
             </Card.Section>
           </Card>
@@ -172,77 +221,82 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
           <Card>
             <Card.Section title="AOV">
               <p className="salestorm-analytics-subheading">
-                Average order value increase by since
+                Average order value increase this month.
               </p>
-              <div className="salestorm-analytics-value">
-                <p></p>
-              </div>
+              <div className="salestorm-analytics-value">0.00 %</div>
             </Card.Section>
           </Card>
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="Funnels enabled">
+            <Card.Section title="Total views">
               <p className="salestorm-analytics-subheading">
-                Total number of active funnels.
+                Total views this month.
               </p>
               <div className="salestorm-analytics-value">
-                <p></p>
+                0 / {store.plan_limit}
               </div>
             </Card.Section>
           </Card>
         </Layout.Section>
       </Layout>
-      <Card>
-        <div className="salestorm-campaigns-overview">
-          <ResourceList
-            resourceName={{ singular: 'campaign', plural: 'campaigns' }}
-            emptyState={emptyStateMarkup}
-            items={persistedCampaigns}
-            renderItem={(campaign) => {
-              const { id, name, published } = campaign;
-              const url = `/campaigns/${id}`;
+      <Tabs
+        tabs={tabs}
+        selected={tab}
+        onSelect={(selectedTabIndex) => setTab(selectedTabIndex)}
+      />
+      {id === 'campaigns' && (
+        <Card>
+          <div className="salestorm-campaigns-overview">
+            <ResourceList
+              resourceName={{ singular: 'campaign', plural: 'campaigns' }}
+              emptyState={emptyStateMarkup}
+              items={persistedCampaigns}
+              renderItem={(campaign) => {
+                const { id, name, published } = campaign;
+                const url = `/campaigns/${id}`;
 
-              return (
-                <ResourceItem
-                  id={id}
-                  url={url}
-                  accessibilityLabel={`View details for ${name}`}
-                  shortcutActions={[
-                    {
-                      content: 'Delete campaign',
-                      destructive: true,
-                      onAction: () => setDeleteModalCampaign(campaign),
-                      size: 'slim',
-                    },
-                  ]}
-                >
-                  <h3 className="campaign-title">
-                    <TextStyle variation="strong">{name}</TextStyle>
-                  </h3>
-                  <Badge status={published ? 'success' : 'attention'}>
-                    {published ? 'Published' : 'Unpublished'}
-                  </Badge>
-                </ResourceItem>
-              );
-            }}
-          />
-        </div>
-        {deleteModalCampaign && (
-          <DeleteModal
-            campaign={deleteModalCampaign}
-            onClose={closeDeleteModal}
-            removeFromList={(deletedCampaign) =>
-              setPersistedCampaigns(
-                persistedCampaigns.filter(
-                  (persistedCampaign) =>
-                    persistedCampaign.id !== deletedCampaign.id
+                return (
+                  <ResourceItem
+                    id={id}
+                    url={url}
+                    accessibilityLabel={`View details for ${name}`}
+                    shortcutActions={[
+                      {
+                        content: 'Delete campaign',
+                        destructive: true,
+                        onAction: () => setDeleteModalCampaign(campaign),
+                        size: 'slim',
+                      },
+                    ]}
+                  >
+                    <h3 className="campaign-title">
+                      <TextStyle variation="strong">{name}</TextStyle>
+                    </h3>
+                    <Badge status={published ? 'success' : 'attention'}>
+                      {published ? 'Published' : 'Unpublished'}
+                    </Badge>
+                  </ResourceItem>
+                );
+              }}
+            />
+          </div>
+          {deleteModalCampaign && (
+            <DeleteModal
+              campaign={deleteModalCampaign}
+              onClose={closeDeleteModal}
+              removeFromList={(deletedCampaign) =>
+                setPersistedCampaigns(
+                  persistedCampaigns.filter(
+                    (persistedCampaign) =>
+                      persistedCampaign.id !== deletedCampaign.id
+                  )
                 )
-              )
-            }
-          />
-        )}
-      </Card>
+              }
+            />
+          )}
+        </Card>
+      )}
     </Page>
   );
 };
