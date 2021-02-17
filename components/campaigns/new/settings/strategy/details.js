@@ -19,8 +19,22 @@ const DetailsStrategy = ({ strategy = DefaultStateStrategy, onChange }) => {
   };
   const { data } = useQuery(GET_STORE_CURRENCY);
   const currencyCode = data && data.shop && data.shop.currencyCode;
+  let salestormStrategyContainerClass;
+  switch (strategy.mode) {
+    case 'free_shipping':
+      salestormStrategyContainerClass =
+        'salestorm-strategy-settings salestorm-free-shipping-strategy';
+      break;
+    case 'gift':
+      salestormStrategyContainerClass =
+        'salestorm-strategy-settings salestorm-free-shipping-strategy';
+      break;
+    default:
+      salestormStrategyContainerClass = 'salestorm-strategy-settings';
+      break;
+  }
   return (
-    <div className="salestorm-strategy-settings">
+    <div className={salestormStrategyContainerClass}>
       {strategy.mode !== 'gift' && (
         <Select
           options={[
