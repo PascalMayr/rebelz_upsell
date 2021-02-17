@@ -65,6 +65,10 @@
   color: #ffffff !important;
 }
 
+#tips-readings-button{
+  margin-right: 1em;
+}
+
 @media only screen and (max-width: 600px) {
   .salestorm-enabled-satus-container {
     justify-content: flex-start;
