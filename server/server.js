@@ -20,7 +20,7 @@ import { AppProvider } from '@shopify/polaris';
 import translations from '@shopify/polaris/locales/en.json';
 
 import Popup from '../components/popup/preview';
-import defineCustomPopupElementDebut from '../components/popup/templates/debut/define_custom_popup_element';
+import customElement from '../components/popup/templates/debut/custom_element';
 import config from '../config';
 
 import db from './db';
@@ -73,7 +73,7 @@ app.prepare().then(() => {
       );
       ctx.body = {
         html,
-        js: defineCustomPopupElementDebut(campaign.customJS),
+        js: customElement(campaign.customJS),
       };
       ctx.status = 200;
     } else {
