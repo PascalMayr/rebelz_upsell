@@ -8,19 +8,19 @@ const BorderFormatter = ({ setStyleProperty, styles }) => {
     top: 0,
   };
 
-  const _getSideBorderWidth = (side) =>
+  const getSideBorderWidth = (side) =>
     styles.borderWidth
       .split(' ')
       .slice([borderWidthShorthandSidesIndex[side]])[0];
 
-  const _getCommonBorderWidth = () => {
+  const getCommonBorderWidth = () => {
     const commonBorderWidth = styles.borderWidth
       .split(' ')
       .find((width) => width !== '0px');
     return commonBorderWidth ? commonBorderWidth : '0px';
   };
 
-  const _getNewSideWidth = (value) => (value ? _getCommonBorderWidth() : '0px');
+  const _getNewSideWidth = (value) => (value ? getCommonBorderWidth() : '0px');
 
   const _createNewShorthandBorderWidth = (side, value) => {
     const borderWidth = styles.borderWidth.split(' ');
@@ -41,7 +41,7 @@ const BorderFormatter = ({ setStyleProperty, styles }) => {
       <div className="salestorm-formatter-range">
         <RangeSlider
           label="Border width in px"
-          value={parseInt(_getCommonBorderWidth(), 10)}
+          value={parseInt(getCommonBorderWidth(), 10)}
           onChange={(value) => {
             setStyleProperty(
               `${value}px ${value}px ${value}px ${value}px`,
@@ -55,7 +55,7 @@ const BorderFormatter = ({ setStyleProperty, styles }) => {
         <div className="salestorm-popup-formatter-left-right-sides">
           <Checkbox
             label="Apply to the left"
-            checked={_getSideBorderWidth('left') !== '0px'}
+            checked={getSideBorderWidth('left') !== '0px'}
             onChange={(value) => {
               setStyleProperty(
                 _createNewShorthandBorderWidth('left', _getNewSideWidth(value)),
@@ -65,7 +65,7 @@ const BorderFormatter = ({ setStyleProperty, styles }) => {
           />
           <Checkbox
             label="Apply to the right"
-            checked={_getSideBorderWidth('right') !== '0px'}
+            checked={getSideBorderWidth('right') !== '0px'}
             onChange={(value) => {
               setStyleProperty(
                 _createNewShorthandBorderWidth(
@@ -80,7 +80,7 @@ const BorderFormatter = ({ setStyleProperty, styles }) => {
         <div className="salestorm-popup-formatter-top-bottom-sides">
           <Checkbox
             label="Apply to the top"
-            checked={_getSideBorderWidth('top') !== '0px'}
+            checked={getSideBorderWidth('top') !== '0px'}
             onChange={(value) => {
               setStyleProperty(
                 _createNewShorthandBorderWidth('top', _getNewSideWidth(value)),
@@ -90,7 +90,7 @@ const BorderFormatter = ({ setStyleProperty, styles }) => {
           />
           <Checkbox
             label="Apply to the bottom"
-            checked={_getSideBorderWidth('bottom') !== '0px'}
+            checked={getSideBorderWidth('bottom') !== '0px'}
             onChange={(value) => {
               setStyleProperty(
                 _createNewShorthandBorderWidth(
