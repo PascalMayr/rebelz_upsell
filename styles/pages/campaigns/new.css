@@ -16,13 +16,6 @@ html {
   margin-top: 2em;
 }
 
-.salestorm-card-section-subtitle {
-  color: rgb(109, 113, 117);
-  display: flex;
-  align-items: center;
-  margin-bottom: 1em;
-}
-
 .salestorm-rerender-container {
   min-height: 500px;
   width: 100%;
@@ -69,4 +62,16 @@ html {
   width: 600px;
   height: 800px;
   margin: 0 auto;
+}
+
+.salestorm-advanced-formatter-settings-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.salestorm-auto-selling-settings {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
