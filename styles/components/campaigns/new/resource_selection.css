@@ -1,0 +1,87 @@
+.salestorm-selected-resources {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1em;
+}
+
+.salestorm-resource-tag {
+  margin-right: 1em;
+  margin-top: 1em;
+}
+
+.salestorm-resource-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.salestorm-resource-discount {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.salestorm-resources {
+  margin-bottom: 1em;
+}
+
+.salestorm-resource-item-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.salestorm-resource-item-info > img {
+  width: 75px;
+  min-height: 60px;
+  border-radius: 5px;
+}
+
+.salestorm-resource-image-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 75px;
+  height: 55px;
+  border-radius: 5px;
+  border-style: dotted;
+  border-color: rgb(109, 113, 117);
+  border-width: 1px;
+  fill: rgb(109, 113, 117);
+}
+
+.salestorm-resource-item-info > span {
+  margin-left: 1em;
+}
+
+.salestorm-resource-remove {
+  width: 25px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 50px;
+  margin-left: 1em;
+}
+
+.salestorm-resource-remove:hover {
+  transition: all 0.25s ease;
+  background-color: rgba(0,0,0);
+  fill: rgb(255, 255, 255);
+}
+
+.salestorm-add-resource-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.salestorm-resource-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.salestorm-resource-selections {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

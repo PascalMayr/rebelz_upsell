@@ -5,14 +5,14 @@ import {
   ResourceList,
   ResourceItem,
   TextStyle,
-  TextField,
-  Select,
   Icon,
 } from '@shopify/polaris';
 import { MobileCancelMajor, ImageMajor } from '@shopify/polaris-icons';
-import { ApolloConsumer, useQuery } from 'react-apollo';
+import { ApolloConsumer } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import '../../../styles/components/new/resource_selection.css';
+
+import DetailsStrategy from './settings/strategy/details';
+import '../../../styles/components/campaigns/new/resource_selection.css';
 
 const GET_PRODUCT = gql`
   query Product($id: ID!) {
@@ -57,10 +57,14 @@ const GET_PRODUCT = gql`
   }
 `;
 
-const GET_STORE_CURRENCY = gql`
-  query storeCurrency {
-    shop {
-      currencyCode
+const GET_COLLECTION = gql`
+  query Product($id: ID!) {
+    collection(id: $id) {
+      id
+      image {
+        transformedSrc(maxHeight: 75)
+      }
+      title
     }
   }
 `;
@@ -70,17 +74,38 @@ const ResourceSelectionCampaign = ({
   buttonProps,
   resources = [],
   onResourceMutation,
-  applyDiscount,
+  setCampaignProperty,
+  strategy,
 }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { label } = buttonProps;
-  const { data } = useQuery(GET_STORE_CURRENCY);
-  const currencyCode = data && data.shop && data.shop.currencyCode;
   const removeResource = (id) => {
     onResourceMutation(
       resources.filter((findResource) => findResource.id !== id)
     );
+  };
+  const getInitialSelectionIds = (helper) => {
+    return helper.map((resource) => {
+      if (resourcePickerProps.resourceType === 'Product' && resource) {
+        return {
+          id: resource.id,
+          variants: resource.variants.edges.map((edge) => edge.node.id),
+        };
+      } else if (
+        resourcePickerProps.resourceType === 'Collection' &&
+        resource
+      ) {
+        return {
+          id: resource.id,
+        };
+      } else {
+        return {
+          id: '',
+          variants: '',
+        };
+      }
+    });
   };
   return (
     <>
@@ -88,21 +113,28 @@ const ResourceSelectionCampaign = ({
         <ResourceList
           items={resources}
           renderItem={(resource) => {
-            const { title, id, images, discount } = resource;
+            const { title, id } = resource;
             let thumbnail;
-            if (images.edges.length > 0) {
-              thumbnail = (
-                <img
-                  src={images.edges[0].node.transformedSrc}
-                  alt={images.edges[0].node.altText}
-                />
-              );
+            const ThumbnailPlaceholder = () => (
+              <div className="salestorm-resource-image-placeholder">
+                <Icon source={ImageMajor} />
+              </div>
+            );
+            if (resourcePickerProps.resourceType === 'Product') {
+              if (resource.images.edges.length > 0) {
+                thumbnail = (
+                  <img
+                    src={resource.images.edges[0].node.transformedSrc}
+                    alt={resource.images.edges[0].node.altText}
+                  />
+                );
+              } else {
+                thumbnail = <ThumbnailPlaceholder />;
+              }
+            } else if (resource.image) {
+              thumbnail = <img src={resource.image} alt={title} />;
             } else {
-              thumbnail = (
-                <div className="salestorm-resource-image-placeholder">
-                  <Icon source={ImageMajor} />
-                </div>
-              );
+              thumbnail = <ThumbnailPlaceholder />;
             }
             return (
               <ResourceItem
@@ -110,57 +142,39 @@ const ResourceSelectionCampaign = ({
                 accessibilityLabel={`View details for ${title}`}
                 key={`${id}-resource`}
               >
-                <div className="salestorm-resource-item">
-                  <div className="salestorm-resource-item-info">
-                    {thumbnail}
-                    <TextStyle variation="strong">{title}</TextStyle>
-                  </div>
-                  <div className="salestorm-resource-actions">
-                    {applyDiscount && (
-                      <div className="salestorm-resource-discount">
-                        <TextField
-                          value={`${discount.value}`}
-                          onChange={(value) => {
-                            const helperResources = resources.map(
-                              (helperResource) => {
-                                if (helperResource.id === id) {
-                                  helperResource.discount.value = value;
-                                }
-                                return helperResource;
-                              }
-                            );
-                            onResourceMutation(helperResources);
-                          }}
-                          placeholder="Discount"
-                        />
-                        <Select
-                          options={[
-                            { label: currencyCode, value: currencyCode },
-                            { label: '%', value: '%' },
-                          ]}
-                          onChange={(value) => {
-                            const helperResources = resources.map(
-                              (helperResource) => {
-                                if (helperResource.id === id) {
-                                  helperResource.discount.type = value;
-                                }
-                                return helperResource;
-                              }
-                            );
-                            onResourceMutation(helperResources);
-                          }}
-                          value={discount.type}
-                        />
+                <div className="salestorm-resource-item-container">
+                  <div className="salestorm-resource-item">
+                    <div className="salestorm-resource-item-info">
+                      {thumbnail}
+                      <TextStyle variation="strong">{title}</TextStyle>
+                    </div>
+                    <div className="salestorm-resource-actions">
+                      <div
+                        className="salestorm-resource-remove"
+                        onClick={() => removeResource(id)}
+                        onKeyDown={() => removeResource(id)}
+                      >
+                        <Icon source={MobileCancelMajor} />
                       </div>
-                    )}
-                    <div
-                      className="salestorm-resource-remove"
-                      onClick={() => removeResource(id)}
-                      onKeyDown={() => removeResource(id)}
-                    >
-                      <Icon source={MobileCancelMajor} />
                     </div>
                   </div>
+                  {resource.strategy && resources.length > 1 && (
+                    <>
+                      <br />
+                      <DetailsStrategy
+                        strategy={resource.strategy}
+                        onChange={(newDiscountStrategy) => {
+                          setCampaignProperty(
+                            {
+                              ...strategy,
+                              ...newDiscountStrategy,
+                            },
+                            'strategy'
+                          );
+                        }}
+                      />
+                    </>
+                  )}
                 </div>
               </ResourceItem>
             );
@@ -171,6 +185,7 @@ const ResourceSelectionCampaign = ({
         {(client) => (
           <ResourcePicker
             {...resourcePickerProps}
+            initialSelectionIds={getInitialSelectionIds(resources)}
             open={open}
             onCancel={() => setOpen(false)}
             onSelection={async (selectPayload) => {
@@ -188,12 +203,14 @@ const ResourceSelectionCampaign = ({
                         },
                       });
                       const productData = product.data.product;
-                      return applyDiscount
-                        ? {
-                            ...productData,
-                            discount: { type: currencyCode, value: 5 },
-                          }
-                        : productData;
+                      if (strategy) {
+                        return {
+                          ...productData,
+                          strategy,
+                        };
+                      } else {
+                        return productData;
+                      }
                     } catch (error) {
                       console.log(
                         `Failed to load product data for product: ${title}`
@@ -204,7 +221,28 @@ const ResourceSelectionCampaign = ({
                 setLoading(false);
                 onResourceMutation(products);
               } else {
-                onResourceMutation(selectPayload.selection);
+                setLoading(true);
+                const collections = await Promise.all(
+                  selectPayload.selection.map(async (resource) => {
+                    const { id, title } = resource;
+                    try {
+                      const collection = await client.query({
+                        query: GET_COLLECTION,
+                        variables: {
+                          id,
+                        },
+                      });
+                      const collectionData = collection.data.collection;
+                      return collectionData;
+                    } catch (error) {
+                      console.log(
+                        `Failed to load collection data for collection: ${title}`
+                      );
+                    }
+                  })
+                );
+                setLoading(false);
+                onResourceMutation(collections);
               }
             }}
           />
