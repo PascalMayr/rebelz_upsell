@@ -74,7 +74,6 @@ const ResourceSelectionCampaign = ({
   buttonProps,
   resources = [],
   onResourceMutation,
-  setCampaignProperty,
   strategy,
 }) => {
   const [open, setOpen] = useState(false);
@@ -164,13 +163,15 @@ const ResourceSelectionCampaign = ({
                       <DetailsStrategy
                         strategy={resource.strategy}
                         onChange={(newDiscountStrategy) => {
-                          setCampaignProperty(
-                            {
-                              ...strategy,
-                              ...newDiscountStrategy,
-                            },
-                            'strategy'
+                          const helperResources = resources;
+                          const modifiedResource = helperResources.find(
+                            (currentResource) =>
+                              currentResource.id === resource.id
                           );
+                          if (modifiedResource) {
+                            modifiedResource.strategy = newDiscountStrategy;
+                          }
+                          onResourceMutation(helperResources);
                         }}
                       />
                     </>
