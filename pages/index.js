@@ -244,6 +244,7 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
         tabs={tabs}
         selected={tab}
         onSelect={(selectedTabIndex) => setTab(selectedTabIndex)}
+        fitted
       />
       {id === 'campaigns' && (
         <Card>
