@@ -86,7 +86,7 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
                 id="salestorm-campaign-text-subtitle"
               />
               <div>
-                <VariantsProduct options={renderedProduct.options} />
+                <VariantsProduct />
               </div>
               <div id="salestorm-quantity-selection">
                 {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
