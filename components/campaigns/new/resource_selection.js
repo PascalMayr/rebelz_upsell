@@ -21,19 +21,19 @@ const GET_PRODUCT = gql`
       legacyResourceId
       title
       descriptionHtml
+      hasOutOfStockVariants
+      hasOnlyDefaultVariant
+      totalVariants
+      status
+      handle
       options(first: 3) {
         values
         name
         position
       }
-      legacyResourceId
-      images(first: 1) {
-        edges {
-          node {
-            transformedSrc(maxHeight: 500)
-            altText
-          }
-        }
+      featuredImage {
+        transformedSrc(maxHeight: 500)
+        altText
       }
       variants(first: 10) {
         edges {
@@ -41,6 +41,7 @@ const GET_PRODUCT = gql`
             title
             id
             legacyResourceId
+            availableForSale
             selectedOptions {
               name
               value
@@ -120,11 +121,14 @@ const ResourceSelectionCampaign = ({
               </div>
             );
             if (resourcePickerProps.resourceType === 'Product') {
-              if (resource.images.edges.length > 0) {
+              if (
+                resource.featuredImage &&
+                resource.featuredImage.transformedSrc
+              ) {
                 thumbnail = (
                   <img
-                    src={resource.images.edges[0].node.transformedSrc}
-                    alt={resource.images.edges[0].node.altText}
+                    src={resource.featuredImage.transformedSrc}
+                    alt={resource.featuredImage.altText}
                   />
                 );
               } else {
@@ -204,14 +208,10 @@ const ResourceSelectionCampaign = ({
                         },
                       });
                       const productData = product.data.product;
-                      if (strategy) {
-                        return {
-                          ...productData,
-                          strategy,
-                        };
-                      } else {
-                        return productData;
-                      }
+
+                      productData.strategy = strategy;
+
+                      return productData;
                     } catch (error) {
                       console.log(
                         `Failed to load product data for product: ${title}`
