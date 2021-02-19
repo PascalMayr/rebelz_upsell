@@ -285,6 +285,20 @@ const New = (props) => {
                       placeholder={campaign.strategy.maxItemValue}
                       suffix={currencyCode}
                     />
+                    <TextField
+                      type="number"
+                      min="0"
+                      value={campaign.strategy.maxNumberOfItems}
+                      id="maxNumberOfItems"
+                      onChange={(value) =>
+                        setCampaignProperty(
+                          { ...campaign.strategy, maxNumberOfItems: value },
+                          'strategy'
+                        )
+                      }
+                      label="Max number of items"
+                      placeholder={campaign.strategy.maxNumberOfItems}
+                    />
                   </div>
                 </Card.Section>
                 <Card.Section>
