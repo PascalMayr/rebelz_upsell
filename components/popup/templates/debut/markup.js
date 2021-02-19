@@ -63,9 +63,15 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
             </div>
           </div>
           <div id="salestorm-product">
-            <div id="salestorm-product-image-container">
+            <a id="salestorm-product-image-container">
+              <div
+                id="salestorm-countdown-container"
+                dangerouslySetInnerHTML={{
+                  __html: processCampaignTextsUtil(campaign.texts.countdown),
+                }}
+              />
               <div id="salestorm-product-image" />
-            </div>
+            </a>
             <div id="salestorm-product-action-container">
               <h3
                 dangerouslySetInnerHTML={{

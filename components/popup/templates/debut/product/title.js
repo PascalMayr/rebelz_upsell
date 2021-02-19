@@ -1,9 +1,9 @@
 import React from 'react';
 
 const TitleProduct = ({ children, ...props }) => (
-  <div id="salestorm-product-title" {...props}>
+  <a id="salestorm-product-title" {...props}>
     {children}
-  </div>
+  </a>
 );
 
 export default TitleProduct;
