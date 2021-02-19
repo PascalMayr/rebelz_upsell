@@ -9,7 +9,7 @@ const customElement = (customJS) => `
     }
 
     static get observedAttributes() {
-      return ['visible', 'product', 'multicurrency', 'texts', 'animation', 'quantityeditable'];
+      return ['visible', 'product', 'texts', 'animation', 'quantityeditable', 'linktoproduct', 'multicurrency', 'hideoutofstockproducts', 'showcountdown', 'countdowntime'];
     }
 
     getElement(selector) {
@@ -46,6 +46,21 @@ const customElement = (customJS) => `
           }
           else {
             quantityInputContainer.classList.add('d-none');
+          }
+        break;
+        case 'linktoproduct':
+          if(newValue === 'true') {
+            const product = JSON.parse(this.getAttribute('product'));
+            this.updateProductLink("/products/"+product.handle);
+          } else {
+            this.updateProductLink("#");
+          }
+        break;
+        case 'showcountdown':
+          if (newValue === 'true') {
+            this.getElement('#salestorm-countdown-container').classList.remove('d-none');
+          } else {
+            this.getElement('#salestorm-countdown-container').classList.add('d-none');
           }
         break;
         default:
