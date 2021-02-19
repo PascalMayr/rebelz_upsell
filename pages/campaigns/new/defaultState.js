@@ -67,7 +67,7 @@ const DefaultStateStyle = {
     fontFamily: "'Open Sans', sans-serif",
     color: 'rgb(255, 255, 255)',
   },
-}
+};
 
 const DefaultStateNew = {
   name: '',
