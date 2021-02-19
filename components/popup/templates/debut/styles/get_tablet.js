@@ -13,7 +13,6 @@ const getTabletStyles = (campaign) => {
     }
     #salestorm-product-image-container {
       width: 100%;
-      height: 300px;
     }
     #salestorm-product-action-container {
       width: 100%;

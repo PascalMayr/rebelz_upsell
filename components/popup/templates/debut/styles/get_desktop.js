@@ -93,6 +93,8 @@ const getDesktopStyles = (campaign, preview) => {
   #salestorm-product-title {
     font-size: 23px !important;
     max-width: 75% !important;
+    color: ${styles.popup.color};
+    text-decoration: none;
   }
   #salestorm-popup-footer {
     width: 100%;
@@ -123,7 +125,8 @@ const getDesktopStyles = (campaign, preview) => {
   }
   #salestorm-product-image-container {
     width: 254px;
-    height: 254px;
+    text-decoration: none;
+    color: ${styles.popup.color};
   }
   #salestorm-product-image {
     padding-top: 254px;
@@ -249,20 +252,25 @@ const getDesktopStyles = (campaign, preview) => {
     cursor: pointer;
   }
   #salestorm-quantity-selection-plus .Polaris-Icon {
-    position: absolute !important;
+    position: absolute;
     top: 20%;
-    right: 10px !important;
-    width: 21px !important;
-    height: 21px !important;
-    fill: rgb(255, 255, 255) !important;
+    right: 10px;
+    width: 21px;
+    height: 21px;
+    fill: rgb(255, 255, 255);
   }
   #salestorm-quantity-selection-minus .Polaris-Icon {
-    position: absolute !important;
+    position: absolute;
     top: 20%;
-    left: 10px !important;
-    width: 21px !important;
-    height: 21px !important;
-    fill: rgb(255, 255, 255) !important;
+    left: 10px;
+    width: 21px;
+    height: 21px;
+    fill: rgb(255, 255, 255);
+  }
+  #salestorm-countdown-container {
+    font-size: 18px;
+    text-align: center;
+    padding-bottom: 16px;
   }
 `;
 };

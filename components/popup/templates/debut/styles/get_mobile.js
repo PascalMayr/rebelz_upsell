@@ -9,7 +9,9 @@ const getMobileStyles = () => `
   }
   #salestorm-product-image-container {
     width: 100%;
-    height: 200px;
+  }
+  #salestorm-product-title {
+    font-size: 20px !important;
   }
 `;
 
