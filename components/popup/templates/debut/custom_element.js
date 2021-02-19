@@ -56,7 +56,8 @@ const customElement = (customJS) => `
 
     connectedCallback() {
       window.Salestorm = {
-        hidePopup: new Event('salestorm-hide-popup-event')
+        hidePopup: new Event('salestorm-hide-popup-event'),
+        skipOffer: new Event('salestorm-skip-offer'),
       };
       this.setupClickListeners();
       this.setupKeyListeners();
