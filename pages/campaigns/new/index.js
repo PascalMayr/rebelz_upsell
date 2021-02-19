@@ -247,7 +247,7 @@ const New = (props) => {
                   resourcePickerProps={{
                     resourceType: 'Product',
                     selectMultiple: true,
-                    showVariants: true,
+                    showVariants: false,
                   }}
                   buttonProps={{
                     primary: true,
