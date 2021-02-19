@@ -94,6 +94,8 @@ const DefaultStateNew = {
     quantityEditable: true,
     linkToProduct: true,
     hideOutOfStockProducts: true,
+    showCountdown: true,
+    countdownTime: '00:00',
   },
   texts: {
     title: 'GET {{Discount}} DISCOUNT!',

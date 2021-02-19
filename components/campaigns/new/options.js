@@ -1,4 +1,4 @@
-import { Checkbox } from '@shopify/polaris';
+import { Checkbox, TextField } from '@shopify/polaris';
 import '../../../styles/components/campaigns/new/options.css';
 
 const Options = ({ campaign, setCampaignProperty }) => {
@@ -8,16 +8,18 @@ const Options = ({ campaign, setCampaignProperty }) => {
     quantityEditable,
     linkToProduct,
     hideOutOfStockProducts,
+    showCountdown,
+    countdownTime
   } = options;
   return (
     <div className="salestorm-options">
-      <div oneHalf>
+      <div>
         <Checkbox
           checked={linkToProduct}
           onChange={(value) =>
             setCampaignProperty({ ...options, linkToProduct: value }, 'options')
           }
-          label="Link to the product on Title and Image."
+          label={<span><strong>Link</strong> to the product.</span>}
         />
         <Checkbox
           checked={hideOutOfStockProducts}
@@ -27,10 +29,10 @@ const Options = ({ campaign, setCampaignProperty }) => {
               'options'
             )
           }
-          label="Hide out of stock products."
+          label={<span><strong>Hide</strong> out of stock products.</span>}
         />
       </div>
-      <div oneHalf>
+      <div>
         <Checkbox
           checked={multiCurrencySupport}
           onChange={(value) =>
@@ -39,7 +41,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
               'options'
             )
           }
-          label="Enable Multi Currency Support."
+          label={<span><strong>Enable</strong> Multi Currency Support.</span>}
         />
         <Checkbox
           checked={quantityEditable}
@@ -49,7 +51,25 @@ const Options = ({ campaign, setCampaignProperty }) => {
               'options'
             )
           }
-          label="Let the quantity be modified."
+          label={<span><strong>Enable</strong> clients set offer quantities.</span>}
+        />
+      </div>
+      <div>
+        <Checkbox
+          checked={showCountdown}
+          onChange={(value) =>
+            setCampaignProperty({ ...options, showCountdown: value }, 'options')
+          }
+          label={<span><strong>Show</strong> a countdown until end/next offer.</span>}
+        />
+        <TextField
+          type="time"
+          disabled={!showCountdown}
+          value={countdownTime}
+          onChange={(value) =>
+            setCampaignProperty({ ...options, countdownTime: value }, 'options')
+          }
+          suffix="Minutes"
         />
       </div>
     </div>
