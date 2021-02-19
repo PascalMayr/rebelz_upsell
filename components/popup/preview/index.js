@@ -41,9 +41,8 @@ const PreviewPopup = ({ campaign, preview }) => {
       ref={webComponentRef}
       product={JSON.stringify(getRenderedProductUtil(campaign))}
       texts={JSON.stringify(campaign.texts)}
-      multicurrency={campaign.multiCurrencySupport}
       animation={getAnimationClassUtil(campaign.animation)}
-      quantityeditable={campaign.quantityEditable}
+      {...campaign.options}
     >
       <TemplateLoader
         campaign={campaign}
