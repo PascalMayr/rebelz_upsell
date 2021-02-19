@@ -101,12 +101,13 @@ const DefaultStateNew = {
   texts: {
     title: 'GET {{Discount}} DISCOUNT!',
     subtitle:
-      'Get this product with a {{Discount}} Discount for just {{DiscountedPrice}}.',
+      'Get this product with a {{Discount}} Discount.',
     addToCartAction: 'Claim offer!',
     addToCartUnavailableVariation: 'Unavailable Variation',
     seeProductDetailsAction: 'See product details',
     dismissAction: 'No thanks',
     checkoutAction: 'Go to cart',
+    countdown: 'Offer expires in {{Countdown}}',
   },
   customCSS: '',
   customJS: '',
