@@ -186,13 +186,12 @@ const customElement = (customJS) => `
 
     setSelectedProductVariant(product) {
       const sortStringArrayAlphabetically = array => array.sort((a, b) => a.length - b.length);
-      const currentRenderedSelects = Array.from(this.getElements('.salestorm-product-select'));
+      const currentRenderedSelects = Array.from(this.getElements('.cloned-select .salestorm-product-select'));
       const currentSelectionState = currentRenderedSelects.map(selectElement => selectElement.value);
       const selectedVariant = product.variants.edges.find(variant => {
         const variantOptionValues = variant.node.selectedOptions.map(selectedOption => selectedOption.value);
         return JSON.stringify(sortStringArrayAlphabetically(variantOptionValues)) === JSON.stringify(sortStringArrayAlphabetically(currentSelectionState));
       });
-
       const claimOfferButton = this.getElement('#salestorm-claim-offer-button');
       if (selectedVariant) {
         if (selectedVariant.node && selectedVariant.node.image) {
@@ -287,18 +286,42 @@ const customElement = (customJS) => `
       }
     }
 
-    updateProduct(product) {
-      const elementUpdateSelectors = ['#salestorm-product-title', '#salestorm-product-variants', '#salestorm-product-description'];
-      for (let elementUpdateSelector of elementUpdateSelectors) {
-        const updatedNode = document.querySelector(elementUpdateSelector);
-        const oldNode = this.getElement(elementUpdateSelector);
-        if (updatedNode && oldNode) {
-          oldNode.replaceWith(updatedNode);
-        }
-      }
+    updateProductLink(link) {
+      const titleProduct = this.getElement('#salestorm-product-title');
+      const productImageContainer = this.getElement('#salestorm-product-image-container');
+      titleProduct.href = link;
+      productImageContainer.href = link;
+    }
 
+    updateProduct(product) {
       if (product) {
-        const mainProductImage = product.images.edges.length > 0 && product.images.edges[0].node.transformedSrc;
+        const variantsContainer = this.shadowRoot.querySelector('#salestorm-product-variants');
+        const selectContainerTemplate = this.getElement('.salestorm-product-select-container');
+        const oldSelectContainers = this.getElements('.cloned-select');
+        for (const oldSelectContainer of oldSelectContainers) {
+          oldSelectContainer.remove();
+        }
+        if (!product.hasOnlyDefaultVariant) {
+          variantsContainer.classList.remove('d-none');
+          product.options.forEach(option => {
+            const currentSelectContainer = selectContainerTemplate.cloneNode(true);
+            currentSelectContainer.classList.add('cloned-select');
+            const currentSelect = currentSelectContainer.querySelector('.salestorm-product-select');
+            option.values.forEach((value) => {
+              const currentOption = document.createElement('option');
+              currentOption.value = value;
+              currentOption.innerHTML = value;
+              currentSelect.appendChild(currentOption);
+            });
+            currentSelectContainer.appendChild(currentSelect);
+            currentSelectContainer.classList.remove('d-none');
+            variantsContainer.appendChild(currentSelectContainer);
+          });
+        } else {
+          variantsContainer.classList.add('d-none');
+        }
+        this.getElement('#salestorm-product-title').innerHTML = product.title;
+        const mainProductImage = product.featuredImage && product.featuredImage.transformedSrc;
         if (mainProductImage) {
           this.getElement('#salestorm-product-image').style.backgroundImage = "url("+mainProductImage+")";
         } else {
@@ -307,6 +330,7 @@ const customElement = (customJS) => `
         if (product.descriptionHtml === '') {
           this.getElement('#salestorm-campaign-text-seeProductDetailsAction').style.display = 'none';
         } else {
+          this.getElement('#salestorm-product-description').innerHTML = product.descriptionHtml;
           this.getElement('#salestorm-campaign-text-seeProductDetailsAction').style.display = 'block';
         }
         this.setSelectedProductVariant(product);
@@ -317,7 +341,6 @@ const customElement = (customJS) => `
           })
         });
       }
-
       this.updatePrices(product);
     }
 
