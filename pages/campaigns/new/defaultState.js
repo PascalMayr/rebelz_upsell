@@ -4,7 +4,7 @@ const DefaultStateStrategy = {
   maxOrderValue: 0,
   minOrderValue: 0,
   maxItemValue: 0,
-  maxNumberOfItems: 0,
+  maxNumberOfItems: 3,
   discount: {
     type: '%',
     value: 0,
