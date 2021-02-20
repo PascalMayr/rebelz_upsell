@@ -96,7 +96,7 @@ const DefaultStateNew = {
     linkToProduct: true,
     hideOutOfStockProducts: true,
     showCountdown: true,
-    countdownTime: '00:00',
+    countdownTime: '05:00',
   },
   texts: {
     title: 'GET {{Discount}} DISCOUNT!',
@@ -107,7 +107,7 @@ const DefaultStateNew = {
     seeProductDetailsAction: 'See product details',
     dismissAction: 'No thanks',
     checkoutAction: 'Go to cart',
-    countdown: 'Offer expires in {{Countdown}}',
+    countdown: 'Offer expires in {{Countdown}} minutes',
   },
   customCSS: '',
   customJS: '',

@@ -56,6 +56,7 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
           id="salestorm-popup"
           className={getAnimationClassUtil(campaign.animation)}
         >
+          <div id="salestorm-progress-bar-container" />
           <div id="salestorm-popup-header">
             <TitleProduct>{renderedProduct.title}</TitleProduct>
             <div id="salestorm-popup-close">
@@ -64,15 +65,15 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
           </div>
           <div id="salestorm-product">
             <a id="salestorm-product-image-container">
+              <div id="salestorm-product-image" />
+            </a>
+            <div id="salestorm-product-action-container">
               <div
                 id="salestorm-countdown-container"
                 dangerouslySetInnerHTML={{
                   __html: processCampaignTextsUtil(campaign.texts.countdown),
                 }}
               />
-              <div id="salestorm-product-image" />
-            </a>
-            <div id="salestorm-product-action-container">
               <h3
                 dangerouslySetInnerHTML={{
                   __html: processCampaignTextsUtil(campaign.texts.title),

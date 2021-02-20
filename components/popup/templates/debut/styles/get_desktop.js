@@ -272,6 +272,26 @@ const getDesktopStyles = (campaign, preview) => {
     text-align: center;
     padding-bottom: 16px;
   }
+  #salestorm-progress-bar-container {
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .salestorm-progress-bar-wrapper {
+    background-color: ${tinycolor(styles.popup.backgroundColor).lighten(10)};
+    border-radius: 3px;
+  }
+  .salestorm-progress-bar {
+    height: 5px;
+    background: orange;
+    width: 0px;
+    border-radius: 3px;
+    transition: all ease 0.25s;
+    color: ${styles.secondaryButtons.backgroundColor};
+  }
 `;
 };
 

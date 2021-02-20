@@ -36,12 +36,18 @@ const PreviewPopup = ({ campaign, preview }) => {
     }
   }, [campaign.customJS]);
 
+
+  const offers =
+    campaign.selling.mode === 'manual' ? campaign.selling.products.length : 1;
+
   return (
     <salestorm-popup
       ref={webComponentRef}
       product={JSON.stringify(getRenderedProductUtil(campaign))}
       texts={JSON.stringify(campaign.texts)}
       animation={getAnimationClassUtil(campaign.animation)}
+      offers={offers}
+      currentoffer={1}
       {...campaign.options}
     >
       <TemplateLoader

@@ -2,6 +2,7 @@ import processCampaignTextsUtil from '../../utils/process_campaign_texts';
 
 const customElement = (customJS) => `
   class SalestormPopupComponent extends HTMLElement {
+    countdownIntervalId;
 
     constructor() {
       super();
@@ -9,7 +10,7 @@ const customElement = (customJS) => `
     }
 
     static get observedAttributes() {
-      return ['visible', 'product', 'texts', 'animation', 'quantityeditable', 'linktoproduct', 'multicurrency', 'hideoutofstockproducts', 'showcountdown', 'countdowntime'];
+      return ['visible', 'product', 'texts', 'animation', 'quantityeditable', 'linktoproduct', 'multicurrency', 'hideoutofstockproducts', 'showcountdown', 'countdowntime', 'offers', 'currentoffer'];
     }
 
     getElement(selector) {
@@ -20,7 +21,7 @@ const customElement = (customJS) => `
       return this.shadowRoot.querySelectorAll(selector);
     }
 
-    attributeChangedCallback(name, _oldValue, newValue) {
+    attributeChangedCallback(name, oldValue, newValue) {
       switch(name) {
         case 'visible':
           if (newValue === "true") {
@@ -59,8 +60,21 @@ const customElement = (customJS) => `
         case 'showcountdown':
           if (newValue === 'true') {
             this.getElement('#salestorm-countdown-container').classList.remove('d-none');
+            this.getElement('#salestorm-progress-bar-container').classList.remove('d-none');
           } else {
+            clearInterval(this.countdownIntervalId);
+            this.getElement('#salestorm-progress-bar-container').classList.add('d-none');
             this.getElement('#salestorm-countdown-container').classList.add('d-none');
+          }
+        break;
+        case 'countdowntime':
+          if (this.getAttribute('showcountdown') === 'true') {
+            if (oldValue) {
+              clearInterval(this.countdownIntervalId);
+              this.countdownIntervalId = this.startCountdown(newValue);
+            } else {
+              this.countdownIntervalId = this.startCountdown(newValue);
+            }
           }
         break;
         default:
@@ -197,6 +211,7 @@ const customElement = (customJS) => `
     }
 
     hidePopup() {
+      clearInterval(this.countdownIntervalId);
       document.dispatchEvent(window.Salestorm.hidePopup);
     }
 
@@ -377,6 +392,55 @@ const customElement = (customJS) => `
       });
       const product = this.getAttribute('product');
       this.updatePrices(JSON.parse(product));
+    }
+
+    startCountdown(initialTime) {
+      const offers = parseInt(this.getAttribute('offers'));
+      const progressBarsContainer = this.getElement('#salestorm-progress-bar-container');
+      const oldProgressBars = this.getElements('.salestorm-progress-bar-wrapper');
+      if (oldProgressBars) {
+        for (let oldProgressBar of oldProgressBars) {
+          oldProgressBar.remove();
+        }
+      }
+      for (let i = 0; i < offers; i++) {
+        const progressBar = document.createElement('div');
+        progressBar.classList.add('salestorm-progress-bar');
+        const progressBarWrapper = document.createElement('div');
+        progressBarWrapper.classList.add('salestorm-progress-bar-wrapper');
+        progressBarWrapper.style.width = offers > 1 ? 98 / offers + "%" : "100%";
+        progressBarWrapper.appendChild(progressBar);
+        progressBarsContainer.appendChild(progressBarWrapper);
+      }
+      const timeElement = this.getElement('#salestorm-countdown');
+      timeElement.innerText = initialTime;
+	    const time = initialTime.split(':');
+      const minutes = parseInt(time[0]);
+      const seconds = parseInt(time[1]);
+      let totalSeconds = (minutes * 60 + seconds).toFixed(3);
+      const prepend = (number) => number.toString().length == 1 ? "0"+number.toString() : number;
+      let progress = 0;
+      const onePercentage = (100 / totalSeconds);
+      const countdown = setInterval(() => {
+        if (totalSeconds > 0) {
+          totalSeconds--;
+          progress = progress + onePercentage;
+          const currentOffer = parseInt(this.getAttribute('currentoffer')) - 1;
+          const displayedProgressBars = Array.from(this.getElements('.salestorm-progress-bar'));
+          displayedProgressBars[currentOffer].style.width = progress + "%";
+          const currentMinutes = Math.floor(totalSeconds / 60);
+          const currentSeconds = totalSeconds - currentMinutes * 60;
+          timeElement.innerText = prepend(currentMinutes) + ":" + prepend(currentSeconds);
+        } else {
+          if (offers > 1) {
+            document.dispatchEvent(window.Salestorm.skipOffer);
+          } else {
+            document.dispatchEvent(window.Salestorm.hidePopup);
+          }
+          clearInterval(countdown);
+        }
+      }, 1000);
+      return countdown;
     }
 
     updateAnimation(animation) {
