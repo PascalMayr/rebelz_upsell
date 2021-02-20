@@ -203,7 +203,6 @@ const New = (props) => {
                 resourcePickerProps={{
                   resourceType: 'Collection',
                   selectMultiple: true,
-                  showVariants: true,
                   showDraftBadge: true,
                   showArchivedBadge: true,
                 }}
@@ -246,8 +245,10 @@ const New = (props) => {
                 <ResourceSelectionCampaign
                   resourcePickerProps={{
                     resourceType: 'Product',
-                    selectMultiple: true,
+                    selectMultiple: false,
                     showVariants: false,
+                    showDraftBadge: true,
+                    showArchivedBadge: true,
                   }}
                   buttonProps={{
                     primary: true,
@@ -307,7 +308,7 @@ const New = (props) => {
                       resourcePickerProps={{
                         resourceType: 'Product',
                         selectMultiple: true,
-                        showVariants: true,
+                        showVariants: false,
                       }}
                       buttonProps={{
                         primary: true,
