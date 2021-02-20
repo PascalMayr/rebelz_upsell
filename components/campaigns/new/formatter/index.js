@@ -235,7 +235,7 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
           )}
           {id === 'customJS' && (
             <TextField
-              placeholder="/* Use this field to add custom Javascript &hearts; */"
+              placeholder="/* Use this field to add custom Javascript &hearts; You can also make use of our global available Events: window.Salestorm.hidePopup, window.Salestorm.skipOffer. */"
               value={campaign.customJS}
               onChange={(value) => {
                 setCampaignProperty(value, 'customJS');
