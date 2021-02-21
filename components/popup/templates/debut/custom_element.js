@@ -292,42 +292,48 @@ const customElement = (customJS) => `
       return null;
     }
 
-    updatePrices(product) {
-      if (Boolean(product.discount)) {
-        const salestormPrices = this.getElements('.salestorm-price');
-        const multiCurrencySupport = this.getAttribute("multicurrency") === "true";
-        if (product.discount.type !== "%") {
-          const baseCurrencyCode = product.discount.type;
-          window.Salestorm.currentCurrencyCode = (multiCurrencySupport && this.getDisplayedStoreCurrencyCode())|| baseCurrencyCode;
+    createCurrencyFormatter(baseCurrencyCode) {
+      const multiCurrencySupport = this.getAttribute("multicurrency") === "true";
+      window.Salestorm.currentCurrencyCode = (multiCurrencySupport && this.getDisplayedStoreCurrencyCode())|| baseCurrencyCode;
+      const currencyFormatter = new Intl.NumberFormat([], {
+        style: 'currency',
+        currency: window.Salestorm.currentCurrencyCode,
+        currencyDisplay: 'symbol',
+        maximumSignificantDigits: 3
+      });
+      return currencyFormatter;
+    }
 
-          const currencyFormatter = new Intl.NumberFormat([], {
-            style: 'currency',
-            currency: window.Salestorm.currentCurrencyCode,
-            currencyDisplay: 'symbol',
-            maximumSignificantDigits: 3
-          });
-
-          salestormPrices.forEach(priceElement => {
-            let priceValue;
-            if (priceElement.classList.contains('salestorm-discount-value')) {
-              priceValue = product.discount.value || 0;
-            }
-            if (priceElement.classList.contains('salestorm-discounted-price')) {
-              priceValue =  0;
-            }
-            let convertedPriceValue = priceValue;
-            if (window.Currency && window.Currency.rates && window.Currency.convert && multiCurrencySupport) {
-              convertedPriceValue = Math.round(window.Currency.convert(priceValue, baseCurrencyCode, window.Salestorm.currentCurrencyCode));
-            }
-            priceElement.innerText = currencyFormatter.format(convertedPriceValue);
+    updateDiscounts(product) {
+      if (Boolean(product.strategy.discount)) {
+        const discounts = this.getElements('.salestorm-discount');
+        if (product.strategy.discount.type !== "%") {
+          const currencyFormatter = this.createCurrencyFormatter(product.strategy.discount.type);
+          discounts.forEach(discount => {
+            const discountValue = product.strategy.discount.value || 0;
+            const convertedDiscountValue = this.converPriceToCurrentCurrencyCode(discountValue, product.strategy.discount.type);
+            discount.innerHTML = currencyFormatter.format(convertedDiscountValue);
           });
         }
         else {
-          salestormPrices.forEach(priceElement => {
-            priceElement.innerText = product.discount.value + "%";
+          discounts.forEach(discount => {
+            discount.innerHTML = product.strategy.discount.value + "%";
           });
         }
       }
+    }
+
+    converPriceToCurrentCurrencyCode(price, baseCurrencyCode) {
+      const multiCurrencySupport = this.getAttribute("multicurrency") === "true";
+      let convertedPriceValue = price;
+      if (window.Currency && window.Currency.rates && window.Currency.convert && multiCurrencySupport) {
+        convertedPriceValue = Math.round(window.Currency.convert(price, baseCurrencyCode, window.Salestorm.currentCurrencyCode));
+      };
+      return convertedPriceValue;
+    }
+
+    updatePrices(product) {
+      this.updateDiscounts(product);
     }
 
     updateProductLink(link) {
