@@ -103,7 +103,7 @@ const DefaultStateNew = {
     subtitle:
       'Get this product with a {{Discount}} Discount.',
     addToCartAction: 'Claim offer!',
-    addToCartUnavailableVariation: 'Unavailable Variation',
+    addToCartUnavailable: 'Unavailable',
     seeProductDetailsAction: 'See product details',
     dismissAction: 'No thanks',
     checkoutAction: 'Go to cart',

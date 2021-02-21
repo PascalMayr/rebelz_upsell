@@ -110,7 +110,7 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
                 dangerouslySetInnerHTML={{
                   __html: processCampaignTextsUtil(
                     `<span id="salestorm-campaign-text-addToCartAction">${campaign.texts.addToCartAction}</span>
-                    <span id="salestorm-campaign-text-addToCartUnavailableVariation" class="d-none">${campaign.texts.addToCartUnavailableVariation}</span>`
+                    <span id="salestorm-campaign-text-addToCartUnavailable" class="d-none">${campaign.texts.addToCartUnavailable}</span>`
                   ),
                 }}
               />
