@@ -7,7 +7,7 @@ const DefaultStateStrategy = {
   maxNumberOfItems: 3,
   discount: {
     type: '%',
-    value: 0,
+    value: 5,
   },
 };
 
