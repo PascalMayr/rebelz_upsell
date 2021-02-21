@@ -10,7 +10,7 @@ const customElement = (customJS) => `
     }
 
     static get observedAttributes() {
-      return ['visible', 'product', 'texts', 'animation', 'quantityeditable', 'linktoproduct', 'multicurrency', 'hideoutofstockproducts', 'showcountdown', 'countdowntime', 'offers', 'currentoffer'];
+      return ['visible', 'product', 'texts', 'animation', 'quantityeditable', 'linktoproduct', 'multicurrency', 'enableoutofstockproducts', 'showcountdown', 'countdowntime', 'offers', 'currentoffer'];
     }
 
     getElement(selector) {

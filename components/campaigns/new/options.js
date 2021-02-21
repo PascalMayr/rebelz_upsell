@@ -7,7 +7,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
     multiCurrencySupport,
     quantityEditable,
     linkToProduct,
-    hideOutOfStockProducts,
+    enableOutOfStockProducts,
     showCountdown,
     countdownTime
   } = options;
@@ -22,14 +22,14 @@ const Options = ({ campaign, setCampaignProperty }) => {
           label={<span><strong>Link</strong> to the product.</span>}
         />
         <Checkbox
-          checked={hideOutOfStockProducts}
+          checked={enableOutOfStockProducts}
           onChange={(value) =>
             setCampaignProperty(
-              { ...options, hideOutOfStockProducts: value },
+              { ...options, enableOutOfStockProducts: value },
               'options'
             )
           }
-          label={<span><strong>Hide</strong> out of stock products.</span>}
+          label={<span><strong>Enable</strong> buying out of stock products.</span>}
         />
       </div>
       <div>

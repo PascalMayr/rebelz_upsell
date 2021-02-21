@@ -94,7 +94,7 @@ const DefaultStateNew = {
     multiCurrencySupport: true,
     quantityEditable: true,
     linkToProduct: true,
-    hideOutOfStockProducts: true,
+    enableOutOfStockProducts: false,
     showCountdown: true,
     countdownTime: '05:00',
   },
