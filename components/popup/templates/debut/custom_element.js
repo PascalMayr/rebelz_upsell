@@ -215,6 +215,25 @@ const customElement = (customJS) => `
       document.dispatchEvent(window.Salestorm.hidePopup);
     }
 
+    disablePurchase() {
+      const claimOfferButton = this.getElement('#salestorm-claim-offer-button');
+      claimOfferButton.classList.disable = true;
+      claimOfferButton.classList.add('offer-button-disabled');
+      this.getElement('#salestorm-campaign-text-addToCartAction').classList.add('d-none');
+      this.getElement('#salestorm-campaign-text-addToCartUnavailable').classList.remove('d-none');
+    }
+
+    enablePurchase(selectedVariant) {
+      const claimOfferButton = this.getElement('#salestorm-claim-offer-button');
+      if (selectedVariant.node && selectedVariant.node.image) {
+        this.getElement('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
+      }
+      claimOfferButton.classList.disable = false;
+      claimOfferButton.classList.remove('offer-button-disabled');
+      this.getElement('#salestorm-campaign-text-addToCartAction').classList.remove('d-none');
+      this.getElement('#salestorm-campaign-text-addToCartUnavailable').classList.add('d-none');
+    }
+
     setSelectedProductVariant(product) {
       const sortStringArrayAlphabetically = array => array.sort((a, b) => a.length - b.length);
       const currentRenderedSelects = Array.from(this.getElements('.cloned-select .salestorm-product-select'));
@@ -223,22 +242,16 @@ const customElement = (customJS) => `
         const variantOptionValues = variant.node.selectedOptions.map(selectedOption => selectedOption.value);
         return JSON.stringify(sortStringArrayAlphabetically(variantOptionValues)) === JSON.stringify(sortStringArrayAlphabetically(currentSelectionState));
       });
-      const claimOfferButton = this.getElement('#salestorm-claim-offer-button');
       if (selectedVariant) {
-        if (selectedVariant.node && selectedVariant.node.image) {
-          this.getElement('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
+        this.enablePurchase(selectedVariant);
+        const enableoutofstockproducts = this.getAttribute('enableoutofstockproducts') === 'false';
+        if (enableoutofstockproducts && !selectedVariant.node.availableForSale) {
+          this.disablePurchase();
         }
-        claimOfferButton.classList.disable = false;
-        claimOfferButton.classList.remove('offer-button-disabled');
-        this.getElement('#salestorm-campaign-text-addToCartAction').classList.remove('d-none');
-        this.getElement('#salestorm-campaign-text-addToCartUnavailableVariation').classList.add('d-none');
       }
       else {
         if (currentRenderedSelects.length > 0) {
-          claimOfferButton.classList.disable = true;
-          claimOfferButton.classList.add('offer-button-disabled');
-          this.getElement('#salestorm-campaign-text-addToCartAction').classList.add('d-none');
-          this.getElement('#salestorm-campaign-text-addToCartUnavailableVariation').classList.remove('d-none');
+          this.disablePurchase();
         }
       }
     }
