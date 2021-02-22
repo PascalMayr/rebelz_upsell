@@ -9,8 +9,21 @@ import {
   Layout,
   Heading,
   Tabs,
+  Icon,
 } from '@shopify/polaris';
-import { CircleTickOutlineMinor } from '@shopify/polaris-icons';
+import {
+  CircleTickOutlineMinor,
+  DuplicateMinor,
+  DeleteMinor,
+  CartMajor,
+  HeartMajor,
+  ProductsMajor,
+  ViewMajor,
+  ReplaceMajor,
+  CartUpMajor,
+  EditMinor,
+  CircleDisableMinor
+} from '@shopify/polaris-icons';
 import Image from 'next/image';
 import '../styles/pages/index.css';
 import NextLink from 'next/link';
@@ -254,28 +267,82 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
               emptyState={emptyStateMarkup}
               items={persistedCampaigns}
               renderItem={(campaign) => {
-                const { id, name, published } = campaign;
+                const { name, published, targets, strategy } = campaign;
                 const url = `/campaigns/${id}`;
-
+                const page = targets.page;
+                const sellType = strategy.sellType;
                 return (
                   <ResourceItem
-                    id={id}
+                    id={campaign.id}
                     url={url}
                     accessibilityLabel={`View details for ${name}`}
                     shortcutActions={[
                       {
+                        content: 'Edit campaign',
+                        icon: EditMinor,
+                        onAction: () => (window.location.href = url),
+                      },
+                      {
+                        content: 'Duplicate campaign',
+                        icon: DuplicateMinor,
+                        onAction: () => {},
+                      },
+                      {
+                        content: 'Unpusblish campaign',
+                        icon: CircleDisableMinor,
+                        onAction: () => {},
+                      },
+                      {
                         content: 'Delete campaign',
                         destructive: true,
                         onAction: () => setDeleteModalCampaign(campaign),
-                        size: 'slim',
+                        icon: DeleteMinor,
                       },
                     ]}
+                    persistActions
                   >
-                    <h3 className="campaign-title">
-                      <TextStyle variation="strong">{name}</TextStyle>
+                    <h3 className="salestorm-campaign-title">
+                      <TextStyle>{name}</TextStyle>
                     </h3>
                     <Badge status={published ? 'success' : 'attention'}>
-                      {published ? 'Published' : 'Unpublished'}
+                      <Icon source={ViewMajor} />
+                      {published ? ' Published' : ' Unpublished'}
+                    </Badge>
+                    <Badge status="info">
+                      {page === 'add_to_cart' && (
+                        <>
+                          <Icon source={ProductsMajor} />
+                          {' Product Page'}
+                        </>
+                      )}
+                      {page === 'checkout' && (
+                        <>
+                          <Icon source={CartMajor} />
+                          {' Cart Page'}
+                        </>
+                      )}
+                      {page === 'thank_you' && (
+                        <>
+                          <Icon source={HeartMajor} />
+                          {' Thank you Page'}
+                        </>
+                      )}
+                    </Badge>
+                    <Badge>
+                      {
+                        sellType === 'upsell' &&
+                        <>
+                          <Icon source={ReplaceMajor} />
+                          Upsell
+                        </>
+                      }
+                      {
+                        sellType === 'cross_sell' &&
+                        <>
+                          <Icon source={CartUpMajor} />
+                          Cross sell
+                        </>
+                      }
                     </Badge>
                   </ResourceItem>
                 );

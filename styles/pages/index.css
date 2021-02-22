@@ -82,9 +82,27 @@
   }
 }
 
-.campaign-title {
+.salestorm-campaigns-overview .Polaris-ResourceItem__Content{
+  display: flex;
+  align-items: center;
+}
+
+.salestorm-campaigns-overview .Polaris-Badge{
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+}
+
+.salestorm-campaigns-overview .Polaris-Badge .Polaris-Icon{
+  margin-right: 0.5em;
+  height: 1.8rem;
+}
+
+.salestorm-campaign-title {
   display: inline-block;
   margin-right: 1em;
+  font-size: 1.2em;
 }
 
 .salestorm-pricing-badge > a {
