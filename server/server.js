@@ -259,7 +259,6 @@ app.prepare().then(() => {
       const query = `Update campaigns SET ${keysArray
         .map((key, index) => `"${key}" = $${index + 1}`)
         .join(', ')} WHERE id = $${keysArray.length + 1} RETURNING *`;
-      console.log(query);
       return query;
     };
 
