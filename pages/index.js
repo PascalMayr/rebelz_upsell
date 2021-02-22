@@ -268,7 +268,7 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
               items={persistedCampaigns}
               renderItem={(campaign) => {
                 const { name, published, targets, strategy } = campaign;
-                const url = `/campaigns/${id}`;
+                const url = `/campaigns/${campaign.id}`;
                 const page = targets.page;
                 const sellType = strategy.sellType;
                 return (
