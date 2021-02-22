@@ -242,67 +242,42 @@ app.prepare().then(() => {
   });
 
   router.post('/api/save-campaign', verifyRequest(), async (ctx) => {
-    const {
-      styles,
-      trigger,
-      sellType,
-      name,
-      products,
-      customCSS,
-      customJS,
-      animation,
-      multiCurrencySupport,
-      texts,
-    } = ctx.request.body;
-    let campaign;
-    if (ctx.request.body.id) {
-      campaign = await db.query(
-        'UPDATE campaigns SET styles = $1, trigger = $2, "sellType" = $3, name = $4, products = $5, "customCSS" = $6, "customJS" = $7, animation = $8, "multiCurrencySupport" = $9, texts = $10 WHERE id = $11 RETURNING *',
-        [
-          styles,
-          trigger,
-          sellType,
-          name,
-          products,
-          customCSS,
-          customJS,
-          animation,
-          multiCurrencySupport,
-          texts,
-          ctx.request.body.id,
-        ]
-      );
-    } else {
-      campaign = await db.query(
-        `INSERT INTO campaigns${db.insertColumns(
-          'domain',
-          'styles',
-          'trigger',
-          '"sellType"',
-          'name',
-          'products',
-          '"customCSS"',
-          '"customJS"',
-          'animation',
-          '"multiCurrencySupport"',
-          'texts'
-        )} RETURNING *`,
-        [
-          ctx.session.shop,
-          styles,
-          trigger,
-          sellType,
-          name,
-          products,
-          customCSS,
-          customJS,
-          animation,
-          multiCurrencySupport,
-          texts,
-        ]
-      );
-    }
+    const requestBody = ctx.request.body;
 
+    let campaign;
+
+    const createUpdateArray = (body) => {
+      const id = body.id;
+      delete body.id;
+      return Object.keys(body)
+        .map((key) => body[key])
+        .concat([id]);
+    };
+
+    const createUpdateQuery = (body) => {
+      const keysArray = Object.keys(body);
+      const query = `Update campaigns SET ${keysArray
+        .map((key, index) => `"${key}" = $${index + 1}`)
+        .join(', ')} WHERE id = $${keysArray.length + 1} RETURNING *`;
+      console.log(query);
+      return query;
+    };
+
+    if (requestBody.id) {
+      const updateValues = createUpdateArray(requestBody);
+      campaign = await db.query(createUpdateQuery(requestBody), updateValues);
+    } else {
+      const helper = requestBody;
+      helper.domain = ctx.session.shop;
+      const columns = Object.keys(helper).map((key) => `"${key}"`);
+      const helperArray = Object.keys(helper).map((key) => helper[key]);
+      const query = `INSERT INTO campaigns (${columns.join(
+        ','
+      )}) VALUES (${columns
+        .map((_col, i) => `$${i + 1}`)
+        .join(',')}) RETURNING *`;
+      campaign = await db.query(query, [...helperArray]);
+    }
     ctx.body = campaign.rows[0];
     ctx.status = 200;
   });
