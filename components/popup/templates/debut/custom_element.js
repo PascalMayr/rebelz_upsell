@@ -372,16 +372,22 @@ const customElement = (customJS) => `
         }
         this.getElement('#salestorm-product-title').innerHTML = product.title;
         const mainProductImage = product.featuredImage && product.featuredImage.transformedSrc;
-        if (mainProductImage) {
-          this.getElement('#salestorm-product-image').style.backgroundImage = "url("+mainProductImage+")";
+        const imageElement = this.getElement('#salestorm-product-image');
+        if (mainProductImage && imageElement) {
+          imageElement.style.backgroundImage = "url("+mainProductImage+")";
         } else {
-          this.getElement('#salestorm-product-image').style.backgroundImage = "";
+          imageElement.style.backgroundImage = "";
         }
+        const productDetailsActionElement = this.getElement('#salestorm-campaign-text-seeProductDetailsAction');
         if (product.descriptionHtml === '') {
-          this.getElement('#salestorm-campaign-text-seeProductDetailsAction').style.display = 'none';
+          if (productDetailsActionElement) {
+            productDetailsActionElement.style.display = 'none';
+          }
         } else {
           this.getElement('#salestorm-product-description').innerHTML = product.descriptionHtml;
-          this.getElement('#salestorm-campaign-text-seeProductDetailsAction').style.display = 'block';
+          if (productDetailsActionElement) {
+            productDetailsActionElement.style.display = 'block';
+          }
         }
         this.setSelectedProductVariant(product);
         this.getElements('.salestorm-product-select').forEach(selectElement => {
