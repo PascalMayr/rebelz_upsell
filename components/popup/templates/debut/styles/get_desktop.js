@@ -286,11 +286,10 @@ const getDesktopStyles = (campaign, preview) => {
   }
   .salestorm-progress-bar {
     height: 5px;
-    background: orange;
     width: 0px;
     border-radius: 3px;
     transition: all ease 0.25s;
-    color: ${styles.secondaryButtons.backgroundColor};
+    background-color: ${styles.primaryButtons.backgroundColor};
   }
 `;
 };
