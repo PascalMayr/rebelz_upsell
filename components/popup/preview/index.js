@@ -44,6 +44,7 @@ const PreviewPopup = ({ campaign, preview }) => {
       animation={getAnimationClassUtil(campaign.styles.animation)}
       offers={1}
       currentoffer={1}
+      id={`salestorm-campaign-${campaign.id ? campaign.id : ''}`}
       {...campaign.options}
     >
       <TemplateLoader

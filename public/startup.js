@@ -1,13 +1,14 @@
 (function () {
+  const target = { html: '', js: '', id: 0 };
   const targets = {
     addToCart: 'add_to_cart',
     checkout: 'checkout',
     thankYou: 'thank_you',
   };
   const popups = {
-    [targets.addToCart]: null,
-    [targets.checkout]: null,
-    [targets.thankYou]: null,
+    [targets.addToCart]: target,
+    [targets.checkout]: target,
+    [targets.thankYou]: target,
   };
   const addToCartButtonSelector = [
     '[name=addToCart]',
@@ -65,16 +66,9 @@
       );
       if (response.ok) {
         const campaign = await response.json();
-        popups[target] = campaign.html;
-        if (campaign.js) {
-          try {
-            eval(campaign.js);
-          } catch(error) {
-            console.log(error)
-          }
-        }
+        popups[target] = campaign;
       } else {
-        popups[target] = null;
+        popups[target] = target;
       }
       return Boolean(popups[target]);
     } catch (error) {
@@ -85,17 +79,21 @@
   };
 
   const showPopup = (target) => {
-    const oldPopup = document.getElementsByTagName('salestorm-popup');
-    if (oldPopup && oldPopup[0]) oldPopup[0].remove();
-    document.body.insertAdjacentHTML('beforeend', popups[target]);
-    const newPopup = document.getElementsByTagName('salestorm-popup');
-    if (newPopup && newPopup[0]) {
-      newPopup[0].setAttribute('visible', 'true');
+    document.body.insertAdjacentHTML('beforeend', popups[target].html);
+    const popup = document.querySelector(`#salestorm-campaign-${popups[target].id}`);
+    try {
+      eval(popups[target].js);
+    } catch(error) {
+      console.log(error);
+    }
+    if (popup) {
+      popup.setAttribute('visible', 'true');
     }
     if (window.Salestorm.hidePopup) {
-      document.addEventListener(window.Salestorm.hidePopup.type, () =>
-        document.dispatchEvent(continueOriginalClickEvent)
-      );
+      document.addEventListener(window.Salestorm.hidePopup.type, () => {
+        popup.setAttribute('visible', 'false');
+        document.dispatchEvent(continueOriginalClickEvent);
+      });
     }
   };
 

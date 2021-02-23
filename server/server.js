@@ -66,6 +66,7 @@ app.prepare().then(() => {
         )
     );
     if (campaign) {
+      const { customJS, id } = campaign;
       const html = await ReactDOMServer.renderToStaticMarkup(
         <AppProvider i18n={translations}>
           <Popup campaign={campaign} />
@@ -73,7 +74,8 @@ app.prepare().then(() => {
       );
       ctx.body = {
         html,
-        js: customElement(campaign.customJS),
+        js: customElement(customJS),
+        id,
       };
       ctx.status = 200;
     } else {
