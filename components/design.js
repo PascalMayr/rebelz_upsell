@@ -1,3 +1,3 @@
-const Design = () => <div>Design</div>;
+const Design = () => <div></div>;
 
 export default Design;

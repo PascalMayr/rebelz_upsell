@@ -1,3 +1,3 @@
-const Analytics = () => <div>Analytics</div>;
+const Analytics = () => <div></div>;
 
 export default Analytics;
