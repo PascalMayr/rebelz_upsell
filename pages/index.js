@@ -22,7 +22,10 @@ import {
   ReplaceMajor,
   CartUpMajor,
   EditMinor,
-  CircleDisableMinor
+  CircleDisableMinor,
+  ShipmentMajor,
+  DiscountsMajor,
+  GiftCardMajor,
 } from '@shopify/polaris-icons';
 import Image from 'next/image';
 import '../styles/pages/index.css';
@@ -271,6 +274,7 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
                 const url = `/campaigns/${campaign.id}`;
                 const page = targets.page;
                 const sellType = strategy.sellType;
+                const mode = strategy.mode;
                 return (
                   <ResourceItem
                     id={campaign.id}
@@ -341,6 +345,29 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
                         <>
                           <Icon source={CartUpMajor} />
                           Cross sell
+                        </>
+                      }
+                    </Badge>
+                    <Badge status="warning">
+                      {
+                        mode === 'free_shipping' &&
+                        <>
+                          <Icon source={ShipmentMajor} />
+                          Free Shipping
+                        </>
+                      }
+                      {
+                        mode === 'discount' &&
+                        <>
+                          <Icon source={DiscountsMajor} />
+                          Discount
+                        </>
+                      }
+                      {
+                        mode === 'gift' &&
+                        <>
+                          <Icon source={GiftCardMajor} />
+                          Gift
                         </>
                       }
                     </Badge>
