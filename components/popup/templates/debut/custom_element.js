@@ -26,6 +26,7 @@ const customElement = (customJS) => `
         case 'visible':
           if (newValue === "true") {
             this.getElement('#salestorm-overlay-container').style.display = 'flex';
+            document.querySelector('html').style.overflow = 'hidden';
           }
           else {
             this.hidePopup();
@@ -211,6 +212,7 @@ const customElement = (customJS) => `
     }
 
     hidePopup() {
+      document.querySelector('html').style.overflow = 'visible';
       clearInterval(this.countdownIntervalId);
       document.dispatchEvent(window.Salestorm.hidePopup);
     }
