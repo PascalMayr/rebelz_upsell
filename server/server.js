@@ -48,23 +48,23 @@ app.prepare().then(() => {
   const router = new Router();
 
   router.post('/api/get-matching-campaign', async (ctx) => {
-    const { shop, trigger, products } = ctx.request.body;
+    const { shop, target, products } = ctx.request.body;
     const campaigns = await db.query(
       `SELECT *
       FROM campaigns
       INNER JOIN stores ON stores.domain = campaigns.domain
       WHERE campaigns.domain = $1
       AND stores.enabled = true
-      AND campaigns.published = true
-      AND campaigns.trigger = $2`,
-      [shop, trigger]
+      AND campaigns.published = true`,
+      [shop]
     );
-    const campaign = campaigns.rows.find((row) => {
-      return row.products.targets.some((targetProduct) =>
-        products.includes(parseInt(targetProduct.legacyResourceId, 10))
-      );
-    });
-
+    const campaign = campaigns.rows.find(
+      (row) =>
+        row.targets.page === target &&
+        row.targets.products.some((targetProduct) =>
+          products.includes(parseInt(targetProduct.legacyResourceId, 10))
+        )
+    );
     if (campaign) {
       const html = await ReactDOMServer.renderToStaticMarkup(
         <AppProvider i18n={translations}>
