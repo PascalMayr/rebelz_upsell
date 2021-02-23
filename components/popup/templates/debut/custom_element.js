@@ -78,7 +78,7 @@ const customElement = (customJS) => `
           }
         break;
         default:
-          console.log('attribute not handled by any function');
+          console.log('attribute "' + name + '" not handled by any function');
         break;
       }
     }
