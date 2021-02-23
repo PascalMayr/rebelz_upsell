@@ -448,7 +448,9 @@ const customElement = (customJS) => `
           progress = progress + onePercentage;
           const currentOffer = parseInt(this.getAttribute('currentoffer')) - 1;
           const displayedProgressBars = Array.from(this.getElements('.salestorm-progress-bar'));
-          displayedProgressBars[currentOffer].style.width = progress + "%";
+          if (displayedProgressBars[currentOffer]) {
+            displayedProgressBars[currentOffer].style.width = progress + "%";
+          }
           const currentMinutes = Math.floor(totalSeconds / 60);
           const currentSeconds = totalSeconds - currentMinutes * 60;
           timeElement.innerText = prepend(currentMinutes) + ":" + prepend(currentSeconds);
