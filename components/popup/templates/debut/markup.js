@@ -36,7 +36,7 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
     // initialising the
     try {
       // eslint-disable-next-line no-eval
-      eval(customElement());
+      eval(customElement(''));
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
@@ -64,6 +64,7 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
             </div>
           </div>
           <div id="salestorm-product">
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a id="salestorm-product-image-container">
               <div id="salestorm-product-image" />
             </a>
