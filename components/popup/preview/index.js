@@ -45,7 +45,7 @@ const PreviewPopup = ({ campaign, preview }) => {
       ref={webComponentRef}
       product={JSON.stringify(getRenderedProductUtil(campaign))}
       texts={JSON.stringify(campaign.texts)}
-      animation={getAnimationClassUtil(campaign.animation)}
+      animation={getAnimationClassUtil(campaign.styles.animation)}
       offers={offers}
       currentoffer={1}
       {...campaign.options}

@@ -184,13 +184,10 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
   ];
 
   const _replayAnimation = () => {
-    const oldAnimation = campaign.animation;
-    setCampaignProperty(
-      { type: '', delay: oldAnimation.delay, speed: oldAnimation.speed },
-      'animation'
-    );
+    const oldAnimation = campaign.styles.animation;
+    setStyleProperty('', 'type');
     setTimeout(() => {
-      setCampaignProperty(oldAnimation, 'animation');
+      setStyleProperty(oldAnimation.type, 'type');
     }, 200);
   };
 
@@ -250,25 +247,19 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
                   label="Incoming Animation"
                   options={animationTypes}
                   onChange={(value) => {
-                    setCampaignProperty(
-                      { ...campaign.animation, type: value },
-                      'animation'
-                    );
+                    setStyleProperty(value, 'type');
                   }}
-                  value={campaign.animation.type}
+                  value={campaign.styles.animation.type}
                 />
                 <TextField
                   label="Animation delay in seconds"
                   type="number"
                   onChange={(value) => {
                     if (value >= 0) {
-                      setCampaignProperty(
-                        { ...campaign.animation, delay: value },
-                        'animation'
-                      );
+                      setStyleProperty(value, 'delay');
                     }
                   }}
-                  value={`${campaign.animation.delay}`}
+                  value={`${campaign.styles.animation.delay}`}
                 />
               </div>
               <div className="salestorm-formatter-styles-animation">
@@ -276,12 +267,9 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
                   label="Animation Speed"
                   options={animationSpeeds}
                   onChange={(value) => {
-                    setCampaignProperty(
-                      { ...campaign.animation, speed: value },
-                      'animation'
-                    );
+                    setStyleProperty(value, 'speed');
                   }}
-                  value={campaign.animation.speed}
+                  value={campaign.styles.animation.speed}
                 />
                 <div className="salestorm-formatter-styles-animation-repeat">
                   <Button icon={ReplayMinor} primary onClick={_replayAnimation}>

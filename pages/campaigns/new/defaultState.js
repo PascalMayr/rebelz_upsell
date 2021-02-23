@@ -67,6 +67,11 @@ const DefaultStateStyle = {
     fontFamily: "'Open Sans', sans-serif",
     color: 'rgb(255, 255, 255)',
   },
+  animation: {
+    type: 'animate__fadeInDown',
+    delay: 0,
+    speed: 'normal',
+  },
 };
 
 const DefaultStateNew = {
@@ -84,11 +89,6 @@ const DefaultStateNew = {
     mode: 'auto',
     products: [],
     excludeProducts: [],
-  },
-  animation: {
-    type: 'animate__fadeInDown',
-    delay: 0,
-    speed: 'normal',
   },
   options: {
     multiCurrencySupport: true,

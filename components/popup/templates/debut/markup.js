@@ -54,7 +54,7 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
         />
         <div
           id="salestorm-popup"
-          className={getAnimationClassUtil(campaign.animation)}
+          className={getAnimationClassUtil(campaign.styles.animation)}
         >
           <div id="salestorm-progress-bar-container" />
           <div id="salestorm-popup-header">
