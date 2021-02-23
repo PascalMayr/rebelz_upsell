@@ -1,13 +1,13 @@
 (function () {
-  const triggers = {
+  const targets = {
     addToCart: 'add_to_cart',
     checkout: 'checkout',
     thankYou: 'thank_you',
   };
   const popups = {
-    [triggers.addToCart]: null,
-    [triggers.checkout]: null,
-    [triggers.thankYou]: null,
+    [targets.addToCart]: null,
+    [targets.checkout]: null,
+    [targets.thankYou]: null,
   };
   const addToCartButtonSelector = [
     '[name=addToCart]',
@@ -46,7 +46,7 @@
   );
   let productsAddedByXHROrFetch = false;
 
-  const fetchCampaign = async (trigger, products) => {
+  const fetchCampaign = async (target, products) => {
     try {
       const response = await fetch(
         'https://loop.salestorm.cc:8081/api/get-matching-campaign',
@@ -58,14 +58,14 @@
           },
           body: JSON.stringify({
             shop: window.Shopify.shop,
-            trigger,
+            target,
             products,
           }),
         }
       );
       if (response.ok) {
         const campaign = await response.json();
-        popups[trigger] = campaign.html;
+        popups[target] = campaign.html;
         if (campaign.js) {
           try {
             eval(campaign.js);
@@ -74,9 +74,9 @@
           }
         }
       } else {
-        popups[trigger] = null;
+        popups[target] = null;
       }
-      return Boolean(popups[trigger]);
+      return Boolean(popups[target]);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(window.Shopify);
@@ -84,10 +84,10 @@
     }
   };
 
-  const showPopup = (trigger) => {
+  const showPopup = (target) => {
     const oldPopup = document.getElementsByTagName('salestorm-popup');
     if (oldPopup && oldPopup[0]) oldPopup[0].remove();
-    document.body.insertAdjacentHTML('beforeend', popups[trigger]);
+    document.body.insertAdjacentHTML('beforeend', popups[target]);
     const newPopup = document.getElementsByTagName('salestorm-popup');
     if (newPopup && newPopup[0]) {
       newPopup[0].setAttribute('visible', 'true');
@@ -139,12 +139,12 @@
       const product = await response.json();
       productId = product.id;
     }
-    const hasCampaign = await fetchCampaign(triggers.addToCart, [productId]);
+    const hasCampaign = await fetchCampaign(targets.addToCart, [productId]);
     if (hasCampaign) {
       let displayedCampaign = false;
       addEarlyClickListener(addToCartButtonSelector, (event) => {
         if (!displayedCampaign) {
-          showPopup(triggers.addToCart);
+          showPopup(targets.addToCart);
           event.preventDefault();
           event.stopPropagation();
           const handleCartDrawers = setInterval(() => {
@@ -176,14 +176,14 @@
     const checkAndHandleCartCampaign = async () => {
       const currentItemsInCart = await getCartItems();
       hasCampaign = await fetchCampaign(
-        triggers.checkout,
+        targets.checkout,
         currentItemsInCart.map((item) => item.product_id)
       );
       if (hasCampaign) {
         let displayedCampaign = false;
         addEarlyClickListener(checkoutButtonSelector, (event) => {
           if (!displayedCampaign) {
-            showPopup(triggers.checkout);
+            showPopup(targets.checkout);
             event.preventDefault();
             event.stopPropagation();
             document.addEventListener(continueOriginalClickEvent.type, () => {
@@ -211,10 +211,10 @@
 
   const handleThankYouPage = async () => {
     const hasCampaign = await fetchCampaign(
-      triggers.thankYou,
+      targets.thankYou,
       window.Shopify.checkout.line_items.map((item) => item.product_id)
     );
-    if (hasCampaign) showPopup(triggers.thankYou);
+    if (hasCampaign) showPopup(targets.thankYou);
   };
 
   const checkForProductAdd = (url) => {
