@@ -204,12 +204,21 @@ const Index = ({ store, campaigns, appName = 'App' }) => {
       )}
       <div className={id === 'design' ? '' : 'd-none'}>
         <Page>
-          <Design
-            campaign={globalCampaign}
-            setCampaignProperty={setGlobalCampaignProperty}
-            advanced
-            title="Set a global Design for your popups"
-          />
+          <Card>
+            <Card.Section>
+              <Layout>
+                <Layout.Section>
+                  <Design
+                    campaign={globalCampaign}
+                    setCampaignProperty={setGlobalCampaignProperty}
+                    advanced
+                    renderAdvanced={id === 'design'}
+                    title="Set a global Design for your popups"
+                  />
+                </Layout.Section>
+              </Layout>
+            </Card.Section>
+          </Card>
         </Page>
       </div>
       {id === 'analytics' && (

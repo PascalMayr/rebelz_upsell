@@ -7,7 +7,13 @@ import PreviewPopup from './popup/preview';
 import Formatter from './campaigns/new/formatter';
 import OptionsCampaign from './campaigns/new/options';
 
-const Design = ({ campaign, title, advanced = false, setCampaignProperty }) => {
+const Design = ({
+  campaign,
+  title,
+  advanced = false,
+  setCampaignProperty,
+  renderAdvanced,
+}) => {
   const [rerenderButton, setRerenderButton] = useState(false);
   const [preview, setPreview] = useState('desktop');
   const [formatter, setFormatter] = useState(advanced);
@@ -63,27 +69,29 @@ const Design = ({ campaign, title, advanced = false, setCampaignProperty }) => {
           </Button>
         </div>
       </Card.Section>
-      <Collapsible
-        open={formatter}
-        transition={{
-          duration: '500ms',
-          timingFunction: 'ease-in-out',
-        }}
-        expandOnPrint
-      >
-        <Card.Section>
-          <OptionsCampaign
-            campaign={campaign}
-            setCampaignProperty={setCampaignProperty}
-          />
-        </Card.Section>
-        <Card.Section>
-          <Formatter
-            campaign={campaign}
-            setCampaignProperty={setCampaignProperty}
-          />
-        </Card.Section>
-      </Collapsible>
+      {renderAdvanced && (
+        <Collapsible
+          open={formatter}
+          transition={{
+            duration: '500ms',
+            timingFunction: 'ease-in-out',
+          }}
+          expandOnPrint
+        >
+          <Card.Section>
+            <OptionsCampaign
+              campaign={campaign}
+              setCampaignProperty={setCampaignProperty}
+            />
+          </Card.Section>
+          <Card.Section>
+            <Formatter
+              campaign={campaign}
+              setCampaignProperty={setCampaignProperty}
+            />
+          </Card.Section>
+        </Collapsible>
+      )}
     </Card>
   );
 };
