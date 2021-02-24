@@ -1,7 +1,3 @@
-html {
-  scroll-behavior: smooth;
-}
-
 .salestorm-choose-targets {
   display: flex;
   justify-content: flex-start;

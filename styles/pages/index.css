@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 .salestorm-campaigns-overview {
   margin-top: 1em;
 }

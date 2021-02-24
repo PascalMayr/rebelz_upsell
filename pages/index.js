@@ -1,7 +1,7 @@
 import { Page, Button, Badge, Card, Layout, Tabs } from '@shopify/polaris';
 import '../styles/pages/index.css';
 import NextLink from 'next/link';
-import { useState, useContext, useMemo } from 'react';
+import { useState, useContext, useMemo, useCallback } from 'react';
 import { useQuery } from 'react-apollo';
 import { gql } from 'apollo-boost';
 
@@ -10,6 +10,7 @@ import db from '../server/db';
 import config from '../config';
 import Campaigns from '../components/campaigns';
 import Design from '../components/design';
+import DefaultStateNew from './campaigns/new/defaultState';
 import Analytics from '../components/analytics';
 
 import { AppContext } from './_app';
@@ -96,6 +97,14 @@ const Index = ({ store, campaigns, appName = 'App' }) => {
       currencyDisplay: 'symbol',
     });
   }
+
+  const [globalCampaign, setGlobalCampaign] = useState({ ...DefaultStateNew });
+
+  const setGlobalCampaignProperty = useCallback(
+    (value, id, state = {}) =>
+      setGlobalCampaign({ ...globalCampaign, [id]: value, ...state }),
+    [globalCampaign]
+  );
 
   return (
     <Page
@@ -194,7 +203,14 @@ const Index = ({ store, campaigns, appName = 'App' }) => {
         <Campaigns enabled={enabled} campaigns={campaigns} />
       )}
       {id === 'design' && (
-        <Design />
+        <Page>
+          <Design
+            campaign={globalCampaign}
+            setCampaignProperty={setGlobalCampaignProperty}
+            advanced
+            title="Set a global Design for your popups"
+          />
+        </Page>
       )}
       {id === 'analytics' && (
         <Analytics />
