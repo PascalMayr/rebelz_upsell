@@ -1,18 +1,12 @@
-import { useState, useCallback, useContext, useEffect } from 'react';
+import { useState, useCallback, useContext } from 'react';
 import {
   Page,
   Card,
   Layout,
   TextField,
   Badge,
-  Button,
-  Collapsible,
 } from '@shopify/polaris';
-import {
-  MobilePlusMajor,
-  ResetMinor,
-  ToolsMajor,
-} from '@shopify/polaris-icons';
+import { MobilePlusMajor } from '@shopify/polaris-icons';
 import { useQuery } from 'react-apollo';
 import { gql } from 'apollo-boost';
 
@@ -23,12 +17,9 @@ import unpublishCampaign from '../../../services/unpublish_campaign';
 import TriggerSettings from '../../../components/campaigns/new/settings/triggers';
 import StrategySettings from '../../../components/campaigns/new/settings/strategy';
 import SellingModeSettings from '../../../components/campaigns/new/settings/selling_mode';
-import OptionsCampaign from '../../../components/campaigns/new/options';
 import { AppContext } from '../../_app';
-import Formatter from '../../../components/campaigns/new/formatter';
-import MobileDesktopSwitchPreview from '../../../components/popup/preview/mobile_desktop_switch';
-import PreviewPopup from '../../../components/popup/preview';
 import ResourceSelectionCampaign from '../../../components/campaigns/new/resource_selection';
+import Design from '../../../components/design';
 
 import DefaultStateNew from './defaultState';
 
@@ -46,7 +37,6 @@ const New = (props) => {
     ...DefaultStateNew,
     ...props.campaign,
   });
-  const [preview, setPreview] = useState('desktop');
   const setCampaignProperty = useCallback(
     (value, id, state = {}) =>
       setCampaign({ ...campaign, [id]: value, ...state }),
@@ -54,21 +44,10 @@ const New = (props) => {
   );
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
-  const [rerenderButton, setRerenderButton] = useState(false);
   const title = props.campaign ? 'Update campaign' : 'Create a new campaign';
   const badgeStatus = campaign.published ? 'success' : 'attention';
   const contentStatus = campaign.published ? 'Published' : 'Unpublished';
-  const previewContainerClass =
-    preview && !rerenderButton ? `salestorm-${preview}-preview-container` : '';
 
-  useEffect(() => {
-    if (window.Salestorm && window.Salestorm.hidePopup) {
-      document.addEventListener(window.Salestorm.hidePopup.type, () => {
-        setRerenderButton(true);
-      });
-    }
-  }, []);
-  const [formatter, setFormatter] = useState(false);
   const { data } = useQuery(GET_STORE_CURRENCY);
   const currencyCode = data && data.shop && data.shop.currencyCode;
   const saveLabel = campaign.published ? 'Update' : 'Save draft';
@@ -333,71 +312,11 @@ const New = (props) => {
         <Card.Section>
           <Layout>
             <Layout.Section>
-              <Card>
-                <Card.Section title="4.) Check, try and customize your Campaign Popup before publishing it.">
-                  {rerenderButton && (
-                    <div className="salestorm-rerender-container">
-                      <Button
-                        onClick={() => {
-                          setRerenderButton(false);
-                          document
-                            .getElementsByTagName('salestorm-popup')[0]
-                            .setAttribute('visible', 'true');
-                        }}
-                        primary
-                        icon={ResetMinor}
-                      >
-                        show again
-                      </Button>
-                    </div>
-                  )}
-                  <div className={previewContainerClass}>
-                    <PreviewPopup campaign={campaign} preview={preview} />
-                  </div>
-                  <MobileDesktopSwitchPreview
-                    onSwitch={(value) => setPreview(value)}
-                  />
-                </Card.Section>
-                <Card.Section>
-                  <div className="salestorm-advanced-formatter-settings-toggle">
-                    <Button
-                      icon={ToolsMajor}
-                      onClick={() => {
-                        setFormatter(!formatter);
-                        setTimeout(() => {
-                          window.scrollTo(0, document.body.scrollHeight);
-                        }, 500);
-                      }}
-                      disclosure={formatter ? 'down' : 'up'}
-                      primary={formatter}
-                    >
-                      {' '}
-                      Advanced Settings, Styles and Texts
-                    </Button>
-                  </div>
-                </Card.Section>
-                <Collapsible
-                  open={formatter}
-                  transition={{
-                    duration: '500ms',
-                    timingFunction: 'ease-in-out',
-                  }}
-                  expandOnPrint
-                >
-                  <Card.Section>
-                    <OptionsCampaign
-                      campaign={campaign}
-                      setCampaignProperty={setCampaignProperty}
-                    />
-                  </Card.Section>
-                  <Card.Section>
-                    <Formatter
-                      campaign={campaign}
-                      setCampaignProperty={setCampaignProperty}
-                    />
-                  </Card.Section>
-                </Collapsible>
-              </Card>
+              <Design
+                title="4. Check try and customize your campaign"
+                setCampaignProperty={setCampaignProperty}
+                campaign={campaign}
+              />
             </Layout.Section>
           </Layout>
         </Card.Section>
