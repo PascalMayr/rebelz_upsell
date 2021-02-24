@@ -202,7 +202,7 @@ const Index = ({ store, campaigns, appName = 'App' }) => {
       {id === 'campaigns' && (
         <Campaigns enabled={enabled} campaigns={campaigns} />
       )}
-      {id === 'design' && (
+      <div className={id === 'design' ? '' : 'd-none'}>
         <Page>
           <Design
             campaign={globalCampaign}
@@ -211,7 +211,7 @@ const Index = ({ store, campaigns, appName = 'App' }) => {
             title="Set a global Design for your popups"
           />
         </Page>
-      )}
+      </div>
       {id === 'analytics' && (
         <Analytics />
       )}
