@@ -43,7 +43,7 @@ const Pricing = ({ store }) => {
     'No Branding',
     'Quick Setup',
     '100% Responsive',
-    '100% Non Theme Breaking',
+    'Works with every Theme',
     'Customize all Texts, Fonts and Styles',
     'AI Autopilot Mode',
     'Analytics',
@@ -175,7 +175,7 @@ const Pricing = ({ store }) => {
                   }}
                 />
                 <div className='salestorm-pricing-contact-us'>
-                  <TextStyle>Need a bigger plan?</TextStyle>
+                  <TextStyle>Need help or a bigger plan?</TextStyle>
                   <a href="mailto:support@salestorm.cc?subject=Plan%20Upgrade%20Inquiry">
                     <Button primary>Contact us</Button>
                   </a>
