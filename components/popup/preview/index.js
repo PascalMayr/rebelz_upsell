@@ -1,28 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
-import getAnimationClassUtil from '../utils/get_animation_class';
-import getRenderedProductUtil from '../utils/get_rendered_product';
-import TemplateLoader from '../templates';
+import Popup from '..';
 
 const PreviewPopup = ({ campaign, preview }) => {
-  // this component serves for the preview to update the shown web component
-  // all updates which happen here are also applied to the template trough react
-  const webComponentRef = useRef();
-  const webComponentRefShadow =
-    webComponentRef &&
-    webComponentRef.current &&
-    webComponentRef.current.shadowRoot;
-
   const onStyleChange = (styles) => {
-    if (webComponentRefShadow) {
-      const popupStyles = webComponentRefShadow.querySelector(
-        '#salestorm-popup-styles'
-      );
-      if (popupStyles) {
-        popupStyles.innerHTML = styles;
-      }
-    } else {
-      return null;
+    const popup = document.querySelector(`#salestorm-campaign-${campaign.id}`);
+    const shadow = popup && popup.shadowRoot;
+    if (shadow) {
+      const shadowStyles = shadow.querySelector('#salestorm-popup-styles');
+      shadowStyles.innerHTML = styles;
     }
   };
 
@@ -37,22 +23,11 @@ const PreviewPopup = ({ campaign, preview }) => {
   }, [campaign.customJS]);
 
   return (
-    <salestorm-popup
-      ref={webComponentRef}
-      product={JSON.stringify(getRenderedProductUtil(campaign))}
-      texts={JSON.stringify(campaign.texts)}
-      animation={getAnimationClassUtil(campaign.styles.animation)}
-      offers={1}
-      currentoffer={1}
-      id={`salestorm-campaign-${campaign.id ? campaign.id : ''}`}
-      {...campaign.options}
-    >
-      <TemplateLoader
-        campaign={campaign}
-        preview={preview}
-        onStyleChange={onStyleChange}
-      />
-    </salestorm-popup>
+    <Popup
+      campaign={campaign}
+      preview={preview}
+      onStyleChange={onStyleChange}
+    />
   );
 };
 
