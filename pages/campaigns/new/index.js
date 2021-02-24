@@ -1,11 +1,5 @@
 import { useState, useCallback, useContext } from 'react';
-import {
-  Page,
-  Card,
-  Layout,
-  TextField,
-  Badge,
-} from '@shopify/polaris';
+import { Page, Card, Layout, TextField, Badge } from '@shopify/polaris';
 import { MobilePlusMajor } from '@shopify/polaris-icons';
 import { useQuery } from 'react-apollo';
 import { gql } from 'apollo-boost';
