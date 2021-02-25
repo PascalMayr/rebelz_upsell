@@ -14,6 +14,7 @@ import SellingModeSettings from '../../../components/campaigns/new/settings/sell
 import { AppContext } from '../../_app';
 import ResourceSelectionCampaign from '../../../components/campaigns/new/resource_selection';
 import Design from '../../../components/design';
+import db from '../../../server/db';
 
 import DefaultStateNew from './defaultState';
 
@@ -25,10 +26,29 @@ const GET_STORE_CURRENCY = gql`
   }
 `;
 
+export async function getServerSideProps(ctx) {
+  const globalCampaigns = await db.query(
+    'SELECT * FROM campaigns WHERE domain = $1 AND global = true',
+    [ctx.req.cookies.shopOrigin]
+  );
+  const globalCampaign =
+    globalCampaigns.rows.length > 0 ? globalCampaigns.rows[0] : {};
+  if (globalCampaign && globalCampaign.id) {
+    delete globalCampaign.id;
+    globalCampaign.global = false;
+  }
+  return {
+    props: {
+      global: globalCampaign,
+    },
+  };
+}
+
 const New = (props) => {
   const context = useContext(AppContext);
   const [campaign, setCampaign] = useState({
     ...DefaultStateNew,
+    ...props.global,
     ...props.campaign,
   });
   const setCampaignProperty = useCallback(

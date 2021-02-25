@@ -223,8 +223,8 @@ const Index = ({ store, campaigns, global, appName = 'App' }) => {
       )}
       <div className={designContainerClassName}>
         <Page
-          title="Set a global Design for all popups"
-          subtitle="Already created popups won't be affected unless saved again."
+          title="Set a global Design for all Funnel campaigns."
+          subtitle="Already created campaigns won't be affected."
           primaryAction={{
             content: 'Save',
             loading: saveLoading,
