@@ -33,12 +33,12 @@ import getCampaigns from '../services/get_campaigns';
 
 import DeleteModal from './delete_modal';
 
-const Campaigns = ({ campaigns, enabled }) => {
-  const filterGlobalCampaign = (items) =>
-    items.filter((items) => !items.global);
-  const [persistedCampaigns, setPersistedCampaigns] = useState(
-    filterGlobalCampaign(campaigns)
-  );
+const Campaigns = ({
+  enabled,
+  persistedCampaigns,
+  setPersistedCampaigns,
+  filterGlobalCampaign,
+}) => {
   const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
   const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
 

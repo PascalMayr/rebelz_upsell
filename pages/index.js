@@ -125,6 +125,13 @@ const Index = ({ store, campaigns, global, appName = 'App' }) => {
 
   const designContainerClassName = id === 'design' ? '' : 'd-none';
 
+  const filterGlobalCampaign = (filtercampaigns) =>
+    filtercampaigns.filter((filtercampaign) => !filtercampaign.global);
+
+  const [persistedCampaigns, setPersistedCampaigns] = useState(
+    filterGlobalCampaign(campaigns)
+  );
+
   return (
     <Page
       fullWidth
@@ -219,7 +226,12 @@ const Index = ({ store, campaigns, global, appName = 'App' }) => {
         fitted
       />
       {id === 'campaigns' && (
-        <Campaigns enabled={enabled} campaigns={campaigns} />
+        <Campaigns
+          enabled={enabled}
+          persistedCampaigns={persistedCampaigns}
+          setPersistedCampaigns={setPersistedCampaigns}
+          filterGlobalCampaign={filterGlobalCampaign}
+        />
       )}
       <div className={designContainerClassName}>
         <Page
