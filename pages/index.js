@@ -138,11 +138,11 @@ const Index = ({ store, campaigns, global, appName = 'App' }) => {
         </Badge>
       }
       primaryAction={
-        <NextLink href="/campaigns/new">
+        <a href="/campaigns/new" className="salestorm-new-campaign-link">
           <Button primary>
             <span className="salestorm-add-campaign">+</span> New Campaign
           </Button>
-        </NextLink>
+        </a>
       }
       secondaryActions={[
         {

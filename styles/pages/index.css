@@ -131,3 +131,7 @@ html {
 .d-none {
   display: none;
 }
+
+.salestorm-new-campaign-link {
+  text-decoration: none;
+}

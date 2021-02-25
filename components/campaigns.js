@@ -75,7 +75,9 @@ const Campaigns = ({ campaigns, enabled }) => {
               className="stepper-checkmark"
             />
             <p id="stepper-new-cammpaign-link">
-              <NextLink href="/campaigns/new">3. Create a campaign</NextLink>
+              <a href="/campaigns/new" className="salestorm-new-campaign-link">
+                3. Create a campaign
+              </a>
             </p>
           </div>
         </div>
