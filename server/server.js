@@ -243,6 +243,19 @@ app.prepare().then(() => {
     ctx.res.statusCode = 200;
   });
 
+  const createInsertQuery = (body) => {
+    const columns = Object.keys(body).map((key) => `"${key}"`);
+    const query = `INSERT INTO campaigns (${columns.join(
+      ','
+    )}) VALUES (${columns
+      .map((_col, i) => `$${i + 1}`)
+      .join(',')}) RETURNING *`;
+    return query;
+  };
+
+  const getInsertValues = (campaign) =>
+    Object.keys(campaign).map((key) => campaign[key]);
+
   router.post('/api/save-campaign', verifyRequest(), async (ctx) => {
     const requestBody = ctx.request.body;
 
@@ -270,13 +283,8 @@ app.prepare().then(() => {
     } else {
       const helper = requestBody;
       helper.domain = ctx.session.shop;
-      const columns = Object.keys(helper).map((key) => `"${key}"`);
-      const helperArray = Object.keys(helper).map((key) => helper[key]);
-      const query = `INSERT INTO campaigns (${columns.join(
-        ','
-      )}) VALUES (${columns
-        .map((_col, i) => `$${i + 1}`)
-        .join(',')}) RETURNING *`;
+      const helperArray = getInsertValues(helper);
+      const query = createInsertQuery(helper);
       campaign = await db.query(query, [...helperArray]);
     }
     ctx.body = campaign.rows[0];
@@ -360,7 +368,25 @@ app.prepare().then(() => {
     ctx.status = 200;
   });
 
-  console.log(router.get)
+  router.post('/api/duplicate-campaign/:id', verifyRequest(), async (ctx) => {
+    const existingCampaign = await db.query(
+      'SELECT * FROM campaigns WHERE id = $1 AND domain = $2',
+      [ctx.params.id, ctx.session.shop]
+    );
+    const duplicateCampaign = existingCampaign.rows[0];
+    delete duplicateCampaign.id;
+    duplicateCampaign.published = false;
+    duplicateCampaign.name += ' copy';
+    const insertQuery = createInsertQuery(duplicateCampaign);
+    const inserValues = getInsertValues(duplicateCampaign);
+    await db.query(insertQuery, [...inserValues]);
+    const campaigns = await db.query(
+      'SELECT * FROM campaigns WHERE domain = $1',
+      [ctx.session.shop]
+    );
+    ctx.body = campaigns.rows;
+    ctx.status = 200;
+  });
 
   server.use(Cors({ credentials: true }));
   server.use(router.allowedMethods());

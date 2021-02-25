@@ -30,6 +30,7 @@ import { useCallback, useState } from 'react';
 import publishCampaign from '../services/publish_campaign';
 import unpublishCampaign from '../services/unpublish_campaign';
 import getCampaigns from '../services/get_campaigns';
+import duplicateCampaign from '../services/duplicate_campaign';
 
 import DeleteModal from './delete_modal';
 
@@ -118,7 +119,14 @@ const Campaigns = ({
                     {
                       content: 'Duplicate',
                       icon: DuplicateMinor,
-                      onAction: () => {},
+                      onAction: async () => {
+                        const savedCampaigns = await duplicateCampaign(
+                          campaign.id
+                        );
+                        setPersistedCampaigns(
+                          filterGlobalCampaign(savedCampaigns.data)
+                        );
+                      },
                     },
                     {
                       content: published ? 'Unpusblish' : 'Publish',
