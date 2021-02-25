@@ -327,7 +327,7 @@ const New = (props) => {
           <Layout>
             <Layout.Section>
               <Design
-                title="4. Check try and customize your campaign"
+                title="4. Check try and customize your campaign before publishing it."
                 setCampaignProperty={setCampaignProperty}
                 renderAdvanced
                 campaign={campaign}

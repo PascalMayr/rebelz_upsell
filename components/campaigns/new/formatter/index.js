@@ -15,9 +15,9 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
     () => [
       {
         id: 'texts',
-        content: 'Texts & Actions',
-        accessibilityLabel: 'Texts & Actions',
-        panelID: 'texts-actions-panel',
+        content: 'Texts',
+        accessibilityLabel: 'Texts',
+        panelID: 'texts-panel',
         styleChoices: [],
       },
       {
@@ -33,22 +33,20 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
         ],
       },
       {
-        id: 'secondaryButtons',
-        content: 'Close Action',
-        accessibilityLabel: 'Close Action',
-        panelID: 'secondaryButtons-panel',
+        id: 'overlay',
+        content: 'Overlay',
+        accessibilityLabel: 'Overlay',
+        panelID: 'overlay-panel',
         styleChoices: [
           { label: 'Background', value: 'background', default: true },
           { label: 'Border', value: 'border' },
-          { label: 'Box Shadow', value: 'boxShadow' },
-          { label: 'Icon Color', value: 'fill' },
         ],
       },
       {
         id: 'primaryButtons',
-        content: 'Add to cart Action',
-        accessibilityLabel: 'Add to cart Action',
-        panelID: 'primaryButtons-panel',
+        content: 'Popup Secondary',
+        accessibilityLabel: 'Secondary Color',
+        panelID: 'secondary-color-panel',
         styleChoices: [
           { label: 'Background', value: 'background', default: true },
           { label: 'Border', value: 'border' },
@@ -57,13 +55,15 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
         ],
       },
       {
-        id: 'overlay',
-        content: 'Overlay',
-        accessibilityLabel: 'Overlay',
-        panelID: 'overlay-panel',
+        id: 'secondaryButtons',
+        content: 'Closing X',
+        accessibilityLabel: 'Closing X',
+        panelID: 'closing-x-panel',
         styleChoices: [
           { label: 'Background', value: 'background', default: true },
           { label: 'Border', value: 'border' },
+          { label: 'Box Shadow', value: 'boxShadow' },
+          { label: 'Icon Color', value: 'fill' },
         ],
       },
       {
