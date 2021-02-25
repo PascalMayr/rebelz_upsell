@@ -292,18 +292,20 @@ app.prepare().then(() => {
     ctx.status = 200;
   });
 
-  router.post('/api/publish-campaign', verifyRequest(), async (ctx) => {
-    await db.query('UPDATE campaigns SET published = true WHERE domain = $1', [
-      ctx.session.shop,
-    ]);
+  router.post('/api/publish-campaign/:id', verifyRequest(), async (ctx) => {
+    await db.query(
+      'UPDATE campaigns SET published = true WHERE id = $1 AND domain = $2',
+      [ctx.params.id, ctx.session.shop]
+    );
 
     ctx.status = 200;
   });
 
-  router.delete('/api/unpublish-campaign', verifyRequest(), async (ctx) => {
-    await db.query('UPDATE campaigns SET published = false WHERE domain = $1', [
-      ctx.session.shop,
-    ]);
+  router.delete('/api/unpublish-campaign/:id', verifyRequest(), async (ctx) => {
+    await db.query(
+      'UPDATE campaigns SET published = false WHERE id = $1 AND domain = $2',
+      [ctx.params.id, ctx.session.shop]
+    );
 
     ctx.status = 200;
   });
@@ -347,6 +349,18 @@ app.prepare().then(() => {
       ctx.body = { confirmationUrl };
     }
   });
+
+  router.post('/api/campaigns', verifyRequest(), async (ctx) => {
+    console.log('test');
+    const campaigns = await db.query(
+      'SELECT * FROM campaigns WHERE domain = $1',
+      [ctx.session.shop]
+    );
+    ctx.body = campaigns.rows;
+    ctx.status = 200;
+  });
+
+  console.log(router.get)
 
   server.use(Cors({ credentials: true }));
   server.use(router.allowedMethods());

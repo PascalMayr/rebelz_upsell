@@ -1,5 +1,5 @@
 import api from './api';
 
-const publishCampaign = () => api.post('/api/publish-campaign');
+const publishCampaign = (id) => api.post(`/api/publish-campaign/${id}`);
 
 export default publishCampaign;

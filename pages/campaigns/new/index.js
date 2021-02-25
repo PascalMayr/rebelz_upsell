@@ -81,7 +81,7 @@ const New = (props) => {
             try {
               setPublishLoading(true);
               const savedCampaign = await saveCampaign(campaign);
-              await unpublishCampaign();
+              await unpublishCampaign(savedCampaign.data.id);
               context.setToast({
                 shown: true,
                 content: 'Successfully unpublished campaign',
@@ -102,7 +102,7 @@ const New = (props) => {
             try {
               setPublishLoading(true);
               const savedCampaign = await saveCampaign(campaign);
-              await publishCampaign();
+              await publishCampaign(savedCampaign.data.id);
               context.setToast({
                 shown: true,
                 content: 'Successfully published campaign',

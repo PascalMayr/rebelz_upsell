@@ -1,5 +1,5 @@
 import api from './api';
 
-const unpublishCampaign = () => api.delete('/api/unpublish-campaign');
+const unpublishCampaign = (id) => api.delete(`/api/unpublish-campaign/${id}`);
 
 export default unpublishCampaign;

@@ -25,14 +25,19 @@ import {
 } from '@shopify/polaris-icons';
 import Image from 'next/image';
 import '../styles/pages/index.css';
-import NextLink from 'next/link';
 import { useCallback, useState } from 'react';
+
+import publishCampaign from '../services/publish_campaign';
+import unpublishCampaign from '../services/unpublish_campaign';
+import getCampaigns from '../services/get_campaigns';
 
 import DeleteModal from './delete_modal';
 
 const Campaigns = ({ campaigns, enabled }) => {
+  const filterGlobalCampaign = (items) =>
+    items.filter((items) => !items.global);
   const [persistedCampaigns, setPersistedCampaigns] = useState(
-    campaigns.filter((campaign) => !campaign.global)
+    filterGlobalCampaign(campaigns)
   );
   const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
   const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
@@ -116,9 +121,23 @@ const Campaigns = ({ campaigns, enabled }) => {
                       onAction: () => {},
                     },
                     {
-                      content: campaign.published ? 'Unpusblish' : 'Publish',
-                      icon: campaign.published ? CircleDisableMinor : ViewMajor,
-                      onAction: () => {},
+                      content: published ? 'Unpusblish' : 'Publish',
+                      icon: published ? CircleDisableMinor : ViewMajor,
+                      onAction: async () => {
+                        if (published) {
+                          await unpublishCampaign(campaign.id);
+                          const savedCampaigns = await getCampaigns();
+                          setPersistedCampaigns(
+                            filterGlobalCampaign(savedCampaigns.data)
+                          );
+                        } else {
+                          await publishCampaign(campaign.id);
+                          const savedCampaigns = await getCampaigns();
+                          setPersistedCampaigns(
+                            filterGlobalCampaign(savedCampaigns.data)
+                          );
+                        }
+                      },
                     },
                     {
                       content: 'Delete',
