@@ -106,22 +106,22 @@ const Campaigns = ({ campaigns, enabled }) => {
                   accessibilityLabel={`View details for ${name}`}
                   shortcutActions={[
                     {
-                      content: 'Edit campaign',
+                      content: 'Edit',
                       icon: EditMinor,
                       onAction: () => (window.location.href = url),
                     },
                     {
-                      content: 'Duplicate campaign',
+                      content: 'Duplicate',
                       icon: DuplicateMinor,
                       onAction: () => {},
                     },
                     {
-                      content: 'Unpusblish campaign',
-                      icon: CircleDisableMinor,
+                      content: campaign.published ? 'Unpusblish' : 'Publish',
+                      icon: campaign.published ? CircleDisableMinor : ViewMajor,
                       onAction: () => {},
                     },
                     {
-                      content: 'Delete campaign',
+                      content: 'Delete',
                       destructive: true,
                       onAction: () => setDeleteModalCampaign(campaign),
                       icon: DeleteMinor,
