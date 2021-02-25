@@ -92,6 +92,9 @@ const customElement = (customJS) => `
       this.setupKeyListeners();
       this.setupHidePopupListener();
       this.setupChangeListeners();
+      if (!this.getAttribute('preview')) {
+        document.body.style.overflow = 'hidden';
+      }
     }
 
     disconnectedCallback() {
@@ -211,6 +214,7 @@ const customElement = (customJS) => `
     }
 
     hidePopup() {
+      document.body.style.overflow = 'visible';
       clearInterval(this.countdownIntervalId);
       document.dispatchEvent(window.Salestorm.hidePopup);
     }
