@@ -31,7 +31,9 @@ import { useCallback, useState } from 'react';
 import DeleteModal from './delete_modal';
 
 const Campaigns = ({ campaigns, enabled }) => {
-  const [persistedCampaigns, setPersistedCampaigns] = useState(campaigns);
+  const [persistedCampaigns, setPersistedCampaigns] = useState(
+    campaigns.filter((campaign) => !campaign.global)
+  );
   const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
   const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
 

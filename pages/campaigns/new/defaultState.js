@@ -80,6 +80,7 @@ const DefaultStateNew = {
   template: 'debut',
   published: false,
   strategy: DefaultStateStrategy,
+  global: false,
   targets: {
     page: 'add_to_cart',
     products: [],

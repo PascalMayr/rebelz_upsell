@@ -10,9 +10,10 @@ import db from '../server/db';
 import config from '../config';
 import Campaigns from '../components/campaigns';
 import Design from '../components/design';
-import DefaultStateNew from './campaigns/new/defaultState';
 import Analytics from '../components/analytics';
+import saveCampaign from '../services/save_campaign';
 
+import DefaultStateNew from './campaigns/new/defaultState';
 import { AppContext } from './_app';
 
 export async function getServerSideProps(ctx) {
@@ -23,10 +24,20 @@ export async function getServerSideProps(ctx) {
     'SELECT * FROM campaigns WHERE domain = $1',
     [ctx.req.cookies.shopOrigin]
   );
-  return { props: { campaigns: campaigns.rows, store: stores.rows[0] } };
+  const globalCampaigns = await db.query(
+    'SELECT * FROM campaigns WHERE domain = $1 AND global = true',
+    [ctx.req.cookies.shopOrigin]
+  );
+  return {
+    props: {
+      campaigns: campaigns.rows,
+      store: stores.rows[0],
+      global: globalCampaigns.rows.length > 0 ? globalCampaigns.rows[0] : {},
+    },
+  };
 }
 
-const Index = ({ store, campaigns, appName = 'App' }) => {
+const Index = ({ store, campaigns, global, appName = 'App' }) => {
   const context = useContext(AppContext);
 
   const [enabled, setEnabled] = useState(store.enabled);
@@ -98,13 +109,21 @@ const Index = ({ store, campaigns, appName = 'App' }) => {
     });
   }
 
-  const [globalCampaign, setGlobalCampaign] = useState({ ...DefaultStateNew });
+  const [globalCampaign, setGlobalCampaign] = useState({
+    ...DefaultStateNew,
+    ...global,
+    global: true,
+  });
 
   const setGlobalCampaignProperty = useCallback(
     (value, id, state = {}) =>
       setGlobalCampaign({ ...globalCampaign, [id]: value, ...state }),
     [globalCampaign]
   );
+
+  const [saveLoading, setSaveLoading] = useState(false);
+
+  const designContainerClassName = id === 'design' ? '' : 'd-none';
 
   return (
     <Page
@@ -202,8 +221,38 @@ const Index = ({ store, campaigns, appName = 'App' }) => {
       {id === 'campaigns' && (
         <Campaigns enabled={enabled} campaigns={campaigns} />
       )}
-      <div className={id === 'design' ? '' : 'd-none'}>
-        <Page>
+      <div className={designContainerClassName}>
+        <Page
+          title="Set a global Design for all popups"
+          subtitle="Already created popups won't be affected unless saved again."
+          primaryAction={{
+            content: 'Save',
+            loading: saveLoading,
+            onAction: async () => {
+              try {
+                setSaveLoading(true);
+                const savedCampaign = await saveCampaign(globalCampaign);
+                context.setToast({
+                  shown: true,
+                  content: 'Successfully saved global design',
+                  isError: false,
+                });
+                setGlobalCampaign({
+                  ...globalCampaign,
+                  ...savedCampaign.data,
+                });
+              } catch (_error) {
+                context.setToast({
+                  shown: true,
+                  content: 'Global design saving failed',
+                  isError: true,
+                });
+              } finally {
+                setSaveLoading(false);
+              }
+            },
+          }}
+        >
           <Card>
             <Card.Section>
               <Layout>
@@ -213,7 +262,6 @@ const Index = ({ store, campaigns, appName = 'App' }) => {
                     setCampaignProperty={setGlobalCampaignProperty}
                     advanced
                     renderAdvanced={id === 'design'}
-                    title="Set a global Design for your popups"
                   />
                 </Layout.Section>
               </Layout>
@@ -221,9 +269,7 @@ const Index = ({ store, campaigns, appName = 'App' }) => {
           </Card>
         </Page>
       </div>
-      {id === 'analytics' && (
-        <Analytics />
-      )}
+      {id === 'analytics' && <Analytics />}
     </Page>
   );
 };
