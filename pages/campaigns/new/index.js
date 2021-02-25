@@ -31,11 +31,11 @@ export async function getServerSideProps(ctx) {
     'SELECT * FROM campaigns WHERE domain = $1 AND global = true',
     [ctx.req.cookies.shopOrigin]
   );
-  const globalCampaign =
+  let globalCampaign =
     globalCampaigns.rows.length > 0 ? globalCampaigns.rows[0] : {};
   if (globalCampaign && globalCampaign.id) {
-    delete globalCampaign.id;
-    globalCampaign.global = false;
+    const { styles, texts, customJS, customCSS, options } = globalCampaign;
+    globalCampaign = { styles, texts, customJS, customCSS, options };
   }
   return {
     props: {
