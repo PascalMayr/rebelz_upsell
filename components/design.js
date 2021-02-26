@@ -89,6 +89,23 @@ const Design = ({
             setCampaignProperty={setCampaignProperty}
           />
         </div>
+        <div className="salestorm-themes">
+          <SalestormTheme
+            theme="galleriaempire"
+            name="Galleria Empire"
+            setCampaignProperty={setCampaignProperty}
+          />
+          <SalestormTheme
+            theme="loftlawrence"
+            name="Loft Lawrence"
+            setCampaignProperty={setCampaignProperty}
+          />
+          <SalestormTheme
+            theme="narrativecold"
+            name="Narrative cold"
+            setCampaignProperty={setCampaignProperty}
+          />
+        </div>
       </Card.Section>
       <Card.Section>
         <div className="salestorm-advanced-formatter-settings-toggle">
