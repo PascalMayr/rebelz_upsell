@@ -1,7 +1,6 @@
 import tinycolor from 'tinycolor2';
 
-const getTabletStyles = (campaign) => {
-  const { styles } = campaign;
+const getTabletStyles = (styles) => {
   return `
     #salestorm-product {
       flex-direction: column;

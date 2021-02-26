@@ -22,9 +22,9 @@ import customElement from './custom_element';
 
 const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
   const renderedProduct = getRenderedProductUtil(campaign);
-  const mobileStyles = getMobileStyles(campaign, preview);
-  const tabletStyles = getTabletStyles(campaign, preview);
-  const desktopStyles = getDesktopStyles(campaign, preview);
+  const mobileStyles = getMobileStyles(campaign.styles, preview);
+  const tabletStyles = getTabletStyles(campaign.styles, preview);
+  const desktopStyles = getDesktopStyles(campaign.styles, preview);
   const styles = getStylesUtil(
     campaign,
     preview,

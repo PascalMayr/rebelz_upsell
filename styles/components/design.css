@@ -1,0 +1,18 @@
+.salestorm-themes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.salestorm-theme {
+  flex: 1;
+  margin: 1em;
+  cursor: pointer;
+}
+
+.salestorm-theme > div {
+  height: 4em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

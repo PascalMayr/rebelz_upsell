@@ -2,8 +2,7 @@ import tinycolor from 'tinycolor2';
 
 import convertStyleObjectToStyleStringUtil from '../../../utils/convert_style_object_to_style_string';
 
-const getDesktopStyles = (campaign, preview) => {
-  const { styles } = campaign;
+const getDesktopStyles = (styles, preview) => {
   return `
   #salestorm-overlay-container div {
     box-sizing: border-box;
@@ -23,16 +22,15 @@ const getDesktopStyles = (campaign, preview) => {
   #salestorm-overlay-container h3 {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    font-family: ${styles.popup.fontFamily} !important;
-    color: ${styles.popup.color} !important;
+    font-family: ${styles.popup.fontFamily};
+    color: ${styles.popup.color};
   }
   #salestorm-overlay-container p {
-    margin: 0px !important;
-    padding: 0px !important;
+    margin: 0px;
+    padding: 0px;
     font-weight: 400;
-    line-height: 20px !important;
-    font-family: ${styles.popup.fontFamily} !important;
-    color: ${styles.popup.color} !important;
+    font-family: ${styles.popup.fontFamily};
+    color: ${styles.popup.color};
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
   }
@@ -41,9 +39,10 @@ const getDesktopStyles = (campaign, preview) => {
     display: flex;
     justify-content: center;
     align-items: center;
+    line-height: 25px !important;
     width: 100%;
     height: ${preview === undefined ? '100vh' : '100%'};
-    z-index: 99999 !important;
+    z-index: 99999;
     transition: 0.25s ease;
     ${convertStyleObjectToStyleStringUtil(styles.overlay)};
   }
@@ -52,11 +51,11 @@ const getDesktopStyles = (campaign, preview) => {
   }
   #salestorm-popup {
     contain: layout;
-    z-index: 100000 !important;
+    z-index: 100000;
     transition: 0.25s ease;
     overflow-y: scroll;
-    font-family: ${styles.popup.fontFamily} !important;
-    color: ${styles.popup.color} !important;
+    font-family: ${styles.popup.fontFamily};
+    color: ${styles.popup.color};
     -ms-overflow-style: none;
     scrollbar-width: none;
     ${convertStyleObjectToStyleStringUtil(styles.popup)};
@@ -71,12 +70,13 @@ const getDesktopStyles = (campaign, preview) => {
     ${convertStyleObjectToStyleStringUtil(styles.secondaryButtons)};
   }
   #salestorm-popup-close > span {
-    width: 16px !important;
-    height: 16px !important;
-    margin: 0 auto !important;
+    width: 16px;
+    height: 16px;
+    margin: 0 auto;
+    padding-bottom: 3px;
   }
   #salestorm-popup-close > span > svg {
-    width: 100% !important;
+    width: 100%;
   }
   #salestorm-popup-close:hover {
     background-color: ${tinycolor(
@@ -88,11 +88,11 @@ const getDesktopStyles = (campaign, preview) => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px !important;
+    padding: 16px;
   }
   #salestorm-product-title {
-    font-size: 23px !important;
-    max-width: 75% !important;
+    font-size: 23px;
+    max-width: 75%;
     color: ${styles.popup.color};
     text-decoration: none;
   }
@@ -101,7 +101,7 @@ const getDesktopStyles = (campaign, preview) => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px !important;
+    padding: 16px;
   }
   #salestorm-campaign-text-dismissAction {
     cursor: pointer;
@@ -112,10 +112,10 @@ const getDesktopStyles = (campaign, preview) => {
     align-items: center;
   }
   #salestorm-popup-footer-checkout-action .Polaris-Icon {
-    margin-left: 0.2em !important;
-    width: 15px !important;
-    padding-top: 4.5px !important;
-    fill: ${styles.popup.color} !important;
+    margin-left: 0.2em;
+    width: 15px;
+    padding-top: 4.5px;
+    fill: ${styles.popup.color};
   }
   #salestorm-product {
     padding: 30px;
@@ -137,25 +137,25 @@ const getDesktopStyles = (campaign, preview) => {
   }
   #salestorm-product-action-container {
     width: 254px;
-    text-align: center !important;
+    text-align: center;
   }
   #salestorm-product-action-container > h3 {
-    font-size: 23px !important;
+    font-size: 23px;
     font-weight: bold;
-    margin-top: 0px !important;
+    margin-top: 0px;
   }
   #salestorm-product-action-container > * {
-    margin-bottom: 12px !important;
+    margin-bottom: 12px;
   }
   #salestorm-product-action-container > button {
-    margin-bottom: 16px !important;
+    margin-bottom: 16px;
   }
   #salestorm-product-action-container > p {
-    margin-bottom: 12px !important;
-    font-size: 16px !important;
+    margin-bottom: 12px;
+    font-size: 16px;
   }
   .salestorm-product-select-container {
-    position: relative !important;
+    position: relative;
     margin-bottom: 10px;
     border-radius: 3px;
     border-color: inherit;
@@ -165,15 +165,15 @@ const getDesktopStyles = (campaign, preview) => {
   .salestorm-product-select {
     padding: 10px 16px;
     background-color: ${tinycolor(styles.popup.backgroundColor).darken(10)};
-    background-image: url() !important;
+    background-image: url();
     width: 100%;
     border-width: 0px;
     border-radius: 3px;
     cursor: pointer;
     color: inherit;
     font-family: inherit;
-    font-size: 14px !important;
-    z-index: 100002 !important;
+    font-size: 14px;
+    z-index: 100002;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -181,16 +181,16 @@ const getDesktopStyles = (campaign, preview) => {
     text-overflow: '';
   }
   .salestorm-product-select-arrow > span {
-    position: absolute !important;
-    top: 22.5% !important;
-    right: 5px !important;
-    width: 21px !important;
-    height: 21px !important;
-    fill: ${styles.popup.color} !important;
+    position: absolute;
+    top: 22.5%;
+    right: 5px;
+    width: 21px;
+    height: 21px;
+    fill: ${styles.popup.color};
   }
   .salestorm-product-select > option {
-    background-color: ${styles.popup.backgroundColor} !important;
-    color: ${styles.popup.color} !important;
+    background-color: ${styles.popup.backgroundColor};
+    color: ${styles.popup.color};
   }
   #salestorm-claim-offer-button {
     opacity: 1;
@@ -198,11 +198,11 @@ const getDesktopStyles = (campaign, preview) => {
     padding: 16px 24px;
     font-size: 17px;
     font-weight: bold;
-    font-family: ${campaign.styles.primaryButtons.fontFamily} !important;
-    color: ${campaign.styles.primaryButtons.color} !important;
+    font-family: ${styles.primaryButtons.fontFamily};
+    color: ${styles.primaryButtons.color};
     cursor: pointer;
     transition: 0.25s ease;
-    ${convertStyleObjectToStyleStringUtil(campaign.styles.primaryButtons)};
+    ${convertStyleObjectToStyleStringUtil(styles.primaryButtons)};
   }
   #salestorm-claim-offer-button:hover {
     background-color: ${tinycolor(styles.primaryButtons.backgroundColor).darken(
@@ -210,11 +210,11 @@ const getDesktopStyles = (campaign, preview) => {
     )};
   }
   .offer-button-disabled {
-    opacity: 0.7 !important;
-    cursor: default !important;
+    opacity: 0.7;
+    cursor: default;
   }
   .offer-button-disabled:hover {
-    background-color: ${styles.primaryButtons.backgroundColor} !important;
+    background-color: ${styles.primaryButtons.backgroundColor};
   }
   #salestorm-campaign-text-seeProductDetailsAction{
     color: inherit;
@@ -226,13 +226,13 @@ const getDesktopStyles = (campaign, preview) => {
     padding-top: 0px;
   }
   #salestorm-quantity-selection {
-    position: relative !important;
+    position: relative;
     text-align: left;
   }
   #salestorm-quantity-selection > input {
     margin: 0px;
     border: 0px;
-    position: relative !important;
+    position: relative;
     border-radius: 3px;
     border-color: inherit;
     border-width: 0px;
@@ -243,7 +243,7 @@ const getDesktopStyles = (campaign, preview) => {
     background-color: ${tinycolor(styles.popup.backgroundColor).darken(10)};
     color: ${styles.popup.color};
     text-align: center;
-    font-size: 16px !important;
+    font-size: 16px;
   }
   #salestorm-quantity-selection-plus {
     cursor: pointer;
@@ -257,7 +257,7 @@ const getDesktopStyles = (campaign, preview) => {
     right: 10px;
     width: 21px;
     height: 21px;
-    fill: rgb(255, 255, 255);
+    fill: ${styles.popup.color};
   }
   #salestorm-quantity-selection-minus .Polaris-Icon {
     position: absolute;
@@ -265,12 +265,11 @@ const getDesktopStyles = (campaign, preview) => {
     left: 10px;
     width: 21px;
     height: 21px;
-    fill: rgb(255, 255, 255);
+    fill: ${styles.popup.color};
   }
   #salestorm-countdown-container {
     font-size: 18px;
     text-align: center;
-    padding-bottom: 16px;
   }
   #salestorm-progress-bar-container {
     width: 100%;
@@ -290,6 +289,9 @@ const getDesktopStyles = (campaign, preview) => {
     border-radius: 3px;
     transition: all ease 0.25s;
     background-color: ${styles.primaryButtons.backgroundColor};
+  }
+  #salestorm-campaign-text-title {
+    line-height: 35px;
   }
 `;
 };

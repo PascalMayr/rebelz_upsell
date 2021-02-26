@@ -41,6 +41,9 @@ const getStylesUtil = (
     .d-none {
       display: none;
     }
+    .salestorm-popup > * {
+      line-height: 30px !important;
+    }
     ${
       preview
         ? ''

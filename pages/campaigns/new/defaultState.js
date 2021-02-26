@@ -15,7 +15,7 @@ const DefaultStateStyle = {
   popup: {
     margin: '0px',
     padding: '0px',
-    borderRadius: '2px',
+    borderRadius: '5px',
     borderWidth: '0px 0px 0px 0px',
     borderStyle: 'solid',
     backgroundColor: 'rgb(33, 36, 37)',
@@ -45,7 +45,7 @@ const DefaultStateStyle = {
     borderWidth: '0px 0px 0px 0px',
     borderStyle: 'solid',
     borderColor: 'rgb(0, 128, 96)',
-    backgroundColor: 'rgb(67, 67, 67)',
+    backgroundColor: 'rgb(41, 47, 48)',
     backgroundImage: 'url()',
     backgroundRepeat: 'repeat',
     backgroundOrigin: 'padding-box',
@@ -57,7 +57,7 @@ const DefaultStateStyle = {
     borderRadius: '2px',
     borderWidth: '0px 0px 0px 0px',
     borderStyle: 'solid',
-    backgroundColor: 'rgb(248, 152, 58)',
+    backgroundColor: 'rgb(128, 55, 249)',
     backgroundImage: 'url()',
     backgroundRepeat: 'repeat',
     backgroundOrigin: 'padding-box',
@@ -100,10 +100,9 @@ const DefaultStateNew = {
     countdownTime: '05:00',
   },
   texts: {
-    title: 'GET {{Discount}} DISCOUNT!',
-    subtitle:
-      'Get this product with a {{Discount}} Discount.',
-    addToCartAction: 'Claim offer!',
+    title: 'Deal unlocked! get another for {{Discount}} off!',
+    subtitle: '',
+    addToCartAction: '🎁  &nbsp; CLAIM OFFER !',
     addToCartUnavailable: 'Unavailable',
     seeProductDetailsAction: 'See product details',
     dismissAction: 'No thanks',
@@ -114,5 +113,5 @@ const DefaultStateNew = {
   customJS: '',
 };
 
-export { DefaultStateStrategy };
+export { DefaultStateStrategy, DefaultStateStyle };
 export default DefaultStateNew;

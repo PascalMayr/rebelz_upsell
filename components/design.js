@@ -6,6 +6,17 @@ import MobileDesktopSwitchPreview from './popup/preview/mobile_desktop_switch';
 import PreviewPopup from './popup/preview';
 import Formatter from './campaigns/new/formatter';
 import OptionsCampaign from './campaigns/new/options';
+import quickThemes from './popup/templates/quickThemes';
+import '../styles/components/design.css';
+
+const SalestormTheme = ({ theme, name, setCampaignProperty }) => {
+  const setTheme = () => setCampaignProperty(quickThemes(theme), 'styles');
+  return (
+    <div onClick={setTheme} onKeyDown={setTheme} className="salestorm-theme">
+      <Card>{name}</Card>
+    </div>
+  );
+};
 
 const Design = ({
   campaign,
@@ -50,6 +61,25 @@ const Design = ({
           <PreviewPopup campaign={campaign} preview={preview} />
         </div>
         <MobileDesktopSwitchPreview onSwitch={(value) => setPreview(value)} />
+      </Card.Section>
+      <Card.Section title="Click to apply quick themes.">
+        <div className="salestorm-themes">
+          <SalestormTheme
+            theme="debut"
+            name="Debut"
+            setCampaignProperty={setCampaignProperty}
+          />
+          <SalestormTheme
+            theme="gialloBistro"
+            name="Giallo Bistro"
+            setCampaignProperty={setCampaignProperty}
+          />
+          <SalestormTheme
+            theme="boost"
+            name="Boost"
+            setCampaignProperty={setCampaignProperty}
+          />
+        </div>
       </Card.Section>
       <Card.Section>
         <div className="salestorm-advanced-formatter-settings-toggle">
