@@ -20,7 +20,7 @@ const GialloBistro = {
   },
 };
 
-const Boost = {
+const Warehouse = {
   ...DefaultStateStyle,
   popup: {
     ...DefaultStateStyle.popup,
@@ -44,8 +44,8 @@ const quickThemes = (theme) => {
   switch (theme) {
     case 'gialloBistro':
       return GialloBistro;
-    case 'boost':
-      return Boost;
+    case 'warehouse':
+      return Warehouse;
     default:
       return DefaultStateStyle;
   }

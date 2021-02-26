@@ -84,8 +84,8 @@ const Design = ({
             setCampaignProperty={setCampaignProperty}
           />
           <SalestormTheme
-            theme="boost"
-            name="Boost"
+            theme="warehouse"
+            name="Warehouse"
             setCampaignProperty={setCampaignProperty}
           />
         </div>
