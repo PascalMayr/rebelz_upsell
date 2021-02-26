@@ -20,10 +20,32 @@ const GialloBistro = {
   },
 };
 
+const Boost = {
+  ...DefaultStateStyle,
+  popup: {
+    ...DefaultStateStyle.popup,
+    backgroundColor: 'rgb(39, 48, 122)',
+    boxShadow: '0px 0px 15px rgb(111, 185, 217)',
+    borderRadius: '15px',
+    color: 'rgb(255, 255, 255)',
+  },
+  primaryButtons: {
+    ...DefaultStateStyle.primaryButtons,
+    backgroundColor: 'rgb(111, 185, 217)',
+  },
+  secondaryButtons: {
+    ...DefaultStateStyle.secondaryButtons,
+    backgroundColor: 'rgb(50, 59, 143)',
+    fill: 'rgb(255, 255, 255)',
+  },
+};
+
 const quickThemes = (theme) => {
   switch (theme) {
     case 'gialloBistro':
       return GialloBistro;
+    case 'boost':
+      return Boost;
     default:
       return DefaultStateStyle;
   }
