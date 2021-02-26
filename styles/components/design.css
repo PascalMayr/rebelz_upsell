@@ -8,11 +8,12 @@
   flex: 1;
   margin: 1em;
   cursor: pointer;
-}
-
-.salestorm-theme > div {
-  height: 4em;
+  height: 3.2em;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 10px;
+  border-width: 3px;
+  border-style: solid;
+  font-size: 16px;
 }

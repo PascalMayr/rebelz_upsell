@@ -12,8 +12,17 @@ import '../styles/components/design.css';
 const SalestormTheme = ({ theme, name, setCampaignProperty }) => {
   const setTheme = () => setCampaignProperty(quickThemes(theme), 'styles');
   return (
-    <div onClick={setTheme} onKeyDown={setTheme} className="salestorm-theme">
-      <Card>{name}</Card>
+    <div
+      onClick={setTheme}
+      onKeyDown={setTheme}
+      className="salestorm-theme"
+      style={{
+        backgroundColor: quickThemes(theme).popup.backgroundColor,
+        color: quickThemes(theme).popup.color,
+        borderColor: quickThemes(theme).primaryButtons.backgroundColor,
+      }}
+    >
+      {name.toUpperCase()}
     </div>
   );
 };
