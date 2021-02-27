@@ -374,6 +374,11 @@ const customElement = (customJS) => `
       } else {
         variantsContainer.classList.add('d-none');
       }
+    }
+
+    updateProduct(product) {
+      if (product) {
+        this.updateVariants(product);
         this.getElement('#salestorm-product-title').innerHTML = product.title;
         const mainProductImage = product.featuredImage && product.featuredImage.transformedSrc;
         const imageElement = this.getElement('#salestorm-product-image');
