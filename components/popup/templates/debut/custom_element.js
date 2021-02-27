@@ -355,25 +355,25 @@ const customElement = (customJS) => `
         for (const oldSelectContainer of oldSelectContainers) {
           oldSelectContainer.remove();
         }
-        if (!product.hasOnlyDefaultVariant) {
-          variantsContainer.classList.remove('d-none');
-          product.options.forEach(option => {
-            const currentSelectContainer = selectContainerTemplate.cloneNode(true);
-            currentSelectContainer.classList.add('cloned-select');
-            const currentSelect = currentSelectContainer.querySelector('.salestorm-product-select');
-            option.values.forEach((value) => {
-              const currentOption = document.createElement('option');
-              currentOption.value = value;
-              currentOption.innerHTML = value;
-              currentSelect.appendChild(currentOption);
-            });
-            currentSelectContainer.appendChild(currentSelect);
-            currentSelectContainer.classList.remove('d-none');
-            variantsContainer.appendChild(currentSelectContainer);
+      if (!product.hasOnlyDefaultVariant) {
+        variantsContainer.classList.remove('d-none');
+        product.options.forEach(option => {
+          const currentSelectContainer = selectContainerTemplate.cloneNode(true);
+          currentSelectContainer.classList.add('cloned-select');
+          const currentSelect = currentSelectContainer.querySelector('.salestorm-product-select');
+          option.values.forEach((value) => {
+            const currentOption = document.createElement('option');
+            currentOption.value = value;
+            currentOption.innerHTML = value;
+            currentSelect.appendChild(currentOption);
           });
-        } else {
-          variantsContainer.classList.add('d-none');
-        }
+          currentSelectContainer.appendChild(currentSelect);
+          currentSelectContainer.classList.remove('d-none');
+          variantsContainer.appendChild(currentSelectContainer);
+        });
+      } else {
+        variantsContainer.classList.add('d-none');
+      }
         this.getElement('#salestorm-product-title').innerHTML = product.title;
         const mainProductImage = product.featuredImage && product.featuredImage.transformedSrc;
         const imageElement = this.getElement('#salestorm-product-image');
