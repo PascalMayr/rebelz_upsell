@@ -20,6 +20,8 @@ const SalestormTheme = ({ theme, name, setCampaignProperty }) => {
         backgroundColor: quickThemes(theme).popup.backgroundColor,
         color: quickThemes(theme).popup.color,
         borderColor: quickThemes(theme).primaryButtons.backgroundColor,
+        fontFamily: quickThemes(theme).popup.fontFamily,
+        boxShadow: quickThemes(theme).popup.boxShadow,
       }}
     >
       {name.toUpperCase()}
