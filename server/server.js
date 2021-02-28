@@ -48,7 +48,7 @@ app.prepare().then(() => {
   const router = new Router();
 
   router.post('/api/get-matching-campaign', async (ctx) => {
-    const { shop, target, products } = ctx.request.body;
+    const { shop, target, products, totalPrice } = ctx.request.body;
     const campaigns = await db.query(
       `SELECT *
       FROM campaigns
@@ -58,6 +58,7 @@ app.prepare().then(() => {
       AND campaigns.published = true`,
       [shop]
     );
+    // match min, max, collection, products, targetPage
     const campaign = campaigns.rows.find(
       (row) =>
         row.targets.page === target &&
@@ -65,8 +66,10 @@ app.prepare().then(() => {
           products.includes(parseInt(targetProduct.legacyResourceId, 10))
         )
     );
+    // check if selling mode is auto, get recommendations and transform them to a graphql object
+    // when selling mode is manual retrieve the selling products again - maybe the merchant updates them meanwhile
     if (campaign) {
-      const { customJS, id } = campaign;
+      const { customJS, id, strategy, selling, options } = campaign;
       const html = await ReactDOMServer.renderToStaticMarkup(
         <AppProvider i18n={translations}>
           <Popup campaign={campaign} />
@@ -75,7 +78,7 @@ app.prepare().then(() => {
       ctx.body = {
         html,
         js: customElement(customJS),
-        id,
+        campaign: { id, strategy, selling, options },
       };
       ctx.status = 200;
     } else {

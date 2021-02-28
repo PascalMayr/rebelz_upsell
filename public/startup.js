@@ -1,5 +1,5 @@
 (function () {
-  const target = { html: '', js: '', id: 0 };
+  const target = {};
   const targets = {
     addToCart: 'add_to_cart',
     checkout: 'checkout',
@@ -47,7 +47,13 @@
   );
   let productsAddedByXHROrFetch = false;
 
-  const fetchCampaign = async (target, products) => {
+  const getCart = async () => {
+    const response = await fetch('/cart.js');
+    const cart = await response.json();
+    return cart;
+  };
+
+  const fetchCampaign = async (targetPage, products, totalPrice) => {
     try {
       const response = await fetch(
         'https://loop.salestorm.cc:8081/api/get-matching-campaign',
@@ -59,18 +65,20 @@
           },
           body: JSON.stringify({
             shop: window.Shopify.shop,
-            target,
+            target: targetPage,
             products,
+            totalPrice,
           }),
         }
       );
       if (response.ok) {
         const campaign = await response.json();
-        popups[target] = campaign;
+        popups[targetPage] = campaign;
+        eval(campaign.js);
       } else {
-        popups[target] = target;
+        popups[targetPage] = targetPage;
       }
-      return Boolean(popups[target]);
+      return Boolean(popups[targetPage]);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(window.Shopify);
@@ -78,34 +86,29 @@
     }
   };
 
-  const showPopup = (target) => {
-    document.body.insertAdjacentHTML('beforeend', popups[target].html);
-    const popup = document.querySelector(`#salestorm-campaign-${popups[target].id}`);
-    try {
-      eval(popups[target].js);
-    } catch(error) {
-      console.log(error);
-    }
+  const showPopup = (targetPage) => {
+    const { campaign } = popups[targetPage];
+    const popupId = campaign && campaign.id ? campaign.id : '';
+    document.body.insertAdjacentHTML('beforeend', popups[targetPage].html);
+    const popup = document.querySelector(`#salestorm-campaign-${popupId}`);
     if (popup) {
       popup.setAttribute('visible', 'true');
     }
-    if (window.Salestorm.hidePopup) {
-      document.addEventListener(window.Salestorm.hidePopup.type, () => {
-        popup.setAttribute('visible', 'false');
-        document.dispatchEvent(continueOriginalClickEvent);
-      });
-    }
+    document.addEventListener(window.Salestorm.hidePopup.type, () => {
+      popup.setAttribute('visible', 'false');
+      document.dispatchEvent(continueOriginalClickEvent);
+    });
   };
 
   const searchFormFromTarget = (initialTarget) => {
     let formElement;
-    let target = initialTarget;
-    while (target) {
-      if (target.tagName && target.tagName.toUpperCase() === 'FORM') {
-        formElement = target;
+    let eventTarget = initialTarget;
+    while (eventTarget) {
+      if (eventTarget.tagName && eventTarget.tagName.toUpperCase() === 'FORM') {
+        formElement = eventTarget;
         break;
       }
-      target = target.parentNode;
+      eventTarget = eventTarget.parentNode;
     }
     return formElement;
   };
@@ -137,64 +140,87 @@
       const product = await response.json();
       productId = product.id;
     }
-    const hasCampaign = await fetchCampaign(targets.addToCart, [productId]);
+    const cart = await getCart();
+    const totalPrice = cart.total_price / 100;
+    const hasCampaign = await fetchCampaign(
+      targets.addToCart,
+      [productId],
+      totalPrice
+    );
     if (hasCampaign) {
       let displayedCampaign = false;
-      addEarlyClickListener(addToCartButtonSelector, (event) => {
-        if (!displayedCampaign) {
-          showPopup(targets.addToCart);
-          event.preventDefault();
-          event.stopPropagation();
-          const handleCartDrawers = setInterval(() => {
-            if (document.querySelector(checkoutButtonSelector)) {
-              handleCart();
-              clearInterval(handleCartDrawers);
-            }
-          }, 500);
-          document.addEventListener(continueOriginalClickEvent.type, () => {
-            displayedCampaign = true;
-            if (!productsAddedByXHROrFetch) {
-              event.target.click();
-            }
+      const interruptEvents =
+        popups[targets.addToCart].campaign.options.interruptEvents;
+      if (interruptEvents) {
+        addEarlyClickListener(addToCartButtonSelector, (event) => {
+          if (!displayedCampaign) {
+            showPopup(targets.addToCart);
+            event.preventDefault();
+            event.stopPropagation();
+            const handleCartDrawers = setInterval(() => {
+              if (document.querySelector(checkoutButtonSelector)) {
+                handleCart();
+                clearInterval(handleCartDrawers);
+              }
+            }, 500);
+            document.addEventListener(continueOriginalClickEvent.type, () => {
+              displayedCampaign = true;
+              if (!productsAddedByXHROrFetch) {
+                event.target.click();
+              }
+            });
+          }
+          return true;
+        });
+      } else {
+        const addToCartButton = document.querySelector(addToCartButtonSelector);
+        if (addToCartButton) {
+          addToCartButton.addEventListener('click', () => {
+            showPopup(targets.addToCart);
           });
         }
-        return true;
-      });
+      }
     }
-  };
-
-  const getCartItems = async () => {
-    const response = await fetch('/cart.js');
-    const cart = await response.json();
-    return cart.items;
   };
 
   const handleCart = async () => {
     let hasCampaign;
     const checkAndHandleCartCampaign = async () => {
-      const currentItemsInCart = await getCartItems();
+      const cart = await getCart();
+      const currentItemsInCart = cart.items;
+      const totalPrice = cart.total_price / 100;
       hasCampaign = await fetchCampaign(
         targets.checkout,
-        currentItemsInCart.map((item) => item.product_id)
+        currentItemsInCart.map((item) => item.product_id),
+        totalPrice
       );
       if (hasCampaign) {
         let displayedCampaign = false;
-        addEarlyClickListener(checkoutButtonSelector, (event) => {
-          if (!displayedCampaign) {
+        const interruptEvents =
+          popups[targets.checkout].campaign.options.interruptEvents;
+        if (interruptEvents) {
+          addEarlyClickListener(checkoutButtonSelector, (event) => {
+            if (!displayedCampaign) {
+              showPopup(targets.checkout);
+              event.preventDefault();
+              event.stopPropagation();
+              document.addEventListener(continueOriginalClickEvent.type, () => {
+                displayedCampaign = true;
+                const checkoutForm = searchFormFromTarget(event.target);
+                if (checkoutForm) {
+                  checkoutForm.requestSubmit();
+                }
+                event.target.click();
+              });
+            }
+            return true;
+          });
+        } else {
+          const checkoutButton = document.querySelector(checkoutButtonSelector);
+          checkoutButton.addEventListener('click', () => {
             showPopup(targets.checkout);
-            event.preventDefault();
-            event.stopPropagation();
-            document.addEventListener(continueOriginalClickEvent.type, () => {
-              displayedCampaign = true;
-              const checkoutForm = searchFormFromTarget(event.target);
-              if (checkoutForm) {
-                checkoutForm.requestSubmit();
-              }
-              event.target.click();
-            });
-          }
-          return true;
-        });
+          });
+        }
       }
     };
     await checkAndHandleCartCampaign();
@@ -210,7 +236,8 @@
   const handleThankYouPage = async () => {
     const hasCampaign = await fetchCampaign(
       targets.thankYou,
-      window.Shopify.checkout.line_items.map((item) => item.product_id)
+      window.Shopify.checkout.line_items.map((item) => item.product_id),
+      window.Shopify.checkout.total_price
     );
     if (hasCampaign) showPopup(targets.thankYou);
   };
