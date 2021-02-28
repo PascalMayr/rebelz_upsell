@@ -210,11 +210,8 @@ const getDesktopStyles = (styles, preview) => {
     )};
   }
   .offer-button-disabled {
-    opacity: 0.7;
-    cursor: default;
-  }
-  .offer-button-disabled:hover {
-    background-color: ${styles.primaryButtons.backgroundColor};
+    opacity: 0.7 !important;
+    cursor: default !important;
   }
   #salestorm-campaign-text-seeProductDetailsAction{
     color: inherit;
