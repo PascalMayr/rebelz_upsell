@@ -44,7 +44,7 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
       },
       {
         id: 'primaryButtons',
-        content: 'Popup Secondary',
+        content: 'Claim Offer Button',
         accessibilityLabel: 'Secondary Color',
         panelID: 'secondary-color-panel',
         styleChoices: [
