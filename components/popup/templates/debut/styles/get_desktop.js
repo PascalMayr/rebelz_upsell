@@ -289,6 +289,32 @@ const getDesktopStyles = (styles, preview) => {
   #salestorm-campaign-text-title {
     line-height: 35px;
   }
+  #salestorm-product-image-slider {
+    position: absolute;
+    top: 47.5%;
+    left: 0px;
+    display: flex;
+    justify-content: space-between;
+    padding-right: 5px;
+    padding-left: 5px;
+    width: 100%;
+  }
+  #salestorm-product-image-slider-left {
+    cursor: pointer;
+    height: 100%;
+  }
+  #salestorm-product-image-slider-left .Polaris-Icon > svg {
+    width: 20px;
+    opacity: 0.5;
+  }
+  #salestorm-product-image-slider-right {
+    cursor: pointer;
+    height: 100%;
+  }
+  #salestorm-product-image-slider-right .Polaris-Icon > svg {
+    width: 20px;
+    opacity: 0.5;
+  }
 `;
 };
 

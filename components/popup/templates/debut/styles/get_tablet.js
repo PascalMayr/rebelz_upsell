@@ -64,6 +64,17 @@ const getTabletStyles = (styles) => {
         styles.popup.backgroundColor
       ).lighten(10)};
     }
+    #salestorm-product-image-slider {
+      height: 2.5em;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    #salestorm-product-image-slider-right {
+      padding-left: 2em;
+    }
+    #salestorm-product-image-slider-left {
+      padding-right: 2em;
+    }
   `;
 };
 
