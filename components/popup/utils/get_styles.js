@@ -39,7 +39,7 @@ const getStylesUtil = (
       -moz-appearance: textfield;
     }
     .d-none {
-      display: none;
+      display: none !important;
     }
     .salestorm-popup > * {
       line-height: 30px !important;
