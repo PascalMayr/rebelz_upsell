@@ -4,6 +4,14 @@ const processCampaignTextsUtil = (text) =>
       '{{Discount}}',
       '<span class="salestorm-price salestorm-discount"></span>'
     )
-    .replace('{{Countdown}}', '<span id="salestorm-countdown"></span>');
+    .replace('{{Countdown}}', '<span id="salestorm-campaign-text-countdown"></span>')
+    .replace(
+      '{{ProductPrice}}',
+      '<span class="salestorm-price salestorm-product-price"></span>'
+    )
+    .replace(
+      '{{DiscountedProductPrice}}',
+      '<span class="salestorm-price salestorm-product-price-discounted"></span>'
+    );
 
 export default processCampaignTextsUtil;
