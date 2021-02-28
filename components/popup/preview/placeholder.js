@@ -28,6 +28,7 @@ const PlaceholderPreview = (strategy) => {
             title: 'Red',
             legacyResourceId: '38752185811129',
             availableForSale: true,
+            price: '200.00',
             image: {
               transformedSrc:
                 'https://cdn.shopify.com/s/files/1/0877/4986/products/032_Candy_Apple_pdp_A.jpg?v=1588623182&width=500',
@@ -41,6 +42,7 @@ const PlaceholderPreview = (strategy) => {
             title: 'Blue',
             legacyResourceId: '38752185811121',
             availableForSale: false,
+            price: '205.00',
             image: {
               transformedSrc:
                 'https://cdn.shopify.com/s/files/1/0877/4986/products/032_Royal_Blue_pdp_A.jpg?v=1588713960&width=500',

@@ -42,6 +42,7 @@ const GET_PRODUCT = gql`
             id
             legacyResourceId
             availableForSale
+            price
             selectedOptions {
               name
               value
