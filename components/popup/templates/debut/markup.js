@@ -4,6 +4,8 @@ import {
   ArrowRightMinor,
   PlusMinor,
   MinusMinor,
+  CircleLeftMajor,
+  CircleRightMajor
 } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 
