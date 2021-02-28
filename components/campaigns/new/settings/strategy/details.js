@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { TextField, Select } from '@shopify/polaris';
 import '../../../../../styles/components/campaigns/new/settings/strategy/details.css';
 import { useQuery } from 'react-apollo';
@@ -19,6 +20,12 @@ const DetailsStrategy = ({ strategy = DefaultStateStrategy, onChange }) => {
   };
   const { data } = useQuery(GET_STORE_CURRENCY);
   const currencyCode = data && data.shop && data.shop.currencyCode;
+  useEffect(() => {
+    if (currencyCode) {
+      onDiscountSettingsChange('storeCurrencyCode', currencyCode);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currencyCode]);
   let salestormStrategyContainerClass;
   switch (strategy.mode) {
     case 'free_shipping':
