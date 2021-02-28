@@ -71,12 +71,23 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
         <DetailsStrategy
           strategy={campaign.strategy}
           onChange={(newDiscountStrategy) => {
+            const products = campaign.selling.products.map((product) => {
+              const helper = product;
+              helper.strategy = newDiscountStrategy;
+              return helper;
+            });
             setCampaignProperty(
               {
                 ...strategy,
                 ...newDiscountStrategy,
               },
-              'strategy'
+              'strategy',
+              {
+                selling: {
+                  ...campaign.selling,
+                  products,
+                },
+              }
             );
           }}
         />
