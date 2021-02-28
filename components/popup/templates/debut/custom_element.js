@@ -3,14 +3,18 @@ import processCampaignTextsUtil from '../../utils/process_campaign_texts';
 const customElement = (customJS) => `
   class SalestormPopupComponent extends HTMLElement {
     countdownIntervalId;
+    selectedVariant;
+    images;
+    image;
 
     constructor() {
       super();
+      window.Salestorm = {};
       this.setupShadow();
     }
 
     static get observedAttributes() {
-      return ['visible', 'product', 'texts', 'animation', 'quantityeditable', 'linktoproduct', 'multicurrency', 'enableoutofstockproducts', 'showcountdown', 'countdowntime', 'offers', 'currentoffer'];
+      return ['visible', 'product', 'texts', 'animation', 'quantityeditable', 'linktoproduct', 'multicurrency', 'enableoutofstockproducts', 'showcountdown', 'countdowntime', 'offers', 'currentoffer', 'showimageslider'];
     }
 
     getElement(selector) {
@@ -35,6 +39,7 @@ const customElement = (customJS) => `
           this.updateProduct(JSON.parse(newValue));
         break;
         case 'texts':
+          clearInterval(this.countdownIntervalId);
           this.updateTexts(JSON.parse(newValue));
         break;
         case 'animation':
@@ -54,7 +59,7 @@ const customElement = (customJS) => `
             const product = JSON.parse(this.getAttribute('product'));
             this.updateProductLink("/products/"+product.handle);
           } else {
-            this.updateProductLink("#");
+            this.removeProductLink();
           }
         break;
         case 'showcountdown':
@@ -77,6 +82,13 @@ const customElement = (customJS) => `
             }
           }
         break;
+        case 'showimageslider':
+          if (newValue === 'true' && this.images.length > 1) {
+            this.getElement('#salestorm-product-image-slider').classList.remove('d-none');
+          } else {
+            this.getElement('#salestorm-product-image-slider').classList.add('d-none');
+          }
+          break;
         default:
           console.log('attribute "' + name + '" not handled by any function');
         break;
@@ -136,6 +148,24 @@ const customElement = (customJS) => `
           quantityInput.value = parseInt(quantityInput.value) + 1;
         })
       }
+
+      const previous = () => {
+        const currentIndex = this.images.findIndex(variantImage => variantImage === this.image);
+        const nextIndex = currentIndex > 0 ? currentIndex - 1 : this.images.length -1;
+        console.log(this.images[nextIndex])
+        this.setImage(this.images[nextIndex])
+      };
+      const leftSlider = this.getElement('#salestorm-product-image-slider-left');
+      leftSlider.addEventListener('click', previous);
+      const next = () => {
+        const currentIndex = this.images.findIndex(variantImage => variantImage === this.image);
+        const nextIndex = currentIndex + 1;
+        const nextImage = this.images[nextIndex] ? this.images[nextIndex] : this.images[0];
+        this.setImage(nextImage);
+      };
+      const rightSlider = this.getElement('#salestorm-product-image-slider-right');
+      rightSlider.addEventListener('click', next);
+
     }
 
     removeClickListeners() {
@@ -221,16 +251,16 @@ const customElement = (customJS) => `
 
     disablePurchase() {
       const claimOfferButton = this.getElement('#salestorm-claim-offer-button');
-      claimOfferButton.classList.disable = true;
+      claimOfferButton.setAttribute('disabled', 'true');
       claimOfferButton.classList.add('offer-button-disabled');
       this.getElement('#salestorm-campaign-text-addToCartAction').classList.add('d-none');
       this.getElement('#salestorm-campaign-text-addToCartUnavailable').classList.remove('d-none');
     }
 
-    enablePurchase(selectedVariant) {
+    enablePurchase() {
       const claimOfferButton = this.getElement('#salestorm-claim-offer-button');
-      if (selectedVariant.node && selectedVariant.node.image) {
-        this.getElement('#salestorm-product-image').style.backgroundImage = "url("+selectedVariant.node.image.transformedSrc+")";
+      if (this.selectedVariant && this.selectedVariant.node && this.selectedVariant.node.image) {
+        this.setImage(this.selectedVariant.node.image.transformedSrc);
       }
       claimOfferButton.classList.disable = false;
       claimOfferButton.classList.remove('offer-button-disabled');
@@ -242,14 +272,17 @@ const customElement = (customJS) => `
       const sortStringArrayAlphabetically = array => array.sort((a, b) => a.length - b.length);
       const currentRenderedSelects = Array.from(this.getElements('.cloned-select .salestorm-product-select'));
       const currentSelectionState = currentRenderedSelects.map(selectElement => selectElement.value);
-      const selectedVariant = product.variants.edges.find(variant => {
+      this.selectedVariant = product.variants.edges.find(variant => {
         const variantOptionValues = variant.node.selectedOptions.map(selectedOption => selectedOption.value);
         return JSON.stringify(sortStringArrayAlphabetically(variantOptionValues)) === JSON.stringify(sortStringArrayAlphabetically(currentSelectionState));
       });
-      if (selectedVariant) {
-        this.enablePurchase(selectedVariant);
+      if (product.hasOnlyDefaultVariant) {
+        this.selectedVariant = product.variants.edges[0];
+      }
+      if (this.selectedVariant) {
+        this.enablePurchase();
         const enableoutofstockproducts = this.getAttribute('enableoutofstockproducts') === 'false';
-        if (enableoutofstockproducts && !selectedVariant.node.availableForSale) {
+        if (enableoutofstockproducts && !this.selectedVariant.node.availableForSale) {
           this.disablePurchase();
         }
       }
@@ -297,11 +330,9 @@ const customElement = (customJS) => `
     }
 
     createCurrencyFormatter(baseCurrencyCode) {
-      const multiCurrencySupport = this.getAttribute("multicurrency") === "true";
-      window.Salestorm.currentCurrencyCode = (multiCurrencySupport && this.getDisplayedStoreCurrencyCode())|| baseCurrencyCode;
       const currencyFormatter = new Intl.NumberFormat([], {
         style: 'currency',
-        currency: window.Salestorm.currentCurrencyCode,
+        currency: baseCurrencyCode || window.Salestorm.currentCurrencyCode,
         currencyDisplay: 'symbol',
         maximumSignificantDigits: 3
       });
@@ -309,49 +340,85 @@ const customElement = (customJS) => `
     }
 
     updateDiscounts(product) {
-      if (Boolean(product.strategy.discount)) {
+      if (Boolean(product.strategy.discount) && Boolean(this.selectedVariant)) {
         const discounts = this.getElements('.salestorm-discount');
-        if (product.strategy.discount.type !== "%") {
-          const currencyFormatter = this.createCurrencyFormatter(product.strategy.discount.type);
-          discounts.forEach(discount => {
-            const discountValue = product.strategy.discount.value || 0;
-            const convertedDiscountValue = this.converPriceToCurrentCurrencyCode(discountValue, product.strategy.discount.type);
-            discount.innerHTML = currencyFormatter.format(convertedDiscountValue);
-          });
-        }
-        else {
+        const discountedProductPrices = this.getElements('.salestorm-product-price-discounted');
+        let discountedProductPriceValue;
+        if (product.strategy.discount.type === "%") {
           discounts.forEach(discount => {
             discount.innerHTML = product.strategy.discount.value + "%";
           });
+          discountedProductPriceValue = parseFloat(this.selectedVariant.node.price) - ((parseFloat(this.selectedVariant.node.price) / 100) * product.strategy.discount.value);
         }
+        else {
+          const currencyFormatter = this.createCurrencyFormatter(product.strategy.discount.type);
+          discounts.forEach(discount => {
+            const discountValue = product.strategy.discount.value || 0;
+            const convertedDiscountValue = this.convertPriceToCurrentCurrencyCode(discountValue, product.strategy.discount.type);
+            discount.innerHTML = currencyFormatter.format(convertedDiscountValue);
+          });
+          discountedProductPriceValue = parseFloat(this.selectedVariant.node.price) - parseFloat(product.strategy.discount.value);
+        }
+        discountedProductPrices.forEach(discountedProductPrice => {
+          const currencyFormatter = this.createCurrencyFormatter();
+          const convertedProductPrice = currencyFormatter.format(this.convertPriceToCurrentCurrencyCode(discountedProductPriceValue, product.strategy.discount.type));
+          discountedProductPrice.innerHTML = convertedProductPrice;
+        })
       }
     }
 
-    converPriceToCurrentCurrencyCode(price, baseCurrencyCode) {
+    updateProductPrice(product) {
+      const productPrices = this.getElements('.salestorm-product-price');
+      const currencyFormatter = this.createCurrencyFormatter();
+      productPrices.forEach(productPrice => {
+        if (this.selectedVariant) {
+          const selectedVariantPrice = this.selectedVariant.node.price || 0;
+          const convertedPrice = this.convertPriceToCurrentCurrencyCode(selectedVariantPrice, product.strategy.storeCurrencyCode);
+          productPrice.innerHTML = currencyFormatter.format(convertedPrice);
+        }
+      });
+    }
+
+    convertPriceToCurrentCurrencyCode(price, baseCurrencyCode) {
       const multiCurrencySupport = this.getAttribute("multicurrency") === "true";
       let convertedPriceValue = price;
-      if (window.Currency && window.Currency.rates && window.Currency.convert && multiCurrencySupport) {
+      if (window.Currency && window.Currency.rates && window.Currency.convert && multiCurrencySupport && window.Salestorm && window.Salestorm.currentCurrencyCode) {
         convertedPriceValue = Math.round(window.Currency.convert(price, baseCurrencyCode, window.Salestorm.currentCurrencyCode));
       };
       return convertedPriceValue;
     }
 
     updatePrices(product) {
+      const multiCurrencySupport = this.getAttribute("multicurrency") === "true";
+      window.Salestorm.currentCurrencyCode = (multiCurrencySupport && this.getDisplayedStoreCurrencyCode())|| product.strategy.storeCurrencyCode;
       this.updateDiscounts(product);
+      this.updateProductPrice(product);
+    }
+
+    removeProductLink() {
+      const productImageContainer = this.getElement('#salestorm-product-image-container');
+      productImageContainer.removeAttribute('href');
+      const titleProduct = this.getElement('#salestorm-product-title');
+      titleProduct.removeAttribute('href');
     }
 
     updateProductLink(link) {
+      const preview = this.getAttribute('preview');
       const titleProduct = this.getElement('#salestorm-product-title');
       const productImageContainer = this.getElement('#salestorm-product-image-container');
-      titleProduct.href = link;
-      productImageContainer.href = link;
+      if (preview) {
+        titleProduct.setAttribute('href', '#');
+        productImageContainer.setAttribute('href', '#');
+      } else {
+        titleProduct.setAttribute('href', link);
+        productImageContainer.setAttribute('href', link);
+      }
     }
 
-    updateProduct(product) {
-      if (product) {
-        const variantsContainer = this.shadowRoot.querySelector('#salestorm-product-variants');
-        const selectContainerTemplate = this.getElement('.salestorm-product-select-container');
-        const oldSelectContainers = this.getElements('.cloned-select');
+    updateVariants(product) {
+      const variantsContainer = this.shadowRoot.querySelector('#salestorm-product-variants');
+      const selectContainerTemplate = this.getElement('.salestorm-product-select-container');
+      const oldSelectContainers = this.getElements('.cloned-select');
         for (const oldSelectContainer of oldSelectContainers) {
           oldSelectContainer.remove();
         }
@@ -376,17 +443,29 @@ const customElement = (customJS) => `
       }
     }
 
+    setImage(image) {
+      this.image = image;
+      this.getElement('#salestorm-product-image').style.backgroundImage = "url("+image+")";
+    }
+
+    updateProductImages(product) {
+      const featuredImage = product.featuredImage && product.featuredImage.transformedSrc;
+      const variantImages = product.variants.edges.map(variant => variant.node.image && variant.node.image.transformedSrc).filter(variant => variant !== null);
+      if (variantImages.length > 0) {
+        this.images = variantImages;
+        this.getElement('#salestorm-product-image-slider').classList.remove('d-none');
+      } else {
+        this.images = [featuredImage];
+        this.getElement('#salestorm-product-image-slider').classList.add('d-none');
+      }
+      this.setImage(this.images[0]);
+    }
+
     updateProduct(product) {
       if (product) {
         this.updateVariants(product);
         this.getElement('#salestorm-product-title').innerHTML = product.title;
-        const mainProductImage = product.featuredImage && product.featuredImage.transformedSrc;
-        const imageElement = this.getElement('#salestorm-product-image');
-        if (mainProductImage && imageElement) {
-          imageElement.style.backgroundImage = "url("+mainProductImage+")";
-        } else {
-          imageElement.style.backgroundImage = "";
-        }
+        this.updateProductImages(product);
         const productDetailsActionElement = this.getElement('#salestorm-campaign-text-seeProductDetailsAction');
         if (product.descriptionHtml === '') {
           if (productDetailsActionElement) {
@@ -403,6 +482,7 @@ const customElement = (customJS) => `
           selectElement.addEventListener('change', () => {
             const selectedValue = selectElement.value;
             this.setSelectedProductVariant(product);
+            this.updatePrices(product);
           })
         });
       }
@@ -417,15 +497,22 @@ const customElement = (customJS) => `
         );
         if (
           campaignTextElement &&
-          campaignTextElement.innerHTML !== texts[textKey]
+          campaignTextElement.innerHTML !== texts[textKey] &&
+          textKey !== 'countdown'
         ) {
           campaignTextElement.innerHTML = processCampaignTextsUtil(
             texts[textKey]
           );
         }
       });
+      console.log(this.getElement('#salestorm-campaign-text-countdown'))
       const product = this.getAttribute('product');
       this.updatePrices(JSON.parse(product));
+    }
+
+    resetCountdown() {
+      const initialTime = this.getAttribute('countdowntime');
+      startCountdown(initialTime);
     }
 
     startCountdown(initialTime) {
@@ -446,37 +533,41 @@ const customElement = (customJS) => `
         progressBarWrapper.appendChild(progressBar);
         progressBarsContainer.appendChild(progressBarWrapper);
       }
-      const timeElement = this.getElement('#salestorm-countdown');
-      timeElement.innerText = initialTime;
-	    const time = initialTime.split(':');
+      const timeElement = this.getElement('#salestorm-campaign-text-countdown');
+      const time = initialTime.split(':');
       const minutes = parseInt(time[0]);
       const seconds = parseInt(time[1]);
       let totalSeconds = (minutes * 60 + seconds).toFixed(3);
       const prepend = (number) => number.toString().length == 1 ? "0"+number.toString() : number;
       let progress = 0;
       const onePercentage = (100 / totalSeconds);
-      const countdown = setInterval(() => {
-        if (totalSeconds > 0) {
-          totalSeconds--;
-          progress = progress + onePercentage;
-          const currentOffer = parseInt(this.getAttribute('currentoffer')) - 1;
-          const displayedProgressBars = Array.from(this.getElements('.salestorm-progress-bar'));
-          if (displayedProgressBars[currentOffer]) {
-            displayedProgressBars[currentOffer].style.width = progress + "%";
-          }
-          const currentMinutes = Math.floor(totalSeconds / 60);
-          const currentSeconds = totalSeconds - currentMinutes * 60;
-          timeElement.innerText = prepend(currentMinutes) + ":" + prepend(currentSeconds);
-        } else {
-          if (offers > 1) {
-            document.dispatchEvent(window.Salestorm.skipOffer);
+      if (timeElement) {
+        timeElement.innerText = initialTime;
+        const countdown = setInterval(() => {
+          if (totalSeconds > 0) {
+            totalSeconds--;
+            progress = progress + onePercentage;
+            const currentOffer = parseInt(this.getAttribute('currentoffer')) - 1;
+            const displayedProgressBars = Array.from(this.getElements('.salestorm-progress-bar'));
+            if (displayedProgressBars[currentOffer]) {
+              displayedProgressBars[currentOffer].style.width = progress + "%";
+            }
+            const currentMinutes = Math.floor(totalSeconds / 60);
+            const currentSeconds = totalSeconds - currentMinutes * 60;
+            timeElement.innerText = prepend(currentMinutes) + ":" + prepend(currentSeconds);
           } else {
-            document.dispatchEvent(window.Salestorm.hidePopup);
+            if (offers > 1) {
+              document.dispatchEvent(window.Salestorm.skipOffer);
+            } else {
+              document.dispatchEvent(window.Salestorm.hidePopup);
+            }
+            clearInterval(countdown);
           }
-          clearInterval(countdown);
-        }
-      }, 1000);
-      return countdown;
+        }, 1000);
+        return countdown;
+      } else {
+        clearInterval(this.countdownIntervalId);
+      }
     }
 
     updateAnimation(animation) {
