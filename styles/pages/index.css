@@ -129,7 +129,7 @@ html {
 }
 
 .d-none {
-  display: none;
+  display: none !important;
 }
 
 .salestorm-new-campaign-link {
