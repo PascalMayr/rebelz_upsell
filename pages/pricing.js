@@ -49,6 +49,7 @@ const Pricing = ({ store }) => {
     'Analytics',
     'Multi Currency Support',
     'Premium Support',
+    'No Theme modification',
     'Complete & Clean Automatic Uninstall',
   ];
   const onPlanSelect = async (name) => {
