@@ -9,70 +9,138 @@ const Options = ({ campaign, setCampaignProperty }) => {
     linkToProduct,
     enableOutOfStockProducts,
     showCountdown,
-    countdownTime
+    countdownTime,
+    interruptEvents,
+    showImageSlider,
   } = options;
   return (
-    <div className="salestorm-options">
-      <div>
-        <Checkbox
-          checked={linkToProduct}
-          onChange={(value) =>
-            setCampaignProperty({ ...options, linkToProduct: value }, 'options')
-          }
-          label={<span><strong>Link</strong> to the product.</span>}
-        />
-        <Checkbox
-          checked={enableOutOfStockProducts}
-          onChange={(value) =>
-            setCampaignProperty(
-              { ...options, enableOutOfStockProducts: value },
-              'options'
-            )
-          }
-          label={<span><strong>Enable</strong> buying out of stock products.</span>}
-        />
+    <>
+      <div className="salestorm-options">
+        <div>
+          <Checkbox
+            checked={linkToProduct}
+            onChange={(value) =>
+              setCampaignProperty(
+                { ...options, linkToProduct: value },
+                'options'
+              )
+            }
+            label={
+              <span>
+                <strong>Link</strong> to the product.
+              </span>
+            }
+          />
+          <Checkbox
+            checked={enableOutOfStockProducts}
+            onChange={(value) =>
+              setCampaignProperty(
+                { ...options, enableOutOfStockProducts: value },
+                'options'
+              )
+            }
+            label={
+              <span>
+                <strong>Enable</strong> buying out of stock products.
+              </span>
+            }
+          />
+        </div>
+        <div>
+          <Checkbox
+            checked={multiCurrencySupport}
+            onChange={(value) =>
+              setCampaignProperty(
+                { ...options, multiCurrencySupport: value },
+                'options'
+              )
+            }
+            label={
+              <span>
+                <strong>Enable</strong> Multi Currency Support.
+              </span>
+            }
+          />
+          <Checkbox
+            checked={quantityEditable}
+            onChange={(value) =>
+              setCampaignProperty(
+                { ...options, quantityEditable: value },
+                'options'
+              )
+            }
+            label={
+              <span>
+                <strong>Enable</strong> clients set offer quantities.
+              </span>
+            }
+          />
+        </div>
+        <div>
+          <Checkbox
+            checked={showCountdown}
+            onChange={(value) =>
+              setCampaignProperty(
+                { ...options, showCountdown: value },
+                'options'
+              )
+            }
+            label={
+              <span>
+                <strong>Show</strong> a countdown until end/next offer.
+              </span>
+            }
+          />
+          <TextField
+            type="time"
+            disabled={!showCountdown}
+            value={countdownTime}
+            onChange={(value) =>
+              setCampaignProperty(
+                { ...options, countdownTime: value },
+                'options'
+              )
+            }
+            suffix="Minutes"
+          />
+        </div>
       </div>
-      <div>
-        <Checkbox
-          checked={multiCurrencySupport}
-          onChange={(value) =>
-            setCampaignProperty(
-              { ...options, multiCurrencySupport: value },
-              'options'
-            )
-          }
-          label={<span><strong>Enable</strong> Multi Currency Support.</span>}
-        />
-        <Checkbox
-          checked={quantityEditable}
-          onChange={(value) =>
-            setCampaignProperty(
-              { ...options, quantityEditable: value },
-              'options'
-            )
-          }
-          label={<span><strong>Enable</strong> clients set offer quantities.</span>}
-        />
+      <div className="salestorm-options">
+        <div>
+          <Checkbox
+            checked={interruptEvents}
+            onChange={(value) =>
+              setCampaignProperty(
+                { ...options, interruptEvents: value },
+                'options'
+              )
+            }
+            label={
+              <span>
+                <strong>Interrupt</strong> any other event when showing the
+                popup.
+              </span>
+            }
+          />
+        </div>
+        <div>
+          <Checkbox
+            checked={showImageSlider}
+            onChange={(value) =>
+              setCampaignProperty(
+                { ...options, showImageSlider: value },
+                'options'
+              )
+            }
+            label={
+              <span>
+                <strong>Show</strong> the image slider.
+              </span>
+            }
+          />
+        </div>
       </div>
-      <div>
-        <Checkbox
-          checked={showCountdown}
-          onChange={(value) =>
-            setCampaignProperty({ ...options, showCountdown: value }, 'options')
-          }
-          label={<span><strong>Show</strong> a countdown until end/next offer.</span>}
-        />
-        <TextField
-          type="time"
-          disabled={!showCountdown}
-          value={countdownTime}
-          onChange={(value) =>
-            setCampaignProperty({ ...options, countdownTime: value }, 'options')
-          }
-          suffix="Minutes"
-        />
-      </div>
-    </div>
+    </>
   );
 };
 
