@@ -1,13 +1,14 @@
 const DefaultStateStrategy = {
   mode: 'discount',
   sellType: 'upsell',
-  maxOrderValue: 0,
-  minOrderValue: 0,
-  maxItemValue: 0,
-  maxNumberOfItems: 3,
+  maxOrderValue: '0',
+  minOrderValue: '0',
+  maxItemValue: '0',
+  maxNumberOfItems: '3',
+  storeCurrencyCode: 'USD',
   discount: {
     type: '%',
-    value: 15,
+    value: '15',
   },
 };
 
@@ -103,7 +104,7 @@ const DefaultStateNew = {
   },
   texts: {
     title: 'Deal unlocked! get another for {{Discount}} off!',
-    subtitle: '',
+    subtitle: 'Instead of <del>{{ProductPrice}}</del> pay just <strong>{{DiscountedProductPrice}}</strong>',
     addToCartAction: '🎁  &nbsp; CLAIM OFFER !',
     addToCartUnavailable: 'Unavailable',
     seeProductDetailsAction: 'See product details',
