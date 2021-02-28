@@ -25,6 +25,12 @@ const Tips = () => {
           </div>
           <br />
           <div>
+            <Link url="https://jacobmcmillen.com/upselling/" external>
+              Why Upselling at all?
+            </Link>
+          </div>
+          <br />
+          <div>
             <Link url="https://www.groovehq.com/support/upsells" external>
               Help your customers win.
             </Link>
