@@ -8,10 +8,11 @@ const GialloBistro = {
     boxShadow: '0px 0px 5px rgb(224, 181, 129)',
     borderRadius: '15px',
     color: 'rgb(0, 0, 0)',
+    fontFamily: "'Quattrocento', serif",
   },
   primaryButtons: {
     ...DefaultStateStyle.primaryButtons,
-    backgroundColor: 'rgb(68, 57, 40)',
+    backgroundColor: 'rgb(246, 208, 208)',
   },
   secondaryButtons: {
     ...DefaultStateStyle.secondaryButtons,
@@ -32,6 +33,7 @@ const Warehouse = {
     boxShadow: '0px 0px 15px rgb(111, 185, 217)',
     borderRadius: '15px',
     color: 'rgb(255, 255, 255)',
+    fontFamily: "'Arial', sans-serif",
   },
   primaryButtons: {
     ...DefaultStateStyle.primaryButtons,
@@ -58,6 +60,7 @@ const GalleriaEmpire = {
     borderWidth: '3px',
     borderColor: 'rgb(255, 255, 255)',
     color: 'rgb(255, 255, 255)',
+    fontFamily: "'Lato', sans-serif",
   },
   primaryButtons: {
     ...DefaultStateStyle.primaryButtons,
@@ -86,6 +89,7 @@ const LoftLawrence = {
     borderWidth: '3px',
     borderColor: 'rgb(0, 0, 0)',
     color: 'rgb(255, 255, 255)',
+    fontFamily: "'Yatra One', cursive",
   },
   primaryButtons: {
     ...DefaultStateStyle.primaryButtons,
@@ -112,6 +116,7 @@ const NarrativeCold = {
     boxShadow: '0px 0px 0px rgb(0, 0, 0)',
     borderRadius: '5px',
     color: 'rgb(0, 0, 0)',
+    fontFamily: "'Lalezar', cursive",
   },
   primaryButtons: {
     ...DefaultStateStyle.primaryButtons,
