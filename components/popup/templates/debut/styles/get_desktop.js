@@ -126,6 +126,7 @@ const getDesktopStyles = (styles, preview) => {
     width: 254px;
     text-decoration: none;
     color: ${styles.popup.color};
+    position: relative;
   }
   #salestorm-product-image {
     padding-top: 254px;
