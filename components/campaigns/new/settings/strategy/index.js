@@ -1,4 +1,5 @@
 import Settings from '..';
+import DefaultStateNew from '../../../../../pages/campaigns/new/defaultState';
 
 import DetailsStrategy from './details';
 
@@ -7,8 +8,36 @@ import '../../../../../styles/components/campaigns/new/settings/strategy/index.c
 const StrategySettings = ({ campaign, setCampaignProperty }) => {
   const strategy = campaign.strategy;
   const mode = campaign.strategy.mode;
+  const texts = {
+    discount: DefaultStateNew.texts,
+    free_shipping: {
+      ...DefaultStateNew.texts,
+      title: 'Deal unlocked! Accept this offer and get free shipping.',
+      subtitle: '<center><strong>{{ProductPrice}}</strong></center>',
+      addToCartAction: '🎁  &nbsp; CLAIM OFFER !',
+      addToCartUnavailable: 'Unavailable',
+      seeProductDetailsAction: 'See product details',
+      dismissAction: 'No thanks',
+      checkoutAction: 'Go to cart',
+      countdown: 'Offer expires in {{Countdown}} minutes',
+    },
+    gift: {
+      ...DefaultStateNew.texts,
+      title:
+        'Thanks for trusting us! You will get this additional item for free.',
+      subtitle: '',
+      addToCartAction: '🎁  &nbsp; CLAIM OFFER !',
+      addToCartUnavailable: 'Unavailable',
+      seeProductDetailsAction: 'See product details',
+      dismissAction: 'No thanks',
+      checkoutAction: 'Go to cart',
+      countdown: 'Offer expires in {{Countdown}} minutes',
+    },
+  };
   const changeStrategyMode = (newStrategyMode) => {
-    setCampaignProperty({ ...strategy, mode: newStrategyMode }, 'strategy');
+    setCampaignProperty({ ...strategy, mode: newStrategyMode }, 'strategy', {
+      texts: texts[newStrategyMode],
+    });
   };
   const explanation =
     mode === 'discount'
