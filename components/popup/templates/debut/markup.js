@@ -67,6 +67,14 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a id="salestorm-product-image-container">
               <div id="salestorm-product-image" />
+              <div id="salestorm-product-image-slider">
+                <div id="salestorm-product-image-slider-left">
+                  <Icon source={CircleLeftMajor} />
+                </div>
+                <div id="salestorm-product-image-slider-right">
+                  <Icon source={CircleRightMajor} />
+                </div>
+              </div>
             </a>
             <div id="salestorm-product-action-container">
               <div
