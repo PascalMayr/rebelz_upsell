@@ -73,7 +73,6 @@ const getDesktopStyles = (styles, preview) => {
     width: 16px;
     height: 16px;
     margin: 0 auto;
-    padding-bottom: 3px;
   }
   #salestorm-popup-close > span > svg {
     width: 100%;
