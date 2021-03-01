@@ -76,6 +76,7 @@ const getDesktopStyles = (styles, preview) => {
   }
   #salestorm-popup-close > span > svg {
     width: 100%;
+    margin-bottom: 2.5px;
   }
   #salestorm-popup-close:hover {
     background-color: ${tinycolor(
