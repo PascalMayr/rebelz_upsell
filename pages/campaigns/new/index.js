@@ -238,7 +238,7 @@ const New = (props) => {
                 <ResourceSelectionCampaign
                   resourcePickerProps={{
                     resourceType: 'Product',
-                    selectMultiple: false,
+                    selectMultiple: true,
                     showVariants: false,
                     showDraftBadge: true,
                     showArchivedBadge: true,

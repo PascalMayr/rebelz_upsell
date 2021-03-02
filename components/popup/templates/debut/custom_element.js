@@ -30,6 +30,8 @@ const customElement = (customJS) => `
         case 'visible':
           if (newValue === "true") {
             this.getElement('#salestorm-overlay-container').style.display = 'flex';
+            this.resetCountdown();
+            this.resetProgressBars();
           }
           else {
             this.hidePopup();
@@ -73,12 +75,13 @@ const customElement = (customJS) => `
           }
         break;
         case 'countdowntime':
+          const offers = parseInt(this.getAttribute('offers'));
           if (this.getAttribute('showcountdown') === 'true') {
             if (oldValue) {
               clearInterval(this.countdownIntervalId);
-              this.countdownIntervalId = this.startCountdown(newValue);
+              this.countdownIntervalId = this.startCountdown(newValue, offers);
             } else {
-              this.countdownIntervalId = this.startCountdown(newValue);
+              this.countdownIntervalId = this.startCountdown(newValue, offers);
             }
           }
         break;
@@ -88,6 +91,9 @@ const customElement = (customJS) => `
           } else {
             this.getElement('#salestorm-product-image-slider').classList.add('d-none');
           }
+          break;
+        case 'offers':
+          this.renderProgressBars(parseInt(newValue) === 0 ? 1 : parseInt(newValue));
           break;
         default:
           console.log('attribute "' + name + '" not handled by any function');
@@ -152,7 +158,6 @@ const customElement = (customJS) => `
       const previous = () => {
         const currentIndex = this.images.findIndex(variantImage => variantImage === this.image);
         const nextIndex = currentIndex > 0 ? currentIndex - 1 : this.images.length -1;
-        console.log(this.images[nextIndex])
         this.setImage(this.images[nextIndex])
       };
       const leftSlider = this.getElement('#salestorm-product-image-slider-left');
@@ -505,18 +510,23 @@ const customElement = (customJS) => `
           );
         }
       });
-      console.log(this.getElement('#salestorm-campaign-text-countdown'))
       const product = this.getAttribute('product');
       this.updatePrices(JSON.parse(product));
     }
 
     resetCountdown() {
       const initialTime = this.getAttribute('countdowntime');
-      startCountdown(initialTime);
+      this.startCountdown(initialTime, parseInt(this.getAttribute('offers')));
     }
 
-    startCountdown(initialTime) {
-      const offers = parseInt(this.getAttribute('offers'));
+    resetProgressBars() {
+      const progressBars = this.getElements('.salestorm-progress-bar');
+      for (let progressBar of progressBars) {
+        progressBar.style.width = '0%';
+      }
+    }
+
+    renderProgressBars(offers) {
       const progressBarsContainer = this.getElement('#salestorm-progress-bar-container');
       const oldProgressBars = this.getElements('.salestorm-progress-bar-wrapper');
       if (oldProgressBars) {
@@ -533,6 +543,9 @@ const customElement = (customJS) => `
         progressBarWrapper.appendChild(progressBar);
         progressBarsContainer.appendChild(progressBarWrapper);
       }
+    }
+
+    startCountdown(initialTime, offers) {
       const timeElement = this.getElement('#salestorm-campaign-text-countdown');
       const time = initialTime.split(':');
       const minutes = parseInt(time[0]);
@@ -544,10 +557,10 @@ const customElement = (customJS) => `
       if (timeElement) {
         timeElement.innerText = initialTime;
         const countdown = setInterval(() => {
+          const currentOffer = parseInt(this.getAttribute('currentoffer'));
           if (totalSeconds > 0) {
             totalSeconds--;
             progress = progress + onePercentage;
-            const currentOffer = parseInt(this.getAttribute('currentoffer')) - 1;
             const displayedProgressBars = Array.from(this.getElements('.salestorm-progress-bar'));
             if (displayedProgressBars[currentOffer]) {
               displayedProgressBars[currentOffer].style.width = progress + "%";
@@ -557,7 +570,15 @@ const customElement = (customJS) => `
             timeElement.innerText = prepend(currentMinutes) + ":" + prepend(currentSeconds);
           } else {
             if (offers > 1) {
-              document.dispatchEvent(window.Salestorm.skipOffer);
+              if (currentOffer < (offers - 1)) {
+                document.dispatchEvent(window.Salestorm.skipOffer);
+                clearInterval(countdown);
+                this.resetCountdown();
+              } else {
+                clearInterval(countdown);
+                this.resetProgressBars();
+                document.dispatchEvent(window.Salestorm.hidePopup);
+              }
             } else {
               document.dispatchEvent(window.Salestorm.hidePopup);
             }

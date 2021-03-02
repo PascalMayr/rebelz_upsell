@@ -9,8 +9,8 @@ const Popup = ({ campaign, preview, onStyleChange }) => (
     product={JSON.stringify(getRenderedProductUtil(campaign))}
     texts={JSON.stringify(campaign.texts)}
     animation={getAnimationClassUtil(campaign.styles.animation)}
-    offers={1}
-    currentoffer={1}
+    offers={campaign.selling.products.length}
+    currentoffer={0}
     preview={preview}
     id={`salestorm-campaign-${campaign.id}`}
     {...campaign.options}

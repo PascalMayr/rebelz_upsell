@@ -57,9 +57,11 @@ const Design = ({
             <Button
               onClick={() => {
                 setRerenderButton(false);
-                document
-                  .getElementsByTagName('salestorm-popup')[0]
-                  .setAttribute('visible', 'true');
+                const popup = document.querySelector(
+                  `#salestorm-campaign-${campaign.id}`
+                );
+                popup.setAttribute('currentoffer', '0');
+                popup.setAttribute('visible', 'true');
               }}
               primary
               icon={ResetMinor}

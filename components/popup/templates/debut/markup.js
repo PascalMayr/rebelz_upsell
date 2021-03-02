@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   MobileCancelMajor,
   ArrowRightMinor,
   PlusMinor,
   MinusMinor,
   CircleLeftMajor,
-  CircleRightMajor
+  CircleRightMajor,
 } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 
@@ -34,6 +34,7 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
     tabletStyles,
     desktopStyles
   );
+  const [skipOffer, setSkipOffer] = useState(false);
   useEffect(() => {
     // initialising the
     try {
@@ -47,6 +48,28 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
   useEffect(() => {
     onStyleChange(styles);
   }, [styles, onStyleChange]);
+
+  if (skipOffer) {
+    const popup = document.querySelector(`#salestorm-campaign-${campaign.id}`);
+    if (popup) {
+      let currentOffer = parseInt(popup.getAttribute('currentoffer'), 10);
+      currentOffer += 1;
+      const newProduct = campaign.selling.products[currentOffer];
+      if (newProduct) {
+        popup.setAttribute('currentoffer', currentOffer);
+        popup.setAttribute('product', JSON.stringify(newProduct));
+      }
+    }
+    setSkipOffer(false);
+  }
+
+  useEffect(() => {
+    if (window.Salestorm) {
+      document.addEventListener(window.Salestorm.skipOffer.type, () => {
+        setSkipOffer(true);
+      });
+    }
+  }, []);
   return (
     <>
       <div id="salestorm-overlay-container">
