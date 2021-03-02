@@ -2,14 +2,18 @@ import Settings from '.';
 
 const TriggerSettings = ({ campaign, setCampaignProperty }) => {
   const changeTrigger = (newTrigger) => {
-    const checkoutActionText =
-      newTrigger === 'add_to_cart'
-        ? 'Go to cart'
-        : newTrigger === 'checkout'
-        ? 'Go to checkout'
-        : 'Continue shopping';
+    let checkoutActionText = 'Continue shopping';
+    let interruptEvents = false;
+    if (newTrigger === 'add_to_cart') {
+      checkoutActionText = 'Go to cart';
+    }
+    if (newTrigger === 'checkout') {
+      checkoutActionText = 'Go to checkout';
+      interruptEvents = true;
+    }
     setCampaignProperty({ ...campaign.targets, page: newTrigger }, 'targets', {
       texts: { ...campaign.texts, checkoutAction: checkoutActionText },
+      options: { ...campaign.options, interruptEvents },
     });
   };
   const targetsPage = campaign.targets.page;
