@@ -272,7 +272,6 @@ const Index = ({ store, campaigns, global, appName = 'App' }) => {
                   <Design
                     campaign={globalCampaign}
                     setCampaignProperty={setGlobalCampaignProperty}
-                    advanced
                     renderAdvanced={id === 'design'}
                   />
                 </Layout.Section>
