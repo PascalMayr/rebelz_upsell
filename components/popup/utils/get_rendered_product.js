@@ -4,7 +4,9 @@ const getRenderedProductUtil = (campaign) => {
   let currentOffer = 0;
   if (typeof document !== 'undefined') {
     const popup = document.querySelector(`#salestorm-campaign-${campaign.id}`);
-    currentOffer = parseInt(popup.getAttribute('currentoffer'), 10);
+    if (popup) {
+      currentOffer = parseInt(popup.getAttribute('currentoffer'), 10);
+    }
   }
   const product = campaign.selling.products[currentOffer]
     ? campaign.selling.products[currentOffer]
