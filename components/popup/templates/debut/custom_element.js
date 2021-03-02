@@ -515,6 +515,7 @@ const customElement = (customJS) => `
     }
 
     resetCountdown() {
+      clearInterval(this.countdownIntervalId);
       const initialTime = this.getAttribute('countdowntime');
       this.startCountdown(initialTime, parseInt(this.getAttribute('offers')));
     }
@@ -556,7 +557,7 @@ const customElement = (customJS) => `
       const onePercentage = (100 / totalSeconds);
       if (timeElement) {
         timeElement.innerText = initialTime;
-        const countdown = setInterval(() => {
+        this.countdownIntervalId = setInterval(() => {
           const currentOffer = parseInt(this.getAttribute('currentoffer'));
           if (totalSeconds > 0) {
             totalSeconds--;
@@ -572,20 +573,20 @@ const customElement = (customJS) => `
             if (offers > 1) {
               if (currentOffer < (offers - 1)) {
                 document.dispatchEvent(window.Salestorm.skipOffer);
-                clearInterval(countdown);
                 this.resetCountdown();
               } else {
-                clearInterval(countdown);
                 this.resetProgressBars();
+                this.resetCountdown();
                 document.dispatchEvent(window.Salestorm.hidePopup);
               }
             } else {
+              this.resetProgressBars();
+              this.resetCountdown();
               document.dispatchEvent(window.Salestorm.hidePopup);
             }
-            clearInterval(countdown);
           }
         }, 1000);
-        return countdown;
+        return this.countdownIntervalId;
       } else {
         clearInterval(this.countdownIntervalId);
       }

@@ -6,9 +6,12 @@ const getRenderedProductUtil = (campaign) => {
     const popup = document.querySelector(`#salestorm-campaign-${campaign.id}`);
     currentOffer = parseInt(popup.getAttribute('currentoffer'), 10);
   }
+  const product = campaign.selling.products[currentOffer]
+    ? campaign.selling.products[currentOffer]
+    : PlaceholderPreview(campaign.strategy);
   const currentProduct =
     campaign.selling.products.length > 0
-      ? campaign.selling.products[currentOffer]
+      ? product
       : PlaceholderPreview(campaign.strategy);
   return currentProduct;
 };
