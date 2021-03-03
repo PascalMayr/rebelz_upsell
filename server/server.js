@@ -175,7 +175,7 @@ app.prepare().then(() => {
         if (store.rowCount === 0) {
           const scriptid = await getScriptTagId(ctx);
           const freePlan = config.plans.find(
-            (p) => p.name === config.planNames.free
+            (plan) => plan.name === config.planNames.free
           );
           await db.query(
             `INSERT INTO stores${db.insertColumns(
