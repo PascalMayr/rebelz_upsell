@@ -158,7 +158,7 @@
     if (popups[targets.addToCart].campaign) {
       let displayedCampaign = false;
       const interruptEvents =
-      popups[targets.addToCart].campaign.options.interruptEvents;
+        popups[targets.addToCart].campaign.options.interruptEvents;
       if (interruptEvents) {
         addEarlyClickListener(addToCartButtonSelector, (event) => {
           if (!displayedCampaign) {
@@ -256,13 +256,15 @@
     if (popups[targets.thankYou].campaign) {
       showPopup(targets.thankYou);
       document.addEventListener(continueOriginalClickEvent.type, () => {
-        const continueShoppingButton = document.querySelector(continueShoppingSelector);
+        const continueShoppingButton = document.querySelector(
+          continueShoppingSelector
+        );
         if (continueShoppingButton) {
           continueShoppingButton.click();
         }
       });
     }
-    };
+  };
 
   const checkForProductAdd = (url) => {
     if (url && url.match(/cart\/add/)) {
