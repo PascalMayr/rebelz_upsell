@@ -73,12 +73,11 @@
       );
       if (response.ok) {
         const campaign = await response.json();
-        popups[targetPage] = campaign;
         eval(campaign.js);
+        return campaign;
       } else {
-        popups[targetPage] = targetPage;
+        return targetPage;
       }
-      return Boolean(popups[targetPage]);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(window.Shopify);
@@ -88,23 +87,24 @@
 
   const showPopup = (targetPage) => {
     const { campaign } = popups[targetPage];
-    const popupId = campaign && campaign.id ? campaign.id : '';
-    const popup = document.querySelector(`#salestorm-campaign-${popupId}`);
+    const popup = document.querySelector(`#salestorm-campaign-${campaign.id}`);
     document.body.insertAdjacentHTML('beforeend', popups[targetPage].html);
     if (popup) {
       popup.setAttribute('visible', 'true');
     }
-    document.addEventListener(window.Salestorm.hidePopup.type, () => {
-      document.dispatchEvent(continueOriginalClickEvent);
-    });
-    window.Salestorm.skipOffer = (popup) => {
-      let currentOffer = parseInt(popup.getAttribute('currentoffer'), 10);
-      currentOffer += 1;
-      const newProduct = campaign.selling.products[currentOffer];
-      if (newProduct) {
-        popup.setAttribute('currentoffer', currentOffer);
-        popup.setAttribute('product', JSON.stringify(newProduct));
-      }
+    if (window.Salestorm) {
+      document.addEventListener(window.Salestorm.hidePopup.type, () => {
+        document.dispatchEvent(continueOriginalClickEvent);
+      });
+      window.Salestorm.skipOffer = (popup) => {
+        let currentOffer = parseInt(popup.getAttribute('currentoffer'), 10);
+        currentOffer += 1;
+        const newProduct = campaign.selling.products[currentOffer];
+        if (newProduct) {
+          popup.setAttribute('currentoffer', currentOffer);
+          popup.setAttribute('product', JSON.stringify(newProduct));
+        }
+      };
     }
   };
 
@@ -150,15 +150,15 @@
     }
     const cart = await getCart();
     const totalPrice = cart.total_price / 100;
-    const hasCampaign = await fetchCampaign(
+    popups[targets.addToCart] = await fetchCampaign(
       targets.addToCart,
       [productId],
       totalPrice
     );
-    if (hasCampaign) {
+    if (popups[targets.addToCart].campaign) {
       let displayedCampaign = false;
       const interruptEvents =
-        popups[targets.addToCart].campaign.options.interruptEvents;
+      popups[targets.addToCart].campaign.options.interruptEvents;
       if (interruptEvents) {
         addEarlyClickListener(addToCartButtonSelector, (event) => {
           if (!displayedCampaign) {
@@ -197,12 +197,12 @@
       const cart = await getCart();
       const currentItemsInCart = cart.items;
       const totalPrice = cart.total_price / 100;
-      hasCampaign = await fetchCampaign(
+      popups[targets.checkout] = await fetchCampaign(
         targets.checkout,
         currentItemsInCart.map((item) => item.product_id),
         totalPrice
       );
-      if (hasCampaign) {
+      if (popups[targets.checkout].campaign) {
         let displayedCampaign = false;
         const interruptEvents =
           popups[targets.checkout].campaign.options.interruptEvents;
@@ -242,12 +242,12 @@
   };
 
   const handleThankYouPage = async () => {
-    const hasCampaign = await fetchCampaign(
+    popups[targets.thankYou] = await fetchCampaign(
       targets.thankYou,
       window.Shopify.checkout.line_items.map((item) => item.product_id),
       window.Shopify.checkout.total_price
     );
-    if (hasCampaign) showPopup(targets.thankYou);
+    if (popups[targets.thankYou].campaign) showPopup(targets.thankYou);
   };
 
   const checkForProductAdd = (url) => {
