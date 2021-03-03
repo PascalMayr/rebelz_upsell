@@ -42,6 +42,7 @@
     '[name=add]',
   ];
   const checkoutButtonSelector = ['[name="checkout"]', 'a[href^="/checkout"]'];
+  const continueShoppingSelector = ['.step__footer__continue-btn'];
   const continueOriginalClickEvent = new Event(
     'salestorm-continue-original-click-event'
   );
@@ -252,8 +253,16 @@
       window.Shopify.checkout.line_items.map((item) => item.product_id),
       window.Shopify.checkout.total_price
     );
-    if (popups[targets.thankYou].campaign) showPopup(targets.thankYou);
-  };
+    if (popups[targets.thankYou].campaign) {
+      showPopup(targets.thankYou);
+      document.addEventListener(continueOriginalClickEvent.type, () => {
+        const continueShoppingButton = document.querySelector(continueShoppingSelector);
+        if (continueShoppingButton) {
+          continueShoppingButton.click();
+        }
+      });
+    }
+    };
 
   const checkForProductAdd = (url) => {
     if (url && url.match(/cart\/add/)) {
