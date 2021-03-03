@@ -111,13 +111,12 @@
   const searchFormFromTarget = (initialTarget) => {
     let formElement;
     let eventTarget = initialTarget;
-    while (eventTarget) {
+    do {
       if (eventTarget.tagName && eventTarget.tagName.toUpperCase() === 'FORM') {
         formElement = eventTarget;
-        break;
       }
       eventTarget = eventTarget.parentNode;
-    }
+    } while (!formElement);
     return formElement;
   };
 
@@ -184,6 +183,7 @@
         const addToCartButton = document.querySelector(addToCartButtonSelector);
         if (addToCartButton) {
           addToCartButton.addEventListener('click', () => {
+            displayedCampaign = true;
             showPopup(targets.addToCart);
           });
         }
@@ -214,10 +214,6 @@
               event.stopPropagation();
               document.addEventListener(continueOriginalClickEvent.type, () => {
                 displayedCampaign = true;
-                const checkoutForm = searchFormFromTarget(event.target);
-                if (checkoutForm) {
-                  checkoutForm.requestSubmit();
-                }
                 event.target.click();
               });
             }
@@ -226,7 +222,16 @@
         } else {
           const checkoutButton = document.querySelector(checkoutButtonSelector);
           checkoutButton.addEventListener('click', () => {
-            showPopup(targets.checkout);
+            if (!displayedCampaign) {
+              showPopup(targets.checkout);
+              displayedCampaign = true;
+              document.addEventListener(continueOriginalClickEvent.type, () => {
+                const checkoutForm = searchFormFromTarget(event.target);
+                if (checkoutForm) {
+                  checkoutForm.requestSubmit();
+                }
+              });
+            }
           });
         }
       }
