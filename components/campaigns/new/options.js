@@ -117,13 +117,10 @@ const Options = ({ campaign, setCampaignProperty }) => {
             }
             label={
               <span>
-                <strong>Interrupt</strong> any other event when showing the
-                popup.
+                <strong>Interrupt</strong> any other events.
               </span>
             }
           />
-        </div>
-        <div>
           <Checkbox
             checked={showImageSlider}
             onChange={(value) =>
