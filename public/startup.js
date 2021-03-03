@@ -89,15 +89,23 @@
   const showPopup = (targetPage) => {
     const { campaign } = popups[targetPage];
     const popupId = campaign && campaign.id ? campaign.id : '';
-    document.body.insertAdjacentHTML('beforeend', popups[targetPage].html);
     const popup = document.querySelector(`#salestorm-campaign-${popupId}`);
+    document.body.insertAdjacentHTML('beforeend', popups[targetPage].html);
     if (popup) {
       popup.setAttribute('visible', 'true');
     }
     document.addEventListener(window.Salestorm.hidePopup.type, () => {
-      popup.setAttribute('visible', 'false');
       document.dispatchEvent(continueOriginalClickEvent);
     });
+    window.Salestorm.skipOffer = (popup) => {
+      let currentOffer = parseInt(popup.getAttribute('currentoffer'), 10);
+      currentOffer += 1;
+      const newProduct = campaign.selling.products[currentOffer];
+      if (newProduct) {
+        popup.setAttribute('currentoffer', currentOffer);
+        popup.setAttribute('product', JSON.stringify(newProduct));
+      }
+    }
   };
 
   const searchFormFromTarget = (initialTarget) => {
@@ -297,7 +305,9 @@
     } else {
       handleCart();
     }
+    window.SalestormInitialized = true;
   };
-
-  init();
+  if (!window.SalestormInitialized) {
+    init();
+  }
 })();

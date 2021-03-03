@@ -34,7 +34,6 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
     tabletStyles,
     desktopStyles
   );
-  const [skipOffer, setSkipOffer] = useState(false);
   useEffect(() => {
     // initialising the
     try {
@@ -49,9 +48,8 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
     onStyleChange(styles);
   }, [styles, onStyleChange]);
 
-  if (skipOffer) {
-    const popup = document.querySelector(`#salestorm-campaign-${campaign.id}`);
-    if (popup) {
+  useEffect(() => {
+    window.Salestorm.skipOffer = (popup) => {
       let currentOffer = parseInt(popup.getAttribute('currentoffer'), 10);
       currentOffer += 1;
       const newProduct = campaign.selling.products[currentOffer];
@@ -59,17 +57,8 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
         popup.setAttribute('currentoffer', currentOffer);
         popup.setAttribute('product', JSON.stringify(newProduct));
       }
-    }
-    setSkipOffer(false);
-  }
-
-  useEffect(() => {
-    if (window.Salestorm) {
-      document.addEventListener(window.Salestorm.skipOffer.type, () => {
-        setSkipOffer(true);
-      });
-    }
-  }, []);
+    };
+  }, [campaign.id, campaign.selling.products]);
   return (
     <>
       <div id="salestorm-overlay-container">

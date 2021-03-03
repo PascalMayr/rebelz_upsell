@@ -75,15 +75,7 @@ const customElement = (customJS) => `
           }
         break;
         case 'countdowntime':
-          const offers = parseInt(this.getAttribute('offers'));
-          if (this.getAttribute('showcountdown') === 'true') {
-            if (oldValue) {
-              clearInterval(this.countdownIntervalId);
-              this.countdownIntervalId = this.startCountdown(newValue, offers);
-            } else {
-              this.countdownIntervalId = this.startCountdown(newValue, offers);
-            }
-          }
+          this.resetCountdown();
         break;
         case 'showimageslider':
           if (newValue === 'true' && this.images.length > 1) {
@@ -104,7 +96,7 @@ const customElement = (customJS) => `
     connectedCallback() {
       window.Salestorm = {
         hidePopup: new Event('salestorm-hide-popup-event'),
-        skipOffer: new Event('salestorm-skip-offer'),
+        skipOffer: () => {},
       };
       this.setupClickListeners();
       this.setupKeyListeners();
@@ -572,7 +564,7 @@ const customElement = (customJS) => `
           } else {
             if (offers > 1) {
               if (currentOffer < (offers - 1)) {
-                document.dispatchEvent(window.Salestorm.skipOffer);
+                window.Salestorm.skipOffer(this);
                 this.resetCountdown();
               } else {
                 this.resetProgressBars();
