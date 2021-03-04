@@ -95,6 +95,12 @@
     }
     if (window.Salestorm) {
       document.addEventListener(window.Salestorm.hidePopup.type, () => {
+        const popup = document.querySelector(
+          `#salestorm-campaign-${campaign.id}`
+        );
+        if (popup) {
+          popup.setAttribute('visible', 'false');
+        }
         document.dispatchEvent(continueOriginalClickEvent);
       });
       window.Salestorm.skipOffer = (popup) => {
