@@ -180,7 +180,7 @@ app.prepare().then(() => {
       shop,
     ]);
     const store = storeData.rows[0];
-    const configPlan = config.plans.find((p) => p.name === name);
+    const configPlan = config.plans.find((plan) => plan.name === name);
     if (status === 'ACTIVE') {
       await db.query(
         'UPDATE stores SET plan_name = $1, "subscriptionId" = $2, plan_limit = $3 WHERE domain = $4',
