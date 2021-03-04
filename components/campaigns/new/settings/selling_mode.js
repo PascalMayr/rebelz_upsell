@@ -5,7 +5,11 @@ import Settings from '.';
 const SellingModeSetting = ({ campaign, setCampaignProperty }) => {
   const sellingMode = campaign.selling.mode;
   const changeSellingMode = (mode) => {
-    setCampaignProperty({ ...campaign.selling, mode }, 'selling');
+    const sellingProducts = mode === 'manual' ? campaign.selling.products : [];
+    setCampaignProperty(
+      { ...campaign.selling, mode, products: sellingProducts },
+      'selling'
+    );
   };
   const explanation =
     sellingMode === 'auto' ? (
