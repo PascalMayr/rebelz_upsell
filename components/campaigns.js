@@ -42,7 +42,7 @@ const Campaigns = ({
 }) => {
   const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
   const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
-
+  const [sortValue, setSortValue] = useState('DATE_MODIFIED_DESC');
   const emptyStateMarkup = (
     <div className="no-campaigns-container">
       <div className="no-campaigns-image-section">
@@ -99,6 +99,11 @@ const Campaigns = ({
             resourceName={{ singular: 'campaign', plural: 'campaigns' }}
             emptyState={emptyStateMarkup}
             items={persistedCampaigns}
+            sortValue={sortValue}
+            onSortChange={(selected) => {
+              setSortValue(selected);
+            }}
+            showHeader
             renderItem={(campaign) => {
               const { name, published, targets, strategy } = campaign;
               const url = `/campaigns/${campaign.id}`;
