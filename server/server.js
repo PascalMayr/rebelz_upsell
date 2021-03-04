@@ -59,6 +59,7 @@ app.prepare().then(() => {
       AND campaigns.published = true`,
       [shop]
     );
+
     const store = await db.query(
       `SELECT * FROM stores WHERE stores.domain = $1`,
       [shop]
@@ -70,6 +71,51 @@ app.prepare().then(() => {
       query ProductInCollection($product: ID!, $collection: ID!) {
         product(id: $product) {
           inCollection(id: $collection)
+        }
+      }
+    `;
+
+    const GET_PRODUCT = gql`
+      query Product($id: ID!) {
+        product(id: $id) {
+          id
+          legacyResourceId
+          title
+          descriptionHtml
+          hasOutOfStockVariants
+          hasOnlyDefaultVariant
+          totalVariants
+          status
+          handle
+          options(first: 3) {
+            values
+            name
+            position
+          }
+          featuredImage {
+            transformedSrc(maxHeight: 500)
+            altText
+          }
+          variants(first: 10) {
+            edges {
+              node {
+                title
+                id
+                legacyResourceId
+                availableForSale
+                price
+                selectedOptions {
+                  name
+                  value
+                }
+                image {
+                  transformedSrc(maxHeight: 500)
+                }
+              }
+            }
+          }
+          updatedAt
+          createdAt
         }
       }
     `;
@@ -101,6 +147,9 @@ app.prepare().then(() => {
                   return false;
                 }
               } catch (error) {
+                console.log(
+                  `Failed to check if the product ${product} is in collection ${targetCollection.title}(${targetCollection.id}) for store ${shop}`
+                );
                 console.error(error);
                 return false;
               }
@@ -112,29 +161,52 @@ app.prepare().then(() => {
       );
     });
 
-    if (campaign.selling.mode === 'auto') {
-      /* check if selling mode is auto, get recommendations and transform them to a graphql object, add the global strategy to every product.
-      // take maxItemValue,maxNumberOfItems, excludeProducts in consideration
-      const url = `https://${shop}/recommendations/products.json?product_id=${products[0]}`;
-      */
-    } else {
-      // update campaign.selling.products again if updateAt is different than saved one
-      // {...oldProduct, ...updatedProduct}
-    }
-
-    campaign.selling.products = campaign.selling.products.filter((product) => {
-      const maxOrderValue = parseFloat(product.strategy.maxOrderValue);
-      const minOrderValue = parseFloat(product.strategy.minOrderValue);
-      const comparePrice = parseFloat(totalPrice);
-      if ((maxOrderValue !== 0 || minOrderValue !== 0) && isNaN(comparePrice)) {
-        return comparePrice >= minOrderValue && comparePrice <= maxOrderValue;
-      } else {
-        return true;
-      }
-    });
-
-    // check if plan limit is reached
     if (campaign) {
+      if (campaign.selling.mode === 'auto') {
+        /* check if selling mode is auto, get recommendations and transform them to a graphql object, add the global strategy to every product.
+        // take maxItemValue,maxNumberOfItems, excludeProducts in consideration
+        const url = `https://${shop}/recommendations/products.json?product_id=${products[0]}`;
+        */
+      } else {
+        // showing always updated products
+        campaign.selling.products = await Promise.all(
+          campaign.selling.products.map(async (product) => {
+            const { id, title } = product;
+            try {
+              const response = await client.query({
+                query: GET_PRODUCT,
+                variables: {
+                  id,
+                },
+              });
+              return { ...response.data.product, ...product };
+            } catch (error) {
+              console.log(
+                `Failed to fetch product ${title} with id ${id} for store ${shop} during get-matching update.`
+              );
+              console.error(error);
+              return false;
+            }
+          })
+        );
+      }
+      campaign.selling.products = campaign.selling.products.filter(
+        (product) => {
+          const maxOrderValue = parseFloat(product.strategy.maxOrderValue);
+          const minOrderValue = parseFloat(product.strategy.minOrderValue);
+          const comparePrice = parseFloat(totalPrice);
+          if (
+            (maxOrderValue !== 0 || minOrderValue !== 0) &&
+            isNaN(comparePrice)
+          ) {
+            return (
+              comparePrice >= minOrderValue && comparePrice <= maxOrderValue
+            );
+          } else {
+            return true;
+          }
+        }
+      );
       const { customJS, id, strategy, selling, options } = campaign;
       const html = await ReactDOMServer.renderToStaticMarkup(
         <AppProvider i18n={translations}>
@@ -238,8 +310,8 @@ app.prepare().then(() => {
         const store = await db.query('SELECT * FROM stores WHERE domain = $1', [
           shop,
         ]);
+        const scriptid = await getScriptTagId(ctx);
         if (store.rowCount === 0) {
-          const scriptid = await getScriptTagId(ctx);
           const freePlan = config.plans.find(
             (plan) => plan.name === config.planNames.free
           );
@@ -429,7 +501,6 @@ app.prepare().then(() => {
   });
 
   router.post('/api/campaigns', verifyRequest(), async (ctx) => {
-    console.log('test');
     const campaigns = await db.query(
       'SELECT * FROM campaigns WHERE domain = $1',
       [ctx.session.shop]
