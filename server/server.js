@@ -181,9 +181,10 @@ app.prepare().then(() => {
             `INSERT INTO stores${db.insertColumns(
               'domain',
               'scriptId',
-              'plan_limit'
+              'plan_limit',
+              'access_token'
             )}`,
-            [shop, scriptid, freePlan.limit]
+            [shop, scriptid, freePlan.limit, accessToken]
           );
           registerWebhooks(
             shop,
