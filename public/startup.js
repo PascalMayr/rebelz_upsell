@@ -163,6 +163,7 @@
         addEarlyClickListener(addToCartButtonSelector, (event) => {
           if (!displayedCampaign) {
             showPopup(targets.addToCart);
+            displayedCampaign = true;
             event.preventDefault();
             event.stopPropagation();
             const handleCartDrawers = setInterval(() => {
