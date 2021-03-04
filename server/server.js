@@ -59,14 +59,12 @@ app.prepare().then(() => {
       AND campaigns.published = true`,
       [shop]
     );
-    let offlineAccessToken = await db.query(
-      `SELECT access_token FROM stores WHERE stores.domain = $1`,
+    const store = await db.query(
+      `SELECT * FROM stores WHERE stores.domain = $1`,
       [shop]
     );
-    if (offlineAccessToken.rows[0]) {
-      offlineAccessToken = offlineAccessToken.rows[0].access_token;
-    }
-    const client = await createClient(shop, offlineAccessToken);
+    const accessToken = store.rows[0].access_token;
+    const client = await createClient(shop, accessToken);
 
     const PRODUCT_IN_COLLECTION = gql`
       query ProductInCollection($product: ID!, $collection: ID!) {
