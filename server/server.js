@@ -18,6 +18,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { AppProvider } from '@shopify/polaris';
 import translations from '@shopify/polaris/locales/en.json';
+import { gql } from 'apollo-boost';
 
 import Popup from '../components/popup';
 import customElement from '../components/popup/templates/debut/custom_element';
@@ -58,16 +59,77 @@ app.prepare().then(() => {
       AND campaigns.published = true`,
       [shop]
     );
-    // match min, max, collection, products, targetPage
-    const campaign = campaigns.rows.find(
-      (row) =>
-        row.targets.page === target &&
-        row.targets.products.some((targetProduct) =>
-          products.includes(parseInt(targetProduct.legacyResourceId, 10))
-        )
+    let offlineAccessToken = await db.query(
+      `SELECT access_token FROM stores WHERE stores.domain = $1`,
+      [shop]
     );
-    // check if selling mode is auto, get recommendations and transform them to a graphql object
-    // when selling mode is manual retrieve the selling products again - maybe the merchant updates them meanwhile
+    if (offlineAccessToken.rows[0]) {
+      offlineAccessToken = offlineAccessToken.rows[0].access_token;
+    }
+    const client = await createClient(shop, offlineAccessToken);
+
+    const PRODUCT_IN_COLLECTION = gql`
+      query ProductInCollection($product: ID!, $collection: ID!) {
+        product(id: $product) {
+          inCollection(id: $collection)
+        }
+      }
+    `;
+
+    const campaign = campaigns.rows.find((row) => {
+      const targets = row.targets;
+      return (
+        (targets.page === target &&
+          targets.products.length > 0 &&
+          targets.products.some((targetProduct) =>
+            products.includes(parseInt(targetProduct.legacyResourceId, 10))
+          )) ||
+        (targets.collections.length > 0 &&
+          targets.collections.some((targetCollection) => {
+            return products.map(async (product) => {
+              const productID = `gid://shopify/Product/${product}`;
+              try {
+                const response = await client.query({
+                  query: PRODUCT_IN_COLLECTION,
+                  variables: {
+                    product: productID,
+                    collection: targetCollection.id,
+                  },
+                });
+                if (response.data) {
+                  return response.data.inCollection;
+                } else {
+                  return false;
+                }
+              } catch (error) {
+                console.error(error);
+                return false;
+              }
+            });
+          }))
+      );
+    });
+
+    if (campaign.selling.mode === 'auto') {
+      /* check if selling mode is auto, get recommendations and transform them to a graphql object, add the global strategy to every product.
+      const url = `https://${shop}/recommendations/products.json?product_id=${products[0]}`;
+      */
+    } else {
+      // update campaign.selling.products again if updateAt is different than saved one
+      // {...oldProduct, ...updatedProduct}
+    }
+
+    campaign.selling.products = campaign.selling.products.filter((product) => {
+      const maxOrderValue = parseFloat(product.strategy.maxOrderValue);
+      const minOrderValue = parseFloat(product.strategy.minOrderValue);
+      const comparePrice = parseFloat(totalPrice);
+      if ((maxOrderValue !== 0 || minOrderValue !== 0) && isNaN(comparePrice)) {
+        return comparePrice >= minOrderValue && comparePrice <= maxOrderValue;
+      } else {
+        return true;
+      }
+    });
+
     if (campaign) {
       const { customJS, id, strategy, selling, options } = campaign;
       const html = await ReactDOMServer.renderToStaticMarkup(
