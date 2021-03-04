@@ -245,18 +245,22 @@ app.prepare().then(() => {
           }
         }
       );
-      const { customJS, id, strategy, selling, options } = campaign;
-      const html = await ReactDOMServer.renderToStaticMarkup(
-        <AppProvider i18n={translations}>
-          <Popup campaign={campaign} />
-        </AppProvider>
-      );
-      ctx.body = {
-        html,
-        js: customElement(customJS),
-        campaign: { id, strategy, selling, options },
-      };
-      ctx.status = 200;
+      if (campaign.selling.products.length === 0) {
+        ctx.status = 404;
+      } else {
+        const { customJS, id, strategy, selling, options } = campaign;
+        const html = await ReactDOMServer.renderToStaticMarkup(
+          <AppProvider i18n={translations}>
+            <Popup campaign={campaign} />
+          </AppProvider>
+        );
+        ctx.body = {
+          html,
+          js: customElement(customJS),
+          campaign: { id, strategy, selling, options },
+        };
+        ctx.status = 200;
+      }
     } else {
       ctx.status = 404;
     }
