@@ -112,6 +112,7 @@ app.prepare().then(() => {
 
     if (campaign.selling.mode === 'auto') {
       /* check if selling mode is auto, get recommendations and transform them to a graphql object, add the global strategy to every product.
+      // take maxItemValue,maxNumberOfItems, excludeProducts in consideration
       const url = `https://${shop}/recommendations/products.json?product_id=${products[0]}`;
       */
     } else {
@@ -130,6 +131,8 @@ app.prepare().then(() => {
       }
     });
 
+
+    // check if plan limit is reached
     if (campaign) {
       const { customJS, id, strategy, selling, options } = campaign;
       const html = await ReactDOMServer.renderToStaticMarkup(
