@@ -54,7 +54,12 @@
     return cart;
   };
 
-  const fetchCampaign = async (targetPage, products, totalPrice) => {
+  const fetchCampaign = async (
+    targetPage,
+    products,
+    totalPrice,
+    recommendations
+  ) => {
     try {
       const response = await fetch(
         'https://loop.salestorm.cc:8081/api/get-matching-campaign',
@@ -69,6 +74,7 @@
             target: targetPage,
             products,
             totalPrice,
+            recommendations,
           }),
         }
       );
@@ -153,12 +159,21 @@
       const product = await response.json();
       productId = product.id;
     }
+    let recommendations = await fetch(
+      `/recommendations/products.json?product_id=${productId}`
+    );
+    recommendations = await recommendations.json();
+    recommendations = recommendations.products.map((recommendation) => ({
+      id: recommendation.id,
+      price: recommendation.price,
+    }));
     const cart = await getCart();
     const totalPrice = cart.total_price / 100;
     popups[targets.addToCart] = await fetchCampaign(
       targets.addToCart,
       [productId],
-      totalPrice
+      totalPrice,
+      recommendations
     );
     if (popups[targets.addToCart].campaign) {
       const interruptEvents =
@@ -199,10 +214,25 @@
       const cart = await getCart();
       const currentItemsInCart = cart.items;
       const totalPrice = cart.total_price / 100;
+      let recommendations = [];
+      await Promise.all(
+        currentItemsInCart.map(async (item) => {
+          let recommendation = await fetch(
+            `/recommendations/products.json?product_id=${item.product_id}`
+          );
+          recommendation = await recommendation.json();
+          const newRecommendations = recommendation.products.map((product) => ({
+            id: product.id,
+            price: product.price,
+          }));
+          recommendations = recommendations.concat(newRecommendations);
+        })
+      );
       popups[targets.checkout] = await fetchCampaign(
         targets.checkout,
         currentItemsInCart.map((item) => item.product_id),
-        totalPrice
+        totalPrice,
+        recommendations
       );
       if (popups[targets.checkout].campaign) {
         const interruptEvents =
@@ -246,10 +276,28 @@
   };
 
   const handleThankYouPage = async () => {
+    const lineItems = window.Shopify.checkout.line_items.map(
+      (item) => item.product_id
+    );
+    let recommendations = [];
+    await Promise.all(
+      lineItems.map(async (item) => {
+        let recommendation = await fetch(
+          `/recommendations/products.json?product_id=${item.product_id}`
+        );
+        recommendation = await recommendation.json();
+        const newRecommendations = recommendation.products.map((product) => ({
+          id: product.id,
+          price: product.price,
+        }));
+        recommendations = recommendations.concat(newRecommendations);
+      })
+    );
     popups[targets.thankYou] = await fetchCampaign(
       targets.thankYou,
-      window.Shopify.checkout.line_items.map((item) => item.product_id),
-      window.Shopify.checkout.total_price
+      lineItems,
+      window.Shopify.checkout.total_price,
+      recommendations
     );
     if (popups[targets.thankYou].campaign) {
       showPopup(targets.thankYou);

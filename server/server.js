@@ -49,7 +49,13 @@ app.prepare().then(() => {
   const router = new Router();
 
   router.post('/api/get-matching-campaign', async (ctx) => {
-    const { shop, target, products, totalPrice } = ctx.request.body;
+    const {
+      shop,
+      target,
+      products,
+      totalPrice,
+      recommendations,
+    } = ctx.request.body;
     const campaigns = await db.query(
       `SELECT *
       FROM campaigns
@@ -163,12 +169,44 @@ app.prepare().then(() => {
 
     if (campaign) {
       if (campaign.selling.mode === 'auto') {
-        /* check if selling mode is auto, get recommendations and transform them to a graphql object, add the global strategy to every product.
-        // take maxItemValue,maxNumberOfItems, excludeProducts in consideration
-        const url = `https://${shop}/recommendations/products.json?product_id=${products[0]}`;
-        */
+        campaign.selling.products = await Promise.all(
+          recommendations.map(async (recommendation) => {
+            const { price, id } = recommendation;
+            if (
+              price / 100 > parseFloat(campaign.strategy.maxItemValue) &&
+              campaign.strategy.maxItemValue !== '0'
+            ) {
+              return false;
+            } else {
+              try {
+                const response = await client.query({
+                  query: GET_PRODUCT,
+                  variables: {
+                    id,
+                  },
+                });
+                return {
+                  ...response.data.product,
+                  strategy: campaign.strategy,
+                };
+              } catch (error) {
+                console.log(
+                  `Failed to fetch product with id ${id} for store ${shop} during get-matching recommendation fetching.`
+                );
+                console.error(error);
+                return false;
+              }
+            }
+          })
+        );
+        if (campaign.strategy.maxNumberOfItems !== '0') {
+          campaign.selling.products = campaign.selling.products.slice(
+            0,
+            parseInt(campaign.strategy.maxNumberOfItems, 10)
+          );
+        }
       } else {
-        // showing always updated products
+        // TODO: just update if product is outdated
         campaign.selling.products = await Promise.all(
           campaign.selling.products.map(async (product) => {
             const { id, title } = product;
