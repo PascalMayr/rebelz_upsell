@@ -75,7 +75,7 @@
       if (response.ok) {
         const campaign = await response.json();
         eval(campaign.js);
-        return campaign;
+        return { ...campaign, displayed: false };
       } else {
         return targetPage;
       }
@@ -88,19 +88,18 @@
 
   const showPopup = (targetPage) => {
     const { campaign } = popups[targetPage];
-    const popup = document.querySelector(`#salestorm-campaign-${campaign.id}`);
     document.body.insertAdjacentHTML('beforeend', popups[targetPage].html);
+    const popup = document.querySelector(`#salestorm-campaign-${campaign.id}`);
     if (popup) {
       popup.setAttribute('visible', 'true');
+      popups[targetPage].displayed = true;
     }
     if (window.Salestorm) {
       document.addEventListener(window.Salestorm.hidePopup.type, () => {
         const popup = document.querySelector(
           `#salestorm-campaign-${campaign.id}`
         );
-        if (popup) {
-          popup.setAttribute('visible', 'false');
-        }
+        popup.setAttribute('visible', 'false');
         document.dispatchEvent(continueOriginalClickEvent);
       });
       window.Salestorm.skipOffer = (popup) => {
@@ -162,14 +161,12 @@
       totalPrice
     );
     if (popups[targets.addToCart].campaign) {
-      let displayedCampaign = false;
       const interruptEvents =
         popups[targets.addToCart].campaign.options.interruptEvents;
       if (interruptEvents) {
         addEarlyClickListener(addToCartButtonSelector, (event) => {
-          if (!displayedCampaign) {
+          if (!popups[targets.addToCart].displayed) {
             showPopup(targets.addToCart);
-            displayedCampaign = true;
             event.preventDefault();
             event.stopPropagation();
             const handleCartDrawers = setInterval(() => {
@@ -179,7 +176,6 @@
               }
             }, 500);
             document.addEventListener(continueOriginalClickEvent.type, () => {
-              displayedCampaign = true;
               if (!productsAddedByXHROrFetch) {
                 event.target.click();
               }
@@ -191,7 +187,6 @@
         const addToCartButton = document.querySelector(addToCartButtonSelector);
         if (addToCartButton) {
           addToCartButton.addEventListener('click', () => {
-            displayedCampaign = true;
             showPopup(targets.addToCart);
           });
         }
@@ -200,7 +195,6 @@
   };
 
   const handleCart = async () => {
-    let hasCampaign;
     const checkAndHandleCartCampaign = async () => {
       const cart = await getCart();
       const currentItemsInCart = cart.items;
@@ -211,17 +205,15 @@
         totalPrice
       );
       if (popups[targets.checkout].campaign) {
-        let displayedCampaign = false;
         const interruptEvents =
           popups[targets.checkout].campaign.options.interruptEvents;
         if (interruptEvents) {
           addEarlyClickListener(checkoutButtonSelector, (event) => {
-            if (!displayedCampaign) {
+            if (!popups[targets.checkout].displayed) {
               showPopup(targets.checkout);
               event.preventDefault();
               event.stopPropagation();
               document.addEventListener(continueOriginalClickEvent.type, () => {
-                displayedCampaign = true;
                 event.target.click();
               });
             }
@@ -230,9 +222,8 @@
         } else {
           const checkoutButton = document.querySelector(checkoutButtonSelector);
           checkoutButton.addEventListener('click', () => {
-            if (!displayedCampaign) {
+            if (!popups[targets.checkout].displayed) {
               showPopup(targets.checkout);
-              displayedCampaign = true;
               document.addEventListener(continueOriginalClickEvent.type, () => {
                 const checkoutForm = searchFormFromTarget(event.target);
                 if (checkoutForm) {
@@ -246,7 +237,7 @@
     };
     await checkAndHandleCartCampaign();
     const checkAndHandleCartCampaignInterval = setInterval(async () => {
-      if (hasCampaign) {
+      if (popups[targets.checkout].campaign) {
         clearInterval(checkAndHandleCartCampaignInterval);
       } else {
         await checkAndHandleCartCampaign();
