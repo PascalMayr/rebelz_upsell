@@ -84,7 +84,8 @@ app.prepare().then(() => {
           targets.products.some((targetProduct) =>
             products.includes(parseInt(targetProduct.legacyResourceId, 10))
           )) ||
-        (targets.collections.length > 0 &&
+        (targets.page === target &&
+          targets.collections.length > 0 &&
           targets.collections.some((targetCollection) => {
             return products.map(async (product) => {
               const productID = `gid://shopify/Product/${product}`;
@@ -106,7 +107,10 @@ app.prepare().then(() => {
                 return false;
               }
             });
-          }))
+          })) ||
+        (targets.collections.length === 0 &&
+          targets.products.length === 0 &&
+          targets.page === target)
       );
     });
 
