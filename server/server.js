@@ -135,7 +135,6 @@ app.prepare().then(() => {
       }
     });
 
-
     // check if plan limit is reached
     if (campaign) {
       const { customJS, id, strategy, selling, options } = campaign;
