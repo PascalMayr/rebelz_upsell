@@ -131,3 +131,7 @@ As soon as you've found where the current displayed currency code is stored you 
 ```
 window.Salestorm.currentCurrencyCode = localStorage.getItem('currentDisplayedCurrencyCode')
 ```
+
+### Server Errors
+
+graphQLErrors.forEach is not a function : The offline accessToken of the store is missing therefore no graphql client could be created.
