@@ -169,6 +169,7 @@ app.prepare().then(() => {
 
     if (campaign) {
       if (campaign.selling.mode === 'auto') {
+        // TODO check for excluded products
         campaign.selling.products = await Promise.all(
           recommendations.map(async (recommendation) => {
             const { price, id } = recommendation;
@@ -235,11 +236,16 @@ app.prepare().then(() => {
           const comparePrice = parseFloat(totalPrice);
           if (
             (maxOrderValue !== 0 || minOrderValue !== 0) &&
-            isNaN(comparePrice)
+            !isNaN(comparePrice)
           ) {
-            return (
-              comparePrice >= minOrderValue && comparePrice <= maxOrderValue
-            );
+            if (maxOrderValue === 0) {
+              console.log(comparePrice >= minOrderValue)
+              return comparePrice >= minOrderValue;
+            } else {
+              return (
+                comparePrice >= minOrderValue && comparePrice <= maxOrderValue
+              );
+            }
           } else {
             return true;
           }
