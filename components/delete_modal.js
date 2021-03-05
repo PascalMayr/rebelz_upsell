@@ -1,4 +1,4 @@
-import { Modal, TextContainer } from '@shopify/polaris';
+import { Modal } from '@shopify/app-bridge-react';
 import { useState, useContext } from 'react';
 
 import deleteCampaign from '../services/delete_campaign';
@@ -13,6 +13,7 @@ const CampaignDeleteModal = ({ campaign, removeFromList, onClose }) => {
       open={Boolean(campaign)}
       onClose={onClose}
       title="Are you sure you want to delete this campaign?"
+      message={`Please click "Delete" if you really want to delete ${campaign.name}.`}
       primaryAction={{
         content: 'Delete',
         loading: deleteButtonLoading,
@@ -46,16 +47,7 @@ const CampaignDeleteModal = ({ campaign, removeFromList, onClose }) => {
           onAction: onClose,
         },
       ]}
-    >
-      <Modal.Section>
-        <TextContainer>
-          <p>
-            Please click &quot;Delete&quot; if you really want to delete{' '}
-            {campaign.name}.
-          </p>
-        </TextContainer>
-      </Modal.Section>
-    </Modal>
+    />
   );
 };
 
