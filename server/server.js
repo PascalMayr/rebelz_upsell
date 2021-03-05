@@ -183,7 +183,7 @@ app.prepare().then(() => {
                 const response = await client.query({
                   query: GET_PRODUCT,
                   variables: {
-                    id,
+                    id: `gid://shopify/Product/${id}`,
                   },
                 });
                 return {
