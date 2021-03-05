@@ -202,7 +202,9 @@
         const addToCartButton = document.querySelector(addToCartButtonSelector);
         if (addToCartButton) {
           addToCartButton.addEventListener('click', () => {
-            showPopup(targets.addToCart);
+            if (!popups[targets.addToCart].displayed) {
+              showPopup(targets.addToCart);
+            }
           });
         }
       }
