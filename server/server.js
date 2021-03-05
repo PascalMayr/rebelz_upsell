@@ -354,32 +354,30 @@ app.prepare().then(() => {
           locale,
         } = associatedUser;
         server.context.client = await createClient(shop, accessToken);
-
-        const store = await db.query('SELECT * FROM stores WHERE domain = $1', [
-          shop,
-        ]);
         const scriptid = await getScriptTagId(ctx);
-        if (store.rowCount === 0) {
-          const freePlan = config.plans.find(
-            (plan) => plan.name === config.planNames.free
-          );
-          await db.query(
-            `INSERT INTO stores${db.insertColumns(
-              'domain',
-              'scriptId',
-              'plan_limit',
-              'access_token'
-            )}`,
-            [shop, scriptid, freePlan.limit, accessToken]
-          );
-          registerWebhooks(
-            shop,
-            accessToken,
-            'APP_SUBSCRIPTIONS_UPDATE',
-            '/webhooks/app_subscriptions/update',
-            ApiVersion.October20
-          );
-        }
+        const freePlan = config.plans.find(
+          (plan) => plan.name === config.planNames.free
+        );
+        await db.query(
+          `INSERT INTO stores${db.insertColumns(
+            'domain',
+            'scriptId',
+            'plan_limit',
+            'access_token'
+          )}
+          ON CONFLICT (domain) DO UPDATE SET
+          scriptId = $2,
+          access_token = $4
+          `,
+          [shop, scriptid, freePlan.limit, accessToken]
+        );
+        registerWebhooks(
+          shop,
+          accessToken,
+          'APP_SUBSCRIPTIONS_UPDATE',
+          '/webhooks/app_subscriptions/update',
+          ApiVersion.October20
+        );
         await db.query(
           `
           INSERT INTO users${db.insertColumns(
