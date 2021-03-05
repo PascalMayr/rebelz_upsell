@@ -149,7 +149,7 @@ const Pricing = ({ store }) => {
                             <TextStyle variation="strong">{name}</TextStyle>
                             <span className='salestorm-plan-views'>
                               {new Intl.NumberFormat().format(limit)}
-                              &nbsp;offers
+                              &nbsp;views
                             </span>
                           </div>
                           <div>

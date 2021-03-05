@@ -208,9 +208,9 @@ const Index = ({ store, campaigns, global, appName = 'App' }) => {
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="Offers claimed">
+            <Card.Section title="Total Views">
               <p className="salestorm-analytics-subheading">
-                Offers claimed this month.
+                Total views this month.
               </p>
               <div className="salestorm-analytics-value">
                 0 / {store.plan_limit}
