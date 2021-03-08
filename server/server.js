@@ -239,7 +239,6 @@ app.prepare().then(() => {
             !isNaN(comparePrice)
           ) {
             if (maxOrderValue === 0) {
-              console.log(comparePrice >= minOrderValue)
               return comparePrice >= minOrderValue;
             } else {
               return (
