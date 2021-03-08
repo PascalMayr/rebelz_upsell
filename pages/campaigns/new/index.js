@@ -377,7 +377,7 @@ const New = (props) => {
                 campaign={campaign}
                 subtitle={
                   <>
-                    <div className='salestorm-summary-explanation'>
+                    <div className="salestorm-summary-explanation">
                       <strong>Settings Summary:</strong>
                       <p
                         dangerouslySetInnerHTML={{
@@ -423,7 +423,13 @@ const New = (props) => {
                               : `${
                                   campaign.selling.products.length === 0
                                     ? '<strong>No Product'
-                                    : `<strong>Maximum ${campaign.selling.products.length} Product${campaign.selling.products.length === 1 ? '' : 's'}`
+                                    : `<strong>Maximum ${
+                                        campaign.selling.products.length
+                                      } Product${
+                                        campaign.selling.products.length === 1
+                                          ? ''
+                                          : 's'
+                                      }`
                                 }</strong> will be shown.`,
                         }}
                       />
