@@ -65,3 +65,8 @@
   height: 800px;
   margin: 0 auto;
 }
+
+.salestorm-summary-explanation {
+  color: rgb(109, 113, 117);
+  margin-bottom: 1em;
+}
