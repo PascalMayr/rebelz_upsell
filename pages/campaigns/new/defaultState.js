@@ -84,6 +84,7 @@ const DefaultStateNew = {
   global: false,
   targets: {
     page: 'add_to_cart',
+    entry: 'onexit',
     products: [],
     collections: [],
   },

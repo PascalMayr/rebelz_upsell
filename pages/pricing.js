@@ -40,6 +40,7 @@ const Pricing = ({ store }) => {
     'Product Upsell Funnels',
     'Cart Upsell Funnels',
     'Post-Purchase Upsell Funnels',
+    'Exit Intent Upsell Funnels',
     'No Branding',
     'Quick Setup',
     '100% Responsive',

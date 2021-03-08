@@ -262,7 +262,13 @@ app.prepare().then(() => {
         ctx.body = {
           html,
           js: customElement(customJS),
-          campaign: { id, strategy, selling, options },
+          campaign: {
+            id,
+            strategy,
+            selling,
+            options,
+            entry: campaign.targets.entry,
+          },
         };
         ctx.status = 200;
       }
