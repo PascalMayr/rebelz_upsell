@@ -26,9 +26,9 @@ const SellingModeSetting = ({ campaign, setCampaignProperty }) => {
       </>
     ) : (
       <>
-        All Products will be shown after a specific time. You can set the time
-        under the <strong>Advnaced Settings, Styles and Texts</strong> found
-        below.
+        Set Products to be offered to your customers. Offers can be skipped by
+        the customers or are skipped after a specific time, which can be set in
+        the<strong> Advanced Settings, Styles and Texts section.</strong>
       </>
     );
   return (

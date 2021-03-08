@@ -17,26 +17,29 @@ const TriggerSettings = ({ campaign, setCampaignProperty }) => {
     });
   };
   const targetsPage = campaign.targets.page;
-  const explanation = `Customers will see this campaign ${
+  const explanation = `Customers will see this campaign <strong>${
     targetsPage === 'add_to_cart'
-      ? 'after clicking Add to cart on'
+      ? 'on the Product page'
       : targetsPage === 'checkout'
-      ? 'after clicking Checkout with'
-      : 'after purchasing'
-  } the specified target products/collections. If no products/collections are set than the campaign will be shown for every product in your store.`;
+      ? 'on the Cart page'
+      : 'after purchasing on the Thank you page'
+  }</strong> on the specified target products or collections. <strong>If no products or collections are set than the campaign will be shown for every product in your store.</strong>`;
   return (
     <>
-      <div className="salestorm-settings-explanation">{explanation}</div>
+      <div
+        className="salestorm-settings-explanation"
+        dangerouslySetInnerHTML={{ __html: explanation }}
+      />
       <Settings
         settings={[
           {
             id: 'add_to_cart',
-            label: 'On add to cart',
+            label: 'On the product page',
             name: 'triggers',
             onChange: changeTrigger,
             image: {
               src: '/add_to_cart.svg',
-              alt: 'Add to cart',
+              alt: 'Product page',
               width: '150',
               height: '150',
             },

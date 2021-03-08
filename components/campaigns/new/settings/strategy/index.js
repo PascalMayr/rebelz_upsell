@@ -41,17 +41,17 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
   };
   const explanation =
     mode === 'discount'
-      ? 'Set a fix/percentage discount at the card below.'
+      ? 'Set a fix or percentage discount. <strong>You can adjust this discount for every product at the card below.</strong>'
       : mode === 'free_shipping'
-      ? `If the customer accepts the offer, free shipping <strong>will be applied on the whole order</strong> and the product offered will be <strong>${
-          strategy.sellType === 'upsell' ? 'added' : 'replaced'
-        }</strong> in the cart.`
-      : 'Set a complimentary gift for your customers at the card below.';
+      ? `Offer free shipping <strong>on the whole order.</strong> The product offered will be <strong>${
+          strategy.sellType === 'upsell' ? 'replaced in' : 'added to'
+        } the customers cart.</strong>`
+      : 'Offer a gift to your customers to improve your brand recognition value.';
   return (
     <>
       <div
         className="salestorm-settings-explanation"
-        dangerouslySetInnerHTML={{ __html: explanation }}
+        dangerouslySetInnerHTML={{ __html: explanation + ' Leave the min/max order value blank or zero if you do not want to set it. Remember: Upselling means replacing the offered product while cross selling means adding products to your customers cart.' }}
       />
       <Settings
         settings={[

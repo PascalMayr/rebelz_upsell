@@ -15,6 +15,7 @@ import { AppContext } from '../../_app';
 import ResourceSelectionCampaign from '../../../components/campaigns/new/resource_selection';
 import Design from '../../../components/design';
 import db from '../../../server/db';
+import EntrySettings from '../../../components/campaigns/new/settings/entry';
 
 import DefaultStateNew from './defaultState';
 
@@ -68,6 +69,12 @@ const New = (props) => {
   const publishLabel = campaign.published
     ? 'Unpublish campaign'
     : 'Publish campaign';
+  const targetButton =
+    campaign.targets.page === 'add_to_cart'
+      ? 'Add to cart'
+      : campaign.targets.page === 'checkout'
+      ? 'Checkout'
+      : 'Continue to shopping';
   return (
     <Page
       title={title}
@@ -217,7 +224,17 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title="2.) How would you like to sell more?">
+            <Card.Section title="2.) When would you like to interact with your customers?">
+              <EntrySettings
+                campaign={campaign}
+                setCampaignProperty={setCampaignProperty}
+              />
+            </Card.Section>
+          </Card>
+        </Card.Section>
+        <Card.Section>
+          <Card>
+            <Card.Section title="3.) What type of offer would you like to make?">
               <StrategySettings
                 campaign={campaign}
                 setCampaignProperty={setCampaignProperty}
@@ -227,7 +244,7 @@ const New = (props) => {
         </Card.Section>
         <Card.Section>
           <Card>
-            <Card.Section title="3.) What would you like to offer?">
+            <Card.Section title="4.) What would you like to offer?">
               <SellingModeSettings
                 campaign={campaign}
                 setCampaignProperty={setCampaignProperty}
@@ -281,7 +298,7 @@ const New = (props) => {
                     />
                     <TextField
                       type="number"
-                      min="0"
+                      min="1"
                       value={campaign.strategy.maxNumberOfItems}
                       id="maxNumberOfItems"
                       onChange={(value) =>
@@ -327,10 +344,65 @@ const New = (props) => {
           <Layout>
             <Layout.Section>
               <Design
-                title="4. Check try and customize your campaign before publishing it."
+                title="5. Check try and customize your campaign before publishing it."
                 setCampaignProperty={setCampaignProperty}
                 renderAdvanced
                 campaign={campaign}
+                subtitle={
+                  <>
+                    <div className='salestorm-summary-explanation'>
+                      <strong>Settings Summary:</strong>
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html: `Your customers will see this campaign on the <strong>${
+                            campaign.targets.page === 'add_to_cart'
+                              ? 'Product page'
+                              : campaign.targets.page === 'checkout'
+                              ? 'Cart page'
+                              : 'Thank you page'
+                          }
+                    ${
+                      campaign.targets.entry === 'onexit'
+                        ? 'when leaving.</strong>'
+                        : `when clicking the ${targetButton} Button.</strong>`
+                    }
+                    `,
+                        }}
+                      />
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html: `Offered will be <strong>${
+                            campaign.strategy.mode === 'discount'
+                              ? `a ${campaign.strategy.discount.value} ${campaign.strategy.discount.type} discount</strong> on the claimed product unless specified otherwise for the product itself.`
+                              : campaign.strategy.mode === 'free_shipping'
+                              ? 'Free shipping</strong> on the entire order.'
+                              : 'an additional gift</strong> to your order.'
+                          }`,
+                        }}
+                      />
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            campaign.selling.mode === 'auto'
+                              ? `${
+                                  campaign.strategy.maxNumberOfItems !== '0'
+                                    ? `Maximum <strong>${campaign.strategy.maxNumberOfItems} `
+                                    : ''
+                                }Products</strong> are chosen by the Product Reccomendations from Shopify ${
+                                  campaign.strategy.maxItemValue !== '0'
+                                    ? ` with a maximum price of <strong>${campaign.strategy.maxItemValue} ${campaign.strategy.storeCurrencyCode}</strong>`
+                                    : ''
+                                }.`
+                              : `${
+                                  campaign.selling.products.length === 0
+                                    ? '<strong>No Product'
+                                    : `<strong>Maximum ${campaign.selling.products.length} Product${campaign.selling.products.length === 1 ? '' : 's'}`
+                                }</strong> will be shown.`,
+                        }}
+                      />
+                    </div>
+                  </>
+                }
               />
             </Layout.Section>
           </Layout>
