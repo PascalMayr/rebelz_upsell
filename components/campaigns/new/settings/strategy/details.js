@@ -40,7 +40,6 @@ const DetailsStrategy = ({ strategy = DefaultStateStrategy, onChange }) => {
       salestormStrategyContainerClass = 'salestorm-strategy-settings';
       break;
   }
-  const defaultToZero = (value) => (value === '' ? '0' : value);
   return (
     <div className={salestormStrategyContainerClass}>
       {strategy.mode !== 'gift' && (
@@ -59,9 +58,7 @@ const DetailsStrategy = ({ strategy = DefaultStateStrategy, onChange }) => {
           min="0"
           value={strategy.minOrderValue}
           id="minOrderValue"
-          onChange={(value) =>
-            onDiscountSettingsChange('minOrderValue', defaultToZero(value))
-          }
+          onChange={(value) => onDiscountSettingsChange('minOrderValue', value)}
           placeholder={strategy.minOrderValue}
           label="Min total order value"
           suffix={currencyCode}
@@ -70,11 +67,9 @@ const DetailsStrategy = ({ strategy = DefaultStateStrategy, onChange }) => {
       <TextField
         type="number"
         min="0"
-        value={strategy.maxOrderValue !== '' ? strategy.maxOrderValue : '0'}
+        value={strategy.maxOrderValue}
         id="maxOrderValue"
-        onChange={(value) =>
-          onDiscountSettingsChange('maxOrderValue', defaultToZero(value))
-        }
+        onChange={(value) => onDiscountSettingsChange('maxOrderValue', value)}
         placeholder={strategy.maxOrderValue}
         label="Max total order value"
         suffix={currencyCode}
@@ -83,13 +78,13 @@ const DetailsStrategy = ({ strategy = DefaultStateStrategy, onChange }) => {
         <div className="salestorm-discount">
           <TextField
             type="number"
-            min="0"
+            min="1"
             value={strategy.discount.value}
             id="discount"
             onChange={(value) =>
               onDiscountSettingsChange('discount', {
                 ...strategy.discount,
-                value: defaultToZero(value),
+                value,
               })
             }
             placeholder={strategy.discount.value}
