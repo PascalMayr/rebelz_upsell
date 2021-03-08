@@ -1,5 +1,5 @@
 import { useState, useCallback, useContext } from 'react';
-import { Page, Card, Layout, TextField, Badge } from '@shopify/polaris';
+import { Page, Card, Layout, TextField, Badge, Select } from '@shopify/polaris';
 import { MobilePlusMajor } from '@shopify/polaris-icons';
 import { useQuery } from 'react-apollo';
 import { gql } from 'apollo-boost';
@@ -230,6 +230,33 @@ const New = (props) => {
                 setCampaignProperty={setCampaignProperty}
               />
             </Card.Section>
+            {campaign.targets.entry === 'onclick' && (
+              <Card.Section>
+                <Select
+                  options={[
+                    {
+                      value: true,
+                      label:
+                        'Interrupt events when clicking - e.g. disabling showing a cart drawer after your customers click Add to cart.',
+                    },
+                    {
+                      value: false,
+                      label: 'Do not interrupt events when clicking',
+                    },
+                  ]}
+                  onChange={(value) =>
+                    setCampaignProperty(
+                      {
+                        ...campaign.options,
+                        interruptEvents: value === 'true',
+                      },
+                      'options'
+                    )
+                  }
+                  value={campaign.options.interruptEvents}
+                />
+              </Card.Section>
+            )}
           </Card>
         </Card.Section>
         <Card.Section>
