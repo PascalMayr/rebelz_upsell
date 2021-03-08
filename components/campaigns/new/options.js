@@ -10,7 +10,6 @@ const Options = ({ campaign, setCampaignProperty }) => {
     enableOutOfStockProducts,
     showCountdown,
     countdownTime,
-    interruptEvents,
     showImageSlider,
   } = options;
   return (
@@ -107,20 +106,6 @@ const Options = ({ campaign, setCampaignProperty }) => {
       </div>
       <div className="salestorm-options">
         <div>
-          <Checkbox
-            checked={interruptEvents}
-            onChange={(value) =>
-              setCampaignProperty(
-                { ...options, interruptEvents: value },
-                'options'
-              )
-            }
-            label={
-              <span>
-                <strong>Interrupt</strong> any other events.
-              </span>
-            }
-          />
           <Checkbox
             checked={showImageSlider}
             onChange={(value) =>
