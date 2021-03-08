@@ -94,29 +94,31 @@
 
   const showPopup = (targetPage) => {
     const { campaign } = popups[targetPage];
-    document.body.insertAdjacentHTML('beforeend', popups[targetPage].html);
-    const popup = document.querySelector(`#salestorm-campaign-${campaign.id}`);
-    if (popup) {
-      popup.setAttribute('visible', 'true');
-      popups[targetPage].displayed = true;
-    }
-    if (window.Salestorm) {
-      document.addEventListener(window.Salestorm.hidePopup.type, () => {
-        const popup = document.querySelector(
-          `#salestorm-campaign-${campaign.id}`
-        );
-        popup.setAttribute('visible', 'false');
-        document.dispatchEvent(continueOriginalClickEvent);
-      });
-      window.Salestorm.skipOffer = (popup) => {
-        let currentOffer = parseInt(popup.getAttribute('currentoffer'), 10);
-        currentOffer += 1;
-        const newProduct = campaign.selling.products[currentOffer];
-        if (newProduct) {
-          popup.setAttribute('currentoffer', currentOffer);
-          popup.setAttribute('product', JSON.stringify(newProduct));
-        }
-      };
+    if (campaign) {
+      document.body.insertAdjacentHTML('beforeend', popups[targetPage].html);
+      const popup = document.querySelector(`#salestorm-campaign-${campaign.id}`);
+      if (popup) {
+        popup.setAttribute('visible', 'true');
+        popups[targetPage].displayed = true;
+      }
+      if (window.Salestorm) {
+        document.addEventListener(window.Salestorm.hidePopup.type, () => {
+          const popup = document.querySelector(
+            `#salestorm-campaign-${campaign.id}`
+          );
+          popup.setAttribute('visible', 'false');
+          document.dispatchEvent(continueOriginalClickEvent);
+        });
+        window.Salestorm.skipOffer = (popup) => {
+          let currentOffer = parseInt(popup.getAttribute('currentoffer'), 10);
+          currentOffer += 1;
+          const newProduct = campaign.selling.products[currentOffer];
+          if (newProduct) {
+            popup.setAttribute('currentoffer', currentOffer);
+            popup.setAttribute('product', JSON.stringify(newProduct));
+          }
+        };
+      }
     }
   };
 
@@ -149,6 +151,26 @@
     return false;
   };
 
+  const addExitIntentListener = (targetPage) => {
+    if (window.innerWidth > 950) {
+      document.onmousemove = (event) => {
+        if (event.pageY && event.pageY < 150) {
+          if (!popups[targetPage].displayed) {
+            popups[targetPage].displayed = true;
+            showPopup(targetPage);
+          }
+        }
+      };
+    } else {
+      setTimeout(() => {
+        if (!popups[targetPage].displayed) {
+          popups[targetPage].displayed = true;
+          showPopup(targetPage);
+        }
+      }, 3000)
+    }
+  };
+
   const handleProductPage = async (productPage) => {
     let productId;
     // Many shopify themes have this meta global which includes the product ID
@@ -175,9 +197,9 @@
       totalPrice,
       recommendations
     );
-    if (popups[targets.addToCart].campaign) {
-      const interruptEvents =
-        popups[targets.addToCart].campaign.options.interruptEvents;
+    const { campaign } = popups[targets.addToCart];
+    if (campaign && campaign.entry === 'onclick') {
+      const interruptEvents = campaign.options.interruptEvents;
       if (interruptEvents) {
         addEarlyClickListener(addToCartButtonSelector, (event) => {
           if (!popups[targets.addToCart].displayed) {
@@ -208,6 +230,8 @@
           });
         }
       }
+    } else {
+      setTimeout(() => addExitIntentListener(targets.addToCart), 1000);
     }
   };
 
@@ -236,9 +260,9 @@
         totalPrice,
         recommendations
       );
-      if (popups[targets.checkout].campaign) {
-        const interruptEvents =
-          popups[targets.checkout].campaign.options.interruptEvents;
+      const { campaign } = popups[targets.checkout];
+      if (campaign && campaign.entry === 'onclick') {
+        const interruptEvents = campaign.options.interruptEvents;
         if (interruptEvents) {
           addEarlyClickListener(checkoutButtonSelector, (event) => {
             if (!popups[targets.checkout].displayed) {
@@ -265,6 +289,8 @@
             }
           });
         }
+      } else {
+        setTimeout(() => addExitIntentListener(targets.checkout), 1000);
       }
     };
     await checkAndHandleCartCampaign();
@@ -301,7 +327,8 @@
       window.Shopify.checkout.total_price,
       recommendations
     );
-    if (popups[targets.thankYou].campaign) {
+    const { campaign } = popups[targets.thankYou];
+    if (campaign) {
       showPopup(targets.thankYou);
       document.addEventListener(continueOriginalClickEvent.type, () => {
         const continueShoppingButton = document.querySelector(
@@ -362,11 +389,12 @@
     const path = window.location.pathname;
     const productPage = path.match(/\/products\/[^?/#]+/);
     const thankYouPage = path.match(/\/thank_you/);
+    const cartPage = path.match(/\/cart/);
     if (productPage) {
       handleProductPage(productPage);
     } else if (thankYouPage) {
       handleThankYouPage();
-    } else {
+    } else if (cartPage) {
       handleCart();
     }
     window.SalestormInitialized = true;
