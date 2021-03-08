@@ -35,6 +35,7 @@ const Design = ({
   advanced = false,
   setCampaignProperty,
   renderAdvanced,
+  subtitle,
 }) => {
   const [rerenderButton, setRerenderButton] = useState(false);
   const [preview, setPreview] = useState('desktop');
@@ -52,6 +53,8 @@ const Design = ({
   return (
     <Card>
       <Card.Section title={title}>
+        {subtitle}
+        <br />
         {rerenderButton && (
           <div className="salestorm-rerender-container">
             <Button
