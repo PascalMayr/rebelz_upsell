@@ -231,7 +231,7 @@
         }
       }
     } else {
-      setTimeout(() => addExitIntentListener(targets.addToCart), 1000);
+      addExitIntentListener(targets.addToCart);
     }
   };
 
@@ -290,7 +290,7 @@
           });
         }
       } else {
-        setTimeout(() => addExitIntentListener(targets.checkout), 1000);
+        addExitIntentListener(targets.addToCart);
       }
     };
     await checkAndHandleCartCampaign();
@@ -361,7 +361,7 @@
         });
       }
     } else {
-      setTimeout(() => addExitIntentListener(targets.thankYou), 1000);
+      addExitIntentListener(targets.thankYou);
     }
   };
 
