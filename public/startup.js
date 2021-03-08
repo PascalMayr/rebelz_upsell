@@ -311,7 +311,7 @@
     await Promise.all(
       lineItems.map(async (item) => {
         let recommendation = await fetch(
-          `/recommendations/products.json?product_id=${item.product_id}`
+          `/recommendations/products.json?product_id=${item}`
         );
         recommendation = await recommendation.json();
         const newRecommendations = recommendation.products.map((product) => ({
@@ -328,16 +328,40 @@
       recommendations
     );
     const { campaign } = popups[targets.thankYou];
-    if (campaign) {
-      showPopup(targets.thankYou);
-      document.addEventListener(continueOriginalClickEvent.type, () => {
+    if (campaign && campaign.entry === 'onclick') {
+      const interruptEvents = campaign.options.interruptEvents;
+      if (interruptEvents) {
+        addEarlyClickListener(continueShoppingSelector, (event) => {
+          if (!popups[targets.thankYou].displayed) {
+            showPopup(targets.thankYou);
+            event.preventDefault();
+            event.stopPropagation();
+            document.addEventListener(continueOriginalClickEvent.type, () => {
+              event.target.click();
+            });
+          }
+          return true;
+        });
+      } else {
         const continueShoppingButton = document.querySelector(
           continueShoppingSelector
         );
-        if (continueShoppingButton) {
-          continueShoppingButton.click();
-        }
-      });
+        continueShoppingButton.addEventListener('click', () => {
+          if (!popups[targets.thankYou].displayed) {
+            showPopup(targets.thankYou);
+            document.addEventListener(continueOriginalClickEvent.type, () => {
+              const continueShoppingButton = document.querySelector(
+                continueShoppingSelector
+              );
+              if (continueShoppingButton) {
+                continueShoppingButton.click();
+              }
+            });
+          }
+        });
+      }
+    } else {
+      setTimeout(() => addExitIntentListener(targets.thankYou), 1000);
     }
   };
 
