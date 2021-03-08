@@ -32,6 +32,7 @@ const customElement = (customJS) => `
             this.getElement('#salestorm-overlay-container').style.display = 'flex';
             this.resetCountdown();
             this.resetProgressBars();
+            this.renderSkipOfferButton(parseInt(this.getAttribute('offers')));
           }
           else {
             this.hidePopup();
@@ -85,7 +86,9 @@ const customElement = (customJS) => `
           }
           break;
         case 'offers':
-          this.renderProgressBars(parseInt(newValue) === 0 ? 1 : parseInt(newValue));
+          const offers = parseInt(newValue) === 0 ? 1 : parseInt(newValue);
+          this.renderProgressBars(offers);
+          this.renderSkipOfferButton(offers);
           break;
         default:
           console.log('attribute "' + name + '" not handled by any function');
@@ -103,7 +106,9 @@ const customElement = (customJS) => `
       this.setupHidePopupListener();
       this.setupChangeListeners();
       if (!this.getAttribute('preview')) {
-        document.body.style.overflow = 'hidden';
+        if (window.innerWidth > 950) {
+          document.body.style.overflow = 'hidden';
+        }
       }
     }
 
@@ -163,6 +168,18 @@ const customElement = (customJS) => `
       const rightSlider = this.getElement('#salestorm-product-image-slider-right');
       rightSlider.addEventListener('click', next);
 
+
+      const skipOfferButton = this.getElement('#salestorm-popup-skip');
+      skipOfferButton.addEventListener('click', () => {
+        const displayedProgressBars = Array.from(this.getElements('.salestorm-progress-bar'));
+        const currentOffer = parseInt(this.getAttribute('currentoffer'));
+        const offers = parseInt(this.getAttribute('offers'));
+        if ((currentOffer + 2) === offers) {
+          skipOfferButton.classList.add('d-none');
+        }
+        displayedProgressBars[currentOffer].style.width = '100%';
+        window.Salestorm.skipOffer(this);
+      })
     }
 
     removeClickListeners() {
@@ -516,6 +533,15 @@ const customElement = (customJS) => `
       const progressBars = this.getElements('.salestorm-progress-bar');
       for (let progressBar of progressBars) {
         progressBar.style.width = '0%';
+      }
+    }
+
+    renderSkipOfferButton(offers) {
+      const skipOfferButton = this.getElement('#salestorm-popup-skip');
+      if (offers > 1) {
+        skipOfferButton.classList.remove('d-none');
+      } else {
+        skipOfferButton.classList.add('d-none');
       }
     }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   MobileCancelMajor,
   ArrowRightMinor,
@@ -6,6 +6,7 @@ import {
   MinusMinor,
   CircleLeftMajor,
   CircleRightMajor,
+  PaginationEndMinor,
 } from '@shopify/polaris-icons';
 import { Icon } from '@shopify/polaris';
 
@@ -73,8 +74,13 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
           <div id="salestorm-progress-bar-container" />
           <div id="salestorm-popup-header">
             <TitleProduct>{renderedProduct.title}</TitleProduct>
-            <div id="salestorm-popup-close">
-              <Icon source={MobileCancelMajor} />
+            <div id="salestorm-popup-header-actions">
+              <div id="salestorm-popup-skip" className="d-none">
+                <Icon source={PaginationEndMinor} />
+              </div>
+              <div id="salestorm-popup-close">
+                <Icon source={MobileCancelMajor} />
+              </div>
             </div>
           </div>
           <div id="salestorm-product">

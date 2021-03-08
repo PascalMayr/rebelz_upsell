@@ -11,7 +11,9 @@ const getDesktopStyles = (styles, preview) => {
     -webkit-font-smoothing: antialiased;
   }
   #salestorm-overlay-container * {
-    -webkit-tap-highlight-color: ${styles.primaryButtons.backgroundColor};
+    -webkit-tap-highlight-color: ${tinycolor(
+      styles.primaryButtons.color
+    ).setAlpha(0.5)};
   }
   #salestorm-overlay-container *:focus {
     outline: none;
@@ -35,6 +37,7 @@ const getDesktopStyles = (styles, preview) => {
     -webkit-font-smoothing: antialiased;
   }
   #salestorm-overlay-container {
+    position: ${preview === undefined ? 'fixed' : 'relative'};
     contain: layout;
     display: flex;
     justify-content: center;
@@ -60,7 +63,7 @@ const getDesktopStyles = (styles, preview) => {
     scrollbar-width: none;
     ${convertStyleObjectToStyleStringUtil(styles.popup)};
   }
-  #salestorm-popup-close {
+  #salestorm-popup-close, #salestorm-popup-skip {
     contain: layout;
     cursor: pointer;
     display: flex;
@@ -69,7 +72,16 @@ const getDesktopStyles = (styles, preview) => {
     transition: 0.25s ease;
     ${convertStyleObjectToStyleStringUtil(styles.secondaryButtons)};
   }
+  #salestorm-popup-skip {
+    margin-right: 1em;
+    margin-left: 5px;
+  }
   #salestorm-popup-close > span {
+    width: 16px;
+    height: 16px;
+    margin: 0 auto;
+  }
+  #salestorm-popup-skip > span {
     width: 16px;
     height: 16px;
     margin: 0 auto;
@@ -78,7 +90,16 @@ const getDesktopStyles = (styles, preview) => {
     width: 100%;
     margin-bottom: 2.5px;
   }
+  #salestorm-popup-skip > span > svg {
+    width: 100%;
+    margin-bottom: 2.5px;
+  }
   #salestorm-popup-close:hover {
+    background-color: ${tinycolor(
+      styles.secondaryButtons.backgroundColor
+    ).lighten(10)};
+  }
+  #salestorm-popup-skip:hover {
     background-color: ${tinycolor(
       styles.secondaryButtons.backgroundColor
     ).lighten(10)};
@@ -316,6 +337,9 @@ const getDesktopStyles = (styles, preview) => {
   #salestorm-product-image-slider-right .Polaris-Icon > svg {
     width: 20px;
     opacity: 0.5;
+  }
+  #salestorm-popup-header-actions {
+    display: flex;
   }
 `;
 };
