@@ -20,7 +20,14 @@ const Options = ({ campaign, setCampaignProperty }) => {
             checked={linkToProduct}
             onChange={(value) =>
               setCampaignProperty(
-                { ...options, linkToProduct: value },
+                {
+                  ...options,
+                  linkToProduct: value,
+                  showImageSlider:
+                    options.showImageSlider === true && value === true
+                      ? false
+                      : options.showImageSlider,
+                },
                 'options'
               )
             }
@@ -110,7 +117,14 @@ const Options = ({ campaign, setCampaignProperty }) => {
             checked={showImageSlider}
             onChange={(value) =>
               setCampaignProperty(
-                { ...options, showImageSlider: value },
+                {
+                  ...options,
+                  showImageSlider: value,
+                  linkToProduct:
+                    options.linkToProduct === true && value === true
+                      ? false
+                      : options.linkToProduct,
+                },
                 'options'
               )
             }
