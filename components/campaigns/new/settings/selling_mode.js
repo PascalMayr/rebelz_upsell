@@ -37,18 +37,6 @@ const SellingModeSetting = ({ campaign, setCampaignProperty }) => {
       <Settings
         settings={[
           {
-            id: 'auto',
-            label: 'Let the AI decide',
-            name: 'selling',
-            onChange: changeSellingMode,
-            image: {
-              src: '/auto_pilot.svg',
-              alt: 'Discount',
-              width: '150',
-              height: '150',
-            },
-          },
-          {
             id: 'manual',
             label: 'Set products manually',
             name: 'selling',
@@ -56,6 +44,18 @@ const SellingModeSetting = ({ campaign, setCampaignProperty }) => {
             image: {
               src: '/manual.svg',
               alt: 'Set products',
+              width: '150',
+              height: '150',
+            },
+          },
+          {
+            id: 'auto',
+            label: 'Let the AI decide',
+            name: 'selling',
+            onChange: changeSellingMode,
+            image: {
+              src: '/auto_pilot.svg',
+              alt: 'Discount',
               width: '150',
               height: '150',
             },
