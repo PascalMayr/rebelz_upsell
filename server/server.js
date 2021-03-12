@@ -301,7 +301,7 @@ app.prepare().then(() => {
             },
           },
         ]);
-        draft_order.tags = 'ThunderExitUpsellFunnel,Discount';
+        draft_order.tags = 'Thunder Exit Upsell Funnel,discount';
       } else if (strategy.mode === 'free_shipping') {
         draft_order.line_items = draft_order.line_items.concat([
           {
@@ -313,7 +313,7 @@ app.prepare().then(() => {
           price: 0.0,
           title: 'Free Shipping',
         };
-        draft_order.tags = 'ThunderExitUpsellFunnel,FreeShipping';
+        draft_order.tags = 'Thunder Exit Upsell Funnel,free_shipping';
       } else if (strategy.mode === 'gift') {
         draft_order.line_items = draft_order.line_items.concat([
           {
@@ -325,6 +325,7 @@ app.prepare().then(() => {
             },
           },
         ]);
+        draft_order.tags = 'Thunder Exit Upsell Funnel,gift';
       }
       let order = await fetch(
         `https://${shop}/admin/api/2021-01/draft_orders.json`,
