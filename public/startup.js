@@ -92,23 +92,28 @@
   };
 
   const createDraftOrder = async (variantId, strategy, quantity, cart) => {
-    let response = await fetch(`${publicAPI}/create-draft-order`, {
-      credentials: 'include',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        variantId,
-        strategy,
-        quantity,
-        cart,
-        shop,
-      }),
-    });
-    response = await response.json();
-    if (response.invoiceUrl) {
-      window.location.href = response.invoiceUrl;
+    const createDraft = async () => {
+      let response = await fetch(`${publicAPI}/create-draft-order`, {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          variantId,
+          strategy,
+          quantity,
+          cart,
+          shop,
+        }),
+      });
+      response = await response.json();
+      if (response.invoiceUrl) {
+        window.location.href = response.invoiceUrl;
+      }
+    };
+    if (cart.items.length > 0) {
+      createDraft();
     }
   };
 
@@ -141,9 +146,24 @@
           }
         };
         window.Salestorm.claimOffer = async (variantId, strategy, quantity) => {
+          document.dispatchEvent(continueOriginalClickEvent);
           const cart = await getCart();
           if (cart) {
-            createDraftOrder(variantId, strategy, quantity, cart);
+            if (campaign.options.interruptEvents) {
+              const cartInterval = setInterval(async () => {
+                const currentCart = await getCart();
+                if (
+                  currentCart &&
+                  currentCart.items &&
+                  currentCart.items.length > 0
+                ) {
+                  clearInterval(cartInterval);
+                  createDraftOrder(variantId, strategy, quantity, currentCart);
+                }
+              }, 2000);
+            } else {
+              createDraftOrder(variantId, strategy, quantity, cart);
+            }
           }
         };
       }
