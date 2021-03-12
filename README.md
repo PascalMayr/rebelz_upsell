@@ -22,7 +22,7 @@ CREATE EXTENSION citext;
 ```
 
 8. Run `createdb salestorm && createdb salestorm_shadow` to create your development databases
-9. Ask a developer for the `.env` file where your store and various API keys are stored.
+9. Ask a developer for a copy of the `.env` file where various API keys and settings are stored.
 10. Run:
 
 ```sh
