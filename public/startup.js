@@ -47,6 +47,8 @@
     'salestorm-continue-original-click-event'
   );
   let productsAddedByXHROrFetch = false;
+  const publicAPI = 'https://loop.salestorm.cc:8081/api';
+  const shop = window.Shopify.shop || window.location.host;
 
   const getCart = async () => {
     const response = await fetch('/cart.js');
@@ -61,23 +63,20 @@
     recommendations
   ) => {
     try {
-      const response = await fetch(
-        'https://loop.salestorm.cc:8081/api/get-matching-campaign',
-        {
-          credentials: 'include',
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            shop: window.Shopify.shop,
-            target: targetPage,
-            products,
-            totalPrice,
-            recommendations,
-          }),
-        }
-      );
+      const response = await fetch(`${publicAPI}/get-matching-campaign`, {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          shop,
+          target: targetPage,
+          products,
+          totalPrice,
+          recommendations,
+        }),
+      });
       if (response.ok) {
         const campaign = await response.json();
         eval(campaign.js);
@@ -92,11 +91,34 @@
     }
   };
 
+  const createDraftOrder = async (variantId, strategy, quantity, cart) => {
+    let response = await fetch(`${publicAPI}/create-draft-order`, {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        variantId,
+        strategy,
+        quantity,
+        cart,
+        shop,
+      }),
+    });
+    response = await response.json();
+    if (response.invoiceUrl) {
+      window.location.href = response.invoiceUrl;
+    }
+  };
+
   const showPopup = (targetPage) => {
     const { campaign } = popups[targetPage];
     if (campaign) {
       document.body.insertAdjacentHTML('beforeend', popups[targetPage].html);
-      const popup = document.querySelector(`#salestorm-campaign-${campaign.id}`);
+      const popup = document.querySelector(
+        `#salestorm-campaign-${campaign.id}`
+      );
       if (popup) {
         popup.setAttribute('visible', 'true');
         popups[targetPage].displayed = true;
@@ -116,6 +138,12 @@
           if (newProduct) {
             popup.setAttribute('currentoffer', currentOffer);
             popup.setAttribute('product', JSON.stringify(newProduct));
+          }
+        };
+        window.Salestorm.claimOffer = async (variantId, strategy, quantity) => {
+          const cart = await getCart();
+          if (cart) {
+            createDraftOrder(variantId, strategy, quantity, cart);
           }
         };
       }
@@ -167,7 +195,7 @@
           popups[targetPage].displayed = true;
           showPopup(targetPage);
         }
-      }, 3000)
+      }, 3000);
     }
   };
 

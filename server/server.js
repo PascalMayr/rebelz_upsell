@@ -277,6 +277,83 @@ app.prepare().then(() => {
     }
   });
 
+  router.post('/api/create-draft-order', async (ctx) => {
+    try {
+      const { variantId, strategy, quantity, cart, shop } = ctx.request.body;
+      const store = await db.query(
+        `SELECT * FROM stores WHERE stores.domain = $1`,
+        [shop]
+      );
+      const accessToken = store.rows[0].access_token;
+      const draft_order = {
+        line_items: cart.items.map((item) => ({ ...item, properties: [] })),
+      };
+      // TODO depending on upsell/cross sell add or replace the product
+      if (strategy.mode === 'discount') {
+        draft_order.line_items = draft_order.line_items.concat([
+          {
+            variant_id: variantId,
+            quantity,
+            applied_discount: {
+              value: strategy.discount.value,
+              value_type:
+                strategy.discount.type === '%' ? 'percentage' : 'fixed_amount',
+            },
+          },
+        ]);
+        draft_order.tags = 'ThunderExitUpsellFunnel,Discount';
+      } else if (strategy.mode === 'free_shipping') {
+        draft_order.line_items = draft_order.line_items.concat([
+          {
+            variant_id: variantId,
+            quantity,
+          },
+        ]);
+        draft_order.shipping_line = {
+          price: 0.0,
+          title: 'Free Shipping',
+        };
+        draft_order.tags = 'ThunderExitUpsellFunnel,FreeShipping';
+      } else if (strategy.mode === 'gift') {
+        draft_order.line_items = draft_order.line_items.concat([
+          {
+            variant_id: variantId,
+            quantity,
+            applied_discount: {
+              value: '100',
+              value_type: 'percentage',
+            },
+          },
+        ]);
+      }
+      let order = await fetch(
+        `https://${shop}/admin/api/2021-01/draft_orders.json`,
+        {
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Shopify-Access-Token': accessToken,
+          },
+          body: JSON.stringify({
+            draft_order,
+          }),
+        }
+      );
+      order = await order.json();
+      if (order && order.draft_order) {
+        ctx.body = { invoiceUrl: order.draft_order.invoice_url };
+        ctx.status = 200;
+      } else {
+        console.error(order);
+        ctx.status = 500;
+      }
+    } catch (error) {
+      ctx.status = 500;
+      console.error(error);
+    }
+  });
+
   const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET });
 
   router.post('/webhooks/customers/redact', webhook, (ctx) => {

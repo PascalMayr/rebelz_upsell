@@ -100,6 +100,7 @@ const customElement = (customJS) => `
       window.Salestorm = {
         hidePopup: new Event('salestorm-hide-popup-event'),
         skipOffer: () => {},
+        claimOffer: () => {}
       };
       this.setupClickListeners();
       this.setupKeyListeners();
@@ -180,6 +181,33 @@ const customElement = (customJS) => `
         displayedProgressBars[currentOffer].style.width = '100%';
         window.Salestorm.skipOffer(this);
       })
+
+      const claimOfferButton = this.getElement('#salestorm-claim-offer-button');
+      claimOfferButton.addEventListener('click', () => {
+        let variantId;
+        if (this.selectedVariant && this.selectedVariant.node) {
+          if (!this.selectedVariant.node.availableForSale) {
+            return;
+          } else {
+            variantId = this.selectedVariant.node.legacyResourceId;
+          }
+        }
+        let quantity = 1;
+        const quantityInput = this.getElement('#salestorm-quantity-selection > input');
+        if (quantityInput && quantityInput.value) {
+          quantity = parseInt(quantityInput.value);
+        }
+        if (variantId) {
+          const product = this.getAttribute('product');
+          let strategy;
+          if (product) {
+            strategy = JSON.parse(product).strategy;
+          }
+          if (strategy) {
+            window.Salestorm.claimOffer(variantId, strategy, quantity)
+          }
+        }
+      });
     }
 
     removeClickListeners() {
@@ -276,7 +304,7 @@ const customElement = (customJS) => `
       if (this.selectedVariant && this.selectedVariant.node && this.selectedVariant.node.image) {
         this.setImage(this.selectedVariant.node.image.transformedSrc);
       }
-      claimOfferButton.classList.disable = false;
+      claimOfferButton.removeAttribute('disabled');
       claimOfferButton.classList.remove('offer-button-disabled');
       this.getElement('#salestorm-campaign-text-addToCartAction').classList.remove('d-none');
       this.getElement('#salestorm-campaign-text-addToCartUnavailable').classList.add('d-none');
