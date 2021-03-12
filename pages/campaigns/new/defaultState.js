@@ -89,7 +89,7 @@ const DefaultStateNew = {
     collections: [],
   },
   selling: {
-    mode: 'auto',
+    mode: 'manual',
     products: [],
     excludeProducts: [],
   },
