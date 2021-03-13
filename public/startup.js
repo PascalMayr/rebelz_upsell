@@ -149,7 +149,10 @@
           document.dispatchEvent(continueOriginalClickEvent);
           const cart = await getCart();
           if (cart) {
-            if (campaign.options.interruptEvents) {
+            if (
+              campaign.options.interruptEvents &&
+              campaign.entry === 'onclick'
+            ) {
               const cartInterval = setInterval(async () => {
                 const currentCart = await getCart();
                 if (
