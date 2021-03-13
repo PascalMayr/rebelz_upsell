@@ -413,24 +413,23 @@ const New = (props) => {
                             campaign.selling.mode === 'auto'
                               ? `${
                                   campaign.strategy.maxNumberOfItems !== '0'
-                                    ? `Maximum <strong>${campaign.strategy.maxNumberOfItems} `
-                                    : ''
-                                }Products</strong> are chosen by the Product Reccomendations from Shopify ${
+                                    ? `Maximum <strong>${campaign.strategy.maxNumberOfItems} Products`
+                                    : '<strong style="color: red;">0 Products </strong>'
+                                }</strong> are chosen by the Product Reccomendations from Shopify ${
                                   campaign.strategy.maxItemValue !== '0'
                                     ? ` with a maximum price of <strong>${campaign.strategy.maxItemValue} ${campaign.strategy.storeCurrencyCode}</strong>`
                                     : ''
                                 }.`
-                              : `${
+                              : `You offer <strong style="${
                                   campaign.selling.products.length === 0
-                                    ? '<strong>No Product'
-                                    : `<strong>Maximum ${
-                                        campaign.selling.products.length
-                                      } Product${
-                                        campaign.selling.products.length === 1
-                                          ? ''
-                                          : 's'
-                                      }`
-                                }</strong> will be shown.`,
+                                    ? 'color: red'
+                                    : ''
+                                }">${campaign.selling.products.length}
+                                  Product${
+                                    campaign.selling.products.length === 1
+                                      ? ''
+                                      : 's'
+                                  }</strong> in this campaign.`,
                         }}
                       />
                     </div>

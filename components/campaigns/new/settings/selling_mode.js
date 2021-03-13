@@ -26,7 +26,7 @@ const SellingModeSetting = ({ campaign, setCampaignProperty }) => {
       </>
     ) : (
       <>
-        Set Products to be offered to your customers. Offers can be skipped by
+        Set Products to be offered to your customers. Multiple offers in one campaign can be skipped by
         the customers or are skipped after a specific time, which can be set in
         the<strong> Advanced Settings, Styles and Texts section.</strong>
       </>

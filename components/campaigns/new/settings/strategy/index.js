@@ -51,7 +51,7 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
     <>
       <div
         className="salestorm-settings-explanation"
-        dangerouslySetInnerHTML={{ __html: explanation + ' Leave the min/max order value blank or zero if you do not want to set it. Remember: Upselling means replacing the offered product while cross selling means adding products to your customers cart.' }}
+        dangerouslySetInnerHTML={{ __html: explanation + ' Leave the min/max order value blank or zero if you do not want to set it. Remember: Upselling means replacing the offered product with a target product in your customers cart while cross selling means adding products to your customers cart.' }}
       />
       <Settings
         settings={[
