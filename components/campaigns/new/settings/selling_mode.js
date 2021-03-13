@@ -14,7 +14,7 @@ const SellingModeSetting = ({ campaign, setCampaignProperty }) => {
   const explanation =
     sellingMode === 'auto' ? (
       <>
-        By using the{' '}
+        Show offers automatically. By using the{' '}
         <Link
           external
           url="https://shopify.dev/docs/themes/ajax-api/reference/product-recommendations"

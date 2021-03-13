@@ -290,7 +290,7 @@ const New = (props) => {
                   buttonProps={{
                     primary: true,
                     icon: MobilePlusMajor,
-                    label: 'Set Products for this offer',
+                    label: 'Set Products for this campaign',
                   }}
                   onResourceMutation={(resources) =>
                     setCampaignProperty(
@@ -350,7 +350,7 @@ const New = (props) => {
                       buttonProps={{
                         primary: true,
                         icon: MobilePlusMajor,
-                        label: 'Exclude Products',
+                        label: 'Exclude Products from this campaign',
                       }}
                       onResourceMutation={(resources) =>
                         setCampaignProperty(
@@ -400,7 +400,7 @@ const New = (props) => {
                         dangerouslySetInnerHTML={{
                           __html: `Offered will be <strong>${
                             campaign.strategy.mode === 'discount'
-                              ? `a ${campaign.strategy.discount.value} ${campaign.strategy.discount.type} discount</strong> on the claimed product unless specified otherwise for the product itself. <br /><strong>Make sure to not apply negative discount on products.</strong>`
+                              ? `a ${campaign.strategy.discount.value} ${campaign.strategy.discount.type} discount</strong> on the claimed product unless specified otherwise for the product itself. <br /><strong>Make sure to not apply more discount on products than the products themself cost.</strong>`
                               : campaign.strategy.mode === 'free_shipping'
                               ? 'Free shipping</strong> on the entire order.'
                               : 'an additional gift</strong> to your order.'
