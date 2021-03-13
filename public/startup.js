@@ -312,7 +312,7 @@
         recommendations
       );
       const { campaign } = popups[targets.checkout];
-      if (campaign && campaign.entry === 'onclick') {
+      if (campaign.entry === 'onclick') {
         const interruptEvents = campaign.options.interruptEvents;
         if (interruptEvents) {
           addEarlyClickListener(checkoutButtonSelector, (event) => {
@@ -341,7 +341,7 @@
           });
         }
       } else {
-        addExitIntentListener(targets.addToCart);
+        addExitIntentListener(targets.checkout);
       }
     };
     await checkAndHandleCartCampaign();
