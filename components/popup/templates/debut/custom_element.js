@@ -29,6 +29,7 @@ const customElement = (customJS) => `
       switch(name) {
         case 'visible':
           if (newValue === "true") {
+            this.showLoader(false);
             this.getElement('#salestorm-overlay-container').style.display = 'flex';
             this.resetCountdown();
             this.resetProgressBars();
@@ -207,7 +208,8 @@ const customElement = (customJS) => `
             strategy = JSON.parse(product).strategy;
           }
           if (strategy) {
-            window.Salestorm.claimOffer(variantId, strategy, quantity)
+            this.showLoader(true);
+            window.Salestorm.claimOffer(variantId, strategy, quantity);
           }
         }
       });
@@ -294,6 +296,20 @@ const customElement = (customJS) => `
       document.body.style.overflow = 'visible';
       clearInterval(this.countdownIntervalId);
       document.dispatchEvent(window.Salestorm.hidePopup);
+    }
+
+    showLoader(show = true) {
+      const buttonText = this.getElement('#salestorm-campaign-text-addToCartAction');
+      const loader = this.getElement('#salestorm-campaign-text-loader');
+      if (buttonText) {
+        if (show) {
+          buttonText.classList.add('d-none');
+          loader.classList.remove('d-none');
+        } else {
+          buttonText.classList.remove('d-none');
+          loader.classList.add('d-none');
+        }
+      }
     }
 
     disablePurchase() {
