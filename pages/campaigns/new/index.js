@@ -400,7 +400,7 @@ const New = (props) => {
                         dangerouslySetInnerHTML={{
                           __html: `Offered will be <strong>${
                             campaign.strategy.mode === 'discount'
-                              ? `a ${campaign.strategy.discount.value} ${campaign.strategy.discount.type} discount</strong> on the claimed product unless specified otherwise for the product itself.`
+                              ? `a ${campaign.strategy.discount.value} ${campaign.strategy.discount.type} discount</strong> on the claimed product unless specified otherwise for the product itself. <br /><strong>Make sure to not apply negative discount on products.</strong>`
                               : campaign.strategy.mode === 'free_shipping'
                               ? 'Free shipping</strong> on the entire order.'
                               : 'an additional gift</strong> to your order.'
@@ -419,7 +419,7 @@ const New = (props) => {
                                   campaign.strategy.maxItemValue !== '0'
                                     ? ` with a maximum price of <strong>${campaign.strategy.maxItemValue} ${campaign.strategy.storeCurrencyCode}</strong>`
                                     : ''
-                                }.`
+                                }. <strong>The product below is just a placeholder.</strong>`
                               : `You offer <strong style="${
                                   campaign.selling.products.length === 0
                                     ? 'color: red'
@@ -429,7 +429,11 @@ const New = (props) => {
                                     campaign.selling.products.length === 1
                                       ? ''
                                       : 's'
-                                  }</strong> in this campaign.`,
+                                  }</strong> in this campaign. ${
+                                  campaign.selling.products.length === 0
+                                    ? '<strong>The product below is just a placeholder.</strong>'
+                                    : ''
+                                }`,
                         }}
                       />
                     </div>
