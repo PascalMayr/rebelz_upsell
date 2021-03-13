@@ -142,14 +142,17 @@ const customElement = (customJS) => `
       const quantityInput = this.getElement('#salestorm-quantity-selection > input');
       if (quantityInput) {
         const minus = this.getElement('#salestorm-quantity-selection-minus');
+        const product = this.getAttribute('product');
         minus.addEventListener('click', () => {
           if (quantityInput.value > 1) {
             quantityInput.value = parseInt(quantityInput.value) - 1;
           }
+          this.updatePrices(JSON.parse(product), parseInt(quantityInput.value));
         })
         const plus = this.getElement('#salestorm-quantity-selection-plus');
         plus.addEventListener('click', () => {
           quantityInput.value = parseInt(quantityInput.value) + 1;
+          this.updatePrices(JSON.parse(product), parseInt(quantityInput.value));
         })
       }
 
@@ -255,6 +258,7 @@ const customElement = (customJS) => `
 
     setupChangeListeners() {
       const quantityInput = this.getElement('#salestorm-quantity-selection > input');
+      const product = this.getAttribute('product');
       if (quantityInput) {
         quantityInput.addEventListener('change', (event) => {
           const newValue = event.target.value;
@@ -265,6 +269,7 @@ const customElement = (customJS) => `
           else {
             event.target.setAttribute('value', newValue);
           }
+          this.updatePrices(JSON.parse(product), parseInt(event.target.value));
         })
       }
     }
@@ -381,7 +386,7 @@ const customElement = (customJS) => `
       return currencyFormatter;
     }
 
-    updateDiscounts(product) {
+    updateDiscounts(product, quantity = 1) {
       if (Boolean(product.strategy.discount) && Boolean(this.selectedVariant)) {
         const discounts = this.getElements('.salestorm-discount');
         const discountedProductPrices = this.getElements('.salestorm-product-price-discounted');
@@ -403,19 +408,19 @@ const customElement = (customJS) => `
         }
         discountedProductPrices.forEach(discountedProductPrice => {
           const currencyFormatter = this.createCurrencyFormatter();
-          const convertedProductPrice = currencyFormatter.format(this.convertPriceToCurrentCurrencyCode(discountedProductPriceValue, product.strategy.discount.type));
+          const convertedProductPrice = currencyFormatter.format(this.convertPriceToCurrentCurrencyCode(discountedProductPriceValue * quantity, product.strategy.discount.type));
           discountedProductPrice.innerHTML = convertedProductPrice;
         })
       }
     }
 
-    updateProductPrice(product) {
+    updateProductPrice(product, quantity = 1) {
       const productPrices = this.getElements('.salestorm-product-price');
       const currencyFormatter = this.createCurrencyFormatter();
       productPrices.forEach(productPrice => {
         if (this.selectedVariant) {
           const selectedVariantPrice = this.selectedVariant.node.price || 0;
-          const convertedPrice = this.convertPriceToCurrentCurrencyCode(selectedVariantPrice, product.strategy.storeCurrencyCode);
+          const convertedPrice = this.convertPriceToCurrentCurrencyCode(selectedVariantPrice * quantity, product.strategy.storeCurrencyCode);
           productPrice.innerHTML = currencyFormatter.format(convertedPrice);
         }
       });
@@ -430,11 +435,11 @@ const customElement = (customJS) => `
       return convertedPriceValue;
     }
 
-    updatePrices(product) {
+    updatePrices(product, quantity = 1) {
       const multiCurrencySupport = this.getAttribute("multicurrency") === "true";
       window.Salestorm.currentCurrencyCode = (multiCurrencySupport && this.getDisplayedStoreCurrencyCode())|| product.strategy.storeCurrencyCode;
-      this.updateDiscounts(product);
-      this.updateProductPrice(product);
+      this.updateDiscounts(product, quantity);
+      this.updateProductPrice(product, quantity);
     }
 
     removeProductLink() {
