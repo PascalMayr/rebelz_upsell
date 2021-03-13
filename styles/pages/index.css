@@ -126,6 +126,11 @@ html {
   color: rgb(109, 113, 117);
 }
 
+.salestorm-analytics-subheading > a {
+  text-decoration: none;
+  color: #006fbb;
+}
+
 .salestorm-analytics-value {
   font-size: 18pt;
   margin-top: 0.5em;

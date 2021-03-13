@@ -1,4 +1,12 @@
-import { Page, Button, Badge, Card, Layout, Tabs } from '@shopify/polaris';
+import {
+  Page,
+  Button,
+  Badge,
+  Card,
+  Layout,
+  Tabs,
+  Link,
+} from '@shopify/polaris';
 import '../styles/pages/index.css';
 import NextLink from 'next/link';
 import { useState, useContext, useMemo, useCallback } from 'react';
@@ -210,7 +218,8 @@ const Index = ({ store, campaigns, global, appName = 'App' }) => {
           <Card>
             <Card.Section title="Total Views">
               <p className="salestorm-analytics-subheading">
-                Total views this month.
+                Total views this month. Need some more ? {' '}
+                <NextLink href="/pricing">Upgrade Now</NextLink>
               </p>
               <div className="salestorm-analytics-value">
                 0 / {store.plan_limit}
