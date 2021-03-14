@@ -2,22 +2,21 @@ import { Card, Layout } from '@shopify/polaris';
 
 const Analytics = () => (
   <div className="salestorm-campaigns-analytics">
+    <Card>
+      <Card.Section title="Period overview">
+
+      </Card.Section>
+    </Card>
+    <br />
     <Layout>
-      <Layout.Section>
+      <Layout.Section oneHalf>
         <Card>
-          <Card.Section title="Revenue growth" />
+          <Card.Section title="Sales Funnels" />
         </Card>
       </Layout.Section>
-      <br />
-      <Layout.Section>
+      <Layout.Section oneHalf>
         <Card>
-          <Card.Section title="Top converting funnels" />
-        </Card>
-      </Layout.Section>
-      <br />
-      <Layout.Section>
-        <Card>
-          <Card.Section title="Funnel views" />
+          <Card.Section title="Conversions" />
         </Card>
       </Layout.Section>
     </Layout>
