@@ -342,9 +342,9 @@ const getDesktopStyles = (styles, preview) => {
     display: flex;
   }
   .loader {
-    border: 4px solid ${tinycolor(
-      styles.primaryButtons.backgroundColor
-    ).darken(40)};
+    border: 4px solid ${tinycolor(styles.primaryButtons.backgroundColor).darken(
+      40
+    )};
     border-radius: 50%;
     border-top: 4px solid ${tinycolor(styles.primaryButtons.color).lighten(10)};
     width: 25px;
