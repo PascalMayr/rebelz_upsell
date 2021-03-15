@@ -244,8 +244,8 @@ const Index = ({ store, campaigns, views, global, appName = 'App' }) => {
       )}
       <div className={designContainerClassName}>
         <Page
-          title="Set a global Design for all Funnel campaigns."
-          subtitle="Already created campaigns won't be affected."
+          title="Create a global Design for all your campaigns."
+          subtitle="Note: Already created campaigns won't be affected."
           primaryAction={{
             content: 'Save',
             loading: saveLoading,
