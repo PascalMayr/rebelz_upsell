@@ -355,6 +355,20 @@ app.prepare().then(() => {
     }
   });
 
+  router.post('/api/count-view', async (ctx) => {
+    try {
+      const { id, shop, target } = ctx.request.body;
+      await db.query(
+        `INSERT INTO views (campaign_id, domain, target) VALUES ($1, $2, $3)`,
+        [id, shop, target]
+      );
+      ctx.status = 200;
+    } catch (error) {
+      console.error(error);
+      ctx.status = 500;
+    }
+  });
+
   const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET });
 
   router.post('/webhooks/customers/redact', webhook, (ctx) => {

@@ -56,6 +56,27 @@
     return cart;
   };
 
+  const countView = async (targetPage) => {
+    try {
+      const { campaign } = popups[targetPage];
+      await fetch(`${publicAPI}/count-view`, {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: campaign.id,
+          shop,
+          target: targetPage,
+        }),
+      });
+    } catch (error) {
+      console.error(window.Shopify);
+      throw error;
+    }
+  }
+
   const fetchCampaign = async (
     targetPage,
     products,
@@ -117,7 +138,7 @@
     }
   };
 
-  const showPopup = (targetPage) => {
+  const showPopup = async (targetPage) => {
     const { campaign } = popups[targetPage];
     if (campaign) {
       document.body.insertAdjacentHTML('beforeend', popups[targetPage].html);
@@ -127,6 +148,7 @@
       if (popup) {
         popup.setAttribute('visible', 'true');
         popups[targetPage].displayed = true;
+        await countView(targetPage);
       }
       if (window.Salestorm) {
         document.addEventListener(window.Salestorm.hidePopup.type, () => {

@@ -1,12 +1,4 @@
-import {
-  Page,
-  Button,
-  Badge,
-  Card,
-  Layout,
-  Tabs,
-  Link,
-} from '@shopify/polaris';
+import { Page, Button, Badge, Card, Layout, Tabs } from '@shopify/polaris';
 import '../styles/pages/index.css';
 import NextLink from 'next/link';
 import { useState, useContext, useMemo, useCallback } from 'react';
@@ -36,16 +28,20 @@ export async function getServerSideProps(ctx) {
     'SELECT * FROM campaigns WHERE domain = $1 AND global = true',
     [ctx.req.cookies.shopOrigin]
   );
+  const views = await db.query('SELECT COUNT(*) FROM views WHERE domain = $1', [
+    ctx.req.cookies.shopOrigin,
+  ]);
   return {
     props: {
       campaigns: campaigns.rows,
       store: stores.rows[0],
+      views: views.rows[0].count,
       global: globalCampaigns.rows.length > 0 ? globalCampaigns.rows[0] : {},
     },
   };
 }
 
-const Index = ({ store, campaigns, global, appName = 'App' }) => {
+const Index = ({ store, campaigns, views, global, appName = 'App' }) => {
   const context = useContext(AppContext);
 
   const [enabled, setEnabled] = useState(store.enabled);
@@ -218,11 +214,11 @@ const Index = ({ store, campaigns, global, appName = 'App' }) => {
           <Card>
             <Card.Section title="Total Views">
               <p className="salestorm-analytics-subheading">
-                Total views this month. Need some more ? {' '}
+                Total views this month. Need some more ?{' '}
                 <NextLink href="/pricing">Upgrade Now</NextLink>
               </p>
               <div className="salestorm-analytics-value">
-                0 / {store.plan_limit}
+                {views} / {store.plan_limit}
               </div>
             </Card.Section>
           </Card>
