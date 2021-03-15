@@ -359,7 +359,7 @@ app.prepare().then(() => {
     try {
       const { id, shop, target } = ctx.request.body;
       await db.query(
-        `INSERT INTO views (campaign_id, domain, target) VALUES ($1, $2, $3)`,
+        `INSERT INTO views (campaign_id, domain, target_page) VALUES ($1, $2, $3)`,
         [id, shop, target]
       );
       ctx.status = 200;
