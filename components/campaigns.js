@@ -103,7 +103,7 @@ const Campaigns = ({
             onSortChange={(selected) => {
               setSortValue(selected);
             }}
-            showHeader
+            showHeader={false}
             renderItem={(campaign) => {
               const { name, published, targets, strategy } = campaign;
               const url = `/campaigns/${campaign.id}`;
