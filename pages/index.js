@@ -28,9 +28,13 @@ export async function getServerSideProps(ctx) {
     'SELECT * FROM campaigns WHERE domain = $1 AND global = true',
     [ctx.req.cookies.shopOrigin]
   );
-  const views = await db.query('SELECT COUNT(*) FROM views WHERE domain = $1', [
-    ctx.req.cookies.shopOrigin,
-  ]);
+  await db.query(
+    "DELETE FROM views WHERE date_part('month', views.view_time) <> date_part('month', (SELECT current_timestamp))"
+  );
+  const views = await db.query(
+    "SELECT COUNT(*) FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))",
+    [ctx.req.cookies.shopOrigin]
+  );
   return {
     props: {
       campaigns: campaigns.rows,
