@@ -56,6 +56,19 @@ app.prepare().then(() => {
       totalPrice,
       recommendations,
     } = ctx.request.body;
+
+    const views = await db.query("SELECT COUNT(*) FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))", [shop]);
+
+    const store = await db.query(
+      `SELECT * FROM stores WHERE stores.domain = $1`,
+      [shop]
+    );
+
+    if (views.rows[0].count >= store.rows[0].plan_limit) {
+      ctx.status = 404;
+      return;
+    }
+
     const campaigns = await db.query(
       `SELECT *
       FROM campaigns
@@ -66,10 +79,6 @@ app.prepare().then(() => {
       [shop]
     );
 
-    const store = await db.query(
-      `SELECT * FROM stores WHERE stores.domain = $1`,
-      [shop]
-    );
     const accessToken = store.rows[0].access_token;
     const client = await createClient(shop, accessToken);
 
