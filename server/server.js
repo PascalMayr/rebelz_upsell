@@ -57,14 +57,20 @@ app.prepare().then(() => {
       recommendations,
     } = ctx.request.body;
 
-    const views = await db.query("SELECT COUNT(*) FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))", [shop]);
+    const views = await db.query(
+      "SELECT COUNT(*) FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))",
+      [shop]
+    );
 
     const store = await db.query(
       `SELECT * FROM stores WHERE stores.domain = $1`,
       [shop]
     );
 
-    if (views.rows[0].count >= store.rows[0].plan_limit) {
+    if (
+      parseInt(views.rows[0].count, 10) >=
+      parseInt(store.rows[0].plan_limit, 10)
+    ) {
       ctx.status = 404;
       return;
     }
@@ -288,7 +294,14 @@ app.prepare().then(() => {
 
   router.post('/api/create-draft-order', async (ctx) => {
     try {
-      const { variantId, strategy, quantity, cart, shop } = ctx.request.body;
+      const {
+        variantId,
+        strategy,
+        quantity,
+        cart,
+        shop,
+        id,
+      } = ctx.request.body;
       const store = await db.query(
         `SELECT * FROM stores WHERE stores.domain = $1`,
         [shop]
@@ -352,8 +365,34 @@ app.prepare().then(() => {
       );
       order = await order.json();
       if (order && order.draft_order) {
-        ctx.body = { invoiceUrl: order.draft_order.invoice_url };
-        ctx.status = 200;
+        let metafieldData = await fetch(
+          `https://${shop}/admin/draft_orders/${order.draft_order.id}/metafields.json`,
+          {
+            credentials: 'include',
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Shopify-Access-Token': accessToken,
+            },
+            body: JSON.stringify({
+              metafield: {
+                namespace: 'salestorm-upsell',
+                key: 'campaign_id',
+                value: id,
+                // eslint-disable-next-line babel/camelcase
+                value_type: 'integer',
+              },
+            }),
+          }
+        );
+        metafieldData = await metafieldData.json();
+        const metafield = metafieldData.metafield;
+        if (metafield) {
+          ctx.body = { invoiceUrl: order.draft_order.invoice_url };
+          ctx.status = 200;
+        } else {
+          ctx.status = 500;
+        }
       } else {
         console.error(order);
         ctx.status = 500;
@@ -414,7 +453,7 @@ app.prepare().then(() => {
       );
     } else if (store.subscriptionId === subscriptionId) {
       const freePlan = config.plans.find(
-        (p) => p.name === config.planNames.free
+        (plan) => plan.name === config.planNames.free
       );
       await db.query(
         'UPDATE stores SET plan_name = NULL, "subscriptionId" = NULL, plan_limit = $1 WHERE domain = $2',

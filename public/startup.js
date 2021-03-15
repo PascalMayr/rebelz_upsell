@@ -75,7 +75,7 @@
       console.error(window.Shopify);
       throw error;
     }
-  }
+  };
 
   const fetchCampaign = async (
     targetPage,
@@ -112,7 +112,7 @@
     }
   };
 
-  const createDraftOrder = async (variantId, strategy, quantity, cart) => {
+  const createDraftOrder = async (variantId, strategy, quantity, cart, id) => {
     const createDraft = async () => {
       let response = await fetch(`${publicAPI}/create-draft-order`, {
         credentials: 'include',
@@ -126,6 +126,7 @@
           quantity,
           cart,
           shop,
+          id,
         }),
       });
       response = await response.json();
@@ -183,11 +184,23 @@
                   currentCart.items.length > 0
                 ) {
                   clearInterval(cartInterval);
-                  createDraftOrder(variantId, strategy, quantity, currentCart);
+                  createDraftOrder(
+                    variantId,
+                    strategy,
+                    quantity,
+                    currentCart,
+                    campaign.id
+                  );
                 }
               }, 2000);
             } else {
-              createDraftOrder(variantId, strategy, quantity, cart);
+              createDraftOrder(
+                variantId,
+                strategy,
+                quantity,
+                cart,
+                campaign.id
+              );
             }
           }
         };
