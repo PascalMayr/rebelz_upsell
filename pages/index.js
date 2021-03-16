@@ -208,9 +208,9 @@ const Index = ({ store, campaigns, views, global, appName = 'App' }) => {
           <Card>
             <Card.Section title="Upsell AOV">
               <p className="salestorm-analytics-subheading">
-                Upsell AOV 0.00 € more this month.
+                The Average Order Value of your customers this month.
               </p>
-              <div className="salestorm-analytics-value">0.00 %</div>
+              <div className="salestorm-analytics-value">{currencyFormatter ? currencyFormatter.format(0) : 0}</div>
             </Card.Section>
           </Card>
         </Layout.Section>
