@@ -365,34 +365,13 @@ app.prepare().then(() => {
       );
       order = await order.json();
       if (order && order.draft_order) {
-        let metafieldData = await fetch(
-          `https://${shop}/admin/draft_orders/${order.draft_order.id}/metafields.json`,
-          {
-            credentials: 'include',
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Shopify-Access-Token': accessToken,
-            },
-            body: JSON.stringify({
-              metafield: {
-                namespace: 'salestorm-upsell',
-                key: 'campaign_id',
-                value: id,
-                // eslint-disable-next-line babel/camelcase
-                value_type: 'integer',
-              },
-            }),
-          }
+        const { invoice_url, currency, total_price } = order.draft_order;
+        await db.query(
+          `INSERT INTO orders (campaign_id, domain, draft_order_id, currency, total_price) VALUES ($1, $2, $3, $4, $5)`,
+          [id, shop, order.draft_order.id, currency, total_price]
         );
-        metafieldData = await metafieldData.json();
-        const metafield = metafieldData.metafield;
-        if (metafield) {
-          ctx.body = { invoiceUrl: order.draft_order.invoice_url };
-          ctx.status = 200;
-        } else {
-          ctx.status = 500;
-        }
+        ctx.body = { invoiceUrl: invoice_url };
+        ctx.status = 200;
       } else {
         console.error(order);
         ctx.status = 500;
