@@ -15,6 +15,7 @@ import saveCampaign from '../services/save_campaign';
 
 import DefaultStateNew from './campaigns/new/defaultState';
 import { AppContext } from './_app';
+import 'isomorphic-fetch';
 
 export async function getServerSideProps(ctx) {
   const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [
@@ -35,7 +36,7 @@ export async function getServerSideProps(ctx) {
     "SELECT COUNT(*) FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))",
     [ctx.req.cookies.shopOrigin]
   );
-  let orders = await db.query(
+  const orders = await db.query(
     "SELECT * FROM orders WHERE domain = $1 AND date_part('month', order_time) = date_part('month', (SELECT current_timestamp))",
     [ctx.req.cookies.shopOrigin]
   );
@@ -44,16 +45,37 @@ export async function getServerSideProps(ctx) {
     averageOrderPrice += parseFloat(order.total_price);
   });
   averageOrderPrice /= orders.rows.length;
-  orders = orders.rows.map((order) => ({
-    id: order.draft_order_id,
-    price: order.total_price,
-  }));
+  const store = stores.rows[0];
+  const completedDraftOrderPrices = await Promise.all(
+    orders.rows.map(async (order) => {
+      let draftOrder = await fetch(
+        `https://${store.domain}/admin/api/2021-01/draft_orders/${order.draft_order_id}.json`,
+        {
+          credentials: 'include',
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Shopify-Access-Token': store.access_token,
+          },
+        }
+      );
+      draftOrder = await draftOrder.json();
+      if (draftOrder.draft_order.status === 'completed') {
+        return parseFloat(draftOrder.draft_order.total_price);
+      } else {
+        return 0;
+      }
+    })
+  );
+  const totalRevenue = completedDraftOrderPrices.reduce(
+    (total, orderPrice) => total + orderPrice
+  );
   return {
     props: {
       campaigns: campaigns.rows,
-      store: stores.rows[0],
+      store,
       averageOrderPrice,
-      orders,
+      totalRevenue,
       views: views.rows[0].count,
       global: globalCampaigns.rows.length > 0 ? globalCampaigns.rows[0] : {},
     },
@@ -65,7 +87,7 @@ const Index = ({
   campaigns,
   views,
   averageOrderPrice,
-  orders,
+  totalRevenue,
   global,
   appName = 'App',
 }) => {
@@ -221,7 +243,7 @@ const Index = ({
                 The total impact our App made on your store this month.
               </p>
               <div className="salestorm-analytics-value">
-                {currencyFormatter ? currencyFormatter.format(0) : 0}
+                {currencyFormatter ? currencyFormatter.format(totalRevenue) : 0}
               </div>
             </Card.Section>
           </Card>
@@ -244,7 +266,7 @@ const Index = ({
           <Card>
             <Card.Section title="Total Views">
               <p className="salestorm-analytics-subheading">
-                Total views this month. Need some more ?{' '}
+                Total views used this month. Need some more ?{' '}
                 <NextLink href="/pricing">Upgrade Now</NextLink>
               </p>
               <div className="salestorm-analytics-value">
