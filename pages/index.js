@@ -35,19 +35,41 @@ export async function getServerSideProps(ctx) {
     "SELECT COUNT(*) FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))",
     [ctx.req.cookies.shopOrigin]
   );
+  let orders = await db.query(
+    "SELECT * FROM orders WHERE domain = $1 AND date_part('month', order_time) = date_part('month', (SELECT current_timestamp))",
+    [ctx.req.cookies.shopOrigin]
+  );
+  let averageOrderPrice = 0;
+  orders.rows.forEach((order) => {
+    averageOrderPrice += parseFloat(order.total_price);
+  });
+  averageOrderPrice /= orders.rows.length;
+  orders = orders.rows.map((order) => ({
+    id: order.draft_order_id,
+    price: order.total_price,
+  }));
   return {
     props: {
       campaigns: campaigns.rows,
       store: stores.rows[0],
+      averageOrderPrice,
+      orders,
       views: views.rows[0].count,
       global: globalCampaigns.rows.length > 0 ? globalCampaigns.rows[0] : {},
     },
   };
 }
 
-const Index = ({ store, campaigns, views, global, appName = 'App' }) => {
+const Index = ({
+  store,
+  campaigns,
+  views,
+  averageOrderPrice,
+  orders,
+  global,
+  appName = 'App',
+}) => {
   const context = useContext(AppContext);
-
   const [enabled, setEnabled] = useState(store.enabled);
   const [toggleEnableLoading, setToggleEnableLoading] = useState(false);
   const toggleEnabled = async () => {
@@ -208,9 +230,13 @@ const Index = ({ store, campaigns, views, global, appName = 'App' }) => {
           <Card>
             <Card.Section title="Upsell AOV">
               <p className="salestorm-analytics-subheading">
-                The Average Order Value of your customers this month.
+                The Average Order Value of your customers trough our App.
               </p>
-              <div className="salestorm-analytics-value">{currencyFormatter ? currencyFormatter.format(0) : 0}</div>
+              <div className="salestorm-analytics-value">
+                {currencyFormatter
+                  ? currencyFormatter.format(averageOrderPrice)
+                  : 0}
+              </div>
             </Card.Section>
           </Card>
         </Layout.Section>
