@@ -1,27 +1,11 @@
-import {
-  Badge,
-  Card,
-  ResourceList,
-  ResourceItem,
-  TextStyle,
-  Heading,
-  Icon,
-} from '@shopify/polaris';
+import { Card, ResourceList, ResourceItem, Heading } from '@shopify/polaris';
 import {
   CircleTickOutlineMinor,
   DuplicateMinor,
   DeleteMinor,
-  CartMajor,
-  HeartMajor,
-  ProductsMajor,
   ViewMajor,
-  ReplaceMajor,
-  CartUpMajor,
   EditMinor,
   CircleDisableMinor,
-  ShipmentMajor,
-  DiscountsMajor,
-  GiftCardMajor,
 } from '@shopify/polaris-icons';
 import Image from 'next/image';
 import '../styles/pages/index.css';
@@ -33,6 +17,7 @@ import getCampaigns from '../services/get_campaigns';
 import duplicateCampaign from '../services/duplicate_campaign';
 
 import DeleteModal from './delete_modal';
+import Campaign from './campaign';
 
 const Campaigns = ({
   enabled,
@@ -105,11 +90,8 @@ const Campaigns = ({
             }}
             showHeader={false}
             renderItem={(campaign) => {
-              const { name, published, targets, strategy } = campaign;
+              const { name, published } = campaign;
               const url = `/campaigns/${campaign.id}`;
-              const page = targets.page;
-              const sellType = strategy.sellType;
-              const mode = strategy.mode;
               return (
                 <ResourceItem
                   id={campaign.id}
@@ -161,67 +143,7 @@ const Campaigns = ({
                   ]}
                   persistActions
                 >
-                  <h3 className="salestorm-campaign-title">
-                    <TextStyle>{name}</TextStyle>
-                  </h3>
-                  <Badge status={published ? 'success' : 'attention'}>
-                    <Icon source={ViewMajor} />
-                    {published ? ' Published' : ' Unpublished'}
-                  </Badge>
-                  <Badge status="info">
-                    {page === 'add_to_cart' && (
-                      <>
-                        <Icon source={ProductsMajor} />
-                        {' Product Page'}
-                      </>
-                    )}
-                    {page === 'checkout' && (
-                      <>
-                        <Icon source={CartMajor} />
-                        {' Cart Page'}
-                      </>
-                    )}
-                    {page === 'thank_you' && (
-                      <>
-                        <Icon source={HeartMajor} />
-                        {' Thank you Page'}
-                      </>
-                    )}
-                  </Badge>
-                  <Badge>
-                    {sellType === 'upsell' && (
-                      <>
-                        <Icon source={ReplaceMajor} />
-                        Upsell
-                      </>
-                    )}
-                    {sellType === 'cross_sell' && (
-                      <>
-                        <Icon source={CartUpMajor} />
-                        Cross sell
-                      </>
-                    )}
-                  </Badge>
-                  <Badge status="warning">
-                    {mode === 'free_shipping' && (
-                      <>
-                        <Icon source={ShipmentMajor} />
-                        Free Shipping
-                      </>
-                    )}
-                    {mode === 'discount' && (
-                      <>
-                        <Icon source={DiscountsMajor} />
-                        Discount
-                      </>
-                    )}
-                    {mode === 'gift' && (
-                      <>
-                        <Icon source={GiftCardMajor} />
-                        Gift
-                      </>
-                    )}
-                  </Badge>
+                  <Campaign campaign={campaign} />
                 </ResourceItem>
               );
             }}
