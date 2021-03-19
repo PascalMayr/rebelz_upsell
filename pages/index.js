@@ -65,45 +65,7 @@ export async function getServerSideProps(ctx) {
   });
   averageOrderPrice /= orders.rows.length;
   const store = stores.rows[0];
-  const valuesAdded = await Promise.all(
-    orders.rows.map(async (order) => {
-      let draftOrder = await fetch(
-        `https://${store.domain}/admin/api/2021-01/draft_orders/${order.draft_order_id}.json`,
-        {
-          credentials: 'include',
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Shopify-Access-Token': store.access_token,
-          },
-        }
-      );
-      draftOrder = await draftOrder.json();
-      if (draftOrder.draft_order.status === 'completed') {
-        campaigns = campaigns.map((campaign) => {
-          if (campaign.id.toString() === order.campaign_id.toString()) {
-            return {
-              ...campaign,
-              sales: campaign.sales + 1,
-              revenue:
-                parseFloat(campaign.revenue) + parseFloat(order.value_added),
-            };
-          } else {
-            return campaign;
-          }
-        });
-        return order.value_added;
-      } else {
-        return 0;
-      }
-    })
-  );
-  const totalRevenue =
-    valuesAdded.length > 0
-      ? valuesAdded.reduce(
-          (total, added) => parseFloat(total) + parseFloat(added)
-        )
-      : 0;
+
   const referenceDate = views.rows[0] ? views.rows[0].view_time : new Date();
 
   const month = referenceDate.getUTCMonth();
@@ -114,17 +76,54 @@ export async function getServerSideProps(ctx) {
 
   const viewsPerDay = [];
   const salesPerDay = [];
+  let totalRevenue = 0;
 
   for (let i = 1; i <= new Date(month, year, 0).getDate(); i++) {
     const dayDate = new Date(year, month, i);
     const viewsThisDay = views.rows.filter(
       (view) => view.view_time.getDate() === i
     );
-    const salesThisDay = orders.rows.filter(
+    viewsPerDay.push(viewsThisDay.length);
+    const ordersThisDay = orders.rows.filter(
       (order) => order.order_time.getDate() === i
     );
-    viewsPerDay.push(viewsThisDay.length);
-    salesPerDay.push(salesThisDay.length);
+    let salesThisDay = 0;
+    if (ordersThisDay.length > 0) {
+      await Promise.all(
+        ordersThisDay.map(async (order) => {
+          let draftOrder = await fetch(
+            `https://${store.domain}/admin/api/2021-01/draft_orders/${order.draft_order_id}.json`,
+            {
+              credentials: 'include',
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Shopify-Access-Token': store.access_token,
+              },
+            }
+          );
+          draftOrder = await draftOrder.json();
+          if (draftOrder.draft_order.status === 'completed') {
+            campaigns = campaigns.map((campaign) => {
+              if (campaign.id.toString() === order.campaign_id.toString()) {
+                return {
+                  ...campaign,
+                  sales: campaign.sales + 1,
+                  revenue:
+                    parseFloat(campaign.revenue) +
+                    parseFloat(order.value_added),
+                };
+              } else {
+                return campaign;
+              }
+            });
+            salesThisDay += 1;
+            totalRevenue += parseFloat(order.value_added);
+          }
+        })
+      );
+    }
+    salesPerDay.push(salesThisDay);
     days.push(
       new Intl.DateTimeFormat([], {
         day: 'numeric',
@@ -142,7 +141,7 @@ export async function getServerSideProps(ctx) {
       viewsCount: viewsCount.rows[0].count,
       views: viewsPerDay,
       sales: salesPerDay,
-      orders: valuesAdded.length,
+      orders: campaigns.filter((campaign) => campaign.sales > 0).length,
       days,
       global: globalCampaigns.rows.length > 0 ? globalCampaigns.rows[0] : {},
     },

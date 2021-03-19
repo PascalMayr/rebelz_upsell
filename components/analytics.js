@@ -127,9 +127,9 @@ const Analytics = ({
   return (
     <div className="salestorm-campaigns-analytics">
       <Card>
-        <Card.Section title="Views overview">
+        <Card.Section title="Views & Sales overview">
           <p className="salestorm-analytics-subheading">
-            Total campaign views this month.
+            Total campaign Views & Sales this month.
           </p>
           <br />
           <div className="slaestorm-analytics-chart">
@@ -154,9 +154,9 @@ const Analytics = ({
         </Layout.Section>
         <Layout.Section oneHalf>
           <Card>
-            <Card.Section title="Campaign Conversions">
+            <Card.Section title="Campaign Performance">
               <p className="salestorm-analytics-subheading">
-                See the best converting campaigns of this month.
+                See the best performing campaigns of this month.
               </p>
               <div className="salestorm-campaigns-overview">
                 <ResourceList
@@ -216,7 +216,7 @@ const Analytics = ({
                           <TextStyle variation="strong">
                             {currencyFormatter
                               ? currencyFormatter.format(revenue)
-                              : revenue}
+                              : revenue} generated
                           </TextStyle>
                         </Badge>
                       </ResourceItem>
