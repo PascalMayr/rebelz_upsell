@@ -252,7 +252,8 @@ const Index = ({
           <Card>
             <Card.Section title="Upsell AOV">
               <p className="salestorm-analytics-subheading">
-                The Average Order Value of your customers trough our App.
+                The Average Order Value of your customers trough our App this
+                month.
               </p>
               <div className="salestorm-analytics-value">
                 {currencyFormatter
@@ -266,11 +267,16 @@ const Index = ({
           <Card>
             <Card.Section title="Total Views">
               <p className="salestorm-analytics-subheading">
-                Total views used this month. Need some more ?{' '}
-                <NextLink href="/pricing">Upgrade Now</NextLink>
+                Total views used this month.{' '}
+                {!store.plan_name && (
+                  <>
+                    Need some more ?{' '}
+                    <NextLink href="/pricing">Upgrade Now</NextLink>
+                  </>
+                )}
               </p>
               <div className="salestorm-analytics-value">
-                {views} / {store.plan_limit}
+                {viewsCount} / {store.plan_limit}
               </div>
             </Card.Section>
           </Card>
