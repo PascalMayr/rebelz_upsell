@@ -113,29 +113,24 @@
   };
 
   const createDraftOrder = async (variantId, strategy, quantity, cart, id) => {
-    const createDraft = async () => {
-      let response = await fetch(`${publicAPI}/create-draft-order`, {
-        credentials: 'include',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          variantId,
-          strategy,
-          quantity,
-          cart,
-          shop,
-          id,
-        }),
-      });
-      response = await response.json();
-      if (response.invoiceUrl) {
-        window.location.href = response.invoiceUrl;
-      }
-    };
-    if (cart.items.length > 0) {
-      createDraft();
+    let response = await fetch(`${publicAPI}/create-draft-order`, {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        variantId,
+        strategy,
+        quantity,
+        cart,
+        shop,
+        id,
+      }),
+    });
+    response = await response.json();
+    if (response.invoiceUrl) {
+      window.location.href = response.invoiceUrl;
     }
   };
 
