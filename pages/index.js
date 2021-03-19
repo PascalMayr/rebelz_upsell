@@ -21,9 +21,24 @@ export async function getServerSideProps(ctx) {
   const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [
     ctx.req.cookies.shopOrigin,
   ]);
-  const campaigns = await db.query(
-    'SELECT * FROM campaigns WHERE domain = $1',
+  let campaigns = await db.query(
+    'SELECT * FROM campaigns WHERE domain = $1 AND global = false',
     [ctx.req.cookies.shopOrigin]
+  );
+  campaigns = await Promise.all(
+    campaigns.rows.map(async (campaign) => {
+      let associatedViews = await db.query(
+        `SELECT COUNT(*) FROM views WHERE domain = $1 AND campaign_id = $2 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))`,
+        [ctx.req.cookies.shopOrigin, campaign.id]
+      );
+      associatedViews = parseInt(associatedViews.rows[0].count, 10);
+      return {
+        ...campaign,
+        views: associatedViews,
+        sales: 0,
+        revenue: 0,
+      };
+    })
   );
   const globalCampaigns = await db.query(
     'SELECT * FROM campaigns WHERE domain = $1 AND global = true',
@@ -32,8 +47,12 @@ export async function getServerSideProps(ctx) {
   await db.query(
     "DELETE FROM views WHERE date_part('month', views.view_time) <> date_part('month', (SELECT current_timestamp))"
   );
-  const views = await db.query(
+  const viewsCount = await db.query(
     "SELECT COUNT(*) FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))",
+    [ctx.req.cookies.shopOrigin]
+  );
+  const views = await db.query(
+    "SELECT * FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))",
     [ctx.req.cookies.shopOrigin]
   );
   const orders = await db.query(
@@ -46,7 +65,7 @@ export async function getServerSideProps(ctx) {
   });
   averageOrderPrice /= orders.rows.length;
   const store = stores.rows[0];
-  const completedDraftOrderPrices = await Promise.all(
+  const valuesAdded = await Promise.all(
     orders.rows.map(async (order) => {
       let draftOrder = await fetch(
         `https://${store.domain}/admin/api/2021-01/draft_orders/${order.draft_order_id}.json`,
@@ -61,22 +80,70 @@ export async function getServerSideProps(ctx) {
       );
       draftOrder = await draftOrder.json();
       if (draftOrder.draft_order.status === 'completed') {
-        return parseFloat(draftOrder.draft_order.total_price);
+        campaigns = campaigns.map((campaign) => {
+          if (campaign.id.toString() === order.campaign_id.toString()) {
+            return {
+              ...campaign,
+              sales: campaign.sales + 1,
+              revenue:
+                parseFloat(campaign.revenue) + parseFloat(order.value_added),
+            };
+          } else {
+            return campaign;
+          }
+        });
+        return order.value_added;
       } else {
         return 0;
       }
     })
   );
-  const totalRevenue = completedDraftOrderPrices.reduce(
-    (total, orderPrice) => total + orderPrice
-  );
+  const totalRevenue =
+    valuesAdded.length > 0
+      ? valuesAdded.reduce(
+          (total, added) => parseFloat(total) + parseFloat(added)
+        )
+      : 0;
+  const referenceDate = views.rows[0] ? views.rows[0].view_time : new Date();
+
+  const month = referenceDate.getUTCMonth();
+
+  const year = referenceDate.getUTCFullYear();
+
+  const days = [];
+
+  const viewsPerDay = [];
+  const salesPerDay = [];
+
+  for (let i = 1; i <= new Date(month, year, 0).getDate(); i++) {
+    const dayDate = new Date(year, month, i);
+    const viewsThisDay = views.rows.filter(
+      (view) => view.view_time.getDate() === i
+    );
+    const salesThisDay = orders.rows.filter(
+      (order) => order.order_time.getDate() === i
+    );
+    viewsPerDay.push(viewsThisDay.length);
+    salesPerDay.push(salesThisDay.length);
+    days.push(
+      new Intl.DateTimeFormat([], {
+        day: 'numeric',
+        month: 'short',
+      }).format(dayDate)
+    );
+  }
+
   return {
     props: {
-      campaigns: campaigns.rows,
+      campaigns,
       store,
       averageOrderPrice,
       totalRevenue,
-      views: views.rows[0].count,
+      viewsCount: viewsCount.rows[0].count,
+      views: viewsPerDay,
+      sales: salesPerDay,
+      orders: valuesAdded.length,
+      days,
       global: globalCampaigns.rows.length > 0 ? globalCampaigns.rows[0] : {},
     },
   };
@@ -85,9 +152,13 @@ export async function getServerSideProps(ctx) {
 const Index = ({
   store,
   campaigns,
+  viewsCount,
   views,
+  sales,
+  days,
   averageOrderPrice,
   totalRevenue,
+  orders,
   global,
   appName = 'App',
 }) => {
@@ -343,7 +414,16 @@ const Index = ({
           </Card>
         </Page>
       </div>
-      {id === 'analytics' && <Analytics />}
+      {id === 'analytics' && (
+        <Analytics
+          views={views}
+          days={days}
+          orders={orders}
+          sales={sales}
+          campaigns={campaigns}
+          currencyFormatter={currencyFormatter}
+        />
+      )}
     </Page>
   );
 };

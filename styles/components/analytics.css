@@ -1,0 +1,11 @@
+.Polaris-EmptyState__ImageContainer > img {
+  width: 300px !important;
+}
+
+.salestorm-campaign-overview-analytics > * {
+  margin-left: 2em;
+}
+
+.slaestorm-analytics-chart {
+  height: 400px;
+}
