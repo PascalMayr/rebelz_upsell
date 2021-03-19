@@ -83,7 +83,7 @@ const Analytics = ({
         options: {
           maintainAspectRatio: false,
         },
-        centerText: `${((viewsSum / 100) * orders).toFixed(2)}%`,
+        centerText: `${((orders / viewsSum) * 100).toFixed(2)}%`,
         plugins: [
           {
             beforeDraw(chart, options) {
@@ -129,7 +129,7 @@ const Analytics = ({
       <Card>
         <Card.Section title="Views & Sales overview">
           <p className="salestorm-analytics-subheading">
-            Total campaign Views & Sales this month.
+            Total campaign Views & Sales over time.
           </p>
           <br />
           <div className="slaestorm-analytics-chart">
@@ -143,7 +143,7 @@ const Analytics = ({
           <Card>
             <Card.Section title="Total Conversion Rate">
               <p className="salestorm-analytics-subheading">
-                Total Sales VS Total Views this month.
+                Total Sales VS Total Views.
               </p>
               <br />
               <div className="slaestorm-analytics-chart">
@@ -156,7 +156,7 @@ const Analytics = ({
           <Card>
             <Card.Section title="Campaign Performance">
               <p className="salestorm-analytics-subheading">
-                See the best performing campaigns of this month.
+                See the best performing campaigns.
               </p>
               <div className="salestorm-campaigns-overview">
                 <ResourceList
