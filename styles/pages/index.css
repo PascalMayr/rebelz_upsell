@@ -107,12 +107,6 @@ html {
   height: 1.8rem;
 }
 
-.salestorm-campaign-title {
-  display: inline-block;
-  margin-right: 1em;
-  font-size: 1.2em;
-}
-
 .salestorm-pricing-badge > a {
   text-decoration: none;
   color: black;
