@@ -307,47 +307,60 @@ app.prepare().then(() => {
         [shop]
       );
       const accessToken = store.rows[0].access_token;
-      const draft_order = {
+      const draftOrder = {
+        // eslint-disable-next-line babel/camelcase
         line_items: cart.items.map((item) => ({ ...item, properties: [] })),
       };
-      // TODO depending on upsell/cross sell add or replace the product
+
+      /* TODO depending on upsell/cross sell add or replace the product */
       if (strategy.mode === 'discount') {
-        draft_order.line_items = draft_order.line_items.concat([
+        // eslint-disable-next-line babel/camelcase
+        draftOrder.line_items = draftOrder.line_items.concat([
           {
+            // eslint-disable-next-line babel/camelcase
             variant_id: variantId,
             quantity,
+            // eslint-disable-next-line babel/camelcase
             applied_discount: {
               value: strategy.discount.value,
+              // eslint-disable-next-line babel/camelcase
               value_type:
                 strategy.discount.type === '%' ? 'percentage' : 'fixed_amount',
             },
           },
         ]);
-        draft_order.tags = 'Thunder Exit Upsell Funnel,discount';
+        draftOrder.tags = 'Thunder Exit Upsell Funnel,discount';
       } else if (strategy.mode === 'free_shipping') {
-        draft_order.line_items = draft_order.line_items.concat([
+        // eslint-disable-next-line babel/camelcase
+        draftOrder.line_items = draftOrder.line_items.concat([
           {
+            // eslint-disable-next-line babel/camelcase
             variant_id: variantId,
             quantity,
           },
         ]);
-        draft_order.shipping_line = {
+        // eslint-disable-next-line babel/camelcase
+        draftOrder.shipping_line = {
           price: 0.0,
           title: 'Free Shipping',
         };
-        draft_order.tags = 'Thunder Exit Upsell Funnel,free_shipping';
+        draftOrder.tags = 'Thunder Exit Upsell Funnel,free_shipping';
       } else if (strategy.mode === 'gift') {
-        draft_order.line_items = draft_order.line_items.concat([
+        // eslint-disable-next-line babel/camelcase
+        draftOrder.line_items = draftOrder.line_items.concat([
           {
+            // eslint-disable-next-line babel/camelcase
             variant_id: variantId,
             quantity,
+            // eslint-disable-next-line babel/camelcase
             applied_discount: {
               value: '100',
+              // eslint-disable-next-line babel/camelcase
               value_type: 'percentage',
             },
           },
         ]);
-        draft_order.tags = 'Thunder Exit Upsell Funnel,gift';
+        draftOrder.tags = 'Thunder Exit Upsell Funnel,gift';
       }
       let order = await fetch(
         `https://${shop}/admin/api/2021-01/draft_orders.json`,
@@ -359,17 +372,43 @@ app.prepare().then(() => {
             'X-Shopify-Access-Token': accessToken,
           },
           body: JSON.stringify({
-            draft_order,
+            // eslint-disable-next-line babel/camelcase
+            draft_order: draftOrder,
           }),
         }
       );
       order = await order.json();
       if (order && order.draft_order) {
+        // eslint-disable-next-line babel/camelcase
+        const {
+          price,
+          applied_discount,
+          quantity,
+        } = order.draft_order.line_items.find(
+          (lineItem) => lineItem.variant_id === parseInt(variantId, 10)
+        );
+
+        // eslint-disable-next-line babel/camelcase
+        const variantPrice = parseFloat(price) * parseInt(quantity, 10);
+        const addedValue = applied_discount.amount
+          ? // eslint-disable-next-line babel/camelcase
+            variantPrice - parseFloat(applied_discount.amount)
+          : variantPrice;
+        // eslint-disable-next-line babel/camelcase
         const { invoice_url, currency, total_price } = order.draft_order;
         await db.query(
-          `INSERT INTO orders (campaign_id, domain, draft_order_id, currency, total_price) VALUES ($1, $2, $3, $4, $5)`,
-          [id, shop, order.draft_order.id, currency, total_price]
+          `INSERT INTO orders${db.insertColumns(
+            'campaign_id',
+            'domain',
+            'draft_order_id',
+            'currency',
+            'value_added',
+            'total_price'
+          )}`,
+          // eslint-disable-next-line babel/camelcase
+          [id, shop, order.draft_order.id, currency, addedValue, total_price]
         );
+        // eslint-disable-next-line babel/camelcase
         ctx.body = { invoiceUrl: invoice_url };
         ctx.status = 200;
       } else {
