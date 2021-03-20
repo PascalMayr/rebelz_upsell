@@ -184,9 +184,16 @@ app.prepare().then(() => {
 
     if (campaign) {
       if (campaign.selling.mode === 'auto') {
-        // TODO check for excluded products
+        const filteredRecommendations = recommendations.filter(
+          (recommendation) =>
+            !campaign.selling.excludeProducts.find(
+              (excludedProduct) =>
+                excludedProduct.legacyResourceId ===
+                recommendation.id.toString()
+            )
+        );
         campaign.selling.products = await Promise.all(
-          recommendations.map(async (recommendation) => {
+          filteredRecommendations.map(async (recommendation) => {
             const { price, id } = recommendation;
             if (
               price / 100 > parseFloat(campaign.strategy.maxItemValue) &&
