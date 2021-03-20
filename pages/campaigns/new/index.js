@@ -373,7 +373,6 @@ const New = (props) => {
               <Design
                 title="5. Check try and customize your campaign before publishing it."
                 setCampaignProperty={setCampaignProperty}
-                renderAdvanced
                 campaign={campaign}
                 subtitle={
                   <>

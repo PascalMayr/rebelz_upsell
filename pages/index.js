@@ -405,7 +405,6 @@ const Index = ({
                   <Design
                     campaign={globalCampaign}
                     setCampaignProperty={setGlobalCampaignProperty}
-                    renderAdvanced={id === 'design'}
                   />
                 </Layout.Section>
               </Layout>

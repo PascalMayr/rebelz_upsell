@@ -34,15 +34,15 @@ const Design = ({
   title,
   advanced = false,
   setCampaignProperty,
-  renderAdvanced,
   subtitle,
 }) => {
   const [rerenderButton, setRerenderButton] = useState(false);
   const [preview, setPreview] = useState('desktop');
-  const [formatter, setFormatter] = useState(advanced);
+  const [options, setOptions] = useState(advanced);
+  const [formatter, setFormatter] = useState(false);
   const previewContainerClass =
     preview && !rerenderButton ? `salestorm-${preview}-preview-container` : '';
-  const disclosure = formatter ? 'down' : 'up';
+  const disclosure = options ? 'down' : 'up';
   useEffect(() => {
     if (window.Salestorm && window.Salestorm.hidePopup) {
       document.addEventListener(window.Salestorm.hidePopup.type, () => {
@@ -119,42 +119,45 @@ const Design = ({
           <Button
             icon={ToolsMajor}
             onClick={() => {
-              setFormatter(!formatter);
+              setOptions(!options);
+              if (!formatter) {
+                setFormatter(true);
+              }
               setTimeout(() => {
                 window.scrollTo(0, document.body.scrollHeight);
               }, 500);
             }}
             disclosure={disclosure}
-            primary={formatter}
+            primary={options}
           >
             {' '}
             Advanced Settings, Styles and Texts
           </Button>
         </div>
       </Card.Section>
-      {renderAdvanced && (
-        <Collapsible
-          open={formatter}
-          transition={{
-            duration: '500ms',
-            timingFunction: 'ease-in-out',
-          }}
-          expandOnPrint
-        >
-          <Card.Section>
-            <OptionsCampaign
-              campaign={campaign}
-              setCampaignProperty={setCampaignProperty}
-            />
-          </Card.Section>
-          <Card.Section>
+      <Collapsible
+        open={options}
+        transition={{
+          duration: '500ms',
+          timingFunction: 'ease-in-out',
+        }}
+        expandOnPrint
+      >
+        <Card.Section>
+          <OptionsCampaign
+            campaign={campaign}
+            setCampaignProperty={setCampaignProperty}
+          />
+        </Card.Section>
+        <Card.Section>
+          {formatter && (
             <Formatter
               campaign={campaign}
               setCampaignProperty={setCampaignProperty}
             />
-          </Card.Section>
-        </Collapsible>
-      )}
+          )}
+        </Card.Section>
+      </Collapsible>
     </Card>
   );
 };

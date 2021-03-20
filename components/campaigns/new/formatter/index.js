@@ -193,7 +193,7 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
 
   return (
     <>
-      <Tabs tabs={tabs} selected={tab} onSelect={handleTabChange}>
+      <Tabs tabs={tabs} selected={tab} onSelect={handleTabChange} fitted>
         <div id="salestorm-formatter">
           {id === 'texts' && (
             <div className="salestorm-texts">
