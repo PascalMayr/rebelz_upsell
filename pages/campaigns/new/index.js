@@ -3,6 +3,7 @@ import { Page, Card, Layout, TextField, Badge, Select } from '@shopify/polaris';
 import { MobilePlusMajor } from '@shopify/polaris-icons';
 import { useQuery } from 'react-apollo';
 import { gql } from 'apollo-boost';
+import { Modal } from '@shopify/app-bridge-react';
 
 import '../../../styles/pages/campaigns/new.css';
 import saveCampaign from '../../../services/save_campaign';
@@ -57,6 +58,21 @@ const New = (props) => {
       setCampaign({ ...campaign, [id]: value, ...state }),
     [campaign]
   );
+  const [error, setError] = useState('');
+  const checkForInputError = (campaignToCheck) => {
+    let message = '';
+    if (campaignToCheck.name === '') {
+      message += 'Please set a campaign name.\n';
+    }
+    if (campaignToCheck.selling.products.length === 0) {
+      message +=
+        'Please set Products to offer in step 4.) or show Product Recommendations.\n';
+    }
+    if (message !== '') {
+      setError(message);
+      return true;
+    }
+  };
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
   const title = props.campaign ? 'Update campaign' : 'Create a new campaign';
@@ -86,6 +102,9 @@ const New = (props) => {
         onAction: async () => {
           if (campaign.published) {
             try {
+              if (checkForInputError(campaign)) {
+                return;
+              }
               setPublishLoading(true);
               const savedCampaign = await saveCampaign(campaign);
               await unpublishCampaign(savedCampaign.data.id);
@@ -107,6 +126,9 @@ const New = (props) => {
             }
           } else {
             try {
+              if (checkForInputError(campaign)) {
+                return;
+              }
               setPublishLoading(true);
               const savedCampaign = await saveCampaign(campaign);
               await publishCampaign(savedCampaign.data.id);
@@ -135,6 +157,9 @@ const New = (props) => {
           loading: saveLoading,
           onAction: async () => {
             try {
+              if (checkForInputError(campaign)) {
+                return;
+              }
               setSaveLoading(true);
               const savedCampaign = await saveCampaign(campaign);
               context.setToast({
@@ -443,6 +468,18 @@ const New = (props) => {
           </Layout>
         </Card.Section>
       </Card>
+      <Modal
+        open={error !== ''}
+        onClose={() => setError('')}
+        title="Input Errors."
+        message={error}
+        primaryAction={{
+          content: 'Close',
+          onAction: () => setError(''),
+        }}
+      >
+        <div>test</div>
+      </Modal>
     </Page>
   );
 };
