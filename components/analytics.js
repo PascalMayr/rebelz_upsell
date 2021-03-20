@@ -119,7 +119,7 @@ const Analytics = ({
         action={{ content: 'Create a new Campaign', url: '/campaigns/new' }}
         image="/business_analytics.svg"
       >
-        <p>Create a new upselling campaign and sell more now.</p>
+        <p>Create a new upselling campaign now.</p>
       </EmptyState>
     </>
   );
