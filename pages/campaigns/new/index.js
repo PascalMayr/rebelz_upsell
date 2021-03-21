@@ -62,11 +62,11 @@ const New = (props) => {
   const checkForInputError = (campaignToCheck) => {
     let message = '';
     if (campaignToCheck.name === '') {
-      message += 'Please set a campaign name.\n';
+      message += 'Please set a Campaign Name.\n';
     }
     if (campaignToCheck.selling.products.length === 0) {
       message +=
-        'Please set Products to offer in step 4.) or show Product Recommendations.\n';
+        'Please set Products to offer in step 4.) or choose to use the AI mode.\n';
     }
     if (message !== '') {
       setError(message);
@@ -257,6 +257,7 @@ const New = (props) => {
             </Card.Section>
             {campaign.targets.entry === 'onclick' && (
               <Card.Section>
+                {console.log(campaign.options.interruptEvents)}
                 <Select
                   options={[
                     {
@@ -418,6 +419,12 @@ const New = (props) => {
                         ? 'Cart page'
                         : 'Thank you page'
                     }</strong>.
+                    <br />
+                    ${
+                      campaign.targets.entry === 'onexit'
+                        ? '<strong>Attention: We will also show this campaign with no items in your customers cart.</strong>'
+                        : ''
+                    }
                     `,
                         }}
                       />

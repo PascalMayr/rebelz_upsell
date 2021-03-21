@@ -45,8 +45,8 @@ const DetailsStrategy = ({ strategy = DefaultStateStrategy, onChange }) => {
       {strategy.mode !== 'gift' && (
         <Select
           options={[
-            { label: 'Cross sell - add', value: 'cross_sell' },
-            { label: 'Upsell - replace', value: 'upsell' },
+            { label: 'Cross sell', value: 'cross_sell' },
+            { label: 'Upsell', value: 'upsell' },
           ]}
           onChange={(value) => onDiscountSettingsChange('sellType', value)}
           value={strategy.sellType}
