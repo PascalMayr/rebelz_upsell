@@ -257,7 +257,6 @@ const New = (props) => {
             </Card.Section>
             {campaign.targets.entry === 'onclick' && (
               <Card.Section>
-                {console.log(campaign.options.interruptEvents)}
                 <Select
                   options={[
                     {
