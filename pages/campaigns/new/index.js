@@ -90,7 +90,7 @@ const New = (props) => {
       ? 'Add to cart'
       : campaign.targets.page === 'checkout'
       ? 'Checkout'
-      : 'Continue to shopping';
+      : 'Continue to Shopping';
   return (
     <Page
       title={title}
@@ -405,18 +405,19 @@ const New = (props) => {
                       <strong>Settings Summary:</strong>
                       <p
                         dangerouslySetInnerHTML={{
-                          __html: `Your customers will see this campaign on the <strong>${
-                            campaign.targets.page === 'add_to_cart'
-                              ? 'Product page'
-                              : campaign.targets.page === 'checkout'
-                              ? 'Cart page'
-                              : 'Thank you page'
-                          }
+                          __html: `Your customers will see this campaign
                     ${
                       campaign.targets.entry === 'onexit'
-                        ? 'when leaving.</strong>'
-                        : `when clicking the ${targetButton} Button.</strong>`
+                        ? 'when leaving '
+                        : `when clicking the <strong>${targetButton} Button</strong> on`
                     }
+                    the <strong>${
+                      campaign.targets.page === 'add_to_cart'
+                        ? 'Product page'
+                        : campaign.targets.page === 'checkout'
+                        ? 'Cart page'
+                        : 'Thank you page'
+                    }</strong>.
                     `,
                         }}
                       />
@@ -424,7 +425,7 @@ const New = (props) => {
                         dangerouslySetInnerHTML={{
                           __html: `Offered will be <strong>${
                             campaign.strategy.mode === 'discount'
-                              ? `a ${campaign.strategy.discount.value} ${campaign.strategy.discount.type} discount</strong> on the claimed product unless specified otherwise for the product itself. <br /><strong>Make sure to not apply more discount on products than the products themself cost.</strong>`
+                              ? `a ${campaign.strategy.discount.value} ${campaign.strategy.discount.type} discount</strong> on the claimed product unless specified else for the claimed product.`
                               : campaign.strategy.mode === 'free_shipping'
                               ? 'Free shipping</strong> on the entire order.'
                               : 'an additional gift</strong> to your order.'
@@ -443,8 +444,8 @@ const New = (props) => {
                                   campaign.strategy.maxItemValue !== '0'
                                     ? ` with a maximum price of <strong>${campaign.strategy.maxItemValue} ${campaign.strategy.storeCurrencyCode}</strong>`
                                     : ''
-                                }. <strong>The product below is just a placeholder.</strong>`
-                              : `You offer <strong style="${
+                                }. The product below is only for demonstration.`
+                              : `<strong style="${
                                   campaign.selling.products.length === 0
                                     ? 'color: red'
                                     : ''
@@ -453,9 +454,9 @@ const New = (props) => {
                                     campaign.selling.products.length === 1
                                       ? ''
                                       : 's'
-                                  }</strong> in this campaign. ${
+                                  }</strong> will be offered. ${
                                   campaign.selling.products.length === 0
-                                    ? '<strong>The product below is just a placeholder.</strong>'
+                                    ? 'The product below is only for demonstration.'
                                     : ''
                                 }`,
                         }}
