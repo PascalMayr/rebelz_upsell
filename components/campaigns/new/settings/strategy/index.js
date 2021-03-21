@@ -39,6 +39,7 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
       texts: texts[newStrategyMode],
     });
   };
+  const targetsPage = campaign.targets.page;
   const explanation =
     mode === 'discount'
       ? 'Set a <strong>fix</strong> or <strong>percentage</strong> discount.'
@@ -54,7 +55,11 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
         dangerouslySetInnerHTML={{
           __html: `${explanation} Leave the min/max order value blank or zero if you don't want to set it. ${
             mode !== 'gift'
-              ? 'Upselling means <strong>replacing</strong> the offered product with <strong>target products</strong> while Cross Selling means <strong>adding</strong> products to your customers cart.'
+              ? `Upselling means <strong>replacing</strong> the offered product with <strong>target products</strong> while Cross Selling means <strong>adding</strong> products to your customers cart. ${
+                  targetsPage !== 'thank_you'
+                    ? '<strong>To create Upselling Campaigns you need to specify Target Products in Step 1</strong>'
+                    : ''
+                }`
               : ''
           }`,
         }}
