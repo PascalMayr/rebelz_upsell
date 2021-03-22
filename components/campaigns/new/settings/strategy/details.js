@@ -45,7 +45,7 @@ const DetailsStrategy = ({
       break;
   }
   const sellTypeOptions =
-    targets && targets.products.length > 0
+    targets && targets.products.length > 0 && targets.page !== 'thank_you'
       ? [
           { label: 'Cross sell', value: 'cross_sell' },
           { label: 'Upsell', value: 'upsell' },
