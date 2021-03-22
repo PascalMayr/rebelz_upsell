@@ -319,7 +319,6 @@ app.prepare().then(() => {
         line_items: cart.items.map((item) => ({ ...item, properties: [] })),
       };
 
-      /* TODO depending on upsell/cross sell add or replace the product */
       if (strategy.mode === 'discount') {
         // eslint-disable-next-line babel/camelcase
         draftOrder.line_items = draftOrder.line_items.concat([
