@@ -77,6 +77,7 @@ const ResourceSelectionCampaign = ({
   resources = [],
   onResourceMutation,
   strategy,
+  showStrategyDetails,
 }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -162,25 +163,27 @@ const ResourceSelectionCampaign = ({
                       </div>
                     </div>
                   </div>
-                  {resource.strategy && resources.length > 1 && (
-                    <>
-                      <br />
-                      <DetailsStrategy
-                        strategy={resource.strategy}
-                        onChange={(newDiscountStrategy) => {
-                          const helperResources = resources;
-                          const modifiedResource = helperResources.find(
-                            (currentResource) =>
-                              currentResource.id === resource.id
-                          );
-                          if (modifiedResource) {
-                            modifiedResource.strategy = newDiscountStrategy;
-                          }
-                          onResourceMutation(helperResources);
-                        }}
-                      />
-                    </>
-                  )}
+                  {resource.strategy &&
+                    resources.length > 1 &&
+                    showStrategyDetails && (
+                      <>
+                        <br />
+                        <DetailsStrategy
+                          strategy={resource.strategy}
+                          onChange={(newDiscountStrategy) => {
+                            const helperResources = resources;
+                            const modifiedResource = helperResources.find(
+                              (currentResource) =>
+                                currentResource.id === resource.id
+                            );
+                            if (modifiedResource) {
+                              modifiedResource.strategy = newDiscountStrategy;
+                            }
+                            onResourceMutation(helperResources);
+                          }}
+                        />
+                      </>
+                    )}
                 </div>
               </ResourceItem>
             );
