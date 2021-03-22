@@ -1,9 +1,9 @@
 const PlaceholderPreview = (strategy) => {
   return {
     legacyResourceId: '6169782747321',
-    title: 'The Mini Handbag by rothys',
+    title: "The Mini Handbag by Rothy's",
     descriptionHtml:
-      'A small structured staple. Crafted with ocean-bound marine plastic, this bag features a top handle and removable strap—so you can create the style you need for any occasion.',
+      'Bright red arm candy. Crafted with ocean-bound marine plastic, this tiny style features a top handle and removable strap—so you can create the style you need for any occasion',
     featuredImage: {
       transformedSrc:
       'https://cdn.shopify.com/s/files/1/0877/4986/products/032_Candy_Apple_pdp_A.jpg?v=1588623182&width=500',
@@ -12,7 +12,7 @@ const PlaceholderPreview = (strategy) => {
     options:[
       {
         name: 'Color',
-        values: ['Red', 'Blue'],
+        values: ['CANDY APPLE', 'ROYAL BLUE'],
       },
     ],
     hasOnlyDefaultVariant: false,
@@ -24,11 +24,11 @@ const PlaceholderPreview = (strategy) => {
       edges: [
         {
           node: {
-            selectedOptions: [{ name: 'Color', value: 'Red' }],
-            title: 'Red',
+            selectedOptions: [{ name: 'Color', value: 'CANDY APPLE' }],
+            title: 'CANDY APPLE',
             legacyResourceId: '38752185811129',
             availableForSale: true,
-            price: '200.00',
+            price: '175.00',
             image: {
               transformedSrc:
                 'https://cdn.shopify.com/s/files/1/0877/4986/products/032_Candy_Apple_pdp_A.jpg?v=1588623182&width=500',
@@ -38,11 +38,11 @@ const PlaceholderPreview = (strategy) => {
         },
         {
           node: {
-            selectedOptions: [{ name: 'Color', value: 'Blue' }],
-            title: 'Blue',
+            selectedOptions: [{ name: 'Color', value: 'ROYAL BLUE' }],
+            title: 'ROYAL BLUE',
             legacyResourceId: '38752185811121',
             availableForSale: false,
-            price: '205.00',
+            price: '175.00',
             image: {
               transformedSrc:
                 'https://cdn.shopify.com/s/files/1/0877/4986/products/032_Royal_Blue_pdp_A.jpg?v=1588713960&width=500',
