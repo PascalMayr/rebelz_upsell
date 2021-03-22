@@ -87,7 +87,7 @@ const Analytics = ({
         centerText: `${((salesSum / viewsSum) * 100).toFixed(2)}%`,
         plugins: [
           {
-            beforeDraw(chart, options) {
+            beforeDraw(chart) {
               const width = chart.chart.width;
               const height = chart.chart.height;
               const ctx = chart.chart.ctx;
