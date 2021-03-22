@@ -110,6 +110,7 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
       <div className="salestorm-general-strategy-settings">
         <DetailsStrategy
           strategy={campaign.strategy}
+          targets={campaign.targets}
           onChange={(newDiscountStrategy) => {
             const products = campaign.selling.products.map((product) => {
               const helper = product;

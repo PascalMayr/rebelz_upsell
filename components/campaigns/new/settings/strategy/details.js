@@ -14,7 +14,11 @@ const GET_STORE_CURRENCY = gql`
   }
 `;
 
-const DetailsStrategy = ({ strategy = DefaultStateStrategy, onChange }) => {
+const DetailsStrategy = ({
+  strategy = DefaultStateStrategy,
+  onChange,
+  targets,
+}) => {
   const onDiscountSettingsChange = (setting, value) => {
     onChange({ ...strategy, [setting]: value });
   };
@@ -40,14 +44,18 @@ const DetailsStrategy = ({ strategy = DefaultStateStrategy, onChange }) => {
       salestormStrategyContainerClass = 'salestorm-strategy-settings';
       break;
   }
+  const sellTypeOptions =
+    targets && targets.products.length > 0
+      ? [
+          { label: 'Cross sell', value: 'cross_sell' },
+          { label: 'Upsell', value: 'upsell' },
+        ]
+      : [{ label: 'Cross sell', value: 'cross_sell' }];
   return (
     <div className={salestormStrategyContainerClass}>
       {strategy.mode !== 'gift' && (
         <Select
-          options={[
-            { label: 'Cross sell', value: 'cross_sell' },
-            { label: 'Upsell', value: 'upsell' },
-          ]}
+          options={sellTypeOptions}
           onChange={(value) => onDiscountSettingsChange('sellType', value)}
           value={strategy.sellType}
         />

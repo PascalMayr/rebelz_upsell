@@ -219,6 +219,7 @@ const New = (props) => {
                     'targets'
                   )
                 }
+                targets={campaign.targets}
                 strategy={campaign.strategy}
                 resources={campaign.targets.products}
               />
@@ -325,6 +326,7 @@ const New = (props) => {
                   }
                   resources={campaign.selling.products}
                   strategy={campaign.strategy}
+                  targets={campaign.targets}
                   showStrategyDetails
                 />
               </Card.Section>
@@ -385,6 +387,7 @@ const New = (props) => {
                       }
                       resources={campaign.selling.excludeProducts}
                       strategy={campaign.strategy}
+                      targets={campaign.targets}
                     />
                   )}
                 </Card.Section>

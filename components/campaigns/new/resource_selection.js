@@ -78,6 +78,7 @@ const ResourceSelectionCampaign = ({
   onResourceMutation,
   strategy,
   showStrategyDetails,
+  targets,
 }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -170,6 +171,7 @@ const ResourceSelectionCampaign = ({
                         <br />
                         <DetailsStrategy
                           strategy={resource.strategy}
+                          targets={targets}
                           onChange={(newDiscountStrategy) => {
                             const helperResources = resources;
                             const modifiedResource = helperResources.find(
