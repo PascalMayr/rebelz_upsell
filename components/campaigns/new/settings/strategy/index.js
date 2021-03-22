@@ -35,8 +35,14 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
     },
   };
   const changeStrategyMode = (newStrategyMode) => {
-    setCampaignProperty({ ...strategy, mode: newStrategyMode }, 'strategy', {
+    const newStrategy = { ...strategy, mode: newStrategyMode };
+    const sellingProducts = campaign.selling.products.map((product) => ({
+      ...product,
+      strategy: newStrategy,
+    }));
+    setCampaignProperty(newStrategy, 'strategy', {
       texts: texts[newStrategyMode],
+      selling: { ...campaign.selling, products: sellingProducts },
     });
   };
   const targetsPage = campaign.targets.page;
