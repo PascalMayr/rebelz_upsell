@@ -21,7 +21,6 @@ import '../styles/components/analytics.css';
 const Analytics = ({
   views,
   days,
-  orders,
   campaigns,
   currencyFormatter,
   sales,
@@ -32,6 +31,8 @@ const Analytics = ({
   const ordersPieRef = useRef();
   const viewsSum =
     views.length > 0 ? views.reduce((total, view) => total + view) : 0;
+  const salesSum =
+    sales.length > 0 ? sales.reduce((total, sale) => total + sale) : 0;
   const viewsColor = '#008060';
   const orderColor = '#ff7900';
   useEffect(() => {
@@ -74,7 +75,7 @@ const Analytics = ({
         data: {
           datasets: [
             {
-              data: [viewsSum, orders],
+              data: [viewsSum, salesSum],
               backgroundColor: [viewsColor, orderColor],
             },
           ],
@@ -83,7 +84,7 @@ const Analytics = ({
         options: {
           maintainAspectRatio: false,
         },
-        centerText: `${((orders / viewsSum) * 100).toFixed(2)}%`,
+        centerText: `${((salesSum / viewsSum) * 100).toFixed(2)}%`,
         plugins: [
           {
             beforeDraw(chart, options) {

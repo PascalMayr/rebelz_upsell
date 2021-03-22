@@ -141,7 +141,6 @@ export async function getServerSideProps(ctx) {
       viewsCount: viewsCount.rows[0].count,
       views: viewsPerDay,
       sales: salesPerDay,
-      orders: campaigns.filter((campaign) => campaign.sales > 0).length,
       days,
       global: globalCampaigns.rows.length > 0 ? globalCampaigns.rows[0] : {},
     },
@@ -157,7 +156,6 @@ const Index = ({
   days,
   averageOrderPrice,
   totalRevenue,
-  orders,
   global,
   appName = 'App',
 }) => {
@@ -416,7 +414,6 @@ const Index = ({
         <Analytics
           views={views}
           days={days}
-          orders={orders}
           sales={sales}
           campaigns={campaigns}
           currencyFormatter={currencyFormatter}
