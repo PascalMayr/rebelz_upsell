@@ -130,7 +130,7 @@ const Analytics = ({
       <Card>
         <Card.Section title="Views & Sales overview">
           <p className="salestorm-analytics-subheading">
-            Total campaign Views & Sales over time.
+            Total campaign Views & Sales this month.
           </p>
           <br />
           <div className="slaestorm-analytics-chart">
