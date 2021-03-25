@@ -18,13 +18,7 @@ import Chart from 'chart.js';
 
 import '../styles/components/analytics.css';
 
-const Analytics = ({
-  views,
-  days,
-  campaigns,
-  currencyFormatter,
-  sales,
-}) => {
+const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
   const [sortValue, setSortValue] = useState('REVENUE');
   const [items, setItems] = useState(campaigns);
   const periodRef = useRef();
@@ -217,7 +211,8 @@ const Analytics = ({
                           <TextStyle variation="strong">
                             {currencyFormatter
                               ? currencyFormatter.format(revenue)
-                              : revenue} generated
+                              : revenue}{' '}
+                            generated
                           </TextStyle>
                         </Badge>
                       </ResourceItem>
