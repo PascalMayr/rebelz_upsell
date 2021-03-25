@@ -103,7 +103,7 @@ export async function getServerSideProps(ctx) {
             }
           );
           draftOrder = await draftOrder.json();
-          if (draftOrder.draft_order.status === 'completed') {
+          if (draftOrder && draftOrder.draft_order && draftOrder.draft_order.status === 'completed') {
             campaigns = campaigns.map((campaign) => {
               if (campaign.id.toString() === order.campaign_id.toString()) {
                 return {
