@@ -14,7 +14,7 @@ const EntrySettings = ({ campaign, setCampaignProperty }) => {
       : 'Continue shopping';
   const explanation =
     targetsEntry === 'onexit'
-      ? `Customers will see the campaign popup <strong>when leaving the page on desktop and after 3 - 6 seconds on mobile.</strong> `
+      ? `Customers will see the campaign popup <strong>when leaving your store on desktop and after 3 seconds on mobile.</strong>`
       : `Customers will see the campaign popup <strong>when clicking the ${targetPageButton} Button.</strong>`;
   return (
     <>
