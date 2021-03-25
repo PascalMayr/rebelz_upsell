@@ -112,7 +112,14 @@
     }
   };
 
-  const createDraftOrder = async (variantId, strategy, quantity, cart, id) => {
+  const createDraftOrder = async (
+    variantId,
+    strategy,
+    quantity,
+    cart,
+    id,
+    products
+  ) => {
     let response = await fetch(`${publicAPI}/create-draft-order`, {
       credentials: 'include',
       method: 'POST',
@@ -126,6 +133,7 @@
         cart,
         shop,
         id,
+        products,
       }),
     });
     response = await response.json();
@@ -184,7 +192,8 @@
                     strategy,
                     quantity,
                     currentCart,
-                    campaign.id
+                    campaign.id,
+                    campaign.products
                   );
                 }
               }, 2000);
@@ -194,7 +203,8 @@
                 strategy,
                 quantity,
                 cart,
-                campaign.id
+                campaign.id,
+                campaign.products
               );
             }
           }
