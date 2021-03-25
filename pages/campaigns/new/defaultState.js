@@ -1,6 +1,6 @@
 const DefaultStateStrategy = {
   mode: 'discount',
-  sellType: 'upsell',
+  sellType: 'cross_sell',
   maxOrderValue: '0',
   minOrderValue: '0',
   maxItemValue: '0',
