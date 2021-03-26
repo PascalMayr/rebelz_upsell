@@ -20,11 +20,17 @@ import ReactDOMServer from 'react-dom/server';
 import { AppProvider } from '@shopify/polaris';
 import translations from '@shopify/polaris/locales/en.json';
 import { gql } from 'apollo-boost';
+import * as Sentry from '@sentry/node';
 
 import Popup from '../components/popup';
 import customElement from '../components/popup/templates/debut/custom_element';
 import config from '../config';
 
+import {
+  sentryErrorMiddleware,
+  sentryRequestMiddleware,
+  sentryTracingMiddleware,
+} from './middleware/sentry';
 import db from './db';
 import {
   createClient,
@@ -48,6 +54,15 @@ const handle = app.getRequestHandler();
 app.prepare().then(() => {
   const server = new Koa();
   const router = new Router();
+
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    tracesSampleRate: 0.5,
+  });
+
+  server.on('error', sentryErrorMiddleware);
+  server.use(sentryRequestMiddleware);
+  server.use(sentryTracingMiddleware);
 
   router.post('/api/get-matching-campaign', async (ctx) => {
     const {
