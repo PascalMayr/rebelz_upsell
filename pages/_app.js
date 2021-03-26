@@ -10,9 +10,12 @@ import '@shopify/polaris/dist/styles.css';
 import translations from '@shopify/polaris/locales/en.json';
 import '../styles/pages/_app.css';
 import Head from 'next/head';
-import { withErrorBoundary } from 'react-error-boundary';
+import * as Sentry from '@sentry/react';
 
 import AppError from '../components/error/_app';
+
+// eslint-disable-next-line no-undef
+Sentry.init({ dsn: SENTRY_DSN });
 
 const client = new ApolloClient({
   fetch,
@@ -86,7 +89,7 @@ class MyApp extends App {
   }
 }
 
-export default withErrorBoundary(MyApp, {
-  FallbackComponent: AppError,
+export default Sentry.withErrorBoundary(MyApp, {
+  fallback: AppError,
 });
 export { AppContext };
