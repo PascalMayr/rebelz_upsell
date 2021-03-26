@@ -15,7 +15,7 @@ import * as Sentry from '@sentry/react';
 import AppError from '../components/error/_app';
 
 // eslint-disable-next-line no-undef
-Sentry.init({ dsn: SENTRY_DSN });
+Sentry.init({ dsn: SENTRY_DSN_DASHBOARD });
 
 const client = new ApolloClient({
   fetch,
