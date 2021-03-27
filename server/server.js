@@ -39,6 +39,7 @@ import {
   cancelSubscription,
   registerWebhooks,
 } from './handlers';
+import countView from './controllers/count_view';
 
 dotenv.config();
 
@@ -441,23 +442,7 @@ app.prepare().then(() => {
     }
   });
 
-  router.post('/api/count-view', async (ctx) => {
-    try {
-      const { id, shop, target } = ctx.request.body;
-      await db.query(
-        `INSERT INTO views${db.insertColumns(
-          'campaign_id',
-          'domain',
-          'target_page'
-        )}`,
-        [id, shop, target]
-      );
-      ctx.status = 200;
-    } catch (error) {
-      console.error(error);
-      ctx.status = 500;
-    }
-  });
+  router.post('/api/count-view', countView);
 
   const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET });
 
