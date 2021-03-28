@@ -18,6 +18,6 @@ const countView = async (ctx) => {
     reportError(error);
     ctx.status = 500;
   }
-}
+};
 
 export default countView;
