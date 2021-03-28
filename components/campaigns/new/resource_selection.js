@@ -13,51 +13,7 @@ import { gql } from 'apollo-boost';
 
 import DetailsStrategy from './settings/strategy/details';
 import '../../../styles/components/campaigns/new/resource_selection.css';
-
-const GET_PRODUCT = gql`
-  query Product($id: ID!) {
-    product(id: $id) {
-      id
-      legacyResourceId
-      title
-      descriptionHtml
-      hasOutOfStockVariants
-      hasOnlyDefaultVariant
-      totalVariants
-      status
-      handle
-      options(first: 3) {
-        values
-        name
-        position
-      }
-      featuredImage {
-        transformedSrc(maxHeight: 500)
-        altText
-      }
-      variants(first: 10) {
-        edges {
-          node {
-            title
-            id
-            legacyResourceId
-            availableForSale
-            price
-            selectedOptions {
-              name
-              value
-            }
-            image {
-              transformedSrc(maxHeight: 500)
-            }
-          }
-        }
-      }
-      updatedAt
-      createdAt
-    }
-  }
-`;
+import GET_PRODUCT from '../../../queries/get_product';
 
 const GET_COLLECTION = gql`
   query Product($id: ID!) {
