@@ -3,7 +3,6 @@ import '../styles/pages/index.css';
 import NextLink from 'next/link';
 import { useState, useContext, useMemo, useCallback } from 'react';
 import { useQuery } from 'react-apollo';
-import { gql } from 'apollo-boost';
 
 import toggleStoreEnabled from '../services/toggle_store_enabled';
 import db from '../server/db';
