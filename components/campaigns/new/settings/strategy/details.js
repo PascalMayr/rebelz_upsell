@@ -3,7 +3,7 @@ import { TextField, Select } from '@shopify/polaris';
 import '../../../../../styles/components/campaigns/new/settings/strategy/details.css';
 import { useQuery } from 'react-apollo';
 
-import GET_STORE_CURRENCY from '../../../../../queries/get_store_currency';
+import GET_STORE_CURRENCY from '../../../../../server/handlers/queries/get_store_currency';
 import { DefaultStateStrategy } from '../../../../../pages/campaigns/new/defaultState';
 
 const DetailsStrategy = ({

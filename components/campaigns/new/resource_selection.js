@@ -11,8 +11,8 @@ import { MobileCancelMajor, ImageMajor } from '@shopify/polaris-icons';
 import { ApolloConsumer } from 'react-apollo';
 
 import '../../../styles/components/campaigns/new/resource_selection.css';
-import GET_PRODUCT from '../../../queries/get_product';
-import GET_COLLECTION from '../../../queries/get_collection';
+import GET_PRODUCT from '../../../server/handlers/queries/get_product';
+import GET_COLLECTION from '../../../server/handlers/queries/get_collection';
 
 import DetailsStrategy from './settings/strategy/details';
 
