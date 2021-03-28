@@ -2,23 +2,15 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { AppProvider } from '@shopify/polaris';
 import translations from '@shopify/polaris/locales/en.json';
-import { gql } from 'apollo-boost';
 
 import Popup from '../../components/popup';
 import customElement from '../../components/popup/templates/debut/custom_element';
 import db from '../db';
 import { createClient } from '../handlers';
 import GET_PRODUCT from '../handlers/queries/get_product';
+import PRODUCT_IN_COLLECTION from '../handlers/queries/product_in_collection';
 
 import reportError from './report_error';
-
-const PRODUCT_IN_COLLECTION = gql`
-  query ProductInCollection($product: ID!, $collection: ID!) {
-    product(id: $product) {
-      inCollection(id: $collection)
-    }
-  }
-`;
 
 const getMatchingCampaign = async (ctx) => {
   const {
