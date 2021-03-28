@@ -14,7 +14,7 @@ import saveCampaign from '../services/save_campaign';
 
 import DefaultStateNew from './campaigns/new/defaultState';
 import { AppContext } from './_app';
-import GET_STORE_CURRENCY from '../queries/get_store_currency';
+import GET_STORE_CURRENCY from '../server/handlers/queries/get_store_currency';
 import 'isomorphic-fetch';
 
 export async function getServerSideProps(ctx) {

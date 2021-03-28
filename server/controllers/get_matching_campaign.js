@@ -8,7 +8,7 @@ import Popup from '../../components/popup';
 import customElement from '../../components/popup/templates/debut/custom_element';
 import db from '../db';
 import { createClient } from '../handlers';
-import GET_PRODUCT from '../../queries/get_product';
+import GET_PRODUCT from '../handlers/queries/get_product';
 
 import reportError from './report_error';
 
