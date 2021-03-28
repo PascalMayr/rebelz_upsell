@@ -1,8 +1,5 @@
 import db from '../db';
 
-const getInsertValues = (campaign) =>
-  Object.keys(campaign).map((key) => campaign[key]);
-
 const saveCampaign = async (ctx) => {
   const requestBody = ctx.request.body;
 
@@ -30,11 +27,11 @@ const saveCampaign = async (ctx) => {
   } else {
     const helper = requestBody;
     helper.domain = ctx.session.shop;
-    const helperArray = getInsertValues(helper);
+    const inserValues = Object.keys(helper).map((key) => helper[key]);
     const columns = Object.keys(helper).map((key) => `"${key}"`);
     campaign = await db.query(
       `INSERT INTO campaigns ${db.insertColumns(...columns)}`,
-      [...helperArray]
+      [...inserValues]
     );
   }
   ctx.body = campaign.rows[0];

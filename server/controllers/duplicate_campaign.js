@@ -1,8 +1,5 @@
 import db from '../db';
 
-const getInsertValues = (campaign) =>
-  Object.keys(campaign).map((key) => campaign[key]);
-
 const duplicateCampaign = async (ctx) => {
   const existingCampaign = await db.query(
     'SELECT * FROM campaigns WHERE id = $1 AND domain = $2',
@@ -13,7 +10,9 @@ const duplicateCampaign = async (ctx) => {
   duplicatedCampaign.published = false;
   duplicatedCampaign.name += ' copy';
   const columns = Object.keys(duplicatedCampaign).map((key) => `"${key}"`);
-  const inserValues = getInsertValues(duplicatedCampaign);
+  const inserValues = Object.keys(duplicatedCampaign).map(
+    (key) => duplicatedCampaign[key]
+  );
   await db.query(`INSERT INTO campaigns ${db.insertColumns(...columns)}`, [
     ...inserValues,
   ]);
