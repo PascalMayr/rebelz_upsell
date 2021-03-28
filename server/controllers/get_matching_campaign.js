@@ -52,6 +52,8 @@ const getMatchingCampaign = async (ctx) => {
 
   const client = await createClient(shop, accessToken);
 
+  const getGQLProductId = (id) => `gid://shopify/Product/${id}`;
+
   const campaign = campaigns.rows.find((row) => {
     const targets = row.targets;
     return (
@@ -64,7 +66,7 @@ const getMatchingCampaign = async (ctx) => {
         targets.collections.length > 0 &&
         targets.collections.some((targetCollection) => {
           return products.map(async (product) => {
-            const productID = `gid://shopify/Product/${product}`;
+            const productID = getGQLProductId(product);
             try {
               const response = await client.query({
                 query: PRODUCT_IN_COLLECTION,
@@ -115,7 +117,7 @@ const getMatchingCampaign = async (ctx) => {
               const response = await client.query({
                 query: GET_PRODUCT,
                 variables: {
-                  id: `gid://shopify/Product/${id}`,
+                  id: getGQLProductId(id),
                 },
               });
               return {
