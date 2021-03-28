@@ -11,10 +11,11 @@ import Campaigns from '../components/campaigns';
 import Design from '../components/design';
 import Analytics from '../components/analytics';
 import saveCampaign from '../services/save_campaign';
+import GET_STORE_CURRENCY from '../server/handlers/queries/get_store_currency';
+import restClient from '../server/handlers/restClient';
 
 import DefaultStateNew from './campaigns/new/defaultState';
 import { AppContext } from './_app';
-import GET_STORE_CURRENCY from '../server/handlers/queries/get_store_currency';
 import 'isomorphic-fetch';
 
 export async function getServerSideProps(ctx) {
@@ -91,19 +92,20 @@ export async function getServerSideProps(ctx) {
     if (ordersThisDay.length > 0) {
       await Promise.all(
         ordersThisDay.map(async (order) => {
-          let draftOrder = await fetch(
-            `https://${store.domain}/admin/api/2021-01/draft_orders/${order.draft_order_id}.json`,
+          let draftOrder = await restClient(
+            store.domain,
+            `draft_orders/${order.draft_order_id}`,
+            store.access_token,
             {
-              credentials: 'include',
               method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-                'X-Shopify-Access-Token': store.access_token,
-              },
             }
           );
           draftOrder = await draftOrder.json();
-          if (draftOrder && draftOrder.draft_order && draftOrder.draft_order.status === 'completed') {
+          if (
+            draftOrder &&
+            draftOrder.draft_order &&
+            draftOrder.draft_order.status === 'completed'
+          ) {
             campaigns = campaigns.map((campaign) => {
               if (campaign.id.toString() === order.campaign_id.toString()) {
                 return {

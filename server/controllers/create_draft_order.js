@@ -1,5 +1,6 @@
 /* eslint-disable babel/camelcase */
 import db from '../db';
+import restClient from '../handlers/restClient';
 
 import reportError from './report_error';
 
@@ -78,20 +79,12 @@ const createDraftOrder = async (ctx) => {
       draftOrder.line_items = draftOrder.line_items.concat([campaignItem]);
       draftOrder.tags = 'Thunder Exit Upsell Funnel,gift';
     }
-    let order = await fetch(
-      `https://${shop}/admin/api/2021-01/draft_orders.json`,
-      {
-        credentials: 'include',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Shopify-Access-Token': accessToken,
-        },
-        body: JSON.stringify({
-          draft_order: draftOrder,
-        }),
-      }
-    );
+    let order = await restClient(shop, 'draft_orders', accessToken, {
+      method: 'POST',
+      body: JSON.stringify({
+        draft_order: draftOrder,
+      }),
+    });
     order = await order.json();
     if (order && order.draft_order) {
       const addedVariantItem = order.draft_order.line_items.find(
