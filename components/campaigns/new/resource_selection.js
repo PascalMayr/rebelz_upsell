@@ -9,23 +9,11 @@ import {
 } from '@shopify/polaris';
 import { MobileCancelMajor, ImageMajor } from '@shopify/polaris-icons';
 import { ApolloConsumer } from 'react-apollo';
-import { gql } from 'apollo-boost';
 
 import DetailsStrategy from './settings/strategy/details';
 import '../../../styles/components/campaigns/new/resource_selection.css';
 import GET_PRODUCT from '../../../queries/get_product';
-
-const GET_COLLECTION = gql`
-  query Product($id: ID!) {
-    collection(id: $id) {
-      id
-      image {
-        transformedSrc(maxHeight: 75)
-      }
-      title
-    }
-  }
-`;
+import GET_COLLECTION from '../../../queries/get_collection';
 
 const ResourceSelectionCampaign = ({
   resourcePickerProps,
