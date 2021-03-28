@@ -10,8 +10,6 @@ import { createClient } from '../handlers';
 import GET_PRODUCT from '../handlers/queries/get_product';
 import PRODUCT_IN_COLLECTION from '../handlers/queries/product_in_collection';
 
-import reportError from './report_error';
-
 const getMatchingCampaign = async (ctx) => {
   const {
     shop,
@@ -67,25 +65,19 @@ const getMatchingCampaign = async (ctx) => {
         targets.collections.some((targetCollection) => {
           return products.map(async (product) => {
             const productID = getGQLProductId(product);
-            try {
-              const response = await client.query({
-                query: PRODUCT_IN_COLLECTION,
-                variables: {
-                  product: productID,
-                  collection: targetCollection.id,
-                },
-              });
-              if (response.data) {
-                return response.data.inCollection;
-              } else {
-                return false;
-              }
-            } catch (error) {
-              const productInCollectionError = new Error(
+            const response = await client.query({
+              query: PRODUCT_IN_COLLECTION,
+              variables: {
+                product: productID,
+                collection: targetCollection.id,
+              },
+            });
+            if (response.data) {
+              return response.data.inCollection;
+            } else {
+              throw new Error(
                 `Failed to check if the product ${product} is in collection ${targetCollection.title}(${targetCollection.id}) for store ${shop}`
               );
-              reportError(productInCollectionError);
-              return false;
             }
           });
         })) ||
@@ -113,23 +105,21 @@ const getMatchingCampaign = async (ctx) => {
           ) {
             return false;
           } else {
-            try {
-              const response = await client.query({
-                query: GET_PRODUCT,
-                variables: {
-                  id: getGQLProductId(id),
-                },
-              });
+            const response = await client.query({
+              query: GET_PRODUCT,
+              variables: {
+                id: getGQLProductId(id),
+              },
+            });
+            if (response.data && response.data.product) {
               return {
                 ...response.data.product,
                 strategy: campaign.strategy,
               };
-            } catch (error) {
-              const fetchProducterror = new Error(
+            } else {
+              throw new Error(
                 `Failed to fetch product with id ${id} for store ${shop} during get-matching recommendation fetching.`
               );
-              reportError(fetchProducterror);
-              return false;
             }
           }
         })
@@ -145,20 +135,18 @@ const getMatchingCampaign = async (ctx) => {
       campaign.selling.products = await Promise.all(
         campaign.selling.products.map(async (product) => {
           const { id, title } = product;
-          try {
-            const response = await client.query({
-              query: GET_PRODUCT,
-              variables: {
-                id,
-              },
-            });
+          const response = await client.query({
+            query: GET_PRODUCT,
+            variables: {
+              id,
+            },
+          });
+          if (response.data && response.data.product) {
             return { ...response.data.product, ...product };
-          } catch (error) {
-            const fetchError = new Error(
+          } else {
+            throw new Error(
               `Failed to fetch product ${title} with id ${id} for store ${shop} during get-matching update.`
             );
-            reportError(fetchError);
-            return false;
           }
         })
       );
