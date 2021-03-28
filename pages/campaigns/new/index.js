@@ -17,16 +17,9 @@ import ResourceSelectionCampaign from '../../../components/campaigns/new/resourc
 import Design from '../../../components/design';
 import db from '../../../server/db';
 import EntrySettings from '../../../components/campaigns/new/settings/entry';
+import GET_STORE_CURRENCY from '../../../queries/get_store_currency';
 
 import DefaultStateNew from './defaultState';
-
-const GET_STORE_CURRENCY = gql`
-  query storeCurrency {
-    shop {
-      currencyCode
-    }
-  }
-`;
 
 export async function getServerSideProps(ctx) {
   const globalCampaigns = await db.query(

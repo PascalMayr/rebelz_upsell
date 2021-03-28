@@ -15,6 +15,7 @@ import saveCampaign from '../services/save_campaign';
 
 import DefaultStateNew from './campaigns/new/defaultState';
 import { AppContext } from './_app';
+import GET_STORE_CURRENCY from '../queries/get_store_currency';
 import 'isomorphic-fetch';
 
 export async function getServerSideProps(ctx) {
@@ -208,14 +209,6 @@ const Index = ({
   ]);
 
   const { id } = tabs[tab];
-
-  const GET_STORE_CURRENCY = gql`
-    query storeCurrency {
-      shop {
-        currencyCode
-      }
-    }
-  `;
 
   const { data } = useQuery(GET_STORE_CURRENCY);
   const currencyCode = data && data.shop && data.shop.currencyCode;

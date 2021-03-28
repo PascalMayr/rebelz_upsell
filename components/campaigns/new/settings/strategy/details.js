@@ -2,17 +2,9 @@ import { useEffect } from 'react';
 import { TextField, Select } from '@shopify/polaris';
 import '../../../../../styles/components/campaigns/new/settings/strategy/details.css';
 import { useQuery } from 'react-apollo';
-import { gql } from 'apollo-boost';
 
+import GET_STORE_CURRENCY from '../../../../../queries/get_store_currency';
 import { DefaultStateStrategy } from '../../../../../pages/campaigns/new/defaultState';
-
-const GET_STORE_CURRENCY = gql`
-  query storeCurrency {
-    shop {
-      currencyCode
-    }
-  }
-`;
 
 const DetailsStrategy = ({
   strategy = DefaultStateStrategy,
