@@ -22,7 +22,7 @@ CREATE EXTENSION citext;
 ```
 
 8. Run `createdb salestorm && createdb salestorm_shadow` to create your development databases
-9. Ask a developer for the `.env` file where your store and various API keys are stored.
+9. Ask a developer for a copy of the `.env` file where various API keys and settings are stored.
 10. Run:
 
 ```sh
@@ -38,6 +38,12 @@ CREATE EXTENSION citext;
 
 13. Open the app URL shown in the output. The first time you do this Chrome will complain about an invalid certificate, [to circumvent this type "thisisunsafe" and Chrome will remember to trust the local certificate](https://medium.com/@dblazeski/chrome-bypass-net-err-cert-invalid-for-development-daefae43eb12).
 14. Install and enable the ["Disable Content-Security-Policy" Chrome Extension](https://chrome.google.com/webstore/detail/disable-content-security/ieelmcmcagommplceebfedjlakkhpden).
+
+***Note:***
+In Firefox you can go to about:config and disable "security.csp.enable".
+
+***Note:***
+If you get any problem loading the startup script or the app in the admin panel try to refresh the page, turn off/on the chrome extension or try to access https://loop.salestorm.cc and type again "thisisunsafe".
 
 ## Development guides
 
@@ -83,7 +89,7 @@ CREATE EXTENSION citext;
 ~/ $ cd .. && yarn start
 ```
 
-4.) Copy the content without comments of animate.min.css into the campaign_preview components style tag.
+4.) Copy the content without comments of animate.min.css into the get_styles js file.
 
 ## Troubleshooting authentication/authorization problems
 
@@ -125,3 +131,7 @@ As soon as you've found where the current displayed currency code is stored you 
 ```
 window.Salestorm.currentCurrencyCode = localStorage.getItem('currentDisplayedCurrencyCode')
 ```
+
+### Server Errors
+
+graphQLErrors.forEach is not a function : The offline accessToken of the store is missing therefore no graphql client could be created.

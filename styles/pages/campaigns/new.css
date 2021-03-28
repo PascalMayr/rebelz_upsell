@@ -1,0 +1,23 @@
+html {
+  scroll-behavior: smooth;
+}
+
+.salestorm-choose-targets {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 2em;
+}
+
+.salestorm-choose-selling-products {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 2em;
+}
+
+.salestorm-auto-selling-settings {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}

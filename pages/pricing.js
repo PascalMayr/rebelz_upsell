@@ -17,7 +17,7 @@ import setPlan from '../services/set-plan';
 import db from '../server/db';
 
 import { AppContext } from './_app';
-import '../styles/pages_pricing.css';
+import '../styles/pages/pricing.css';
 
 export async function getServerSideProps(ctx) {
   const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [
@@ -40,15 +40,18 @@ const Pricing = ({ store }) => {
     'Product Upsell Funnels',
     'Cart Upsell Funnels',
     'Post-Purchase Upsell Funnels',
+    'Exit Intent Upsell Funnels',
     'No Branding',
     'Quick Setup',
     '100% Responsive',
+    'Works with every Theme',
     'Customize all Texts, Fonts and Styles',
     'AI Autopilot Mode',
     'Analytics',
     'Multi Currency Support',
     'Premium Support',
-    'Complete & Clean Uninstall',
+    'No Theme modification',
+    'Complete & Clean Automatic Uninstall',
   ];
   const onPlanSelect = async (name) => {
     setLoading(name);
@@ -174,7 +177,7 @@ const Pricing = ({ store }) => {
                   }}
                 />
                 <div className='salestorm-pricing-contact-us'>
-                  <TextStyle>Need a bigger plan?</TextStyle>
+                  <TextStyle>Need help or a bigger plan?</TextStyle>
                   <a href="mailto:support@salestorm.cc?subject=Plan%20Upgrade%20Inquiry">
                     <Button primary>Contact us</Button>
                   </a>

@@ -3,8 +3,8 @@ import { gql } from 'apollo-boost';
 
 export function SCRIPT_TAG_CREATE() {
   return gql`
-    mutation scriptTagCreate($url: String!) {
-      scriptTagCreate(input: { src: $url }) {
+    mutation scriptTagCreate($input: ScriptTagInput!) {
+      scriptTagCreate(input: $input) {
         userErrors {
           field
           message
@@ -20,7 +20,7 @@ export function SCRIPT_TAG_CREATE() {
 export const getScriptTagId = async ({ client }) => {
   const response = await client.mutate({
     mutation: SCRIPT_TAG_CREATE(),
-    variables: { url: `${process.env.HOST}/startup.js` },
+    variables: { input: { src: `${process.env.HOST}/startup.js` } },
   });
   return response.data.scriptTagCreate.scriptTag.id;
 };

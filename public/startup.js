@@ -1,13 +1,14 @@
 (function () {
-  const triggers = {
+  const target = {};
+  const targets = {
     addToCart: 'add_to_cart',
     checkout: 'checkout',
     thankYou: 'thank_you',
   };
   const popups = {
-    [triggers.addToCart]: null,
-    [triggers.checkout]: null,
-    [triggers.thankYou]: null,
+    [targets.addToCart]: target,
+    [targets.checkout]: target,
+    [targets.thankYou]: target,
   };
   const addToCartButtonSelector = [
     '[name=addToCart]',
@@ -41,33 +42,69 @@
     '[name=add]',
   ];
   const checkoutButtonSelector = ['[name="checkout"]', 'a[href^="/checkout"]'];
-  const popupId = 'salestorm';
-  const productAddEvent = new Event('salestorm-product-add');
+  const continueShoppingSelector = ['.step__footer__continue-btn'];
+  const continueOriginalClickEvent = new Event(
+    'salestorm-continue-original-click-event'
+  );
+  let productsAddedByXHROrFetch = false;
+  const publicAPI = 'https://loop.salestorm.cc:8081/api';
+  const shop = window.Shopify.shop || window.location.host;
 
-  const fetchCampaign = async (trigger, products) => {
+  const getCart = async () => {
+    const response = await fetch('/cart.js');
+    const cart = await response.json();
+    return cart;
+  };
+
+  const countView = async (targetPage) => {
     try {
-      const response = await fetch(
-        'https://020eba19ad4c.ngrok.io/api/get-matching-campaign',
-        {
-          credentials: 'include',
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            shop: window.Shopify.shop,
-            trigger,
-            products,
-          }),
-        }
-      );
+      const { campaign } = popups[targetPage];
+      await fetch(`${publicAPI}/count-view`, {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: campaign.id,
+          shop,
+          target: targetPage,
+        }),
+      });
+    } catch (error) {
+      console.error(window.Shopify);
+      throw error;
+    }
+  };
+
+  const fetchCampaign = async (
+    targetPage,
+    products,
+    totalPrice,
+    recommendations
+  ) => {
+    try {
+      const response = await fetch(`${publicAPI}/get-matching-campaign`, {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          shop,
+          target: targetPage,
+          products,
+          totalPrice,
+          recommendations,
+        }),
+      });
       if (response.ok) {
         const campaign = await response.json();
-        popups[trigger] = campaign.html;
+        eval(campaign.js);
+        return { ...campaign, displayed: false };
       } else {
-        popups[trigger] = null;
+        return targetPage;
       }
-      return Boolean(popups[trigger]);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(window.Shopify);
@@ -75,24 +112,154 @@
     }
   };
 
-  const showPopup = (trigger) => {
-    const oldPopup = document.getElementById(popupId);
-    if (oldPopup) oldPopup.remove();
-    document.body.insertAdjacentHTML('beforeend', popups[trigger]);
-    document.getElementById(popupId).style.display = 'block';
+  const createDraftOrder = async (
+    variantId,
+    strategy,
+    quantity,
+    cart,
+    id,
+    products
+  ) => {
+    let response = await fetch(`${publicAPI}/create-draft-order`, {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        variantId,
+        strategy,
+        quantity,
+        cart,
+        shop,
+        id,
+        products,
+      }),
+    });
+    response = await response.json();
+    if (response.invoiceUrl) {
+      window.location.href = response.invoiceUrl;
+    }
   };
 
-  const searchAddToCartForm = (addToCartButton) => {
-    let addToCartForm;
-    let target = addToCartButton;
-    while (target) {
-      if (target.tagName && target.tagName.toUpperCase() === 'FORM') {
-        addToCartForm = target;
-        break;
+  const showPopup = async (targetPage) => {
+    const { campaign } = popups[targetPage];
+    if (campaign) {
+      document.body.insertAdjacentHTML('beforeend', popups[targetPage].html);
+      const popup = document.querySelector(
+        `#salestorm-campaign-${campaign.id}`
+      );
+      if (popup) {
+        popup.setAttribute('visible', 'true');
+        popups[targetPage].displayed = true;
+        await countView(targetPage);
       }
-      target = target.parentNode;
+      if (window.Salestorm) {
+        document.addEventListener(window.Salestorm.hidePopup.type, () => {
+          const popup = document.querySelector(
+            `#salestorm-campaign-${campaign.id}`
+          );
+          popup.setAttribute('visible', 'false');
+          document.dispatchEvent(continueOriginalClickEvent);
+        });
+        window.Salestorm.skipOffer = (popup) => {
+          let currentOffer = parseInt(popup.getAttribute('currentoffer'), 10);
+          currentOffer += 1;
+          const newProduct = campaign.selling.products[currentOffer];
+          if (newProduct) {
+            popup.setAttribute('currentoffer', currentOffer);
+            popup.setAttribute('product', JSON.stringify(newProduct));
+          }
+        };
+        window.Salestorm.claimOffer = async (variantId, strategy, quantity) => {
+          document.dispatchEvent(continueOriginalClickEvent);
+          const cart = await getCart();
+          if (cart) {
+            if (
+              campaign.options.interruptEvents &&
+              campaign.entry === 'onclick'
+            ) {
+              const cartInterval = setInterval(async () => {
+                const currentCart = await getCart();
+                if (
+                  currentCart &&
+                  currentCart.items &&
+                  currentCart.items.length > 0
+                ) {
+                  clearInterval(cartInterval);
+                  createDraftOrder(
+                    variantId,
+                    strategy,
+                    quantity,
+                    currentCart,
+                    campaign.id,
+                    campaign.products
+                  );
+                }
+              }, 2000);
+            } else {
+              createDraftOrder(
+                variantId,
+                strategy,
+                quantity,
+                cart,
+                campaign.id,
+                campaign.products
+              );
+            }
+          }
+        };
+      }
     }
-    return addToCartForm;
+  };
+
+  const searchFormFromTarget = (initialTarget) => {
+    let formElement;
+    let eventTarget = initialTarget;
+    do {
+      if (eventTarget.tagName && eventTarget.tagName.toUpperCase() === 'FORM') {
+        formElement = eventTarget;
+      }
+      eventTarget = eventTarget.parentNode;
+    } while (!formElement);
+    return formElement;
+  };
+
+  const addEarlyClickListener = (selector, callback, capture = true) => {
+    const targetElement = document.querySelector(selector);
+    if (targetElement) {
+      document.addEventListener(
+        'click',
+        (event) => {
+          if (targetElement.contains(event.target)) {
+            callback(event);
+          }
+        },
+        capture
+      );
+      return true;
+    }
+    return false;
+  };
+
+  const addExitIntentListener = (targetPage) => {
+    if (window.innerWidth > 950) {
+      document.onmousemove = (event) => {
+        if (event.pageY && event.pageY < 150) {
+          if (!popups[targetPage].displayed) {
+            popups[targetPage].displayed = true;
+            showPopup(targetPage);
+          }
+        }
+      };
+    } else {
+      setTimeout(() => {
+        if (!popups[targetPage].displayed) {
+          popups[targetPage].displayed = true;
+          showPopup(targetPage);
+        }
+      }, 3000);
+    }
   };
 
   const handleProductPage = async (productPage) => {
@@ -105,114 +272,194 @@
       const product = await response.json();
       productId = product.id;
     }
-    const hasCampaign = await fetchCampaign(triggers.addToCart, [productId]);
-    if (hasCampaign) {
-      const addToCartButton = document.querySelector(addToCartButtonSelector);
-      const addToCartForm = searchAddToCartForm(addToCartButton);
-      if (addToCartForm)
-        addToCartForm.addEventListener('submit', (ev) => ev.preventDefault());
-      let doFormSubmitWithFetch;
-      const disableFormSubmitWithFetch = () => (doFormSubmitWithFetch = false);
-
-      // Listening to the click event on the document in the capture phase
-      // This is so that hopefully it gets executed before any other click listener
-      document.addEventListener(
-        'click',
-        (e) => {
-          if (!e.target.matches(addToCartButtonSelector)) return;
-
-          showPopup(triggers.addToCart);
-
-          if (addToCartForm) {
-            doFormSubmitWithFetch = true;
-            document.addEventListener(
-              productAddEvent.type,
-              disableFormSubmitWithFetch
-            );
+    let recommendations = await fetch(
+      `/recommendations/products.json?product_id=${productId}`
+    );
+    recommendations = await recommendations.json();
+    recommendations = recommendations.products.map((recommendation) => ({
+      id: recommendation.id,
+      price: recommendation.price,
+    }));
+    const cart = await getCart();
+    const totalPrice = cart.total_price / 100;
+    popups[targets.addToCart] = await fetchCampaign(
+      targets.addToCart,
+      [productId],
+      totalPrice,
+      recommendations
+    );
+    const { campaign } = popups[targets.addToCart];
+    if (campaign && campaign.entry === 'onclick') {
+      const interruptEvents = campaign.options.interruptEvents;
+      if (interruptEvents) {
+        addEarlyClickListener(addToCartButtonSelector, (event) => {
+          if (!popups[targets.addToCart].displayed) {
+            showPopup(targets.addToCart);
+            event.preventDefault();
+            event.stopPropagation();
+            const handleCartDrawers = setInterval(() => {
+              if (document.querySelector(checkoutButtonSelector)) {
+                handleCart();
+                clearInterval(handleCartDrawers);
+              }
+            }, 500);
+            document.addEventListener(continueOriginalClickEvent.type, () => {
+              if (!productsAddedByXHROrFetch) {
+                event.target.click();
+              }
+            });
           }
           return true;
-        },
-        true
-      );
-      // The same listener, but in the bubbling phase, so that it hopefully gets executed last
-      document.addEventListener('click', (e) => {
-        if (!e.target.matches(addToCartButtonSelector)) return;
-
-        if (doFormSubmitWithFetch) {
-          fetch(addToCartForm.action, {
-            method: addToCartForm.method || 'POST',
-            body: new FormData(addToCartForm),
+        });
+      } else {
+        const addToCartButton = document.querySelector(addToCartButtonSelector);
+        if (addToCartButton) {
+          addToCartButton.addEventListener('click', () => {
+            if (!popups[targets.addToCart].displayed) {
+              showPopup(targets.addToCart);
+            }
           });
         }
-        document.removeEventListener(
-          productAddEvent.type,
-          disableFormSubmitWithFetch
-        );
-      });
+      }
+    } else {
+      addExitIntentListener(targets.addToCart);
     }
   };
 
-  const contiouslyFetchCartAndUpdateCampaign = () => {
-    let previousItems;
-    let hasClickListener = false;
-    return setInterval(async () => {
-      if (document.visibilityState !== 'visible') return;
-
-      const response = await fetch('/cart.js');
-      const cart = await response.json();
-      const currentItems = cart.items;
-      if (
-        !previousItems ||
-        JSON.stringify(currentItems) !== JSON.stringify(previousItems)
-      ) {
-        previousItems = currentItems;
-        const hasCampaign = await fetchCampaign(
-          triggers.checkout,
-          currentItems.map((item) => item.product_id)
-        );
-        if (hasCampaign && !hasClickListener) {
-          document.querySelector(checkoutButtonSelector).addEventListener(
-            'click',
-            (e) => {
-              e.preventDefault();
-              showPopup(triggers.checkout);
-            },
-            true
+  const handleCart = async () => {
+    const checkAndHandleCartCampaign = async () => {
+      const cart = await getCart();
+      const currentItemsInCart = cart.items;
+      const totalPrice = cart.total_price / 100;
+      let recommendations = [];
+      await Promise.all(
+        currentItemsInCart.map(async (item) => {
+          let recommendation = await fetch(
+            `/recommendations/products.json?product_id=${item.product_id}`
           );
-          hasClickListener = true;
+          recommendation = await recommendation.json();
+          const newRecommendations = recommendation.products.map((product) => ({
+            id: product.id,
+            price: product.price,
+          }));
+          recommendations = recommendations.concat(newRecommendations);
+        })
+      );
+      popups[targets.checkout] = await fetchCampaign(
+        targets.checkout,
+        currentItemsInCart.map((item) => item.product_id),
+        totalPrice,
+        recommendations
+      );
+      const { campaign } = popups[targets.checkout];
+      if (campaign.entry === 'onclick') {
+        const interruptEvents = campaign.options.interruptEvents;
+        if (interruptEvents) {
+          addEarlyClickListener(checkoutButtonSelector, (event) => {
+            if (!popups[targets.checkout].displayed) {
+              showPopup(targets.checkout);
+              event.preventDefault();
+              event.stopPropagation();
+              document.addEventListener(continueOriginalClickEvent.type, () => {
+                event.target.click();
+              });
+            }
+            return true;
+          });
+        } else {
+          const checkoutButton = document.querySelector(checkoutButtonSelector);
+          checkoutButton.addEventListener('click', () => {
+            if (!popups[targets.checkout].displayed) {
+              showPopup(targets.checkout);
+              document.addEventListener(continueOriginalClickEvent.type, () => {
+                const checkoutForm = searchFormFromTarget(event.target);
+                if (checkoutForm) {
+                  checkoutForm.requestSubmit();
+                }
+              });
+            }
+          });
         }
+      } else {
+        addExitIntentListener(targets.checkout);
+      }
+    };
+    await checkAndHandleCartCampaign();
+    const checkAndHandleCartCampaignInterval = setInterval(async () => {
+      if (popups[targets.checkout].campaign) {
+        clearInterval(checkAndHandleCartCampaignInterval);
+      } else {
+        await checkAndHandleCartCampaign();
       }
     }, 3000);
   };
 
-  const handleCart = () => {
-    // The current checkout button, which might appear and disappear at any point
-    let currentCheckoutButton;
-    let cartFetchInterval;
-    // Check for a cart drawer or popup to appear
-    setInterval(function () {
-      const newCheckoutButton = document.querySelector(checkoutButtonSelector);
-      if (newCheckoutButton && newCheckoutButton !== currentCheckoutButton) {
-        currentCheckoutButton = newCheckoutButton;
-        if (cartFetchInterval) {
-          clearInterval(cartFetchInterval);
-          cartFetchInterval = null;
-        }
-        cartFetchInterval = contiouslyFetchCartAndUpdateCampaign();
-      }
-    }, 300);
-  };
-
   const handleThankYouPage = async () => {
-    const hasCampaign = await fetchCampaign(
-      triggers.thankYou,
-      window.Shopify.checkout.line_items.map((item) => item.product_id)
+    const lineItems = window.Shopify.checkout.line_items.map(
+      (item) => item.product_id
     );
-    if (hasCampaign) showPopup(triggers.thankYou);
+    let recommendations = [];
+    await Promise.all(
+      lineItems.map(async (item) => {
+        let recommendation = await fetch(
+          `/recommendations/products.json?product_id=${item}`
+        );
+        recommendation = await recommendation.json();
+        const newRecommendations = recommendation.products.map((product) => ({
+          id: product.id,
+          price: product.price,
+        }));
+        recommendations = recommendations.concat(newRecommendations);
+      })
+    );
+    popups[targets.thankYou] = await fetchCampaign(
+      targets.thankYou,
+      lineItems,
+      window.Shopify.checkout.total_price,
+      recommendations
+    );
+    const { campaign } = popups[targets.thankYou];
+    if (campaign && campaign.entry === 'onclick') {
+      const interruptEvents = campaign.options.interruptEvents;
+      if (interruptEvents) {
+        addEarlyClickListener(continueShoppingSelector, (event) => {
+          if (!popups[targets.thankYou].displayed) {
+            showPopup(targets.thankYou);
+            event.preventDefault();
+            event.stopPropagation();
+            document.addEventListener(continueOriginalClickEvent.type, () => {
+              event.target.click();
+            });
+          }
+          return true;
+        });
+      } else {
+        const continueShoppingButton = document.querySelector(
+          continueShoppingSelector
+        );
+        continueShoppingButton.addEventListener('click', () => {
+          if (!popups[targets.thankYou].displayed) {
+            showPopup(targets.thankYou);
+            document.addEventListener(continueOriginalClickEvent.type, () => {
+              const continueShoppingButton = document.querySelector(
+                continueShoppingSelector
+              );
+              if (continueShoppingButton) {
+                continueShoppingButton.click();
+              }
+            });
+          }
+        });
+      }
+    } else {
+      addExitIntentListener(targets.thankYou);
+    }
   };
 
   const checkForProductAdd = (url) => {
-    if (url && url.match(/cart\/add/)) document.dispatchEvent(productAddEvent);
+    if (url && url.match(/cart\/add/)) {
+      productsAddedByXHROrFetch = true;
+    }
   };
 
   const initXHRMonkeyPatch = () => {
@@ -225,7 +472,7 @@
       password
     ) {
       checkForProductAdd(url);
-      return oldOpen.apply(this, method, url, async, user, password);
+      return oldOpen.apply(this, [method, url, async, user, password]);
     };
   };
 
@@ -256,14 +503,18 @@
     initFetchMonkeyPatch();
     const path = window.location.pathname;
     const productPage = path.match(/\/products\/[^?/#]+/);
-    const thankYouPage = path.match(/\/thank_you$/);
+    const thankYouPage = path.match(/\/thank_you/);
+    const cartPage = path.match(/\/cart/);
     if (productPage) {
       handleProductPage(productPage);
     } else if (thankYouPage) {
       handleThankYouPage();
+    } else if (cartPage) {
+      handleCart();
     }
-    handleCart();
+    window.SalestormInitialized = true;
   };
-
-  init();
+  if (!window.SalestormInitialized) {
+    init();
+  }
 })();

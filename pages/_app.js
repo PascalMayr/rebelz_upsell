@@ -2,17 +2,20 @@ import fetch from 'node-fetch';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import App from 'next/app';
-import { AppProvider, Frame, Toast } from '@shopify/polaris';
-import { Provider } from '@shopify/app-bridge-react';
+import { AppProvider, Frame } from '@shopify/polaris';
+import { Provider, Toast } from '@shopify/app-bridge-react';
 import Cookies from 'js-cookie';
 import { createContext } from 'react';
 import '@shopify/polaris/dist/styles.css';
 import translations from '@shopify/polaris/locales/en.json';
-import '../styles/_app.css';
+import '../styles/pages/_app.css';
 import Head from 'next/head';
-import { withErrorBoundary } from 'react-error-boundary';
+import * as Sentry from '@sentry/react';
 
-import ErrorCommonFallBack from '../components/error/error_common_fallback';
+import AppError from '../components/error/_app';
+
+// eslint-disable-next-line no-undef
+Sentry.init({ dsn: SENTRY_DSN_DASHBOARD });
 
 const client = new ApolloClient({
   fetch,
@@ -86,7 +89,7 @@ class MyApp extends App {
   }
 }
 
-export default withErrorBoundary(MyApp, {
-  FallbackComponent: ErrorCommonFallBack,
+export default Sentry.withErrorBoundary(MyApp, {
+  fallback: AppError,
 });
 export { AppContext };

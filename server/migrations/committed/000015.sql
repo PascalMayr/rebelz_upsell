@@ -1,0 +1,21 @@
+--! Previous: sha1:54ecc7a7d55b9eca9efae959a1c7fe488835a6a5
+--! Hash: sha1:a783b55a1d2c45df54835326020f952758f43978
+
+-- Enter migration here
+ALTER TABLE campaigns DROP COLUMN IF EXISTS trigger CASCADE;
+
+ALTER TABLE campaigns DROP COLUMN IF EXISTS products CASCADE;
+
+ALTER TABLE campaigns DROP COLUMN IF EXISTS "sellType" CASCADE;
+
+ALTER TABLE campaigns DROP COLUMN IF EXISTS "multiCurrencySupport" CASCADE;
+
+ALTER TABLE campaigns ADD COLUMN template TEXT;
+
+ALTER TABLE campaigns ADD COLUMN strategy JSONB NOT NULL;
+
+ALTER TABLE campaigns ADD COLUMN targets JSONB NOT NULL;
+
+ALTER TABLE campaigns ADD COLUMN selling JSONB NOT NULL;
+
+ALTER TABLE campaigns ADD COLUMN options JSONB NOT NULL;

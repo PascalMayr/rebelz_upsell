@@ -1,45 +1,167 @@
-import {
-  Page,
-  Button,
-  Badge,
-  Card,
-  ResourceList,
-  ResourceItem,
-  TextStyle,
-  Layout,
-  Heading,
-} from '@shopify/polaris';
-import { CircleTickOutlineMinor } from '@shopify/polaris-icons';
-import Image from 'next/image';
-import '../styles/pages_index.css';
+import { Page, Button, Badge, Card, Layout, Tabs } from '@shopify/polaris';
+import '../styles/pages/index.css';
 import NextLink from 'next/link';
-import { useCallback, useState, useContext } from 'react';
+import { useState, useContext, useMemo, useCallback } from 'react';
+import { useQuery } from 'react-apollo';
 
 import toggleStoreEnabled from '../services/toggle_store_enabled';
-import CampaignDeleteModal from '../components/campaign_delete_modal';
 import db from '../server/db';
 import config from '../config';
+import Campaigns from '../components/campaigns';
+import Design from '../components/design';
+import Analytics from '../components/analytics';
+import saveCampaign from '../services/save_campaign';
+import GET_STORE_CURRENCY from '../server/handlers/queries/get_store_currency';
+import restClient from '../server/handlers/restClient';
 
+import DefaultStateNew from './campaigns/new/defaultState';
 import { AppContext } from './_app';
+import 'isomorphic-fetch';
 
 export async function getServerSideProps(ctx) {
   const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [
     ctx.req.cookies.shopOrigin,
   ]);
-  const campaigns = await db.query(
-    'SELECT * FROM campaigns WHERE domain = $1',
+  let campaigns = await db.query(
+    'SELECT * FROM campaigns WHERE domain = $1 AND global = false',
     [ctx.req.cookies.shopOrigin]
   );
-  return { props: { campaigns: campaigns.rows, store: stores.rows[0] } };
+  campaigns = await Promise.all(
+    campaigns.rows.map(async (campaign) => {
+      let associatedViews = await db.query(
+        `SELECT COUNT(*) FROM views WHERE domain = $1 AND campaign_id = $2 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))`,
+        [ctx.req.cookies.shopOrigin, campaign.id]
+      );
+      associatedViews = parseInt(associatedViews.rows[0].count, 10);
+      return {
+        ...campaign,
+        views: associatedViews,
+        sales: 0,
+        revenue: 0,
+      };
+    })
+  );
+  const globalCampaigns = await db.query(
+    'SELECT * FROM campaigns WHERE domain = $1 AND global = true',
+    [ctx.req.cookies.shopOrigin]
+  );
+  await db.query(
+    "DELETE FROM views WHERE date_part('month', views.view_time) <> date_part('month', (SELECT current_timestamp))"
+  );
+  const viewsCount = await db.query(
+    "SELECT COUNT(*) FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))",
+    [ctx.req.cookies.shopOrigin]
+  );
+  const views = await db.query(
+    "SELECT * FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))",
+    [ctx.req.cookies.shopOrigin]
+  );
+  const orders = await db.query(
+    "SELECT * FROM orders WHERE domain = $1 AND date_part('month', order_time) = date_part('month', (SELECT current_timestamp))",
+    [ctx.req.cookies.shopOrigin]
+  );
+  let averageOrderPrice = 0;
+  orders.rows.forEach((order) => {
+    averageOrderPrice += parseFloat(order.total_price);
+  });
+  averageOrderPrice /= orders.rows.length;
+  const store = stores.rows[0];
+
+  const referenceDate = views.rows[0] ? views.rows[0].view_time : new Date();
+
+  const month = referenceDate.getUTCMonth();
+
+  const year = referenceDate.getUTCFullYear();
+
+  const days = [];
+
+  const viewsPerDay = [];
+  const salesPerDay = [];
+  let totalRevenue = 0;
+
+  for (let i = 1; i <= new Date(month, year, 0).getDate(); i++) {
+    const dayDate = new Date(year, month, i);
+    const viewsThisDay = views.rows.filter(
+      (view) => view.view_time.getDate() === i
+    );
+    viewsPerDay.push(viewsThisDay.length);
+    const ordersThisDay = orders.rows.filter(
+      (order) => order.order_time.getDate() === i
+    );
+    let salesThisDay = 0;
+    if (ordersThisDay.length > 0) {
+      await Promise.all(
+        ordersThisDay.map(async (order) => {
+          let draftOrder = await restClient(
+            store.domain,
+            `draft_orders/${order.draft_order_id}`,
+            store.access_token,
+            {
+              method: 'GET',
+            }
+          );
+          draftOrder = await draftOrder.json();
+          if (
+            draftOrder &&
+            draftOrder.draft_order &&
+            draftOrder.draft_order.status === 'completed'
+          ) {
+            campaigns = campaigns.map((campaign) => {
+              if (campaign.id.toString() === order.campaign_id.toString()) {
+                return {
+                  ...campaign,
+                  sales: campaign.sales + 1,
+                  revenue:
+                    parseFloat(campaign.revenue) +
+                    parseFloat(order.value_added),
+                };
+              } else {
+                return campaign;
+              }
+            });
+            salesThisDay += 1;
+            totalRevenue += parseFloat(order.value_added);
+          }
+        })
+      );
+    }
+    salesPerDay.push(salesThisDay);
+    days.push(
+      new Intl.DateTimeFormat([], {
+        day: 'numeric',
+        month: 'short',
+      }).format(dayDate)
+    );
+  }
+
+  return {
+    props: {
+      campaigns,
+      store,
+      averageOrderPrice,
+      totalRevenue,
+      viewsCount: viewsCount.rows[0].count,
+      views: viewsPerDay,
+      sales: salesPerDay,
+      days,
+      global: globalCampaigns.rows.length > 0 ? globalCampaigns.rows[0] : {},
+    },
+  };
 }
 
-const Index = ({ campaigns, store, appName = 'App' }) => {
+const Index = ({
+  store,
+  campaigns,
+  viewsCount,
+  views,
+  sales,
+  days,
+  averageOrderPrice,
+  totalRevenue,
+  global,
+  appName = 'App',
+}) => {
   const context = useContext(AppContext);
-
-  const [persistedCampaigns, setPersistedCampaigns] = useState(campaigns);
-  const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
-  const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
-
   const [enabled, setEnabled] = useState(store.enabled);
   const [toggleEnableLoading, setToggleEnableLoading] = useState(false);
   const toggleEnabled = async () => {
@@ -64,45 +186,64 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
   const priceStatus = store.plan_name ? 'success' : 'new';
   const priceProgress = store.plan_name ? 'complete' : 'incomplete';
 
-  const emptyStateMarkup = (
-    <div className="no-campaigns-container">
-      <div className="no-campaigns-image-section">
-        <Image src="/imagination.svg" alt="me" width="250" height="250" />
-        <Heading>Welcome to Salestorm Thunder ⚡️</Heading>
-        <br/>
-        <p>Follow the steps below to create your first funnel campaign</p>
-        <br />
-      </div>
-      <div className="no-campaigns-stepper-section">
-        <div className="stepper-container">
-          <div className="stepper stepper-checked">
-            <CircleTickOutlineMinor
-              alt="stepper-checkmark"
-              className="stepper-checkmark stepper-checked"
-            />
-            <p>1. Install the app</p>
-          </div>
-          <div className={`stepper ${enabled ? 'stepper-checked' : ''}`}>
-            <CircleTickOutlineMinor
-              alt="stepper-checkmark"
-              className={`stepper-checkmark ${
-                enabled ? 'stepper-checked' : ''
-              }`}
-            />
-            <p>2. Enable the app</p>
-          </div>
-          <div className="stepper">
-            <CircleTickOutlineMinor
-              alt="stepper-checkmark"
-              className="stepper-checkmark"
-            />
-            <p id="stepper-new-cammpaign-link">
-              <NextLink href="/campaigns/new">3. Create a campaign</NextLink>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+  const [tab, setTab] = useState(0);
+
+  const tabs = useMemo(() => [
+    {
+      id: 'campaigns',
+      content: 'Campaigns',
+      accessibilityLabel: 'Campaigns',
+      panelID: 'campaigns-panel',
+    },
+    {
+      id: 'design',
+      content: 'Design',
+      accessibilityLabel: 'Design',
+      panelID: 'design-panel',
+    },
+    {
+      id: 'analytics',
+      content: 'Analytics',
+      accessibilityLabel: 'Analytics',
+      panelID: 'analytics-panel',
+    },
+  ]);
+
+  const { id } = tabs[tab];
+
+  const { data } = useQuery(GET_STORE_CURRENCY);
+  const currencyCode = data && data.shop && data.shop.currencyCode;
+
+  let currencyFormatter;
+  if (currencyCode) {
+    currencyFormatter = new Intl.NumberFormat([], {
+      style: 'currency',
+      currency: currencyCode,
+      currencyDisplay: 'symbol',
+    });
+  }
+
+  const [globalCampaign, setGlobalCampaign] = useState({
+    ...DefaultStateNew,
+    ...global,
+    global: true,
+  });
+
+  const setGlobalCampaignProperty = useCallback(
+    (value, id, state = {}) =>
+      setGlobalCampaign({ ...globalCampaign, [id]: value, ...state }),
+    [globalCampaign]
+  );
+
+  const [saveLoading, setSaveLoading] = useState(false);
+
+  const designContainerClassName = id === 'design' ? '' : 'd-none';
+
+  const filterGlobalCampaign = (filtercampaigns) =>
+    filtercampaigns.filter((filtercampaign) => !filtercampaign.global);
+
+  const [persistedCampaigns, setPersistedCampaigns] = useState(
+    filterGlobalCampaign(campaigns)
   );
 
   return (
@@ -111,20 +252,26 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
       titleMetadata={
         <Badge status={priceStatus} progress={priceProgress}>
           <div className="salestorm-pricing-badge">
-            <NextLink href="/pricing">{`${
-              store.plan_name || config.planNames.free.toUpperCase()
-            } Plan`}</NextLink>
+            <NextLink href="/pricing">
+              {`${store.plan_name || config.planNames.free.toUpperCase()} Plan`}
+            </NextLink>
           </div>
         </Badge>
       }
       primaryAction={
-        <NextLink href="/campaigns/new">
+        <a href="/campaigns/new" className="salestorm-new-campaign-link">
           <Button primary>
             <span className="salestorm-add-campaign">+</span> New Campaign
           </Button>
-        </NextLink>
+        </a>
       }
       secondaryActions={[
+        {
+          content: 'Useful Tips & Readings',
+          disabled: false,
+          url: '/tips',
+          id: 'tips-readings-button',
+        },
         {
           content: 'Upgrade',
           disabled: false,
@@ -155,89 +302,117 @@ const Index = ({ campaigns, store, appName = 'App' }) => {
           <Card>
             <Card.Section title="Total Revenue">
               <p className="salestorm-analytics-subheading">
-                The total impact our app made on your store since.
+                The total impact our App made on your store this month.
               </p>
               <div className="salestorm-analytics-value">
-                <p></p>
+                {currencyFormatter ? currencyFormatter.format(totalRevenue) : 0}
               </div>
             </Card.Section>
           </Card>
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="AOV">
+            <Card.Section title="Upsell AOV">
               <p className="salestorm-analytics-subheading">
-                Average order value increase by since
+                The Average Order Value of your customers trough our App this
+                month.
               </p>
               <div className="salestorm-analytics-value">
-                <p></p>
+                {currencyFormatter
+                  ? currencyFormatter.format(averageOrderPrice)
+                  : 0}
               </div>
             </Card.Section>
           </Card>
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="Funnels enabled">
+            <Card.Section title="Total Views">
               <p className="salestorm-analytics-subheading">
-                Total number of active funnels.
+                Total views used this month.{' '}
+                {!store.plan_name && (
+                  <>
+                    Need some more ?{' '}
+                    <NextLink href="/pricing">Upgrade Now</NextLink>
+                  </>
+                )}
               </p>
               <div className="salestorm-analytics-value">
-                <p></p>
+                {viewsCount} / {store.plan_limit}
               </div>
             </Card.Section>
           </Card>
         </Layout.Section>
       </Layout>
-      <Card>
-        <div className="salestorm-campaigns-overview">
-          <ResourceList
-            resourceName={{ singular: 'campaign', plural: 'campaigns' }}
-            emptyState={emptyStateMarkup}
-            items={persistedCampaigns}
-            renderItem={(campaign) => {
-              const { id, name, published } = campaign;
-              const url = `/campaigns/${id}`;
-
-              return (
-                <ResourceItem
-                  id={id}
-                  url={url}
-                  accessibilityLabel={`View details for ${name}`}
-                  shortcutActions={[
-                    {
-                      content: 'Delete campaign',
-                      destructive: true,
-                      onAction: () => setDeleteModalCampaign(campaign),
-                      size: 'slim',
-                    },
-                  ]}
-                >
-                  <h3 className="campaign-title">
-                    <TextStyle variation="strong">{name}</TextStyle>
-                  </h3>
-                  <Badge status={published ? 'success' : 'attention'}>
-                    {published ? 'Published' : 'Unpublished'}
-                  </Badge>
-                </ResourceItem>
-              );
-            }}
-          />
-        </div>
-        {deleteModalCampaign && (
-          <CampaignDeleteModal
-            campaign={deleteModalCampaign}
-            onClose={closeDeleteModal}
-            removeFromList={(deletedCampaign) =>
-              setPersistedCampaigns(
-                persistedCampaigns.filter(
-                  (persistedCampaign) =>
-                    persistedCampaign.id !== deletedCampaign.id
-                )
-              )
-            }
-          />
-        )}
-      </Card>
+      <Tabs
+        tabs={tabs}
+        selected={tab}
+        onSelect={(selectedTabIndex) => setTab(selectedTabIndex)}
+        fitted
+      />
+      {id === 'campaigns' && (
+        <Campaigns
+          enabled={enabled}
+          persistedCampaigns={persistedCampaigns}
+          setPersistedCampaigns={setPersistedCampaigns}
+          filterGlobalCampaign={filterGlobalCampaign}
+        />
+      )}
+      <div className={designContainerClassName}>
+        <Page
+          title="Create a global Design for all your campaigns."
+          subtitle="Note: Already created campaigns won't be affected."
+          primaryAction={{
+            content: 'Save',
+            loading: saveLoading,
+            onAction: async () => {
+              try {
+                setSaveLoading(true);
+                const savedCampaign = await saveCampaign(globalCampaign);
+                context.setToast({
+                  shown: true,
+                  content: 'Successfully saved global design',
+                  isError: false,
+                });
+                setGlobalCampaign({
+                  ...globalCampaign,
+                  ...savedCampaign.data,
+                });
+              } catch (_error) {
+                context.setToast({
+                  shown: true,
+                  content: 'Global design saving failed',
+                  isError: true,
+                });
+              } finally {
+                setSaveLoading(false);
+              }
+            },
+          }}
+        >
+          <Card>
+            <Card.Section>
+              <Layout>
+                <Layout.Section>
+                  <Design
+                    campaign={globalCampaign}
+                    setCampaignProperty={setGlobalCampaignProperty}
+                  />
+                </Layout.Section>
+              </Layout>
+            </Card.Section>
+          </Card>
+        </Page>
+      </div>
+      {id === 'analytics' && (
+        <Analytics
+          views={views}
+          days={days}
+          sales={sales}
+          campaigns={campaigns}
+          currencyFormatter={currencyFormatter}
+        />
+      )}
     </Page>
   );
 };

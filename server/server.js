@@ -14,17 +14,28 @@ import bodyParser from 'koa-bodyparser';
 import Router from 'koa-router';
 import Cors from '@koa/cors';
 import session from 'koa-session';
+import * as Sentry from '@sentry/node';
 
 import config from '../config';
 
-import db from './db';
 import {
-  createClient,
-  getScriptTagId,
-  getSubscriptionUrl,
-  cancelSubscription,
-  registerWebhooks,
-} from './handlers';
+  sentryErrorMiddleware,
+  sentryRequestMiddleware,
+  sentryTracingMiddleware,
+} from './middleware/sentry';
+import db from './db';
+import { createClient, getScriptTagId, registerWebhooks } from './handlers';
+import countView from './controllers/count_view';
+import createDraftOrder from './controllers/create_draft_order';
+import getMatchingCampaign from './controllers/get_matching_campaign';
+import saveCampaign from './controllers/save_campaign';
+import deleteCampaign from './controllers/delete_campaign';
+import publishCampaign from './controllers/publish_campaign';
+import unpublishCampaign from './controllers/unpublish_campaign';
+import enableStore from './controllers/enable_store';
+import manageSubscription from './controllers/manage_subscription';
+import getCampaigns from './controllers/get_campaigns';
+import duplicateCampaign from './controllers/duplicate_campaign';
 
 dotenv.config();
 
@@ -41,32 +52,20 @@ app.prepare().then(() => {
   const server = new Koa();
   const router = new Router();
 
-  router.post('/api/get-matching-campaign', async (ctx) => {
-    const { shop, trigger, products } = ctx.request.body;
-    const campaigns = await db.query(
-      `SELECT *
-      FROM campaigns
-      INNER JOIN stores ON stores.domain = campaigns.domain
-      WHERE campaigns.domain = $1
-      AND stores.enabled = true
-      AND campaigns.published = true
-      AND campaigns.trigger = $2`,
-      [shop, trigger]
-    );
-    const campaign = campaigns.rows.find((row) => {
-      return row.products.targets.some((targetProduct) =>
-        products.includes(targetProduct.legacyResourceId)
-      );
-    });
-
-    if (campaign) {
-      // TODO: Render popup here
-      ctx.body = { html: campaign.message };
-      ctx.status = 200;
-    } else {
-      ctx.status = 404;
-    }
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    tracesSampleRate: 0.5,
   });
+
+  server.on('error', sentryErrorMiddleware);
+  server.use(sentryRequestMiddleware);
+  server.use(sentryTracingMiddleware);
+
+  router.post('/api/get-matching-campaign', getMatchingCampaign);
+
+  router.post('/api/create-draft-order', createDraftOrder);
+
+  router.post('/api/count-view', countView);
 
   const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET });
 
@@ -96,7 +95,7 @@ app.prepare().then(() => {
       shop,
     ]);
     const store = storeData.rows[0];
-    const configPlan = config.plans.find((p) => p.name === name);
+    const configPlan = config.plans.find((plan) => plan.name === name);
     if (status === 'ACTIVE') {
       await db.query(
         'UPDATE stores SET plan_name = $1, "subscriptionId" = $2, plan_limit = $3 WHERE domain = $4',
@@ -104,7 +103,7 @@ app.prepare().then(() => {
       );
     } else if (store.subscriptionId === subscriptionId) {
       const freePlan = config.plans.find(
-        (p) => p.name === config.planNames.free
+        (plan) => plan.name === config.planNames.free
       );
       await db.query(
         'UPDATE stores SET plan_name = NULL, "subscriptionId" = NULL, plan_limit = $1 WHERE domain = $2',
@@ -150,31 +149,30 @@ app.prepare().then(() => {
           locale,
         } = associatedUser;
         server.context.client = await createClient(shop, accessToken);
-
-        const store = await db.query('SELECT * FROM stores WHERE domain = $1', [
+        const scriptid = await getScriptTagId(ctx);
+        const freePlan = config.plans.find(
+          (plan) => plan.name === config.planNames.free
+        );
+        await db.query(
+          `INSERT INTO stores${db.insertColumns(
+            'domain',
+            'scriptId',
+            'plan_limit',
+            'access_token'
+          )}
+          ON CONFLICT (domain) DO UPDATE SET
+          scriptId = $2,
+          access_token = $4
+          `,
+          [shop, scriptid, freePlan.limit, accessToken]
+        );
+        registerWebhooks(
           shop,
-        ]);
-        if (store.rowCount === 0) {
-          const scriptid = await getScriptTagId(ctx);
-          const freePlan = config.plans.find(
-            (p) => p.name === config.planNames.free
-          );
-          await db.query(
-            `INSERT INTO stores${db.insertColumns(
-              'domain',
-              'scriptId',
-              'plan_limit'
-            )}`,
-            [shop, scriptid, freePlan.limit]
-          );
-          registerWebhooks(
-            shop,
-            accessToken,
-            'APP_SUBSCRIPTIONS_UPDATE',
-            '/webhooks/app_subscriptions/update',
-            ApiVersion.October20
-          );
-        }
+          accessToken,
+          'APP_SUBSCRIPTIONS_UPDATE',
+          '/webhooks/app_subscriptions/update',
+          ApiVersion.October20
+        );
         await db.query(
           `
           INSERT INTO users${db.insertColumns(
@@ -228,136 +226,29 @@ app.prepare().then(() => {
     ctx.res.statusCode = 200;
   });
 
-  router.post('/api/save-campaign', verifyRequest(), async (ctx) => {
-    const {
-      styles,
-      trigger,
-      sellType,
-      name,
-      products,
-      customCSS,
-      customJS,
-      animation,
-      multiCurrencySupport,
-      texts,
-    } = ctx.request.body;
-    let campaign;
-    if (ctx.request.body.id) {
-      campaign = await db.query(
-        'UPDATE campaigns SET styles = $1, trigger = $2, "sellType" = $3, name = $4, products = $5, "customCSS" = $6, "customJS" = $7, animation = $8, "multiCurrencySupport" = $9, texts = $10 WHERE id = $11 RETURNING *',
-        [
-          styles,
-          trigger,
-          sellType,
-          name,
-          products,
-          customCSS,
-          customJS,
-          animation,
-          multiCurrencySupport,
-          texts,
-          ctx.request.body.id,
-        ]
-      );
-    } else {
-      campaign = await db.query(
-        `INSERT INTO campaigns${db.insertColumns(
-          'domain',
-          'styles',
-          'trigger',
-          '"sellType"',
-          'name',
-          'products',
-          '"customCSS"',
-          '"customJS"',
-          'animation',
-          '"multiCurrencySupport"',
-          'texts'
-        )} RETURNING *`,
-        [
-          ctx.session.shop,
-          styles,
-          trigger,
-          sellType,
-          name,
-          products,
-          customCSS,
-          customJS,
-          animation,
-          multiCurrencySupport,
-          texts,
-        ]
-      );
-    }
+  router.post('/api/save-campaign', verifyRequest(), saveCampaign);
 
-    ctx.body = campaign.rows[0];
-    ctx.status = 200;
-  });
+  router.delete('/api/delete-campaign/:id', verifyRequest(), deleteCampaign);
 
-  router.delete('/api/delete-campaign/:id', verifyRequest(), async (ctx) => {
-    await db.query('DELETE FROM campaigns WHERE id = $1 AND domain = $2', [
-      ctx.params.id,
-      ctx.session.shop,
-    ]);
+  router.post('/api/publish-campaign/:id', verifyRequest(), publishCampaign);
 
-    ctx.status = 200;
-  });
+  router.delete(
+    '/api/unpublish-campaign/:id',
+    verifyRequest(),
+    unpublishCampaign
+  );
 
-  router.post('/api/publish-campaign', verifyRequest(), async (ctx) => {
-    await db.query('UPDATE campaigns SET published = true WHERE domain = $1', [
-      ctx.session.shop,
-    ]);
+  router.patch('/api/store/enable', verifyRequest(), enableStore);
 
-    ctx.status = 200;
-  });
+  router.patch('/api/plan', verifyRequest(), manageSubscription);
 
-  router.delete('/api/unpublish-campaign', verifyRequest(), async (ctx) => {
-    await db.query('UPDATE campaigns SET published = false WHERE domain = $1', [
-      ctx.session.shop,
-    ]);
+  router.post('/api/campaigns', verifyRequest(), getCampaigns);
 
-    ctx.status = 200;
-  });
-
-  router.patch('/api/store/enable', verifyRequest(), async (ctx) => {
-    await db.query('UPDATE stores SET enabled = $1 WHERE domain = $2', [
-      ctx.request.body.enabled,
-      ctx.session.shop,
-    ]);
-
-    ctx.status = 200;
-  });
-
-  router.patch('/api/plan', verifyRequest(), async (ctx) => {
-    const { plan } = ctx.request.body;
-    const { shop, accessToken } = ctx.session;
-    const storeData = await db.query('SELECT * FROM stores WHERE domain = $1', [
-      ctx.session.shop,
-    ]);
-    const store = storeData.rows[0];
-    server.context.client = await createClient(shop, accessToken);
-
-    if (store.plan_name === plan) {
-      await cancelSubscription(ctx, store.subscriptionId);
-      const freePlan = config.plans.find(
-        (configPlan) => configPlan.name === config.planNames.free
-      );
-      await db.query(
-        'UPDATE stores SET plan_name = NULL, "subscriptionId" = NULL, plan_limit = $1 WHERE domain = $2',
-        [freePlan.limit, ctx.session.shop]
-      );
-
-      ctx.body = {};
-      ctx.status = 200;
-    } else {
-      const currentPlan = config.plans.find(
-        (configPlan) => configPlan.name === plan
-      );
-      const { confirmationUrl } = await getSubscriptionUrl(ctx, currentPlan);
-
-      ctx.body = { confirmationUrl };
-    }
-  });
+  router.post(
+    '/api/duplicate-campaign/:id',
+    verifyRequest(),
+    duplicateCampaign
+  );
 
   server.use(Cors({ credentials: true }));
   server.use(router.allowedMethods());
