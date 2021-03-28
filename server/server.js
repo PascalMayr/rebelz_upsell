@@ -35,6 +35,7 @@ import countView from './controllers/count_view';
 import createDraftOrder from './controllers/create_draft_order';
 import getMatchingCampaign from './controllers/get_matching_campaign';
 import saveCampaign from './controllers/save_campaign';
+import deleteCampaign from './controllers/delete_campaign';
 
 dotenv.config();
 
@@ -240,14 +241,7 @@ app.prepare().then(() => {
 
   router.post('/api/save-campaign', verifyRequest(), saveCampaign);
 
-  router.delete('/api/delete-campaign/:id', verifyRequest(), async (ctx) => {
-    await db.query('DELETE FROM campaigns WHERE id = $1 AND domain = $2', [
-      ctx.params.id,
-      ctx.session.shop,
-    ]);
-
-    ctx.status = 200;
-  });
+  router.delete('/api/delete-campaign/:id', verifyRequest(), deleteCampaign);
 
   router.post('/api/publish-campaign/:id', verifyRequest(), async (ctx) => {
     await db.query(
