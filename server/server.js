@@ -24,18 +24,18 @@ import {
   sentryTracingMiddleware,
 } from './middleware/sentry';
 import db from './db';
-import {
-  createClient,
-  getScriptTagId,
-  getSubscriptionUrl,
-  cancelSubscription,
-  registerWebhooks,
-} from './handlers';
+import { createClient, getScriptTagId, registerWebhooks } from './handlers';
 import countView from './controllers/count_view';
 import createDraftOrder from './controllers/create_draft_order';
 import getMatchingCampaign from './controllers/get_matching_campaign';
 import saveCampaign from './controllers/save_campaign';
 import deleteCampaign from './controllers/delete_campaign';
+import publishCampaign from './controllers/publish_campaign';
+import unpublishCampaign from './controllers/unpublish_campaign';
+import enableStore from './controllers/enable_store';
+import manageSubscription from './controllers/manage_subscription';
+import getCampaigns from './controllers/get_campaigns';
+import duplicateCampaign from './controllers/duplicate_campaign';
 
 dotenv.config();
 
@@ -226,109 +226,29 @@ app.prepare().then(() => {
     ctx.res.statusCode = 200;
   });
 
-  const createInsertQuery = (body) => {
-    const columns = Object.keys(body).map((key) => `"${key}"`);
-    const query = `INSERT INTO campaigns (${columns.join(
-      ','
-    )}) VALUES (${columns
-      .map((_col, i) => `$${i + 1}`)
-      .join(',')}) RETURNING *`;
-    return query;
-  };
-
-  const getInsertValues = (campaign) =>
-    Object.keys(campaign).map((key) => campaign[key]);
-
   router.post('/api/save-campaign', verifyRequest(), saveCampaign);
 
   router.delete('/api/delete-campaign/:id', verifyRequest(), deleteCampaign);
 
-  router.post('/api/publish-campaign/:id', verifyRequest(), async (ctx) => {
-    await db.query(
-      'UPDATE campaigns SET published = true WHERE id = $1 AND domain = $2',
-      [ctx.params.id, ctx.session.shop]
-    );
+  router.post('/api/publish-campaign/:id', verifyRequest(), publishCampaign);
 
-    ctx.status = 200;
-  });
+  router.delete(
+    '/api/unpublish-campaign/:id',
+    verifyRequest(),
+    unpublishCampaign
+  );
 
-  router.delete('/api/unpublish-campaign/:id', verifyRequest(), async (ctx) => {
-    await db.query(
-      'UPDATE campaigns SET published = false WHERE id = $1 AND domain = $2',
-      [ctx.params.id, ctx.session.shop]
-    );
+  router.patch('/api/store/enable', verifyRequest(), enableStore);
 
-    ctx.status = 200;
-  });
+  router.patch('/api/plan', verifyRequest(), manageSubscription);
 
-  router.patch('/api/store/enable', verifyRequest(), async (ctx) => {
-    await db.query('UPDATE stores SET enabled = $1 WHERE domain = $2', [
-      ctx.request.body.enabled,
-      ctx.session.shop,
-    ]);
+  router.post('/api/campaigns', verifyRequest(), getCampaigns);
 
-    ctx.status = 200;
-  });
-
-  router.patch('/api/plan', verifyRequest(), async (ctx) => {
-    const { plan } = ctx.request.body;
-    const { shop, accessToken } = ctx.session;
-    const storeData = await db.query('SELECT * FROM stores WHERE domain = $1', [
-      ctx.session.shop,
-    ]);
-    const store = storeData.rows[0];
-    server.context.client = await createClient(shop, accessToken);
-
-    if (store.plan_name === plan) {
-      await cancelSubscription(ctx, store.subscriptionId);
-      const freePlan = config.plans.find(
-        (configPlan) => configPlan.name === config.planNames.free
-      );
-      await db.query(
-        'UPDATE stores SET plan_name = NULL, "subscriptionId" = NULL, plan_limit = $1 WHERE domain = $2',
-        [freePlan.limit, ctx.session.shop]
-      );
-
-      ctx.body = {};
-      ctx.status = 200;
-    } else {
-      const currentPlan = config.plans.find(
-        (configPlan) => configPlan.name === plan
-      );
-      const { confirmationUrl } = await getSubscriptionUrl(ctx, currentPlan);
-
-      ctx.body = { confirmationUrl };
-    }
-  });
-
-  router.post('/api/campaigns', verifyRequest(), async (ctx) => {
-    const campaigns = await db.query(
-      'SELECT * FROM campaigns WHERE domain = $1',
-      [ctx.session.shop]
-    );
-    ctx.body = campaigns.rows;
-    ctx.status = 200;
-  });
-
-  router.post('/api/duplicate-campaign/:id', verifyRequest(), async (ctx) => {
-    const existingCampaign = await db.query(
-      'SELECT * FROM campaigns WHERE id = $1 AND domain = $2',
-      [ctx.params.id, ctx.session.shop]
-    );
-    const duplicateCampaign = existingCampaign.rows[0];
-    delete duplicateCampaign.id;
-    duplicateCampaign.published = false;
-    duplicateCampaign.name += ' copy';
-    const insertQuery = createInsertQuery(duplicateCampaign);
-    const inserValues = getInsertValues(duplicateCampaign);
-    await db.query(insertQuery, [...inserValues]);
-    const campaigns = await db.query(
-      'SELECT * FROM campaigns WHERE domain = $1',
-      [ctx.session.shop]
-    );
-    ctx.body = campaigns.rows;
-    ctx.status = 200;
-  });
+  router.post(
+    '/api/duplicate-campaign/:id',
+    verifyRequest(),
+    duplicateCampaign
+  );
 
   server.use(Cors({ credentials: true }));
   server.use(router.allowedMethods());
