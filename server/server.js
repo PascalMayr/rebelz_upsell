@@ -34,6 +34,7 @@ import {
 import countView from './controllers/count_view';
 import createDraftOrder from './controllers/create_draft_order';
 import getMatchingCampaign from './controllers/get_matching_campaign';
+import saveCampaign from './controllers/save_campaign';
 
 dotenv.config();
 
@@ -237,40 +238,7 @@ app.prepare().then(() => {
   const getInsertValues = (campaign) =>
     Object.keys(campaign).map((key) => campaign[key]);
 
-  router.post('/api/save-campaign', verifyRequest(), async (ctx) => {
-    const requestBody = ctx.request.body;
-
-    let campaign;
-
-    const createUpdateArray = (body) => {
-      const id = body.id;
-      delete body.id;
-      return Object.keys(body)
-        .map((key) => body[key])
-        .concat([id]);
-    };
-
-    const createUpdateQuery = (body) => {
-      const keysArray = Object.keys(body);
-      const query = `Update campaigns SET ${keysArray
-        .map((key, index) => `"${key}" = $${index + 1}`)
-        .join(', ')} WHERE id = $${keysArray.length + 1} RETURNING *`;
-      return query;
-    };
-
-    if (requestBody.id) {
-      const updateValues = createUpdateArray(requestBody);
-      campaign = await db.query(createUpdateQuery(requestBody), updateValues);
-    } else {
-      const helper = requestBody;
-      helper.domain = ctx.session.shop;
-      const helperArray = getInsertValues(helper);
-      const query = createInsertQuery(helper);
-      campaign = await db.query(query, [...helperArray]);
-    }
-    ctx.body = campaign.rows[0];
-    ctx.status = 200;
-  });
+  router.post('/api/save-campaign', verifyRequest(), saveCampaign);
 
   router.delete('/api/delete-campaign/:id', verifyRequest(), async (ctx) => {
     await db.query('DELETE FROM campaigns WHERE id = $1 AND domain = $2', [
