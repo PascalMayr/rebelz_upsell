@@ -36,15 +36,15 @@ import enableStore from './controllers/enable_store';
 import manageSubscription from './controllers/manage_subscription';
 import getCampaigns from './controllers/get_campaigns';
 import duplicateCampaign from './controllers/duplicate_campaign';
+import respondOk from './controllers/respond_ok';
+import subscriptionUpdate from './controllers/subscription_update';
 
 dotenv.config();
 
 const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES, NODE_ENV } = process.env;
 const isProduction = NODE_ENV === 'production';
 const port = parseInt(process.env.PORT, 10) || 8081;
-const app = next({
-  dev: !isProduction,
-});
+const app = next({ dev: !isProduction });
 const handle = app.getRequestHandler();
 
 // eslint-disable-next-line promise/catch-or-return
@@ -69,61 +69,19 @@ app.prepare().then(() => {
 
   const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET });
 
-  router.post('/webhooks/customers/redact', webhook, (ctx) => {
-    ctx.body = {};
-    ctx.status = 200;
-  });
+  router.post('/webhooks/customers/redact', respondOk);
 
-  router.post('/webhooks/shop/redact', webhook, (ctx) => {
-    ctx.body = {};
-    ctx.status = 200;
-  });
+  router.post('/webhooks/shop/redact', webhook, respondOk);
 
-  router.post('/webhooks/customers/data_request', webhook, (ctx) => {
-    ctx.body = {};
-    ctx.status = 200;
-  });
+  router.post('/webhooks/customers/data_request', webhook, respondOk);
 
-  router.post('/webhooks/app_subscriptions/update', webhook, async (ctx) => {
-    const shop = ctx.request.headers['x-shopify-shop-domain'];
-    const {
-      name,
-      status,
-      admin_graphql_api_id: subscriptionId,
-    } = ctx.request.body.app_subscription;
-    const storeData = await db.query('SELECT * FROM stores WHERE domain = $1', [
-      shop,
-    ]);
-    const store = storeData.rows[0];
-    const configPlan = config.plans.find((plan) => plan.name === name);
-    if (status === 'ACTIVE') {
-      await db.query(
-        'UPDATE stores SET plan_name = $1, "subscriptionId" = $2, plan_limit = $3 WHERE domain = $4',
-        [name, subscriptionId, configPlan.limit, shop]
-      );
-    } else if (store.subscriptionId === subscriptionId) {
-      const freePlan = config.plans.find(
-        (plan) => plan.name === config.planNames.free
-      );
-      await db.query(
-        'UPDATE stores SET plan_name = NULL, "subscriptionId" = NULL, plan_limit = $1 WHERE domain = $2',
-        [freePlan.limit, shop]
-      );
-    }
-
-    ctx.body = {};
-    ctx.status = 200;
-  });
-
-  server.use(
-    session(
-      {
-        sameSite: 'none',
-        secure: true,
-      },
-      server
-    )
+  router.post(
+    '/webhooks/app_subscriptions/update',
+    webhook,
+    subscriptionUpdate
   );
+
+  server.use(session({ sameSite: 'none', secure: true }, server));
   server.keys = [SHOPIFY_API_SECRET];
   server.use(
     createShopifyAuth({
