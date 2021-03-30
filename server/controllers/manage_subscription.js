@@ -6,13 +6,14 @@ import {
 } from '../handlers';
 
 const manageSubscription = async (ctx) => {
-  const { plan } = ctx.request.body;
-  const { shop, accessToken } = ctx.session;
-  const storeData = await db.query('SELECT * FROM stores WHERE domain = $1', [
-    ctx.session.shop,
-  ]);
-  const store = storeData.rows[0];
-  server.context.client = await createClient(shop, accessToken);
+try {
+    const { plan } = ctx.request.body;
+    const { shop, accessToken } = ctx.session;
+    const storeData = await db.query('SELECT * FROM stores WHERE domain = $1', [
+      ctx.session.shop,
+    ]);
+    const store = storeData.rows[0];
+    ctx.client = await createClient(shop, accessToken);
 
   if (store.plan_name === plan) {
     await cancelSubscription(ctx, store.subscriptionId);
