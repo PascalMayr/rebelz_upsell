@@ -15,7 +15,7 @@ const manageSubscription = async (ctx) => {
       ctx.session.shop,
     ]);
     const store = storeData.rows[0];
-    server.context.client = await createClient(shop, accessToken);
+    ctx.client = await createClient(shop, accessToken);
 
     if (store.plan_name === plan) {
       await cancelSubscription(ctx, store.subscriptionId);
