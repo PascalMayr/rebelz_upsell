@@ -14,6 +14,7 @@ export const sentryErrorMiddleware = (err, ctx) => {
       return Sentry.Handlers.parseRequest(event, ctx.request);
     });
     Sentry.captureException(err);
+    console.error(err);
   });
 };
 
