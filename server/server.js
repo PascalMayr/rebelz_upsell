@@ -16,15 +16,12 @@ import Cors from '@koa/cors';
 import session from 'koa-session';
 import * as Sentry from '@sentry/node';
 
-import config from '../config';
-
 import {
   sentryErrorMiddleware,
   sentryRequestMiddleware,
   sentryTracingMiddleware,
 } from './middleware/sentry';
-import db from './db';
-import { createClient, getScriptTagId, registerWebhooks } from './handlers';
+import shopifyAuth from './middleware/shopify-auth';
 import countView from './controllers/count_view';
 import createDraftOrder from './controllers/create_draft_order';
 import getMatchingCampaign from './controllers/get_matching_campaign';
@@ -41,8 +38,7 @@ import subscriptionUpdate from './controllers/subscription_update';
 
 dotenv.config();
 
-const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES, NODE_ENV } = process.env;
-const isProduction = NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === 'production';
 const port = parseInt(process.env.PORT, 10) || 8081;
 const app = next({ dev: !isProduction });
 const handle = app.getRequestHandler();
@@ -67,7 +63,7 @@ app.prepare().then(() => {
 
   router.post('/api/count-view', countView);
 
-  const webhook = receiveWebhook({ secret: SHOPIFY_API_SECRET });
+  const webhook = receiveWebhook({ secret: process.env.SHOPIFY_API_SECRET });
 
   router.post('/webhooks/customers/redact', respondOk);
 
@@ -82,102 +78,11 @@ app.prepare().then(() => {
   );
 
   server.use(session({ sameSite: 'none', secure: true }, server));
-  server.keys = [SHOPIFY_API_SECRET];
-  server.use(
-    createShopifyAuth({
-      apiKey: SHOPIFY_API_KEY,
-      secret: SHOPIFY_API_SECRET,
-      scopes: [SCOPES],
-
-      async afterAuth(ctx) {
-        // Auth token and shop available in session
-        // Redirect to shop upon auth
-        const {
-          shop,
-          accessToken,
-          associatedUserScope,
-          associatedUser,
-        } = ctx.session;
-        const {
-          id,
-          first_name,
-          last_name,
-          email,
-          account_owner,
-          locale,
-        } = associatedUser;
-        server.context.client = await createClient(shop, accessToken);
-        const scriptid = await getScriptTagId(ctx);
-        const freePlan = config.plans.find(
-          (plan) => plan.name === config.planNames.free
-        );
-        await db.query(
-          `INSERT INTO stores${db.insertColumns(
-            'domain',
-            'scriptId',
-            'plan_limit',
-            'access_token'
-          )}
-          ON CONFLICT (domain) DO UPDATE SET
-          scriptId = $2,
-          access_token = $4
-          `,
-          [shop, scriptid, freePlan.limit, accessToken]
-        );
-        registerWebhooks(
-          shop,
-          accessToken,
-          'APP_SUBSCRIPTIONS_UPDATE',
-          '/webhooks/app_subscriptions/update',
-          ApiVersion.October20
-        );
-        await db.query(
-          `
-          INSERT INTO users${db.insertColumns(
-            'id',
-            'domain',
-            'associated_user_scope',
-            'first_name',
-            'last_name',
-            'email',
-            'account_owner',
-            'locale'
-          )}
-          ON CONFLICT (id) DO UPDATE SET
-          associated_user_scope = $3,
-          first_name = $4,
-          last_name = $5,
-          email = $6,
-          account_owner = $7,
-          locale = $8
-        `,
-          [
-            id,
-            shop,
-            associatedUserScope,
-            first_name,
-            last_name,
-            email,
-            account_owner,
-            locale,
-          ]
-        );
-        ctx.cookies.set('shopOrigin', shop, {
-          httpOnly: false,
-          secure: true,
-          sameSite: 'none',
-        });
-        ctx.redirect('/');
-      },
-    })
-  );
-  server.use(
-    graphQLProxy({
-      version: ApiVersion.October20,
-    })
-  );
-
+  server.keys = [process.env.SHOPIFY_API_SECRET];
+  server.use(createShopifyAuth(shopifyAuth));
+  server.use(graphQLProxy({ version: ApiVersion.October20 }));
   server.use(bodyParser());
+
   router.get('(.*)', verifyRequest(), async (ctx) => {
     await handle(ctx.req, ctx.res);
     ctx.respond = false;
