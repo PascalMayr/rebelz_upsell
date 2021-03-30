@@ -30,7 +30,7 @@ const updateColumnsAndValues = (obj) => {
     .map((key, index) => `"${key}" = $${index + 1}`)
     .join(', ');
 
-  return [columns, values, values.length + 1];
+  return [columns, values, values.length];
 };
 
 const db = {

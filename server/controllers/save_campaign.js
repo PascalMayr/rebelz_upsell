@@ -11,9 +11,8 @@ const saveCampaign = async (ctx) => {
       updateValues,
       updateIdIndex,
     ] = db.updateColumnsAndValues(requestBody);
-    console.log(updateColumns, updateValues, updateIdIndex);
     campaign = await db.query(
-      `UPDATE campaigns SET ${updateColumns} WHERE id = ${updateIdIndex} RETURNING *`,
+      `UPDATE campaigns SET ${updateColumns} WHERE id = $${updateIdIndex} RETURNING *`,
       updateValues
     );
   } else {
