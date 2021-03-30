@@ -5,33 +5,23 @@ const saveCampaign = async (ctx) => {
 
   let campaign;
 
-  const createUpdateArray = (body) => {
-    const id = body.id;
-    delete body.id;
-    return Object.keys(body)
-      .map((key) => body[key])
-      .concat([id]);
-  };
-
-  const createUpdateQuery = (body) => {
-    const keysArray = Object.keys(body);
-    const query = `Update campaigns SET ${keysArray
-      .map((key, index) => `"${key}" = $${index + 1}`)
-      .join(', ')} WHERE id = $${keysArray.length + 1} RETURNING *`;
-    return query;
-  };
-
   if (requestBody.id) {
-    const updateValues = createUpdateArray(requestBody);
-    campaign = await db.query(createUpdateQuery(requestBody), updateValues);
+    const [
+      updateColumns,
+      updateValues,
+      updateIdIndex,
+    ] = db.updateColumnsAndValues(requestBody);
+    console.log(updateColumns, updateValues, updateIdIndex);
+    campaign = await db.query(
+      `UPDATE campaigns SET ${updateColumns} WHERE id = ${updateIdIndex} RETURNING *`,
+      updateValues
+    );
   } else {
-    const helper = requestBody;
-    helper.domain = ctx.session.shop;
-    const inserValues = Object.keys(helper).map((key) => helper[key]);
-    const columns = Object.keys(helper).map((key) => `"${key}"`);
+    requestBody.domain = ctx.session.shop;
+    const columns = Object.keys(requestBody).map((key) => `"${key}"`);
     campaign = await db.query(
       `INSERT INTO campaigns ${db.insertColumns(...columns)}`,
-      [...inserValues]
+      [...Object.values(requestBody)]
     );
   }
   ctx.body = campaign.rows[0];

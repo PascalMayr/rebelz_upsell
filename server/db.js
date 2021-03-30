@@ -21,9 +21,22 @@ const insertColumns = (...cols) => {
   return `(${columns}) VALUES(${dollarValues})`;
 };
 
+const updateColumnsAndValues = (obj) => {
+  const id = obj.id;
+  delete obj.id;
+  const values = Object.values(obj).concat([id]);
+
+  const columns = Object.keys(obj)
+    .map((key, index) => `"${key}" = $${index + 1}`)
+    .join(', ');
+
+  return [columns, values, values.length + 1];
+};
+
 const db = {
   query: (...args) => pool.query(...args),
   insertColumns,
+  updateColumnsAndValues,
 };
 
 export default db;
