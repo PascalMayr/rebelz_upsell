@@ -11,11 +11,11 @@ const templates = {
   firstSale: 'd-9c5ad0df007a4b3db263389648363e28',
 };
 
-const sendMail = async (data, template, variables = {}) => {
+const sendMail = async (data, template, dynamicTemplateData) => {
   const message = {
     from: 'support@salestorm.cc',
     templateId: templates[template],
-    dynamicTemplateData: variables,
+    dynamicTemplateData,
     ...data,
   };
   await sgMail.send(message);
