@@ -47,7 +47,7 @@ const getMatchingCampaign = async (ctx) => {
   const getGQLProductId = (id) => `gid://shopify/Product/${id}`;
 
   campaigns = campaigns.rows.filter(
-    (campaign) => !(campaign.targets.page === requestParams.target)
+    (campaign) => campaign.targets.page === requestParams.target
   );
 
   const campaign = campaigns.find((row) => {
