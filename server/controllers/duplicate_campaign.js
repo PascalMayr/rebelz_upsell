@@ -10,11 +10,11 @@ const duplicateCampaign = async (ctx) => {
   duplicatedCampaign.published = false;
   duplicatedCampaign.name += ' copy';
   const columns = Object.keys(duplicatedCampaign).map((key) => `"${key}"`);
-  const inserValues = Object.keys(duplicatedCampaign).map(
+  const insertValues = Object.keys(duplicatedCampaign).map(
     (key) => duplicatedCampaign[key]
   );
   await db.query(`INSERT INTO campaigns ${db.insertColumns(...columns)}`, [
-    ...inserValues,
+    ...insertValues,
   ]);
   const campaigns = await db.query(
     'SELECT * FROM campaigns WHERE domain = $1',
