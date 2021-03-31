@@ -11,23 +11,17 @@ import GET_PRODUCT from '../handlers/queries/get_product';
 import PRODUCT_IN_COLLECTION from '../handlers/queries/product_in_collection';
 
 const getMatchingCampaign = async (ctx) => {
-  const {
-    shop,
-    target,
-    products,
-    totalPrice,
-    recommendations,
-  } = ctx.request.body;
+  const requestParams = ctx.request.body;
 
   let views = await db.query(
     "SELECT COUNT(*) FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))",
-    [shop]
+    [requestParams.shop]
   );
   views = views.rows[0];
 
   let store = await db.query(
     `SELECT plan_limit, access_token FROM stores WHERE stores.domain = $1`,
-    [shop]
+    [requestParams.shop]
   );
   store = store.rows[0];
 
@@ -36,60 +30,64 @@ const getMatchingCampaign = async (ctx) => {
     return;
   }
 
-  const campaigns = await db.query(
+  let campaigns = await db.query(
     `SELECT *
     FROM campaigns
     INNER JOIN stores ON stores.domain = campaigns.domain
     WHERE campaigns.domain = $1
     AND stores.enabled = true
     AND campaigns.published = true`,
-    [shop]
+    [requestParams.shop]
   );
 
   const accessToken = store.access_token;
 
-  const client = await createClient(shop, accessToken);
+  const client = await createClient(requestParams.shop, accessToken);
 
   const getGQLProductId = (id) => `gid://shopify/Product/${id}`;
 
-  const campaign = campaigns.rows.find((row) => {
+  campaigns = campaigns.rows.filter(
+    (campaign) => !(campaign.targets.page === requestParams.target)
+  );
+
+  const campaign = campaigns.find((row) => {
     const targets = row.targets;
-    return (
-      (targets.page === target &&
-        targets.products.length > 0 &&
-        targets.products.some((targetProduct) =>
-          products.includes(parseInt(targetProduct.legacyResourceId, 10))
-        )) ||
-      (targets.page === target &&
-        targets.collections.length > 0 &&
-        targets.collections.some((targetCollection) => {
-          return products.map(async (product) => {
-            const productID = getGQLProductId(product);
-            const response = await client.query({
-              query: PRODUCT_IN_COLLECTION,
-              variables: {
-                product: productID,
-                collection: targetCollection.id,
-              },
-            });
-            if (response.data) {
-              return response.data.inCollection;
-            } else {
-              throw new Error(
-                `Failed to check if the product ${product} is in collection ${targetCollection.title}(${targetCollection.id}) for store ${shop}`
-              );
-            }
+    const matchesTargetProduct =
+      targets.products.length > 0 &&
+      targets.products.some((targetProduct) =>
+        requestParams.products.includes(
+          parseInt(targetProduct.legacyResourceId, 10)
+        )
+      );
+    const matchesTargetCollection =
+      targets.collections.length > 0 &&
+      targets.collections.some((targetCollection) => {
+        return requestParams.products.map(async (product) => {
+          const productID = getGQLProductId(product);
+          const response = await client.query({
+            query: PRODUCT_IN_COLLECTION,
+            variables: {
+              product: productID,
+              collection: targetCollection.id,
+            },
           });
-        })) ||
-      (targets.collections.length === 0 &&
-        targets.products.length === 0 &&
-        targets.page === target)
-    );
+          if (response.data) {
+            return response.data.inCollection;
+          } else {
+            throw new Error(
+              `Failed to check if the product ${product} is in collection ${targetCollection.title}(${targetCollection.id}) for store ${requestParams.shop}`
+            );
+          }
+        });
+      });
+    const matchesEverything =
+      targets.collections.length === 0 && targets.products.length === 0;
+    return matchesTargetProduct || matchesTargetCollection || matchesEverything;
   });
 
   if (campaign) {
     if (campaign.selling.mode === 'auto') {
-      const filteredRecommendations = recommendations.filter(
+      const filteredRecommendations = requestParams.recommendations.filter(
         (recommendation) =>
           !campaign.selling.excludeProducts.find(
             (excludedProduct) =>
@@ -118,13 +116,13 @@ const getMatchingCampaign = async (ctx) => {
               };
             } else {
               throw new Error(
-                `Failed to fetch product with id ${id} for store ${shop} during get-matching recommendation fetching.`
+                `Failed to fetch product with id ${id} for store ${requestParams.shop} during get-matching recommendation fetching.`
               );
             }
           }
         })
       );
-      if (campaign.strategy.maxNumberOfItems !== '0') {
+      if (parseInt(campaign.strategy.maxNumberOfItems, 10) > 0) {
         campaign.selling.products = campaign.selling.products.slice(
           0,
           parseInt(campaign.strategy.maxNumberOfItems, 10)
@@ -145,7 +143,7 @@ const getMatchingCampaign = async (ctx) => {
             return { ...response.data.product, ...product };
           } else {
             throw new Error(
-              `Failed to fetch product ${title} with id ${id} for store ${shop} during get-matching update.`
+              `Failed to fetch product ${title} with id ${id} for store ${requestParams.shop} during get-matching update.`
             );
           }
         })
@@ -154,7 +152,7 @@ const getMatchingCampaign = async (ctx) => {
     campaign.selling.products = campaign.selling.products.filter((product) => {
       const maxOrderValue = parseFloat(product.strategy.maxOrderValue);
       const minOrderValue = parseFloat(product.strategy.minOrderValue);
-      const comparePrice = parseFloat(totalPrice);
+      const comparePrice = parseFloat(requestParams.totalPrice);
       if (
         (maxOrderValue !== 0 || minOrderValue !== 0) &&
         !isNaN(comparePrice)
