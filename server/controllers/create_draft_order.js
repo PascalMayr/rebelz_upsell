@@ -83,7 +83,7 @@ const createDraftOrder = async (ctx) => {
     }),
   });
   order = await order.json();
-  if (order && order.draft_order) {
+  if (order.draft_order) {
     const addedVariantItem = order.draft_order.line_items.find(
       (lineItem) => lineItem.variant_id === parseInt(variantId, 10)
     );
@@ -109,11 +109,8 @@ const createDraftOrder = async (ctx) => {
       ctx.status = 200;
     }
   } else {
-    const orderCreationError = new Error(
-      `Failed to create an order for ${shop}.`
-    );
-    reportError(orderCreationError);
     ctx.status = 500;
+    throw new Error(`Failed to create an order for ${shop}.`);
   }
 };
 
