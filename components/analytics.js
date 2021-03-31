@@ -78,7 +78,10 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
         options: {
           maintainAspectRatio: false,
         },
-        centerText: `${((salesSum / viewsSum) * 100).toFixed(2)}%`,
+        centerText: `${(
+          (salesSum / (viewsSum > 0 ? viewsSum : 1)) *
+          100
+        ).toFixed(2)}%`,
         plugins: [
           {
             beforeDraw(chart) {
