@@ -19,19 +19,19 @@ const getMatchingCampaign = async (ctx) => {
     recommendations,
   } = ctx.request.body;
 
-  const views = await db.query(
+  let views = await db.query(
     "SELECT COUNT(*) FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))",
     [shop]
   );
+  views = views.rows[0];
 
-  const store = await db.query(
-    `SELECT * FROM stores WHERE stores.domain = $1`,
+  let store = await db.query(
+    `SELECT plan_limit, access_token FROM stores WHERE stores.domain = $1`,
     [shop]
   );
+  store = store.rows[0];
 
-  if (
-    parseInt(views.rows[0].count, 10) >= parseInt(store.rows[0].plan_limit, 10)
-  ) {
+  if (views.count >= store.plan_limit) {
     ctx.status = 404;
     return;
   }
@@ -46,7 +46,7 @@ const getMatchingCampaign = async (ctx) => {
     [shop]
   );
 
-  const accessToken = store.rows[0].access_token;
+  const accessToken = store.access_token;
 
   const client = await createClient(shop, accessToken);
 
