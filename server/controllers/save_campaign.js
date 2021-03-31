@@ -19,7 +19,7 @@ const saveCampaign = async (ctx) => {
     requestBody.domain = ctx.session.shop;
     const columns = Object.keys(requestBody).map((key) => `"${key}"`);
     campaign = await db.query(
-      `INSERT INTO campaigns ${db.insertColumns(...columns)}`,
+      `INSERT INTO campaigns${db.insertColumns(...columns)} RETURNING *`,
       [...Object.values(requestBody)]
     );
   }
