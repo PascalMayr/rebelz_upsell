@@ -56,7 +56,10 @@ const New = (props) => {
     if (campaignToCheck.name === '') {
       message += 'Please set a Campaign Name.\n';
     }
-    if (campaignToCheck.selling.products.length === 0) {
+    if (
+      campaignToCheck.selling.products.length === 0 &&
+      campaignToCheck.selling.mode !== 'auto'
+    ) {
       message +=
         'Please set Products to offer in step 4.) or choose to use the AI mode.\n';
     }
@@ -153,6 +156,7 @@ const New = (props) => {
                 return;
               }
               setSaveLoading(true);
+              console.log(campaign);
               const savedCampaign = await saveCampaign(campaign);
               context.setToast({
                 shown: true,
