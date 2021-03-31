@@ -314,8 +314,7 @@ const Index = ({
           <Card>
             <Card.Section title="Upsell AOV">
               <p className="salestorm-analytics-subheading">
-                The Average Order Value of your customers trough our App this
-                month.
+                The Average Order Value trough our App this month.
               </p>
               <div className="salestorm-analytics-value">
                 {currencyFormatter
