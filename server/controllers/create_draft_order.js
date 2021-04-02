@@ -12,6 +12,7 @@ const createDraftOrder = async (ctx) => {
     id,
     products,
   } = ctx.request.body;
+  const { sellType, mode } = strategy;
   const store = await db.query(
     `SELECT * FROM stores WHERE stores.domain = $1`,
     [shop]
@@ -20,7 +21,6 @@ const createDraftOrder = async (ctx) => {
   const draftOrder = {
     line_items: cart.items.map((item) => ({ ...item, properties: [] })),
   };
-  const { sellType, mode } = strategy;
   if (mode === 'discount') {
     const campaignItem = {
       variant_id: variantId,
