@@ -54,14 +54,14 @@ const New = (props) => {
   const checkForInputError = (campaignToCheck) => {
     let message = '';
     if (campaignToCheck.name === '') {
-      message += 'Please set a Campaign Name.\n';
+      message += 'Please set a Campaign Name. ';
     }
     if (
       campaignToCheck.selling.products.length === 0 &&
       campaignToCheck.selling.mode !== 'auto'
     ) {
       message +=
-        'Please set Products to offer in step 4.) or choose to use the AI mode.\n';
+        'Step 4.) Please set Products to offer or choose the AI mode. ';
     }
     if (message !== '') {
       setError(message);
