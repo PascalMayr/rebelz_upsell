@@ -70,7 +70,11 @@ const New = (props) => {
   };
   const [publishLoading, setPublishLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
-  const title = props.campaign ? 'Update campaign' : 'Create a new campaign';
+  const updateCampaignTitle = 'Update campaign';
+  const newCampaignTitle = 'Create a new campaign';
+  const [title, setTitle] = useState(
+    props.campaign ? updateCampaignTitle : newCampaignTitle
+  );
   const badgeStatus = campaign.published ? 'success' : 'attention';
   const contentStatus = campaign.published ? 'Published' : 'Unpublished';
 
@@ -166,6 +170,7 @@ const New = (props) => {
                 isError: false,
               });
               setCampaign({ ...campaign, ...savedCampaign.data });
+              setTitle(updateCampaignTitle);
             } catch (_error) {
               context.setToast({
                 shown: true,
