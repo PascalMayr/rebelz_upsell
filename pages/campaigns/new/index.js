@@ -160,7 +160,6 @@ const New = (props) => {
                 return;
               }
               setSaveLoading(true);
-              console.log(campaign);
               const savedCampaign = await saveCampaign(campaign);
               context.setToast({
                 shown: true,
