@@ -7,7 +7,7 @@ const countView = async (ctx) => {
       'campaign_id',
       'domain',
       'target_page'
-    )}`,
+    )} ON CONFLICT ON CONSTRAINT campaign_domain_target_date DO UPDATE SET counter = views.counter + 1`,
     [id, shop, target]
   );
   ctx.status = 200;
