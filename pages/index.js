@@ -28,14 +28,19 @@ export async function getServerSideProps(ctx) {
   );
   campaigns = await Promise.all(
     campaigns.rows.map(async (campaign) => {
-      let associatedViews = await db.query(
-        `SELECT COUNT(*) FROM views WHERE domain = $1 AND campaign_id = $2 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))`,
+      let views = await db.query(
+        `SELECT counter FROM views WHERE domain = $1 AND campaign_id = $2 AND date_part('month', views.view_date) = date_part('month', (SELECT current_date))`,
         [ctx.req.cookies.shopOrigin, campaign.id]
       );
-      associatedViews = parseInt(associatedViews.rows[0].count, 10);
+      let viewsCount = 0;
+      if (views.rows.length > 0) {
+        viewsCount = views.rows
+          .map((row) => (row.counter ? parseInt(row.counter, 10) : 0))
+          .reduce((sum, counter) => sum + counter);
+      }
       return {
         ...campaign,
-        views: associatedViews,
+        views: viewsCount,
         sales: 0,
         revenue: 0,
       };
@@ -45,17 +50,16 @@ export async function getServerSideProps(ctx) {
     'SELECT * FROM campaigns WHERE domain = $1 AND global = true',
     [ctx.req.cookies.shopOrigin]
   );
-  await db.query(
-    "DELETE FROM views WHERE date_part('month', views.view_time) <> date_part('month', (SELECT current_timestamp))"
-  );
-  const viewsCount = await db.query(
-    "SELECT COUNT(*) FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))",
-    [ctx.req.cookies.shopOrigin]
-  );
   const views = await db.query(
-    "SELECT * FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))",
+    "SELECT * FROM views WHERE domain = $1 AND date_part('month', views.view_date) = date_part('month', (SELECT current_date))",
     [ctx.req.cookies.shopOrigin]
   );
+  let viewsCount = 0;
+  if (views.rows.length > 0) {
+    viewsCount = views.rows
+      .map((row) => (row.counter ? parseInt(row.counter, 10) : 0))
+      .reduce((sum, counter) => sum + counter);
+  }
   const orders = await db.query(
     "SELECT * FROM orders WHERE domain = $1 AND date_part('month', order_time) = date_part('month', (SELECT current_timestamp))",
     [ctx.req.cookies.shopOrigin]
@@ -67,7 +71,7 @@ export async function getServerSideProps(ctx) {
   averageOrderPrice /= orders.rows.length;
   const store = stores.rows[0];
 
-  const referenceDate = views.rows[0] ? views.rows[0].view_time : new Date();
+  const referenceDate = views.rows[0] ? views.rows[0].view_date : new Date();
 
   const month = referenceDate.getUTCMonth();
 
@@ -81,10 +85,17 @@ export async function getServerSideProps(ctx) {
 
   for (let i = 1; i <= new Date(month, year, 0).getDate(); i++) {
     const dayDate = new Date(year, month, i);
-    const viewsThisDay = views.rows.filter(
-      (view) => view.view_time.getDate() === i
+    let viewsThisDay = views.rows.filter(
+      (view) => view.view_date.getDate() === i
     );
-    viewsPerDay.push(viewsThisDay.length);
+    if (viewsThisDay.length > 0) {
+      viewsThisDay = viewsThisDay
+        .map((view) => (view.counter ? parseInt(view.counter, 10) : 0))
+        .reduce((sum, counter) => sum + counter);
+      viewsPerDay.push(viewsThisDay);
+    } else {
+      viewsPerDay.push(0);
+    }
     const ordersThisDay = orders.rows.filter(
       (order) => order.order_time.getDate() === i
     );
@@ -140,7 +151,7 @@ export async function getServerSideProps(ctx) {
       store,
       averageOrderPrice,
       totalRevenue,
-      viewsCount: viewsCount.rows[0].count,
+      viewsCount,
       views: viewsPerDay,
       sales: salesPerDay,
       days,
@@ -405,6 +416,7 @@ const Index = ({
       </div>
       {id === 'analytics' && (
         <Analytics
+          viewsCount={viewsCount}
           views={views}
           days={days}
           sales={sales}

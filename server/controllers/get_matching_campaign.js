@@ -13,19 +13,23 @@ import PRODUCT_IN_COLLECTION from '../handlers/queries/product_in_collection';
 const getMatchingCampaign = async (ctx) => {
   const requestParams = ctx.request.body;
 
-  let views = await db.query(
-    "SELECT COUNT(*) FROM views WHERE domain = $1 AND date_part('month', views.view_time) = date_part('month', (SELECT current_timestamp))",
+  const views = await db.query(
+    "SELECT * FROM views WHERE domain = $1 AND date_part('month', views.view_date) = date_part('month', (SELECT current_date))",
     [requestParams.shop]
   );
-  views = views.rows[0];
-
+  let viewsCount = 0;
+  if (views.rows.length > 0) {
+    viewsCount = views.rows
+      .map((row) => (row.counter ? parseInt(row.counter, 10) : 0))
+      .reduce((sum, counter) => sum + counter);
+  }
   let store = await db.query(
     `SELECT plan_limit, access_token FROM stores WHERE stores.domain = $1`,
     [requestParams.shop]
   );
   store = store.rows[0];
 
-  if (views.count >= store.plan_limit) {
+  if (viewsCount >= store.plan_limit) {
     ctx.status = 404;
     return;
   }
@@ -153,10 +157,7 @@ const getMatchingCampaign = async (ctx) => {
       const maxOrderValue = parseFloat(product.strategy.maxOrderValue);
       const minOrderValue = parseFloat(product.strategy.minOrderValue);
       const comparePrice = parseFloat(requestParams.totalPrice);
-      if (
-        (maxOrderValue !== 0 || minOrderValue !== 0) &&
-        !isNaN(comparePrice)
-      ) {
+      if ((maxOrderValue > 0 || minOrderValue > 0) && !isNaN(comparePrice)) {
         if (maxOrderValue === 0) {
           return comparePrice >= minOrderValue;
         } else {

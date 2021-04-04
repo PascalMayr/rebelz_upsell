@@ -18,13 +18,18 @@ import Chart from 'chart.js';
 
 import '../styles/components/analytics.css';
 
-const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
+const Analytics = ({
+  views,
+  days,
+  campaigns,
+  currencyFormatter,
+  sales,
+  viewsCount,
+}) => {
   const [sortValue, setSortValue] = useState('REVENUE');
   const [items, setItems] = useState(campaigns);
   const periodRef = useRef();
   const ordersPieRef = useRef();
-  const viewsSum =
-    views.length > 0 ? views.reduce((total, view) => total + view) : 0;
   const salesSum =
     sales.length > 0 ? sales.reduce((total, sale) => total + sale) : 0;
   const viewsColor = '#008060';
@@ -69,7 +74,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
         data: {
           datasets: [
             {
-              data: [viewsSum, salesSum],
+              data: [viewsCount, salesSum],
               backgroundColor: [viewsColor, orderColor],
             },
           ],
@@ -79,7 +84,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
           maintainAspectRatio: false,
         },
         centerText: `${(
-          (salesSum / (viewsSum > 0 ? viewsSum : 1)) *
+          (salesSum / (viewsCount > 0 ? viewsCount : 1)) *
           100
         ).toFixed(2)}%`,
         plugins: [
