@@ -34,7 +34,7 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
           </span>
         </Heading>
         <br />
-        <p>Follow the steps below to create your first funnel campaign</p>
+        <p>Follow the steps below to create your first Upsell or Cross sell funnel.</p>
         <br />
       </div>
       <div className="no-campaigns-stepper-section">
