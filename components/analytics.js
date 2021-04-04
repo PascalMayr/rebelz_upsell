@@ -137,7 +137,7 @@ const Analytics = ({
           </p>
           <br />
           <div className="slaestorm-analytics-chart">
-            <canvas id="myChart" ref={periodRef} />
+            <canvas ref={periodRef} />
           </div>
         </Card.Section>
       </Card>
@@ -151,7 +151,7 @@ const Analytics = ({
               </p>
               <br />
               <div className="slaestorm-analytics-chart">
-                <canvas id="myChart" ref={ordersPieRef} />
+                <canvas ref={ordersPieRef} />
               </div>
             </Card.Section>
           </Card>
