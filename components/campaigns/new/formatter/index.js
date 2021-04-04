@@ -183,7 +183,7 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
     { label: 'Faster', value: 'faster' },
   ];
 
-  const _replayAnimation = () => {
+  const replayAnimation = () => {
     const oldAnimation = campaign.styles.animation;
     setStyleProperty('', 'type');
     setTimeout(() => {
@@ -272,7 +272,7 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
                   value={campaign.styles.animation.speed}
                 />
                 <div className="salestorm-formatter-styles-animation-repeat">
-                  <Button icon={ReplayMinor} primary onClick={_replayAnimation}>
+                  <Button icon={ReplayMinor} primary onClick={replayAnimation}>
                     Replay incoming Animation
                   </Button>
                 </div>

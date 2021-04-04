@@ -70,3 +70,13 @@
   color: rgb(109, 113, 117);
   margin-bottom: 1em;
 }
+
+.salestorm-design-help {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.salestorm-design-help a {
+  text-decoration: none;
+}

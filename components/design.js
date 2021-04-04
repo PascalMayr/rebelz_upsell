@@ -1,5 +1,10 @@
 import { Card, Button, Collapsible } from '@shopify/polaris';
-import { ToolsMajor, ResetMinor } from '@shopify/polaris-icons';
+import {
+  ToolsMajor,
+  ResetMinor,
+  ReplayMinor,
+  ComposeMajor,
+} from '@shopify/polaris-icons';
 import { useState, useEffect } from 'react';
 
 import MobileDesktopSwitchPreview from './popup/preview/mobile_desktop_switch';
@@ -50,6 +55,22 @@ const Design = ({
       });
     }
   }, []);
+  const replayAnimation = () => {
+    const oldAnimation = campaign.styles.animation;
+    setCampaignProperty(
+      { ...campaign.styles, animation: { ...campaign.styles, type: '' } },
+      'styles'
+    );
+    setTimeout(() => {
+      setCampaignProperty(
+        {
+          ...campaign.styles,
+          animation: { ...campaign.styles, type: oldAnimation.type },
+        },
+        'styles'
+      );
+    }, 200);
+  };
   return (
     <Card>
       <Card.Section title={title}>
@@ -112,6 +133,16 @@ const Design = ({
             name="Narrative cold"
             setCampaignProperty={setCampaignProperty}
           />
+        </div>
+      </Card.Section>
+      <Card.Section>
+        <div className="salestorm-design-help">
+          <Button primary icon={ReplayMinor} onClick={replayAnimation}>
+            Replay incoming animation
+          </Button>
+          <a href="mailto:support@salestorm.cc?subject=Design%20Help%20Inquiry">
+            <Button icon={ComposeMajor}>Get Help Designing</Button>
+          </a>
         </div>
       </Card.Section>
       <Card.Section>
