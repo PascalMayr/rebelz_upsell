@@ -19,12 +19,7 @@ import duplicateCampaign from '../services/duplicate_campaign';
 import DeleteModal from './delete_modal';
 import Campaign from './campaign';
 
-const Campaigns = ({
-  enabled,
-  persistedCampaigns,
-  setPersistedCampaigns,
-  filterCampaigns,
-}) => {
+const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
   const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
   const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
   const [sortValue, setSortValue] = useState('DATE_MODIFIED_DESC');
@@ -83,7 +78,7 @@ const Campaigns = ({
           <ResourceList
             resourceName={{ singular: 'campaign', plural: 'campaigns' }}
             emptyState={emptyStateMarkup}
-            items={persistedCampaigns}
+            items={campaigns.filter((campaign) => campaign.deleted === null)}
             sortValue={sortValue}
             onSortChange={(selected) => {
               setSortValue(selected);
@@ -110,9 +105,7 @@ const Campaigns = ({
                         const savedCampaigns = await duplicateCampaign(
                           campaign.id
                         );
-                        setPersistedCampaigns(
-                          filterCampaigns(savedCampaigns.data)
-                        );
+                        setCampaigns(savedCampaigns.data);
                       },
                     },
                     {
@@ -122,15 +115,11 @@ const Campaigns = ({
                         if (published) {
                           await unpublishCampaign(campaign.id);
                           const savedCampaigns = await getCampaigns();
-                          setPersistedCampaigns(
-                            filterCampaigns(savedCampaigns.data)
-                          );
+                          setCampaigns(savedCampaigns.data);
                         } else {
                           await publishCampaign(campaign.id);
                           const savedCampaigns = await getCampaigns();
-                          setPersistedCampaigns(
-                            filterCampaigns(savedCampaigns.data)
-                          );
+                          setCampaigns(savedCampaigns.data);
                         }
                       },
                     },
@@ -154,10 +143,11 @@ const Campaigns = ({
             campaign={deleteModalCampaign}
             onClose={closeDeleteModal}
             removeFromList={(deletedCampaign) =>
-              setPersistedCampaigns(
-                persistedCampaigns.filter(
-                  (persistedCampaign) =>
-                    persistedCampaign.id !== deletedCampaign.id
+              setCampaigns(
+                campaigns.map((campaign) =>
+                  campaign.id === deletedCampaign.id
+                    ? { ...campaign, deleted: new Date() }
+                    : campaign
                 )
               )
             }

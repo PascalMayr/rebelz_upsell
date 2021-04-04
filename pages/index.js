@@ -22,9 +22,10 @@ export async function getServerSideProps(ctx) {
   const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [
     ctx.req.cookies.shopOrigin,
   ]);
-  let campaigns = await db.query('SELECT * FROM campaigns WHERE domain = $1', [
-    ctx.req.cookies.shopOrigin,
-  ]);
+  let campaigns = await db.query(
+    `SELECT * FROM campaigns WHERE domain = $1 AND date_part('month', campaigns.created) = date_part('month', (SELECT current_date))`,
+    [ctx.req.cookies.shopOrigin]
+  );
   campaigns = await Promise.all(
     campaigns.rows.map(async (campaign) => {
       const views = await db.query(
@@ -48,21 +49,21 @@ export async function getServerSideProps(ctx) {
   campaigns = campaigns.map((campaign) => ({
     ...campaign,
     ...{
-      created:
-        campaign.created
-          ? campaign.created.toISOString()
-          : campaign.created,
-      updated:
-        campaign.updated
-          ? campaign.updated.toISOString()
-          : campaign.updated,
-      deleted:
-        campaign.deleted
-          ? campaign.deleted.toString()
-          : campaign.deleted,
+      created: campaign.created
+        ? campaign.created.toISOString()
+        : campaign.created,
+      updated: campaign.updated
+        ? campaign.updated.toISOString()
+        : campaign.updated,
+      deleted: campaign.deleted
+        ? campaign.deleted.toString()
+        : campaign.deleted,
     },
   }));
   const global = campaigns.find((campaign) => campaign.global === true);
+  delete global.views;
+  delete global.sales;
+  delete global.revenue;
   campaigns = campaigns.filter((campaign) => !campaign.global);
   const views = await db.query(
     "SELECT * FROM views WHERE domain = $1 AND date_part('month', views.view_date) = date_part('month', (SELECT current_date))",
@@ -263,15 +264,7 @@ const Index = ({
 
   const designContainerClassName = id === 'design' ? '' : 'd-none';
 
-  const filterCampaigns = (filtercampaigns) =>
-    filtercampaigns.filter(
-      (filtercampaign) =>
-        !filtercampaign.global && filtercampaign.deleted === null
-    );
-
-  const [persistedCampaigns, setPersistedCampaigns] = useState(
-    filterCampaigns(campaigns)
-  );
+  const [persistedCampaigns, setPersistedCampaigns] = useState(campaigns);
 
   return (
     <Page
@@ -379,9 +372,12 @@ const Index = ({
       {id === 'campaigns' && (
         <Campaigns
           enabled={enabled}
-          persistedCampaigns={persistedCampaigns}
-          setPersistedCampaigns={setPersistedCampaigns}
-          filterCampaigns={filterCampaigns}
+          campaigns={persistedCampaigns}
+          setCampaigns={(newCampaigns) => {
+            setPersistedCampaigns(
+              newCampaigns.filter((campaign) => !campaign.global)
+            );
+          }}
         />
       )}
       <div className={designContainerClassName}>
@@ -436,7 +432,7 @@ const Index = ({
           views={views}
           days={days}
           sales={sales}
-          campaigns={campaigns}
+          campaigns={persistedCampaigns}
           currencyFormatter={currencyFormatter}
         />
       )}

@@ -160,7 +160,7 @@ const Analytics = ({
           <Card>
             <Card.Section title="Campaign Performance">
               <p className="salestorm-analytics-subheading">
-                See the best performing campaigns.
+                See the best performing campaigns this month.
               </p>
               <div className="salestorm-campaigns-overview">
                 <ResourceList
