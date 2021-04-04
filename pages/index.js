@@ -22,13 +22,12 @@ export async function getServerSideProps(ctx) {
   const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [
     ctx.req.cookies.shopOrigin,
   ]);
-  let campaigns = await db.query(
-    'SELECT * FROM campaigns WHERE domain = $1 AND global = false',
-    [ctx.req.cookies.shopOrigin]
-  );
+  let campaigns = await db.query('SELECT * FROM campaigns WHERE domain = $1', [
+    ctx.req.cookies.shopOrigin,
+  ]);
   campaigns = await Promise.all(
     campaigns.rows.map(async (campaign) => {
-      let views = await db.query(
+      const views = await db.query(
         `SELECT counter FROM views WHERE domain = $1 AND campaign_id = $2 AND date_part('month', views.view_date) = date_part('month', (SELECT current_date))`,
         [ctx.req.cookies.shopOrigin, campaign.id]
       );
@@ -46,10 +45,25 @@ export async function getServerSideProps(ctx) {
       };
     })
   );
-  const globalCampaigns = await db.query(
-    'SELECT * FROM campaigns WHERE domain = $1 AND global = true',
-    [ctx.req.cookies.shopOrigin]
-  );
+  campaigns = campaigns.map((campaign) => ({
+    ...campaign,
+    ...{
+      created:
+        campaign.created
+          ? campaign.created.toISOString()
+          : campaign.created,
+      updated:
+        campaign.updated
+          ? campaign.updated.toISOString()
+          : campaign.updated,
+      deleted:
+        campaign.deleted
+          ? campaign.deleted.toString()
+          : campaign.deleted,
+    },
+  }));
+  const global = campaigns.find((campaign) => campaign.global === true);
+  campaigns = campaigns.filter((campaign) => !campaign.global);
   const views = await db.query(
     "SELECT * FROM views WHERE domain = $1 AND date_part('month', views.view_date) = date_part('month', (SELECT current_date))",
     [ctx.req.cookies.shopOrigin]
@@ -144,7 +158,6 @@ export async function getServerSideProps(ctx) {
       }).format(dayDate)
     );
   }
-
   return {
     props: {
       campaigns,
@@ -155,7 +168,7 @@ export async function getServerSideProps(ctx) {
       views: viewsPerDay,
       sales: salesPerDay,
       days,
-      global: globalCampaigns.rows.length > 0 ? globalCampaigns.rows[0] : {},
+      global: global ? global : {},
     },
   };
 }
@@ -250,11 +263,14 @@ const Index = ({
 
   const designContainerClassName = id === 'design' ? '' : 'd-none';
 
-  const filterGlobalCampaign = (filtercampaigns) =>
-    filtercampaigns.filter((filtercampaign) => !filtercampaign.global);
+  const filterCampaigns = (filtercampaigns) =>
+    filtercampaigns.filter(
+      (filtercampaign) =>
+        !filtercampaign.global && filtercampaign.deleted === null
+    );
 
   const [persistedCampaigns, setPersistedCampaigns] = useState(
-    filterGlobalCampaign(campaigns)
+    filterCampaigns(campaigns)
   );
 
   return (
@@ -365,7 +381,7 @@ const Index = ({
           enabled={enabled}
           persistedCampaigns={persistedCampaigns}
           setPersistedCampaigns={setPersistedCampaigns}
-          filterGlobalCampaign={filterGlobalCampaign}
+          filterCampaigns={filterCampaigns}
         />
       )}
       <div className={designContainerClassName}>

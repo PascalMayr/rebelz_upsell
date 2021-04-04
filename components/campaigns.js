@@ -23,7 +23,7 @@ const Campaigns = ({
   enabled,
   persistedCampaigns,
   setPersistedCampaigns,
-  filterGlobalCampaign,
+  filterCampaigns,
 }) => {
   const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
   const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
@@ -111,7 +111,7 @@ const Campaigns = ({
                           campaign.id
                         );
                         setPersistedCampaigns(
-                          filterGlobalCampaign(savedCampaigns.data)
+                          filterCampaigns(savedCampaigns.data)
                         );
                       },
                     },
@@ -123,13 +123,13 @@ const Campaigns = ({
                           await unpublishCampaign(campaign.id);
                           const savedCampaigns = await getCampaigns();
                           setPersistedCampaigns(
-                            filterGlobalCampaign(savedCampaigns.data)
+                            filterCampaigns(savedCampaigns.data)
                           );
                         } else {
                           await publishCampaign(campaign.id);
                           const savedCampaigns = await getCampaigns();
                           setPersistedCampaigns(
-                            filterGlobalCampaign(savedCampaigns.data)
+                            filterCampaigns(savedCampaigns.data)
                           );
                         }
                       },

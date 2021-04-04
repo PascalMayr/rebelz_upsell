@@ -6,9 +6,23 @@ export async function getServerSideProps(context) {
   const data = await db.query('SELECT * FROM campaigns WHERE id = $1', [
     context.params.id,
   ]);
+  const campaign = data.rows[0];
   return {
     props: {
-      campaign: data.rows[0],
+      campaign: {
+        ...campaign,
+        ...{
+          created: campaign.created
+            ? campaign.created.toISOString()
+            : campaign.created,
+          updated: campaign.updated
+            ? campaign.updated.toISOString()
+            : campaign.updated,
+          deleted: campaign.deleted
+            ? campaign.deleted.toString()
+            : campaign.deleted,
+        },
+      },
     },
   };
 }

@@ -13,6 +13,7 @@ import {
   ViewMajor,
   OrdersMajor,
   CashDollarMajor,
+  DeleteMajor,
 } from '@shopify/polaris-icons';
 import Chart from 'chart.js';
 
@@ -194,8 +195,15 @@ const Analytics = ({
                   }}
                   sortValue={sortValue}
                   renderItem={(campaign) => {
-                    const { views, sales, revenue, id, name } = campaign;
-                    const url = `/campaigns/${id}`;
+                    const {
+                      views,
+                      sales,
+                      revenue,
+                      id,
+                      name,
+                      deleted,
+                    } = campaign;
+                    const url = deleted ? '' : `/campaigns/${id}`;
                     return (
                       <ResourceItem url={url}>
                         <h3 className="salestorm-campaign-title">
@@ -223,6 +231,12 @@ const Analytics = ({
                             generated
                           </TextStyle>
                         </Badge>
+                        {deleted && (
+                          <Badge status="critical">
+                            <Icon source={DeleteMajor} />
+                            <TextStyle variation="strong">Deleted</TextStyle>
+                          </Badge>
+                        )}
                       </ResourceItem>
                     );
                   }}
