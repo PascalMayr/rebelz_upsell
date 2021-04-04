@@ -102,6 +102,16 @@ html {
   padding-right: 0.75em;
 }
 
+@media only screen and (max-width: 1040px) {
+  .salestorm-campaigns-overview .Polaris-Badge{
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .salestorm-campaigns-overview .Polaris-ResourceItem__Content{
+    flex-wrap: wrap;
+  }
+}
+
 .salestorm-campaigns-overview .Polaris-Badge .Polaris-Icon{
   margin-right: 0.5em;
   height: 1.8rem;
