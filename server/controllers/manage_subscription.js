@@ -4,6 +4,7 @@ import {
   getSubscriptionUrl,
   cancelSubscription,
 } from '../handlers';
+import config from '../../config';
 
 const manageSubscription = async (ctx) => {
   const { plan } = ctx.request.body;
