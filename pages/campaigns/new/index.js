@@ -90,7 +90,7 @@ const New = (props) => {
       ? 'Checkout'
       : 'Continue to Shopping';
   const updated = new Date(campaign.updated);
-  const formatDate = (date) => new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'long', hour12: false }).format(date)
+  const formatDate = (date) => new Intl.DateTimeFormat([], { dateStyle: 'medium', timeStyle: 'long', hour12: false }).format(date)
   return (
     <Page
       title={title}
@@ -138,10 +138,7 @@ const New = (props) => {
                 return;
               }
               setPublishLoading(true);
-              const savedCampaign = await saveCampaign({
-                ...campaign,
-                updated: new Date().toISOString(),
-              });
+              const savedCampaign = await saveCampaign(campaign);
               await publishCampaign(savedCampaign.data.id);
               context.setToast({
                 shown: true,
@@ -172,10 +169,7 @@ const New = (props) => {
                 return;
               }
               setSaveLoading(true);
-              const savedCampaign = await saveCampaign({
-                ...campaign,
-                updated: new Date().toISOString(),
-              });
+              const savedCampaign = await saveCampaign(campaign);
               context.setToast({
                 shown: true,
                 content: campaign.published

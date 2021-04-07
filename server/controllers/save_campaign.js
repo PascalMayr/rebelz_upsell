@@ -6,13 +6,14 @@ const saveCampaign = async (ctx) => {
   let campaign;
 
   if (requestBody.id) {
+    delete requestBody.updated;
     const [
       updateColumns,
       updateValues,
       updateIdIndex,
     ] = db.updateColumnsAndValues(requestBody);
     campaign = await db.query(
-      `UPDATE campaigns SET ${updateColumns} WHERE id = $${updateIdIndex} RETURNING *`,
+      `UPDATE campaigns SET ${updateColumns}, updated = CURRENT_TIMESTAMP WHERE id = $${updateIdIndex} RETURNING *`,
       updateValues
     );
   } else {
