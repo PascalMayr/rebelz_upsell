@@ -22,7 +22,7 @@ import Campaign from './campaign';
 const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
   const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
   const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
-  const [sortValue, setSortValue] = useState('DATE_MODIFIED_DESC');
+  const [sortValue, setSortValue] = useState('NAME');
   const emptyStateMarkup = (
     <div className="no-campaigns-container">
       <div className="no-campaigns-image-section">
@@ -34,7 +34,10 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
           </span>
         </Heading>
         <br />
-        <p>Follow the steps below to create your first Upsell or Cross sell funnel.</p>
+        <p>
+          Follow the steps below to create your first Upsell or Cross sell
+          funnel.
+        </p>
         <br />
       </div>
       <div className="no-campaigns-stepper-section">
@@ -81,9 +84,23 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
             items={campaigns.filter((campaign) => campaign.deleted === null)}
             sortValue={sortValue}
             onSortChange={(selected) => {
+              if (selected === 'NAME') {
+                setCampaigns(
+                  campaigns.sort((campaignA, campaignB) => {
+                    if (campaignA.name > campaignB.name) {
+                      return -1;
+                    }
+                    if (campaignA.name < campaignB.name) {
+                      return 1;
+                    }
+                    return 0;
+                  })
+                );
+              }
               setSortValue(selected);
             }}
-            showHeader={false}
+            sortOptions={[{ label: 'Name', value: 'NAME' }]}
+            showHeader
             renderItem={(campaign) => {
               const { name, published } = campaign;
               const url = `/campaigns/${campaign.id}`;
