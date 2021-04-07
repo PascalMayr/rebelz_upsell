@@ -46,14 +46,15 @@ export async function getServerSideProps(ctx) {
       };
     })
   );
+  const formatDate = (date) => new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long',hour12: false }).format(date)
   campaigns = campaigns.map((campaign) => ({
     ...campaign,
     ...{
       created: campaign.created
-        ? campaign.created.toISOString()
+        ? formatDate(campaign.created)
         : campaign.created,
       updated: campaign.updated
-        ? campaign.updated.toISOString()
+        ? formatDate(campaign.updated)
         : campaign.updated,
       deleted: campaign.deleted
         ? campaign.deleted.toString()

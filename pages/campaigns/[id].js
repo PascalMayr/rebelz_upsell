@@ -7,16 +7,17 @@ export async function getServerSideProps(context) {
     context.params.id,
   ]);
   const campaign = data.rows[0];
+  const formatDate = (date) => new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long',hour12: false }).format(date)
   return {
     props: {
       campaign: {
         ...campaign,
         ...{
           created: campaign.created
-            ? campaign.created.toISOString()
+            ? formatDate(campaign.created)
             : campaign.created,
           updated: campaign.updated
-            ? campaign.updated.toISOString()
+            ? formatDate(campaign.updated)
             : campaign.updated,
           deleted: campaign.deleted
             ? campaign.deleted.toString()

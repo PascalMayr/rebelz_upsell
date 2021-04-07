@@ -77,7 +77,6 @@ const New = (props) => {
   );
   const badgeStatus = campaign.published ? 'success' : 'attention';
   const contentStatus = campaign.published ? 'Published' : 'Unpublished';
-
   const { data } = useQuery(GET_STORE_CURRENCY);
   const currencyCode = data && data.shop && data.shop.currencyCode;
   const saveLabel = campaign.published ? 'Update' : 'Save draft';
@@ -90,10 +89,20 @@ const New = (props) => {
       : campaign.targets.page === 'checkout'
       ? 'Checkout'
       : 'Continue to Shopping';
+  const updated = new Date(campaign.updated);
+  const formatDate = (date) => new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long', hour12: false }).format(date)
   return (
     <Page
       title={title}
-      titleMetadata={<Badge status={badgeStatus}>{contentStatus}</Badge>}
+      titleMetadata={
+        <>
+          <Badge status={badgeStatus}>{contentStatus}</Badge>
+          &nbsp;
+          {campaign.updated && (
+            <Badge status="info">Last updated: {formatDate(updated)}</Badge>
+          )}
+        </>
+      }
       breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
       primaryAction={{
         content: publishLabel,
@@ -129,7 +138,10 @@ const New = (props) => {
                 return;
               }
               setPublishLoading(true);
-              const savedCampaign = await saveCampaign(campaign);
+              const savedCampaign = await saveCampaign({
+                ...campaign,
+                updated: new Date().toISOString(),
+              });
               await publishCampaign(savedCampaign.data.id);
               context.setToast({
                 shown: true,
@@ -160,7 +172,10 @@ const New = (props) => {
                 return;
               }
               setSaveLoading(true);
-              const savedCampaign = await saveCampaign(campaign);
+              const savedCampaign = await saveCampaign({
+                ...campaign,
+                updated: new Date().toISOString(),
+              });
               context.setToast({
                 shown: true,
                 content: campaign.published
