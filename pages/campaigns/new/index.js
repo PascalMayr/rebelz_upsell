@@ -90,7 +90,7 @@ const New = (props) => {
       ? 'Checkout'
       : 'Continue to Shopping';
   const updated = new Date(campaign.updated);
-  const formatDate = (date) => new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long', hour12: false }).format(date)
+  const formatDate = (date) => new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'long', hour12: false }).format(date)
   return (
     <Page
       title={title}
