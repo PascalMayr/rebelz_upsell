@@ -642,6 +642,10 @@ const customElement = (customJS) => `
               if (currentOffer < (offers - 1)) {
                 window.Salestorm.skipOffer(this);
                 this.resetCountdown();
+                if ((currentOffer + 2) === offers) {
+                  const skipOfferButton = this.getElement('#salestorm-popup-skip');
+                  skipOfferButton.classList.add('d-none');
+                }
               } else {
                 this.resetProgressBars();
                 this.resetCountdown();
