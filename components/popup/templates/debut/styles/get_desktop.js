@@ -286,7 +286,7 @@ const getDesktopStyles = (styles, preview) => {
     height: 21px;
     fill: ${styles.popup.color};
   }
-  #salestorm-countdown-container {
+  #salestorm-campaign-text-countdown {
     font-size: 18px;
     text-align: center;
   }

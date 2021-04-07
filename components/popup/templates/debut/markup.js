@@ -98,7 +98,7 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
             </a>
             <div id="salestorm-product-action-container">
               <div
-                id="salestorm-countdown-container"
+                id="salestorm-campaign-text-countdown"
                 dangerouslySetInnerHTML={{
                   __html: processCampaignTextsUtil(campaign.texts.countdown),
                 }}

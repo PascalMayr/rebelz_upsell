@@ -68,12 +68,12 @@ const customElement = (customJS) => `
         break;
         case 'showcountdown':
           if (newValue === 'true') {
-            this.getElement('#salestorm-countdown-container').classList.remove('d-none');
+            this.getElement('#salestorm-campaign-text-countdown').classList.remove('d-none');
             this.getElement('#salestorm-progress-bar-container').classList.remove('d-none');
           } else {
             clearInterval(this.countdownIntervalId);
             this.getElement('#salestorm-progress-bar-container').classList.add('d-none');
-            this.getElement('#salestorm-countdown-container').classList.add('d-none');
+            this.getElement('#salestorm-campaign-text-countdown').classList.add('d-none');
           }
         break;
         case 'countdowntime':
@@ -560,12 +560,13 @@ const customElement = (customJS) => `
         );
         if (
           campaignTextElement &&
-          campaignTextElement.innerHTML !== texts[textKey] &&
-          textKey !== 'countdown'
+          campaignTextElement.innerHTML !== texts[textKey]
         ) {
           campaignTextElement.innerHTML = processCampaignTextsUtil(
             texts[textKey]
           );
+          this.resetCountdown();
+          this.resetProgressBars();
         }
       });
       const product = this.getAttribute('product');
@@ -614,7 +615,7 @@ const customElement = (customJS) => `
     }
 
     startCountdown(initialTime, offers) {
-      const timeElement = this.getElement('#salestorm-campaign-text-countdown');
+      const timeElement = this.getElement('#salestorm-campaign-countdown');
       const time = initialTime.split(':');
       const minutes = parseInt(time[0]);
       const seconds = parseInt(time[1]);
