@@ -62,9 +62,11 @@ export async function getServerSideProps(ctx) {
     },
   }));
   const global = campaigns.find((campaign) => campaign.global === true);
-  delete global.views;
-  delete global.sales;
-  delete global.revenue;
+  if (global) {
+    delete global.views;
+    delete global.sales;
+    delete global.revenue;
+  }
   campaigns = campaigns.filter((campaign) => !campaign.global);
   const views = await db.query(
     "SELECT * FROM views WHERE domain = $1 AND date_part('month', views.view_date) = date_part('month', (SELECT current_date))",
