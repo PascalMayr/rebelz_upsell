@@ -14,3 +14,10 @@
   margin-top: 0.5em;
   margin-bottom: 0.5em;
 }
+
+.salestorm-countodwn-time {
+  display: flex;
+}
+.salestorm-countodwn-time > div:first-child {
+  margin-right: 5px;
+}

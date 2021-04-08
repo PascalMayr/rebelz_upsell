@@ -97,7 +97,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
               </span>
             }
           />
-          <div>
+          <div className='salestorm-countodwn-time'>
             <TextField
               type="number"
               disabled={!showCountdown}
