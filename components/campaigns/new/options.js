@@ -97,18 +97,40 @@ const Options = ({ campaign, setCampaignProperty }) => {
               </span>
             }
           />
-          <TextField
-            type="time"
-            disabled={!showCountdown}
-            value={countdownTime}
-            onChange={(value) =>
-              setCampaignProperty(
-                { ...options, countdownTime: value },
-                'options'
-              )
-            }
-            suffix="Minutes"
-          />
+          <div>
+            <TextField
+              type="number"
+              disabled={!showCountdown}
+              value={countdownTime.split(':')[0]}
+              onChange={(value) =>
+                setCampaignProperty(
+                  {
+                    ...options,
+                    countdownTime: `${value}:${countdownTime.split(':')[1]}`,
+                  },
+                  'options'
+                )
+              }
+              min={0}
+              suffix="Min"
+            />
+            <TextField
+              type="number"
+              disabled={!showCountdown}
+              value={countdownTime.split(':')[1]}
+              onChange={(value) =>
+                setCampaignProperty(
+                  {
+                    ...options,
+                    countdownTime: `${countdownTime.split(':')[0]}:${value}`,
+                  },
+                  'options'
+                )
+              }
+              min={0}
+              suffix="Sec"
+            />
+          </div>
         </div>
       </div>
       <div className="salestorm-options">
