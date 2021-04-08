@@ -67,7 +67,19 @@ class MyApp extends App {
                   s.src="https://client.crisp.chat/l.js";
                   s.async=1;d.getElementsByTagName("head")[0].appendChild(s);
                 </script>
-                <script src='https://cdn.shopify.com/s/javascripts/currencies.js' />
+                <script src="https://cdn.shopify.com/s/javascripts/currencies.js" />
+                <script src="https://www.googletagmanager.com/gtag/js?id=G-3ZNV23GBS4" />
+                <script
+                  async
+                  dangerouslySetInnerHTML={{
+                    __html: `
+                      window.dataLayer = window.dataLayer || [];
+                      function gtag(){dataLayer.push(arguments);}
+                      gtag('js', new Date());
+
+                      gtag('config', 'G-3ZNV23GBS4');`,
+                  }}
+                />
               </Head>
               <Frame>
                 <Component {...pageProps} />
