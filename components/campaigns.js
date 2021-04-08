@@ -119,9 +119,8 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
                       content: 'Duplicate',
                       icon: DuplicateMinor,
                       onAction: async () => {
-                        const savedCampaigns = await duplicateCampaign(
-                          campaign.id
-                        );
+                        await duplicateCampaign(campaign.id);
+                        const savedCampaigns = await getCampaigns();
                         setCampaigns(savedCampaigns.data);
                       },
                     },
