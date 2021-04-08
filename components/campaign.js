@@ -9,6 +9,7 @@ import {
   ShipmentMajor,
   DiscountsMajor,
   GiftCardMajor,
+  WandMajor,
 } from '@shopify/polaris-icons';
 import '../styles/components/campaign.css';
 
@@ -82,6 +83,12 @@ const Campaign = ({ campaign }) => {
           </>
         )}
       </Badge>
+      {campaign.selling.mode === 'auto' && (
+        <Badge>
+          <Icon source={WandMajor} />
+          Auto Reccomendations
+        </Badge>
+      )}
     </>
   );
 };
