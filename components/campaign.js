@@ -27,7 +27,7 @@ const Campaign = ({ campaign }) => {
       </h3>
       <Badge status={publishedStatus}>
         <Icon source={ViewMajor} />
-        {publishedStatusText}
+        {publishedStatusText} - {campaign.views} Views
       </Badge>
       <Badge status="info">
         {page === 'add_to_cart' && (
