@@ -86,7 +86,7 @@ const Campaign = ({ campaign }) => {
       {campaign.selling.mode === 'auto' && (
         <Badge>
           <Icon source={WandMajor} />
-          Auto Reccomendations
+          Auto Recommendations
         </Badge>
       )}
     </>
