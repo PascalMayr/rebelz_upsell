@@ -2,7 +2,7 @@ import sgMail from '@sendgrid/mail';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const templates = {
+export const mailTemplates = {
   planUsed100: 'd-8764f0421f7b4c438c9c75b4155254bd',
   planUsed80: 'd-75d2b67a7c3b4098804493f58d173b37',
   subscriptionChanged: 'd-27cb3447b64a41f49b04a11ad7ec9aee',
@@ -11,12 +11,12 @@ const templates = {
   firstSale: 'd-9c5ad0df007a4b3db263389648363e28',
 };
 
-const sendMail = async (data, template, dynamicTemplateData) => {
+const sendMail = async ({ to, template, templateData }) => {
   const message = {
     from: 'support@salestorm.cc',
-    templateId: templates[template],
-    dynamicTemplateData,
-    ...data,
+    to,
+    templateId: template,
+    dynamicTemplateData: templateData,
   };
   await sgMail.send(message);
 };

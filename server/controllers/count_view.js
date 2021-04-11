@@ -1,5 +1,5 @@
 import db from '../db';
-import sendMail from '../handlers/mail';
+import sendMail, { mailTemplates } from '../handlers/mail';
 
 const countView = async (ctx) => {
   try {
@@ -30,26 +30,22 @@ const countView = async (ctx) => {
     const name = contact.rows[0].first_name;
     if (isNaN(views) && isNaN(limit)) {
       if ((views * 100) / limit === 80) {
-        await sendMail(
-          {
-            to: email,
-          },
-          'planUsed80',
-          {
+        await sendMail({
+          to: email,
+          template: mailTemplates.planUsed80,
+          templateData: {
             name,
-          }
-        );
+          },
+        });
       }
       if ((views * 100) / limit === 100) {
-        await sendMail(
-          {
-            to: email,
-          },
-          'planUsed100',
-          {
+        await sendMail({
+          to: email,
+          template: mailTemplates.planUsed100,
+          templateData: {
             name,
-          }
-        );
+          },
+        });
       }
     }
     ctx.status = 200;
