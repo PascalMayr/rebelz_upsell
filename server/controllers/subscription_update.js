@@ -1,5 +1,5 @@
-import { config } from "dotenv/types";
-import { mailTemplates } from "../handlers/mail";
+import config from '../../config';
+import sendMail, { mailTemplates } from '../handlers/mail';
 
 const subscriptionUpdate = async (ctx) => {
   const shop = ctx.request.headers['x-shopify-shop-domain'];
