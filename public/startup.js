@@ -244,14 +244,14 @@
 
   const addExitIntentListener = (targetPage) => {
     if (window.innerWidth > 950) {
-      document.onmousemove = (event) => {
+      document.addEventListener('mousemove', (event) => {
         if (event.pageY && event.pageY < 150) {
           if (!popups[targetPage].displayed) {
             popups[targetPage].displayed = true;
             showPopup(targetPage);
           }
         }
-      };
+      });
     } else {
       setTimeout(() => {
         if (!popups[targetPage].displayed) {
