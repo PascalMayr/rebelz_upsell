@@ -40,13 +40,12 @@ const getMatchingCampaign = async (ctx) => {
     INNER JOIN stores ON stores.domain = campaigns.domain
     WHERE campaigns.domain = $1
     AND stores.enabled = true
-    AND campaigns.published = true`,
+    AND campaigns.published = true
+    AND campaigns.deleted IS NULL`,
     [requestParams.shop]
   );
 
-  const accessToken = store.access_token;
-
-  const client = await createClient(requestParams.shop, accessToken);
+  const client = await createClient(requestParams.shop, store.access_token);
 
   const getGQLProductId = (id) => `gid://shopify/Product/${id}`;
 
