@@ -254,10 +254,11 @@
       });
     } else {
       setTimeout(() => {
-        if (!popups[targetPage].displayed) {
-          popups[targetPage].displayed = true;
-          showPopup(targetPage);
+        if (popups[targetPage].displayed) {
+          return;
         }
+        popups[targetPage].displayed = true;
+        showPopup(targetPage);
       }, 3000);
     }
   };
