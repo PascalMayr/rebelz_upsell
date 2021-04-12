@@ -53,6 +53,13 @@ const shopifyAuth = {
       '/webhooks/app_subscriptions/update',
       ApiVersion.October20
     );
+    registerWebhooks(
+      shop,
+      accessToken,
+      'DRAFT_ORDERS_UPDATE',
+      '/webhooks/draft_orders/update',
+      ApiVersion.October20
+    );
     await db.query(
       `
       INSERT INTO users${db.insertColumns(

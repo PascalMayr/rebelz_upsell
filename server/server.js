@@ -36,6 +36,7 @@ import processWithNext from './controllers/process_with_next';
 import duplicateCampaign from './controllers/duplicate_campaign';
 import respondOk from './controllers/respond_ok';
 import subscriptionUpdate from './controllers/subscription_update';
+import draftOrdersUpdate from './controllers/draft_orders_update';
 
 dotenv.config();
 
@@ -59,6 +60,7 @@ app.prepare().then(() => {
     webhook,
     subscriptionUpdate
   );
+  router.post('/webhooks/draft_orders/update', webhook, draftOrdersUpdate);
   router.post('/api/get-matching-campaign', getMatchingCampaign);
   router.post('/api/create-draft-order', createDraftOrder);
   router.post('/api/count-view', countView);
