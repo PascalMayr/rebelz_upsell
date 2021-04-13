@@ -1,7 +1,7 @@
 import { Page, Button, Badge, Card, Layout, Tabs } from '@shopify/polaris';
 import '../styles/pages/index.css';
 import NextLink from 'next/link';
-import { useState, useContext, useMemo, useCallback } from 'react';
+import { useState, useContext, useCallback } from 'react';
 import { useQuery } from 'react-apollo';
 
 import toggleStoreEnabled from '../services/toggle_store_enabled';
@@ -12,149 +12,91 @@ import Design from '../components/design';
 import Analytics from '../components/analytics';
 import saveCampaign from '../services/save_campaign';
 import GET_STORE_CURRENCY from '../server/handlers/queries/get_store_currency';
-import restClient from '../server/handlers/restClient';
 
 import DefaultStateNew from './campaigns/new/defaultState';
 import { AppContext } from './_app';
 import 'isomorphic-fetch';
 
 export async function getServerSideProps(ctx) {
-  const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [
+  let store = await db.query('SELECT * FROM stores WHERE domain = $1', [
     ctx.req.cookies.shopOrigin,
   ]);
+  store = store.rows[0];
   let campaigns = await db.query(
     `SELECT * FROM campaigns WHERE domain = $1 AND date_part('month', campaigns.created) = date_part('month', (SELECT current_date))`,
     [ctx.req.cookies.shopOrigin]
   );
-  campaigns = await Promise.all(
-    campaigns.rows.map(async (campaign) => {
-      const views = await db.query(
-        `SELECT counter FROM views WHERE domain = $1 AND campaign_id = $2 AND date_part('month', views.view_date) = date_part('month', (SELECT current_date))`,
-        [ctx.req.cookies.shopOrigin, campaign.id]
-      );
-      let viewsCount = 0;
-      if (views.rows.length > 0) {
-        viewsCount = views.rows
-          .map((row) => (row.counter ? parseInt(row.counter, 10) : 0))
-          .reduce((sum, counter) => sum + counter);
-      }
-      return {
-        ...campaign,
-        views: viewsCount,
-        sales: 0,
-        revenue: 0,
-      };
-    })
+  const globalCampaign =
+    campaigns.rows.find(
+      (campaign) => campaign.id === store.global_campaign_id
+    ) || {};
+  campaigns.rows = campaigns.rows.filter(
+    (campaign) => campaign.id !== store.global_campaign_id
   );
-  const formatDate = (date) => new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'long',hour12: false }).format(date)
-  campaigns = campaigns.map((campaign) => ({
-    ...campaign,
-    ...{
-      created: campaign.created
-        ? formatDate(campaign.created)
-        : campaign.created,
-      updated: campaign.updated
-        ? formatDate(campaign.updated)
-        : campaign.updated,
-      deleted: campaign.deleted
-        ? campaign.deleted.toString()
-        : campaign.deleted,
-    },
-  }));
-  const global = campaigns.find((campaign) => campaign.global === true);
-  if (global) {
-    delete global.views;
-    delete global.sales;
-    delete global.revenue;
-  }
-  campaigns = campaigns.filter((campaign) => !campaign.global);
   const views = await db.query(
     "SELECT * FROM views WHERE domain = $1 AND date_part('month', views.view_date) = date_part('month', (SELECT current_date))",
     [ctx.req.cookies.shopOrigin]
   );
-  let viewsCount = 0;
-  if (views.rows.length > 0) {
-    viewsCount = views.rows
-      .map((row) => (row.counter ? parseInt(row.counter, 10) : 0))
-      .reduce((sum, counter) => sum + counter);
-  }
+  campaigns = campaigns.rows.map((campaign) => {
+    const viewsCount = views.rows
+      .filter((view) => view.campaign_id.toString() === campaign.id.toString())
+      .map((row) => parseInt(row.counter, 10))
+      .reduce((sum, counter) => sum + counter, 0);
+    return {
+      ...campaign,
+      views: viewsCount,
+      sales: 0,
+      revenue: 0,
+    };
+  });
+  const viewsCount = campaigns.reduce(
+    (sum, campaign) => sum + campaign.views,
+    0
+  );
   const orders = await db.query(
-    "SELECT * FROM orders WHERE domain = $1 AND date_part('month', order_time) = date_part('month', (SELECT current_timestamp))",
+    `SELECT *
+    FROM orders
+    WHERE domain = $1
+    AND date_part('month', order_time) = date_part('month', (SELECT current_timestamp))
+    AND status = 'completed'`,
     [ctx.req.cookies.shopOrigin]
   );
   let averageOrderPrice = 0;
-  orders.rows.forEach((order) => {
-    averageOrderPrice += parseFloat(order.total_price);
-  });
-  averageOrderPrice /= orders.rows.length;
-  const store = stores.rows[0];
+  if (orders.rows.length > 0) {
+    averageOrderPrice =
+      orders.rows.reduce((order) => order.total_price) / orders.rows.length;
+  }
+  const totalRevenue = orders.rows.reduce((sum, order) => {
+    const orderValue = parseFloat(order.value_added);
+    const orderCampaign = campaigns.find(
+      (campaign) => campaign.id.toString() === order.campaign_id.toString()
+    );
+    orderCampaign.sales += 1;
+    orderCampaign.revenue += orderValue;
+    return sum + orderValue;
+  }, 0);
 
   const referenceDate = views.rows[0] ? views.rows[0].view_date : new Date();
-
   const month = referenceDate.getUTCMonth();
-
   const year = referenceDate.getUTCFullYear();
-
   const days = [];
 
   const viewsPerDay = [];
   const salesPerDay = [];
-  let totalRevenue = 0;
 
   for (let i = 1; i <= new Date(month, year, 0).getDate(); i++) {
     const dayDate = new Date(year, month, i);
     let viewsThisDay = views.rows.filter(
       (view) => view.view_date.getDate() === i
     );
-    if (viewsThisDay.length > 0) {
-      viewsThisDay = viewsThisDay
-        .map((view) => (view.counter ? parseInt(view.counter, 10) : 0))
-        .reduce((sum, counter) => sum + counter);
-      viewsPerDay.push(viewsThisDay);
-    } else {
-      viewsPerDay.push(0);
-    }
+    viewsThisDay = viewsThisDay
+      .map((view) => parseInt(view.counter, 10))
+      .reduce((sum, counter) => sum + counter, 0);
+    viewsPerDay.push(viewsThisDay);
     const ordersThisDay = orders.rows.filter(
       (order) => order.order_time.getDate() === i
     );
-    let salesThisDay = 0;
-    if (ordersThisDay.length > 0) {
-      await Promise.all(
-        ordersThisDay.map(async (order) => {
-          let draftOrder = await restClient(
-            store.domain,
-            `draft_orders/${order.draft_order_id}`,
-            store.access_token,
-            {
-              method: 'GET',
-            }
-          );
-          draftOrder = await draftOrder.json();
-          if (
-            draftOrder &&
-            draftOrder.draft_order &&
-            draftOrder.draft_order.status === 'completed'
-          ) {
-            campaigns = campaigns.map((campaign) => {
-              if (campaign.id.toString() === order.campaign_id.toString()) {
-                return {
-                  ...campaign,
-                  sales: campaign.sales + 1,
-                  revenue:
-                    parseFloat(campaign.revenue) +
-                    parseFloat(order.value_added),
-                };
-              } else {
-                return campaign;
-              }
-            });
-            salesThisDay += 1;
-            totalRevenue += parseFloat(order.value_added);
-          }
-        })
-      );
-    }
-    salesPerDay.push(salesThisDay);
+    salesPerDay.push(ordersThisDay.length);
     days.push(
       new Intl.DateTimeFormat([], {
         day: 'numeric',
@@ -163,17 +105,19 @@ export async function getServerSideProps(ctx) {
     );
   }
   return {
-    props: {
-      campaigns,
-      store,
-      averageOrderPrice,
-      totalRevenue,
-      viewsCount,
-      views: viewsPerDay,
-      sales: salesPerDay,
-      days,
-      global: global ? global : {},
-    },
+    props: JSON.parse(
+      JSON.stringify({
+        campaigns,
+        store,
+        averageOrderPrice,
+        totalRevenue,
+        viewsCount,
+        views: viewsPerDay,
+        sales: salesPerDay,
+        days,
+        global: globalCampaign,
+      })
+    ),
   };
 }
 
@@ -187,7 +131,6 @@ const Index = ({
   averageOrderPrice,
   totalRevenue,
   global,
-  appName = 'App',
 }) => {
   const context = useContext(AppContext);
   const [enabled, setEnabled] = useState(store.enabled);
@@ -216,7 +159,7 @@ const Index = ({
 
   const [tab, setTab] = useState(0);
 
-  const tabs = useMemo(() => [
+  const tabs = [
     {
       id: 'campaigns',
       content: 'Campaigns',
@@ -235,7 +178,7 @@ const Index = ({
       accessibilityLabel: 'Analytics',
       panelID: 'analytics-panel',
     },
-  ]);
+  ];
 
   const { id } = tabs[tab];
 
@@ -250,6 +193,12 @@ const Index = ({
       currencyDisplay: 'symbol',
     });
   }
+  const formattedTotalRevenue = currencyFormatter
+    ? currencyFormatter.format(totalRevenue)
+    : totalRevenue;
+  const formattedAverageOrderPrice = currencyFormatter
+    ? currencyFormatter.format(averageOrderPrice)
+    : averageOrderPrice;
 
   const [globalCampaign, setGlobalCampaign] = useState({
     ...DefaultStateNew,
@@ -258,15 +207,13 @@ const Index = ({
   });
 
   const setGlobalCampaignProperty = useCallback(
-    (value, id, state = {}) =>
-      setGlobalCampaign({ ...globalCampaign, [id]: value, ...state }),
+    (value, key, state = {}) =>
+      setGlobalCampaign({ ...globalCampaign, [key]: value, ...state }),
     [globalCampaign]
   );
 
   const [saveLoading, setSaveLoading] = useState(false);
-
   const designContainerClassName = id === 'design' ? '' : 'd-none';
-
   const [persistedCampaigns, setPersistedCampaigns] = useState(campaigns);
 
   return (
@@ -313,7 +260,7 @@ const Index = ({
             {enabledButtonStatus}
           </Button>
           <span className="salestorm-enabled-status">
-            {appName} is{' '}
+            App is{' '}
             <strong style={{ color: enabled ? '#50b83c' : 'red' }}>
               {enabledStatus}
             </strong>
@@ -328,7 +275,7 @@ const Index = ({
                 The total impact our App made on your store this month.
               </p>
               <div className="salestorm-analytics-value">
-                {currencyFormatter ? currencyFormatter.format(totalRevenue) : 0}
+                {formattedTotalRevenue}
               </div>
             </Card.Section>
           </Card>
@@ -340,9 +287,7 @@ const Index = ({
                 The Average Order Value trough our App this month.
               </p>
               <div className="salestorm-analytics-value">
-                {currencyFormatter
-                  ? currencyFormatter.format(averageOrderPrice)
-                  : 0}
+                {formattedAverageOrderPrice}
               </div>
             </Card.Section>
           </Card>

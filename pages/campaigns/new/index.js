@@ -21,13 +21,17 @@ import GET_STORE_CURRENCY from '../../../server/handlers/queries/get_store_curre
 import DefaultStateNew from './defaultState';
 
 export async function getServerSideProps(ctx) {
-  const globalCampaigns = await db.query(
-    'SELECT * FROM campaigns WHERE domain = $1 AND global = true',
+  let store = await db.query(
+    'SELECT global_campaign_id FROM stores WHERE domain = $1',
     [ctx.req.cookies.shopOrigin]
   );
-  let globalCampaign =
-    globalCampaigns.rows.length > 0 ? globalCampaigns.rows[0] : {};
-  if (globalCampaign && globalCampaign.id) {
+  store = store.rows[0];
+  let globalCampaign = await db.query(
+    'SELECT * FROM campaigns WHERE domain = $1 AND id = $2',
+    [ctx.req.cookies.shopOrigin, store.global_campaign_id]
+  );
+  globalCampaign = globalCampaign.rows.length > 0 ? globalCampaign.rows[0] : {};
+  if (globalCampaign.id) {
     const { styles, texts, customJS, customCSS, options } = globalCampaign;
     globalCampaign = { styles, texts, customJS, customCSS, options };
   }
