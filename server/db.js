@@ -33,10 +33,13 @@ const updateColumnsAndValues = (obj) => {
   return [columns, values, values.length];
 };
 
+const dateToSQL = (date) => date.toISOString().split('T')[0];
+
 const db = {
   query: (...args) => pool.query(...args),
   insertColumns,
   updateColumnsAndValues,
+  dateToSQL,
 };
 
 export default db;
