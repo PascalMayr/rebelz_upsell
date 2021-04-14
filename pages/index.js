@@ -215,7 +215,6 @@ const Index = ({
   const [globalCampaign, setGlobalCampaign] = useState({
     ...DefaultStateNew,
     ...global,
-    global: true,
   });
 
   const setGlobalCampaignProperty = useCallback(
