@@ -31,7 +31,6 @@ import publishCampaign from './controllers/publish_campaign';
 import unpublishCampaign from './controllers/unpublish_campaign';
 import enableStore from './controllers/enable_store';
 import manageSubscription from './controllers/manage_subscription';
-import getCampaigns from './controllers/get_campaigns';
 import processWithNext from './controllers/process_with_next';
 import duplicateCampaign from './controllers/duplicate_campaign';
 import respondOk from './controllers/respond_ok';
@@ -75,7 +74,6 @@ app.prepare().then(() => {
   );
   router.patch('/api/store/enable', verifyRequest(), enableStore);
   router.patch('/api/plan', verifyRequest(), manageSubscription);
-  router.post('/api/campaigns', verifyRequest(), getCampaigns);
   router.post(
     '/api/duplicate-campaign/:id',
     verifyRequest(),
