@@ -22,7 +22,7 @@ import Campaign from './campaign';
 const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
   const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
   const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
-  const [sortValue, setSortValue] = useState('NAME');
+  const [sortValue, setSortValue] = useState('CREATED_DESC');
   const emptyStateMarkup = (
     <div className="no-campaigns-container">
       <div className="no-campaigns-image-section">
@@ -83,23 +83,44 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
             emptyState={emptyStateMarkup}
             items={campaigns.filter((campaign) => campaign.deleted === null)}
             sortValue={sortValue}
+            sortOptions={[
+              { label: 'Created ↓', value: 'CREATED_DESC' },
+              { label: 'Created ↑', value: 'CREATED_ASC' },
+              { label: 'Name ↓', value: 'NAME_DESC' },
+              { label: 'Name ↑', value: 'NAME_ASC' },
+              { label: '# Views ↓', value: 'VIEWS_DESC' },
+              { label: '# Views ↑', value: 'VIEWS_ASC' },
+            ]}
             onSortChange={(selected) => {
-              if (selected === 'NAME') {
-                setCampaigns(
-                  campaigns.sort((campaignA, campaignB) => {
-                    if (campaignA.name > campaignB.name) {
-                      return -1;
-                    }
-                    if (campaignA.name < campaignB.name) {
-                      return 1;
-                    }
-                    return 0;
-                  })
+              let sortedCampaigns;
+              if (selected === 'NAME_DESC') {
+                sortedCampaigns = campaigns.sort((a, b) =>
+                  a.name.localeCompare(b.name)
                 );
+              } else if (selected === 'NAME_ASC') {
+                sortedCampaigns = campaigns.sort((a, b) =>
+                  b.name.localeCompare(a.name)
+                );
+              } else if (selected === 'VIEWS_DESC') {
+                sortedCampaigns = campaigns.sort((a, b) => {
+                  return b.views - a.views;
+                });
+              } else if (selected === 'VIEWS_ASC') {
+                sortedCampaigns = campaigns.sort((a, b) => {
+                  return a.views - b.views;
+                });
+              } else if (selected === 'CREATED_DESC') {
+                sortedCampaigns = campaigns.sort((a, b) => {
+                  return new Date(b.created) - new Date(a.created);
+                });
+              } else if (selected === 'CREATED_ASC') {
+                sortedCampaigns = campaigns.sort((a, b) => {
+                  return new Date(a.created) - new Date(b.created);
+                });
               }
+              setCampaigns(sortedCampaigns);
               setSortValue(selected);
             }}
-            sortOptions={[{ label: 'Name', value: 'NAME' }]}
             showHeader
             renderItem={(campaign) => {
               const { name, published } = campaign;

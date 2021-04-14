@@ -23,7 +23,11 @@ export async function getServerSideProps(ctx) {
   ]);
   store = store.rows[0];
   let campaigns = await db.query(
-    `SELECT * FROM campaigns WHERE domain = $1 AND date_part('month', campaigns.created) = date_part('month', (SELECT current_date))`,
+    `SELECT *
+    FROM campaigns
+    WHERE domain = $1
+    AND date_part('month', campaigns.created) = date_part('month', (SELECT current_date))
+    ORDER BY created DESC`,
     [ctx.req.cookies.shopOrigin]
   );
   const globalCampaign =
