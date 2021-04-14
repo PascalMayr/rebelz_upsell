@@ -34,15 +34,27 @@ export async function getServerSideProps(ctx) {
   campaignsData.rows = campaignsData.rows.filter(
     (campaign) => campaign.id !== store.global_campaign_id
   );
-  const analyticsStartDate = db.dateToSQL(
-    firstDayOfCurrentBillingCycle(store.subscription_start).toJSDate()
+  const billingCycleStartDate = firstDayOfCurrentBillingCycle(
+    store.subscription_start
   );
+  const beginningOfMonth = DateTime.now().startOf('month');
   const views = await db.query(
     'SELECT * FROM views WHERE domain = $1 AND view_date >= $2 ORDER BY view_date',
-    [ctx.req.cookies.shopOrigin, analyticsStartDate]
+    [
+      ctx.req.cookies.shopOrigin,
+      db.dateToSQL(
+        DateTime.min(billingCycleStartDate, beginningOfMonth).toJSDate()
+      ),
+    ]
+  );
+  const analyticsViews = views.rows.filter(
+    (view) => DateTime.fromJSDate(view.view_date) >= beginningOfMonth
+  );
+  const billingCycleViews = views.rows.filter(
+    (view) => DateTime.fromJSDate(view.view_date) >= billingCycleStartDate
   );
   const campaigns = campaignsData.rows.map((campaign) => {
-    const viewsCount = views.rows
+    const viewsCount = billingCycleViews
       .filter((view) => view.campaign_id.toString() === campaign.id.toString())
       .map((row) => parseInt(row.counter, 10))
       .reduce((sum, counter) => sum + counter, 0);
@@ -62,8 +74,7 @@ export async function getServerSideProps(ctx) {
     FROM orders
     WHERE domain = $1
     AND date_part('month', order_time) = date_part('month', (SELECT current_timestamp))
-    AND status = 'completed'
-    ORDER BY order_time`,
+    AND status = 'completed'`,
     [ctx.req.cookies.shopOrigin]
   );
   let averageOrderPrice = 0;
@@ -87,24 +98,23 @@ export async function getServerSideProps(ctx) {
   const days = [];
   const salesPerDay = [];
   const viewsPerDay = [];
-  let startDay = DateTime.now().startOf('month');
+  let analyticsDay = beginningOfMonth;
   const today = DateTime.now().startOf('day');
+  const ordersOfThisDay = (order) =>
+    DateTime.fromJSDate(order.order_time).startOf('day').toMillis() ===
+    analyticsDay.toMillis();
+  const viewsOfThisDay = (view) =>
+    DateTime.fromJSDate(view.view_date).toMillis() === analyticsDay.toMillis();
   do {
-    days.push(startDay.toJSDate());
-    salesPerDay.push(
-      orders.rows.filter(
-        (order) => DateTime.fromJSDate(order.order_time).startOf('day').toMillis() === startDay.toMillis()
-      ).length
-    );
-    const todaysViews = views.rows.filter(
-      (view) => DateTime.fromJSDate(view.view_date).toMillis() === startDay.toMillis()
-    );
+    days.push(analyticsDay.toJSDate());
+    salesPerDay.push(orders.rows.filter(ordersOfThisDay).length);
+    const todaysViews = analyticsViews.filter(viewsOfThisDay);
     viewsPerDay.push(
       todaysViews.reduce((sum, view) => sum + parseInt(view.counter, 10), 0)
     );
 
-    startDay = startDay.plus({ days: 1 });
-  } while (startDay < today);
+    analyticsDay = analyticsDay.plus({ days: 1 });
+  } while (analyticsDay <= today);
 
   return {
     props: JSON.parse(
