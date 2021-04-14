@@ -6,5 +6,5 @@ export const firstDayOfCurrentBillingCycle = (subscriptionStart) => {
   while (dateToday.diff(compareDate, 'days').days >= 30) {
     compareDate = compareDate.minus({ days: 30 });
   }
-  return compareDate.toJSDate();
+  return compareDate;
 };

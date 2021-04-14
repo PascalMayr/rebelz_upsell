@@ -3,6 +3,7 @@ import '../styles/pages/index.css';
 import NextLink from 'next/link';
 import { useState, useContext, useCallback } from 'react';
 import { useQuery } from 'react-apollo';
+import { DateTime } from 'luxon';
 
 import toggleStoreEnabled from '../services/toggle_store_enabled';
 import db from '../server/db';
@@ -12,32 +13,35 @@ import Design from '../components/design';
 import Analytics from '../components/analytics';
 import saveCampaign from '../services/save_campaign';
 import GET_STORE_CURRENCY from '../server/handlers/queries/get_store_currency';
+import { firstDayOfCurrentBillingCycle } from '../server/utils/subscription';
 
 import DefaultStateNew from './campaigns/new/defaultState';
 import { AppContext } from './_app';
-import 'isomorphic-fetch';
 
 export async function getServerSideProps(ctx) {
   let store = await db.query('SELECT * FROM stores WHERE domain = $1', [
     ctx.req.cookies.shopOrigin,
   ]);
   store = store.rows[0];
-  let campaigns = await db.query(
-    `SELECT * FROM campaigns WHERE domain = $1 AND date_part('month', campaigns.created) = date_part('month', (SELECT current_date))`,
+  const campaignsData = await db.query(
+    `SELECT * FROM campaigns WHERE domain = $1`,
     [ctx.req.cookies.shopOrigin]
   );
   const globalCampaign =
-    campaigns.rows.find(
+    campaignsData.rows.find(
       (campaign) => campaign.id === store.global_campaign_id
     ) || {};
-  campaigns.rows = campaigns.rows.filter(
+  campaignsData.rows = campaignsData.rows.filter(
     (campaign) => campaign.id !== store.global_campaign_id
   );
-  const views = await db.query(
-    "SELECT * FROM views WHERE domain = $1 AND date_part('month', views.view_date) = date_part('month', (SELECT current_date))",
-    [ctx.req.cookies.shopOrigin]
+  const analyticsStartDate = db.dateToSQL(
+    firstDayOfCurrentBillingCycle(store.subscription_start).toJSDate()
   );
-  campaigns = campaigns.rows.map((campaign) => {
+  const views = await db.query(
+    'SELECT * FROM views WHERE domain = $1 AND view_date >= $2 ORDER BY view_date',
+    [ctx.req.cookies.shopOrigin, analyticsStartDate]
+  );
+  const campaigns = campaignsData.rows.map((campaign) => {
     const viewsCount = views.rows
       .filter((view) => view.campaign_id.toString() === campaign.id.toString())
       .map((row) => parseInt(row.counter, 10))
@@ -58,13 +62,17 @@ export async function getServerSideProps(ctx) {
     FROM orders
     WHERE domain = $1
     AND date_part('month', order_time) = date_part('month', (SELECT current_timestamp))
-    AND status = 'completed'`,
+    AND status = 'completed'
+    ORDER BY order_time`,
     [ctx.req.cookies.shopOrigin]
   );
   let averageOrderPrice = 0;
   if (orders.rows.length > 0) {
-    averageOrderPrice =
-      orders.rows.reduce((order) => order.total_price) / orders.rows.length;
+    const totalOrderValue = orders.rows.reduce(
+      (sum, order) => sum + parseInt(order.total_price, 10),
+      0
+    );
+    averageOrderPrice = totalOrderValue / orders.rows.length;
   }
   const totalRevenue = orders.rows.reduce((sum, order) => {
     const orderValue = parseFloat(order.value_added);
@@ -76,34 +84,28 @@ export async function getServerSideProps(ctx) {
     return sum + orderValue;
   }, 0);
 
-  const referenceDate = views.rows[0] ? views.rows[0].view_date : new Date();
-  const month = referenceDate.getUTCMonth();
-  const year = referenceDate.getUTCFullYear();
   const days = [];
-
-  const viewsPerDay = [];
   const salesPerDay = [];
+  const viewsPerDay = [];
+  let startDay = DateTime.now().startOf('month');
+  const today = DateTime.now().startOf('day');
+  do {
+    days.push(startDay.toJSDate());
+    salesPerDay.push(
+      orders.rows.filter(
+        (order) => DateTime.fromJSDate(order.order_time).startOf('day').toMillis() === startDay.toMillis()
+      ).length
+    );
+    const todaysViews = views.rows.filter(
+      (view) => DateTime.fromJSDate(view.view_date).toMillis() === startDay.toMillis()
+    );
+    viewsPerDay.push(
+      todaysViews.reduce((sum, view) => sum + parseInt(view.counter, 10), 0)
+    );
 
-  for (let i = 1; i <= new Date(month, year, 0).getDate(); i++) {
-    const dayDate = new Date(year, month, i);
-    let viewsThisDay = views.rows.filter(
-      (view) => view.view_date.getDate() === i
-    );
-    viewsThisDay = viewsThisDay
-      .map((view) => parseInt(view.counter, 10))
-      .reduce((sum, counter) => sum + counter, 0);
-    viewsPerDay.push(viewsThisDay);
-    const ordersThisDay = orders.rows.filter(
-      (order) => order.order_time.getDate() === i
-    );
-    salesPerDay.push(ordersThisDay.length);
-    days.push(
-      new Intl.DateTimeFormat([], {
-        day: 'numeric',
-        month: 'short',
-      }).format(dayDate)
-    );
-  }
+    startDay = startDay.plus({ days: 1 });
+  } while (startDay < today);
+
   return {
     props: JSON.parse(
       JSON.stringify({
@@ -294,9 +296,9 @@ const Index = ({
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="Total Views">
+            <Card.Section title="Views used">
               <p className="salestorm-analytics-subheading">
-                Total views used this month.{' '}
+                Views used according to your plan.{' '}
                 {!store.plan_name && (
                   <>
                     Need some more ?{' '}

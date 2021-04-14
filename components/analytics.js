@@ -35,12 +35,19 @@ const Analytics = ({
     sales.length > 0 ? sales.reduce((total, sale) => total + sale) : 0;
   const viewsColor = '#008060';
   const orderColor = '#ff7900';
+  const formattedDays = days.map((day) => {
+    return new Intl.DateTimeFormat([], {
+      day: 'numeric',
+      month: 'short',
+      timezone: 'UTC',
+    }).format(new Date(day));
+  });
   useEffect(() => {
     if (periodRef.current) {
       new Chart(periodRef.current, {
         type: 'bar',
         data: {
-          labels: days,
+          labels: formattedDays,
           datasets: [
             {
               data: views,

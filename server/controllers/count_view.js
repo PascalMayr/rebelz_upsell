@@ -21,7 +21,9 @@ const countView = async (ctx) => {
     `SELECT COUNT(*) FROM views WHERE domain = $1 AND view_date >= $2`,
     [
       shop,
-      db.dateToSQL(firstDayOfCurrentBillingCycle(store.subscription_start)),
+      db.dateToSQL(
+        firstDayOfCurrentBillingCycle(store.subscription_start).toJSDate()
+      ),
     ]
   );
   const viewRatio = (views.rows[0].count * 100) / store.plan_limit;
