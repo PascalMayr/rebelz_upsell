@@ -7,6 +7,9 @@ const duplicateCampaign = async (ctx) => {
   );
   const duplicatedCampaign = existingCampaign.rows[0];
   delete duplicatedCampaign.id;
+  duplicatedCampaign.created = new Date();
+  duplicatedCampaign.updated = duplicateCampaign.created;
+  duplicatedCampaign.deleted = null;
   duplicatedCampaign.published = false;
   duplicatedCampaign.name += ' copy';
   const columns = Object.keys(duplicatedCampaign).map((key) => `"${key}"`);
