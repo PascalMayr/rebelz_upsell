@@ -9,10 +9,10 @@ import config from '../../config';
 const manageSubscription = async (ctx) => {
   const { plan } = ctx.request.body;
   const { shop, accessToken } = ctx.session;
-  const storeData = await db.query('SELECT * FROM stores WHERE domain = $1', [
+  let store = await db.query('SELECT * FROM stores WHERE domain = $1', [
     ctx.session.shop,
   ]);
-  const store = storeData.rows[0];
+  store = store.rows[0];
   ctx.client = await createClient(shop, accessToken);
 
   if (store.plan_name === plan) {
