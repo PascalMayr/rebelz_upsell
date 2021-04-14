@@ -4,7 +4,7 @@
   "description": "A Shopify app to boost sales.",
   "scripts": {
     "test": "snyk test",
-    "dev": "npm run graphile migrate && cross-env NODE_ENV=development nodemon ./server/index.js --watch ./server/index.js",
+    "dev": "npm run graphile migrate && cross-env NODE_ENV=development nodemon --inspect ./server/index.js --watch ./server/index.js",
     "serve": "shopify serve --host https://loop.salestorm.cc:8081",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build",
     "start": "cross-env NODE_ENV=production node ./server/index.js",
