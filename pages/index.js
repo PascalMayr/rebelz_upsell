@@ -99,7 +99,7 @@ export async function getServerSideProps(ctx) {
   const salesPerDay = [];
   const viewsPerDay = [];
   let analyticsDay = beginningOfMonth;
-  const today = DateTime.now().startOf('day');
+  const endOfMonth = DateTime.now().endOf('month');
   const ordersOfThisDay = (order) =>
     DateTime.fromJSDate(order.order_time).startOf('day').toMillis() ===
     analyticsDay.toMillis();
@@ -114,7 +114,7 @@ export async function getServerSideProps(ctx) {
     );
 
     analyticsDay = analyticsDay.plus({ days: 1 });
-  } while (analyticsDay <= today);
+  } while (analyticsDay <= endOfMonth);
 
   return {
     props: JSON.parse(
