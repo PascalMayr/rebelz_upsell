@@ -9,25 +9,26 @@ import db from '../db';
 import { createClient } from '../handlers';
 import GET_PRODUCT from '../handlers/queries/get_product';
 import PRODUCT_IN_COLLECTION from '../handlers/queries/product_in_collection';
+import { firstDayOfCurrentBillingCycle } from '../utils/subscription';
 
 const getMatchingCampaign = async (ctx) => {
   const requestParams = ctx.request.body;
 
-  const views = await db.query(
-    "SELECT * FROM views WHERE domain = $1 AND date_part('month', views.view_date) = date_part('month', (SELECT current_date))",
-    [requestParams.shop]
-  );
-  let viewsCount = 0;
-  if (views.rows.length > 0) {
-    viewsCount = views.rows
-      .map((row) => (row.counter ? parseInt(row.counter, 10) : 0))
-      .reduce((sum, counter) => sum + counter);
-  }
   let store = await db.query(
     `SELECT plan_limit, access_token FROM stores WHERE stores.domain = $1`,
     [requestParams.shop]
   );
   store = store.rows[0];
+  const views = await db.query(
+    'SELECT * FROM views WHERE domain = $1 AND view_date >= $2',
+    [
+      requestParams.shop,
+      db.dateToSQL(firstDayOfCurrentBillingCycle(store.subscription_start)),
+    ]
+  );
+  const viewsCount = views.rows
+    .map((row) => parseInt(row.counter, 10))
+    .reduce((sum, counter) => sum + counter, 0);
 
   if (viewsCount >= store.plan_limit) {
     ctx.status = 404;
