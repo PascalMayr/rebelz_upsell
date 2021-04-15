@@ -21,6 +21,7 @@ const Campaign = ({ campaign }) => {
   const publishedStatusText = campaign.published
     ? ' Published'
     : ' Unpublished';
+  const views = campaign.views ? campaign.views : 0;
   return (
     <>
       <h3 className="salestorm-campaign-title">
@@ -28,7 +29,7 @@ const Campaign = ({ campaign }) => {
       </h3>
       <Badge status={publishedStatus}>
         <Icon source={ViewMajor} />
-        {publishedStatusText} - {campaign.views} Views
+        {publishedStatusText} {views} Views
       </Badge>
       <Badge status="info">
         {page === 'add_to_cart' && (
