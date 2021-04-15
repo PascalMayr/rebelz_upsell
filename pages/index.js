@@ -66,10 +66,10 @@ export async function getServerSideProps(ctx) {
     [ctx.req.cookies.shopOrigin]
   );
   let averageOrderPrice = 0;
-  if (orders.rows.length > 0) {
-    averageOrderPrice =
-      orders.rows.reduce((order) => order.total_price) / orders.rows.length;
-  }
+  // if (orders.rows.length > 0) {
+  //   averageOrderPrice =
+  //     orders.rows.reduce((order) => order.total_price) / orders.rows.length;
+  // }
   const totalRevenue = orders.rows.reduce((sum, order) => {
     const orderValue = parseFloat(order.value_added);
     const orderCampaign = campaigns.find(

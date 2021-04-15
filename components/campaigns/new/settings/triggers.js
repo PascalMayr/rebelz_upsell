@@ -17,16 +17,16 @@ const TriggerSettings = ({ campaign, setCampaignProperty }) => {
     });
   };
   const targetsPage = campaign.targets.page;
-  const explanation = `Customers will see this campaign <strong>${
-    targetsPage === 'add_to_cart'
-      ? 'on the Product page'
-      : targetsPage === 'checkout'
-      ? 'on the Cart page'
-      : 'after purchasing on the Thank you page'
-  }</strong> on the specified target products or collections. If you haven't selected products or collections than the campaign will be shown for every product in your store.${
-    targetsPage !== 'thank_you'
-      ? '<strong> To create Upselling Campaigns you need to specify Target Products.</strong>'
-      : ''
+  let targetsPageText = 'after purchasing on the Thank you page';
+  if (targetsPage === 'add_to_cart') {
+    targetsPageText = 'on the Product page';
+  } else if (targetsPage === 'checkout') {
+    targetsPageText = 'on the Cart page';
+  }
+  const explanation = `Customers will see this campaign <strong>${targetsPageText}</strong> on the specified target products or collections. If you haven't selected products or collections than the campaign will be shown for every product in your store.${
+    targetsPage === 'thank_you'
+      ? ''
+      : '<strong> To create Upselling Campaigns you need to specify Target Products.</strong>'
   }`;
   return (
     <>

@@ -46,28 +46,30 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
     });
   };
   const targetsPage = campaign.targets.page;
-  const explanation =
-    mode === 'discount'
-      ? 'Set a <strong>fix</strong> or <strong>percentage</strong> discount.'
-      : mode === 'free_shipping'
-      ? `Offer Free Shipping <strong>on the whole order.</strong> The product offered will be <strong>${
-          strategy.sellType === 'upsell' ? 'replaced in' : 'added to'
-        } the customers cart.</strong>`
-      : 'Offer a gift to your customers to improve your Brand Recognition.';
+  let explanation =
+    'Offer a gift to your customers to improve your Brand Recognition.';
+  if (mode === 'discount') {
+    explanation =
+      'Set a <strong>fix</strong> or <strong>percentage</strong> discount.';
+  } else if (mode === 'free_shipping') {
+    explanation = `Offer Free Shipping <strong>on the whole order.</strong> The product offered will be <strong>${
+      strategy.sellType === 'upsell' ? 'replaced in' : 'added to'
+    } the customers cart.</strong>`;
+  }
+  let settingsExplanation = '';
+  if (mode !== 'gift') {
+    settingsExplanation = `Upselling means <strong>replacing</strong> the offered product with <strong>target products</strong> while Cross Selling means <strong>adding</strong> products to your customers cart. ${
+      targetsPage === 'thank_you'
+        ? ''
+        : '<strong>To create Upselling Campaigns you need to specify Target Products in Step 1</strong>'
+    }`;
+  }
   return (
     <>
       <div
         className="salestorm-settings-explanation"
         dangerouslySetInnerHTML={{
-          __html: `${explanation} Leave the min/max order value blank or zero if you don't want to set it. ${
-            mode !== 'gift'
-              ? `Upselling means <strong>replacing</strong> the offered product with <strong>target products</strong> while Cross Selling means <strong>adding</strong> products to your customers cart. ${
-                  targetsPage !== 'thank_you'
-                    ? '<strong>To create Upselling Campaigns you need to specify Target Products in Step 1</strong>'
-                    : ''
-                }`
-              : ''
-          }`,
+          __html: `${explanation} Leave the min/max order value blank or zero if you don't want to set it. ${settingsExplanation}`,
         }}
       />
       <Settings

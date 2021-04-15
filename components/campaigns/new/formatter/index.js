@@ -197,7 +197,7 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
         <div id="salestorm-formatter">
           {id === 'texts' && (
             <div className="salestorm-texts">
-              {Object.keys(campaign.texts).map((textKey, index) => {
+              {Object.keys(campaign.texts).map((textKey) => {
                 const label = Object.keys(
                   startCasify({ [textKey]: textKey })
                 )[0];

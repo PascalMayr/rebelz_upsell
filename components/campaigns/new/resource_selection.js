@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { ResourcePicker } from '@shopify/app-bridge-react';
 import {
   Button,
@@ -10,6 +10,7 @@ import {
 import { MobileCancelMajor, ImageMajor } from '@shopify/polaris-icons';
 import { ApolloConsumer } from 'react-apollo';
 
+import { AppContext } from '../../../pages/_app';
 import '../../../styles/components/campaigns/new/resource_selection.css';
 import GET_PRODUCT from '../../../server/handlers/queries/get_product';
 import GET_COLLECTION from '../../../server/handlers/queries/get_collection';
@@ -25,6 +26,7 @@ const ResourceSelectionCampaign = ({
   showStrategyDetails,
   targets,
 }) => {
+  const context = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { label } = buttonProps;
@@ -146,55 +148,52 @@ const ResourceSelectionCampaign = ({
             onCancel={() => setOpen(false)}
             onSelection={async (selectPayload) => {
               setOpen(false);
-              if (resourcePickerProps.resourceType === 'Product') {
-                setLoading(true);
-                const products = await Promise.all(
-                  selectPayload.selection.map(async (resource) => {
-                    const { id, title } = resource;
-                    try {
+              try {
+                if (resourcePickerProps.resourceType === 'Product') {
+                  setLoading(true);
+                  const products = await Promise.all(
+                    selectPayload.selection.map(async (resource) => {
                       const product = await client.query({
                         query: GET_PRODUCT,
                         variables: {
-                          id,
+                          id: resource.id,
                         },
                       });
                       const productData = product.data.product;
-
                       productData.strategy = strategy;
 
                       return productData;
-                    } catch (error) {
-                      console.log(
-                        `Failed to load product data for product: ${title}`
-                      );
-                    }
-                  })
-                );
-                setLoading(false);
-                onResourceMutation(products);
-              } else {
-                setLoading(true);
-                const collections = await Promise.all(
-                  selectPayload.selection.map(async (resource) => {
-                    const { id, title } = resource;
-                    try {
+                    })
+                  );
+                  setLoading(false);
+                  onResourceMutation(products);
+                } else {
+                  setLoading(true);
+                  const collections = await Promise.all(
+                    selectPayload.selection.map(async (resource) => {
                       const collection = await client.query({
                         query: GET_COLLECTION,
                         variables: {
-                          id,
+                          id: resource.id,
                         },
                       });
                       const collectionData = collection.data.collection;
+
                       return collectionData;
-                    } catch (error) {
-                      console.log(
-                        `Failed to load collection data for collection: ${title}`
-                      );
-                    }
-                  })
-                );
+                    })
+                  );
+                  setLoading(false);
+                  onResourceMutation(collections);
+                }
+              } catch (e) {
+                context.setToast({
+                  shown: true,
+                  content: 'Failed to load details',
+                  isError: true,
+                });
+                throw e;
+              } finally {
                 setLoading(false);
-                onResourceMutation(collections);
               }
             }}
           />

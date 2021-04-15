@@ -6,12 +6,12 @@ const EntrySettings = ({ campaign, setCampaignProperty }) => {
   };
   const targetsEntry = campaign.targets.entry;
   const targetsPage = campaign.targets.page;
-  const targetPageButton =
-    targetsPage === 'add_to_cart'
-      ? 'Add to cart'
-      : targetsPage === 'checkout'
-      ? 'Checkout'
-      : 'Continue shopping';
+  let targetPageButton = 'Continue shopping';
+  if (targetsPage === 'add_to_cart') {
+    targetPageButton = 'Add to cart';
+  } else if (targetsPage === 'checkout') {
+    targetPageButton = 'Checkout';
+  }
   const explanation =
     targetsEntry === 'onexit'
       ? `Customers will see the campaign popup <strong>when leaving your store on desktop and after 3 seconds on mobile.</strong>`

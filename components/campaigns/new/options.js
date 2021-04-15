@@ -15,7 +15,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
   return (
     <>
       <div className="salestorm-options">
-        <div>
+        <>
           <Checkbox
             checked={linkToProduct}
             onChange={(value) =>
@@ -51,8 +51,8 @@ const Options = ({ campaign, setCampaignProperty }) => {
               </span>
             }
           />
-        </div>
-        <div>
+        </>
+        <>
           <Checkbox
             checked={multiCurrencySupport}
             onChange={(value) =>
@@ -81,8 +81,8 @@ const Options = ({ campaign, setCampaignProperty }) => {
               </span>
             }
           />
-        </div>
-        <div>
+        </>
+        <>
           <Checkbox
             checked={showCountdown}
             onChange={(value) =>
@@ -97,7 +97,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
               </span>
             }
           />
-          <div className='salestorm-countodwn-time'>
+          <div className="salestorm-countodwn-time">
             <TextField
               type="number"
               disabled={!showCountdown}
@@ -131,7 +131,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
               suffix="Sec"
             />
           </div>
-        </div>
+        </>
       </div>
       <div className="salestorm-options">
         <div>
