@@ -14,16 +14,17 @@ import {
 import '../styles/components/campaign.css';
 
 const Campaign = ({ campaign }) => {
-  const { name, published, targets, strategy } = campaign;
-  const page = targets.page;
-  const sellType = strategy.sellType;
-  const mode = strategy.mode;
-  const publishedStatus = published ? 'success' : 'attention';
-  const publishedStatusText = published ? ' Published' : ' Unpublished';
+  const page = campaign.targets.page;
+  const sellType = campaign.strategy.sellType;
+  const mode = campaign.strategy.mode;
+  const publishedStatus = campaign.published ? 'success' : 'attention';
+  const publishedStatusText = campaign.published
+    ? ' Published'
+    : ' Unpublished';
   return (
     <>
       <h3 className="salestorm-campaign-title">
-        <TextStyle>{name}</TextStyle>
+        <TextStyle>{campaign.name}</TextStyle>
       </h3>
       <Badge status={publishedStatus}>
         <Icon source={ViewMajor} />

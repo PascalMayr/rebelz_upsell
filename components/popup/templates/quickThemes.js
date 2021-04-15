@@ -22,7 +22,7 @@ const GialloBistro = {
   animation: {
     ...DefaultStateStyle.animation,
     type: 'animate__rollIn',
-  }
+  },
 };
 
 const Warehouse = {
@@ -47,7 +47,7 @@ const Warehouse = {
   animation: {
     ...DefaultStateStyle.animation,
     type: 'animate__jackInTheBox',
-  }
+  },
 };
 
 const GalleriaEmpire = {
@@ -76,7 +76,7 @@ const GalleriaEmpire = {
   animation: {
     ...DefaultStateStyle.animation,
     type: 'animate__flipInX',
-  }
+  },
 };
 
 const LoftLawrence = {
@@ -105,7 +105,7 @@ const LoftLawrence = {
   animation: {
     ...DefaultStateStyle.animation,
     type: 'animate__lightSpeedInLeft',
-  }
+  },
 };
 
 const NarrativeCold = {
@@ -132,7 +132,7 @@ const NarrativeCold = {
   animation: {
     ...DefaultStateStyle.animation,
     type: 'animate__backInUp',
-  }
+  },
 };
 
 const quickThemes = (theme) => {
@@ -150,6 +150,6 @@ const quickThemes = (theme) => {
     default:
       return DefaultStateStyle;
   }
-}
+};
 
 export default quickThemes;

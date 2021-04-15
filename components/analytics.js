@@ -37,6 +37,7 @@ const Analytics = ({
   const orderColor = '#ff7900';
   useEffect(() => {
     if (periodRef.current) {
+      // eslint-disable-next-line no-new
       new Chart(periodRef.current, {
         type: 'bar',
         data: {
@@ -70,6 +71,7 @@ const Analytics = ({
       });
     }
     if (ordersPieRef.current) {
+      // eslint-disable-next-line no-new
       new Chart(ordersPieRef.current, {
         type: 'doughnut',
         data: {
@@ -113,7 +115,7 @@ const Analytics = ({
         ],
       });
     }
-  }, [periodRef.current, ordersPieRef.current]);
+  }, [days, views, sales, viewsCount, salesSum]);
 
   const emptyStateCampaignMarkup = (
     <>
@@ -196,14 +198,23 @@ const Analytics = ({
                   sortValue={sortValue}
                   renderItem={(campaign) => {
                     const {
-                      views,
-                      sales,
+                      views: campaignViews,
+                      sales: campaignSales,
                       revenue,
                       id,
                       name,
                       deleted,
                     } = campaign;
                     const url = deleted ? '' : `/campaigns/${id}`;
+                    const viewsLabel = `${campaignViews} View${
+                      campaignViews === 1 ? '' : 's'
+                    }`;
+                    const salesLabel = `${campaignSales} Sale${
+                      campaignSales === 1 ? '' : 's'
+                    }`;
+                    const formattedRevenue = currencyFormatter
+                      ? currencyFormatter.format(revenue)
+                      : revenue;
                     return (
                       <ResourceItem url={url}>
                         <h3 className="salestorm-campaign-title">
@@ -211,24 +222,16 @@ const Analytics = ({
                         </h3>
                         <Badge status="success">
                           <Icon source={ViewMajor} />
-                          <TextStyle variation="strong">
-                            {views} View{views === 1 ? '' : 's'}
-                          </TextStyle>
+                          <TextStyle variation="strong">{viewsLabel}</TextStyle>
                         </Badge>
                         <Badge status="warning">
                           <Icon source={OrdersMajor} />
-                          <TextStyle variation="strong">
-                            {sales} Sale
-                            {sales === 1 ? '' : 's'}
-                          </TextStyle>
+                          <TextStyle variation="strong">{salesLabel}</TextStyle>
                         </Badge>
                         <Badge status="attention">
                           <Icon source={CashDollarMajor} />
                           <TextStyle variation="strong">
-                            {currencyFormatter
-                              ? currencyFormatter.format(revenue)
-                              : revenue}{' '}
-                            generated
+                            {formattedRevenue} generated
                           </TextStyle>
                         </Badge>
                         {deleted && (

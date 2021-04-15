@@ -21,7 +21,7 @@ const MessageError = ({ whileMessage = 'while loading', suggestions = [] }) => (
     <p>
       <b>
         If your issue remains unresolved or if you are unable to chat with our
-        Support please reach out to:
+        Support, please reach out to:
       </b>
     </p>
     <p>
