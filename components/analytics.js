@@ -19,20 +19,15 @@ import Chart from 'chart.js';
 
 import '../styles/components/analytics.css';
 
-const Analytics = ({
-  views,
-  days,
-  campaigns,
-  currencyFormatter,
-  sales,
-  viewsCount,
-}) => {
+const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
   const [sortValue, setSortValue] = useState('REVENUE');
   const [items, setItems] = useState(campaigns);
   const periodRef = useRef();
   const ordersPieRef = useRef();
   const salesSum =
     sales.length > 0 ? sales.reduce((total, sale) => total + sale) : 0;
+  const viewsSum =
+    views.length > 0 ? views.reduce((total, sale) => total + sale) : 0;
   const viewsColor = '#008060';
   const orderColor = '#ff7900';
   const formattedDays = days.map((day) => {
@@ -82,7 +77,7 @@ const Analytics = ({
         data: {
           datasets: [
             {
-              data: [viewsCount, salesSum],
+              data: [viewsSum, salesSum],
               backgroundColor: [viewsColor, orderColor],
             },
           ],
@@ -92,7 +87,7 @@ const Analytics = ({
           maintainAspectRatio: false,
         },
         centerText: `${(
-          (salesSum / (viewsCount > 0 ? viewsCount : 1)) *
+          (salesSum / (viewsSum > 0 ? viewsSum : 1)) *
           100
         ).toFixed(2)}%`,
         plugins: [
