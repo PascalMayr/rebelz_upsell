@@ -15,7 +15,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
   return (
     <>
       <div className="salestorm-options">
-        <>
+        <div className="salestorm-option">
           <Checkbox
             checked={linkToProduct}
             onChange={(value) =>
@@ -51,8 +51,8 @@ const Options = ({ campaign, setCampaignProperty }) => {
               </span>
             }
           />
-        </>
-        <>
+        </div>
+        <div className="salestorm-option">
           <Checkbox
             checked={multiCurrencySupport}
             onChange={(value) =>
@@ -81,8 +81,8 @@ const Options = ({ campaign, setCampaignProperty }) => {
               </span>
             }
           />
-        </>
-        <>
+        </div>
+        <div className="salestorm-option">
           <Checkbox
             checked={showCountdown}
             onChange={(value) =>
@@ -131,7 +131,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
               suffix="Sec"
             />
           </div>
-        </>
+        </div>
       </div>
       <div className="salestorm-options">
         <div>
