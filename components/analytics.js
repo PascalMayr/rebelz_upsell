@@ -117,7 +117,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
         ],
       });
     }
-  }, [days, views, sales, viewsCount, salesSum]);
+  }, [days, views, sales, salesSum]);
 
   const emptyStateCampaignMarkup = (
     <>
