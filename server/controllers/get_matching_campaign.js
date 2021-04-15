@@ -20,7 +20,7 @@ const getMatchingCampaign = async (ctx) => {
   );
   store = store.rows[0];
   const views = await db.query(
-    'SELECT * FROM views WHERE domain = $1 AND view_date >= $2',
+    'SELECT counter FROM views WHERE domain = $1 AND view_date >= $2',
     [
       requestParams.shop,
       db.dateToSQL(
