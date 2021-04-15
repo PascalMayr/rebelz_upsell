@@ -13,7 +13,6 @@ import { useCallback, useState } from 'react';
 
 import publishCampaign from '../services/publish_campaign';
 import unpublishCampaign from '../services/unpublish_campaign';
-import getCampaigns from '../services/get_campaigns';
 import duplicateCampaign from '../services/duplicate_campaign';
 
 import DeleteModal from './delete_modal';
@@ -140,23 +139,25 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
                       content: 'Duplicate',
                       icon: DuplicateMinor,
                       onAction: async () => {
-                        await duplicateCampaign(campaign.id);
-                        const savedCampaigns = await getCampaigns();
-                        setCampaigns(savedCampaigns.data);
+                        const duplicate = await duplicateCampaign(campaign.id);
+                        campaigns.push(duplicate.data);
+                        setCampaigns(campaigns);
                       },
                     },
                     {
-                      content: published ? 'Unpusblish' : 'Publish',
+                      content: published ? 'Unpublish' : 'Publish',
                       icon: published ? CircleDisableMinor : ViewMajor,
                       onAction: async () => {
                         if (published) {
                           await unpublishCampaign(campaign.id);
-                          const savedCampaigns = await getCampaigns();
-                          setCampaigns(savedCampaigns.data);
+                          // eslint-disable-next-line require-atomic-updates
+                          campaign.published = false;
+                          setCampaigns(campaigns);
                         } else {
                           await publishCampaign(campaign.id);
-                          const savedCampaigns = await getCampaigns();
-                          setCampaigns(savedCampaigns.data);
+                          // eslint-disable-next-line require-atomic-updates
+                          campaign.published = true;
+                          setCampaigns(campaigns);
                         }
                       },
                     },

@@ -35,9 +35,6 @@ const customElement = (customJS) => `
             this.resetProgressBars();
             this.renderSkipOfferButton(parseInt(this.getAttribute('offers')));
           }
-          else {
-            this.hidePopup();
-          };
         break;
         case 'product':
           this.updateProduct(JSON.parse(newValue));

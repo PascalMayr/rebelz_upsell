@@ -1,6 +1,6 @@
 import db from '../db';
 
-const unpusblishCampaign = async (ctx) => {
+const unpublishCampaign = async (ctx) => {
   await db.query(
     'UPDATE campaigns SET published = false WHERE id = $1 AND domain = $2',
     [ctx.params.id, ctx.session.shop]
@@ -8,4 +8,4 @@ const unpusblishCampaign = async (ctx) => {
   ctx.status = 200;
 };
 
-export default unpusblishCampaign;
+export default unpublishCampaign;

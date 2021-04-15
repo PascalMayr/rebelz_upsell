@@ -20,9 +20,10 @@ import { AppContext } from './_app';
 import '../styles/pages/pricing.css';
 
 export async function getServerSideProps(ctx) {
-  const stores = await db.query('SELECT * FROM stores WHERE domain = $1', [
-    ctx.req.cookies.shopOrigin,
-  ]);
+  const stores = await db.query(
+    'SELECT plan_name FROM stores WHERE domain = $1',
+    [ctx.req.cookies.shopOrigin]
+  );
   return { props: { store: stores.rows[0] } };
 }
 
