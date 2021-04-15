@@ -22,10 +22,10 @@ const shopifyAuth = {
     } = ctx.session;
     const {
       id,
-      first_name,
-      last_name,
+      first_name: firstName,
+      last_name: lastName,
       email,
-      account_owner,
+      account_owner: accountOwner,
       locale,
     } = associatedUser;
     ctx.client = await createClient(shop, accessToken);
@@ -84,10 +84,10 @@ const shopifyAuth = {
         id,
         shop,
         associatedUserScope,
-        first_name,
-        last_name,
+        firstName,
+        lastName,
         email,
-        account_owner,
+        accountOwner,
         locale,
       ]
     );
