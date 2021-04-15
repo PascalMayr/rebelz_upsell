@@ -349,7 +349,7 @@ const Index = ({
             onAction: async () => {
               try {
                 setSaveLoading(true);
-                const savedCampaign = await saveCampaign(globalCampaign);
+                const savedCampaign = await saveCampaign(globalCampaign, true);
                 context.setToast({
                   shown: true,
                   content: 'Successfully saved global design',
@@ -387,7 +387,6 @@ const Index = ({
       </div>
       {id === 'analytics' && (
         <Analytics
-          viewsCount={viewsCount}
           views={views}
           days={days}
           sales={sales}
