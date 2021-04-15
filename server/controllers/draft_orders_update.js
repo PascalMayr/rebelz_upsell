@@ -3,7 +3,7 @@ import sendMail, { mailTemplates } from '../handlers/mail';
 
 const draftOrdersUpdate = async (ctx) => {
   const shop = ctx.request.headers['x-shopify-shop-domain'];
-  const { id, status } = ctx.request.body.draft_order;
+  const { id, status, customer } = ctx.request.body.draft_order;
   const completedStatus = 'completed';
 
   let completedOrderCount = await db.query(
@@ -13,8 +13,8 @@ const draftOrdersUpdate = async (ctx) => {
   completedOrderCount = completedOrderCount.rows[0].count;
 
   await db.query(
-    'UPDATE orders SET status = $1 WHERE domain = $2 AND id = $3',
-    [status, shop, id]
+    'UPDATE orders SET status = $1, customer_id = $2 WHERE domain = $3 AND id = $4',
+    [status, customer.id, shop, id]
   );
 
   if (completedOrderCount === 0 && status === completedStatus) {

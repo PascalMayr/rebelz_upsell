@@ -36,6 +36,7 @@ import duplicateCampaign from './controllers/duplicate_campaign';
 import respondOk from './controllers/respond_ok';
 import subscriptionUpdate from './controllers/subscription_update';
 import draftOrdersUpdate from './controllers/draft_orders_update';
+import customersRedact from './controllers/customers_redact';
 import shopRedact from './controllers/shop_redact';
 
 dotenv.config();
@@ -52,8 +53,8 @@ app.prepare().then(() => {
 
   Sentry.init({ dsn: process.env.SENTRY_DSN, tracesSampleRate: 0.5 });
 
-  router.post('/webhooks/customers/redact', respondOk);
   router.post('/webhooks/customers/data_request', webhook, respondOk);
+  router.post('/webhooks/customers/redact', customersRedact);
   router.post('/webhooks/shop/redact', webhook, shopRedact);
   router.post(
     '/webhooks/app_subscriptions/update',
