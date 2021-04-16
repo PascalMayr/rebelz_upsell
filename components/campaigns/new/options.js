@@ -31,11 +31,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
                 'options'
               )
             }
-            label={
-              <span>
-                <strong>Link</strong> to the product.
-              </span>
-            }
+            label={<span>Link to the product.</span>}
           />
           <Checkbox
             checked={enableOutOfStockProducts}
@@ -45,11 +41,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
                 'options'
               )
             }
-            label={
-              <span>
-                <strong>Enable</strong> buying out of stock products.
-              </span>
-            }
+            label={<span>Enable buying out of stock products.</span>}
           />
         </div>
         <div className="salestorm-option">
@@ -61,11 +53,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
                 'options'
               )
             }
-            label={
-              <span>
-                <strong>Enable</strong> Multi Currency Support.
-              </span>
-            }
+            label={<span>Enable Multi Currency Support.</span>}
           />
           <Checkbox
             checked={quantityEditable}
@@ -75,11 +63,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
                 'options'
               )
             }
-            label={
-              <span>
-                <strong>Enable</strong> clients set offer quantities.
-              </span>
-            }
+            label={<span>Enable clients set offer quantities.</span>}
           />
         </div>
         <div className="salestorm-option">
@@ -91,11 +75,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
                 'options'
               )
             }
-            label={
-              <span>
-                <strong>Show</strong> a countdown until end/next offer.
-              </span>
-            }
+            label={<span>Show a countdown until end/next offer.</span>}
           />
           <div className="salestorm-countodwn-time">
             <TextField
@@ -150,11 +130,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
                 'options'
               )
             }
-            label={
-              <span>
-                <strong>Show</strong> the image slider.
-              </span>
-            }
+            label={<span>Show the image slider.</span>}
           />
         </div>
       </div>

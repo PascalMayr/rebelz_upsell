@@ -5,7 +5,7 @@ const TriggerSettings = ({ campaign, setCampaignProperty }) => {
     let checkoutActionText = 'Continue shopping';
     let interruptEvents = false;
     if (newTrigger === 'add_to_cart') {
-      checkoutActionText = 'Go to cart';
+      checkoutActionText = '<a href="/cart" style="text-decoration: none; color: inherit;">Go to cart</a>';
     }
     if (newTrigger === 'checkout') {
       checkoutActionText = 'Go to checkout';

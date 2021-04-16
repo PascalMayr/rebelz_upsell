@@ -109,7 +109,7 @@ const DefaultStateNew = {
     addToCartUnavailable: 'Unavailable',
     seeProductDetailsAction: 'See product details',
     dismissAction: 'No thanks',
-    checkoutAction: 'Go to cart',
+    checkoutAction: '<a href="/cart" style="text-decoration: none; color: inherit;">Go to cart</a>',
     countdown: 'Offer expires in {{Countdown}} minutes',
   },
   customCSS: '',
