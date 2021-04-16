@@ -145,7 +145,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
           <div className="salestorm-external-tracking-information">
             {/* TODO: save this tracking id and use it onclick on the claim offer button to track the add to cart event */ }
             <TextField
-              label="Google Analytics Tacking ID"
+              label="Google Analytics Tracking ID"
               placeholder="UA-XXXXXX-Y"
               onChange={text => console.log(text)}
               value=''
