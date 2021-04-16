@@ -8,6 +8,8 @@ import {
   TextStyle,
   Badge,
   Icon,
+  TextField,
+  Button,
 } from '@shopify/polaris';
 import {
   ViewMajor,
@@ -134,6 +136,25 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
 
   return (
     <div className="salestorm-campaigns-analytics">
+      <Card>
+        <Card.Section title="External tracking">
+          <p className="salestorm-analytics-subheading">
+            Track Add to cart events.
+          </p>
+          <br />
+          <div className="salestorm-external-tracking-information">
+            {/* TODO: save this tracking id and use it onclick on the claim offer button to track the add to cart event */ }
+            <TextField
+              label="Google Analytics Tacking ID"
+              placeholder="UA-XXXXXX-Y"
+              onChange={text => console.log(text)}
+              value=''
+            />
+            &nbsp;
+            <Button primary>Save</Button>
+          </div>
+        </Card.Section>
+      </Card>
       <Card>
         <Card.Section title="Views & Sales overview">
           <p className="salestorm-analytics-subheading">

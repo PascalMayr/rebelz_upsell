@@ -9,3 +9,12 @@
 .slaestorm-analytics-chart {
   height: 400px;
 }
+
+.salestorm-external-tracking-information {
+  display: flex;
+  align-items: flex-end;
+}
+
+.salestorm-external-tracking-information > div {
+  width: 300px;
+}
