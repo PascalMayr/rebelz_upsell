@@ -9,6 +9,7 @@ export const mailTemplates = {
   subscriptionCanceled: 'd-4d4d9633906e4ad684ade26f1d2d0d35',
   subscriptionCreated: 'd-5915785ede254b129a476ba682b4fb4e',
   firstSale: 'd-9c5ad0df007a4b3db263389648363e28',
+  customersDataRequest: 'd-b303748867b4457fa40685b473d5a6b1',
 };
 
 const sendMail = async ({ to, template, templateData }) => {

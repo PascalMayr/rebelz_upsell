@@ -33,9 +33,11 @@ import enableStore from './controllers/enable_store';
 import manageSubscription from './controllers/manage_subscription';
 import processWithNext from './controllers/process_with_next';
 import duplicateCampaign from './controllers/duplicate_campaign';
-import respondOk from './controllers/respond_ok';
 import subscriptionUpdate from './controllers/subscription_update';
 import draftOrdersUpdate from './controllers/draft_orders_update';
+import customersRedact from './controllers/customers_redact';
+import shopRedact from './controllers/shop_redact';
+import customersDataRequest from './controllers/customers_data_request';
 
 dotenv.config();
 
@@ -51,9 +53,13 @@ app.prepare().then(() => {
 
   Sentry.init({ dsn: process.env.SENTRY_DSN, tracesSampleRate: 0.5 });
 
-  router.post('/webhooks/customers/redact', respondOk);
-  router.post('/webhooks/shop/redact', webhook, respondOk);
-  router.post('/webhooks/customers/data_request', webhook, respondOk);
+  router.post('/webhooks/customers/redact', customersRedact);
+  router.post('/webhooks/shop/redact', webhook, shopRedact);
+  router.post(
+    '/webhooks/customers/data_request',
+    webhook,
+    customersDataRequest
+  );
   router.post(
     '/webhooks/app_subscriptions/update',
     webhook,
