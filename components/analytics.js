@@ -8,7 +8,7 @@ import {
   TextStyle,
   Badge,
   Icon,
-  TextField,
+  Checkbox,
   Button,
 } from '@shopify/polaris';
 import {
@@ -19,9 +19,19 @@ import {
 } from '@shopify/polaris-icons';
 import Chart from 'chart.js';
 
+import toggleTrackingEnabled from '../services/toggle_tracking_enabled';
+
 import '../styles/components/analytics.css';
 
-const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
+const Analytics = ({
+  views,
+  days,
+  campaigns,
+  currencyFormatter,
+  sales,
+  storeState,
+  setStoreState,
+}) => {
   const [sortValue, setSortValue] = useState('REVENUE');
   const [items, setItems] = useState(campaigns);
   const periodRef = useRef();
@@ -137,21 +147,33 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
   return (
     <div className="salestorm-campaigns-analytics">
       <Card>
-        <Card.Section title="External tracking">
+        <Card.Section title="Ecommerce tracking">
           <p className="salestorm-analytics-subheading">
-            Track Add to cart events.
+            Tracks the &quot;Add to cart&quot; event. An active Google Analytics
+            installation is required. If you don&apos;t have that yet, please
+            refer to{' '}
+            <a
+              href="https://help.shopify.com/en/manual/reports-and-analytics/google-analytics/google-analytics-setup"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              this Shopify help article
+            </a>{' '}
+            for install instructions.
           </p>
           <br />
           <div className="salestorm-external-tracking-information">
-            {/* TODO: save this tracking id and use it onclick on the claim offer button to track the add to cart event */ }
-            <TextField
-              label="Google Analytics Tracking ID"
-              placeholder="UA-XXXXXX-Y"
-              onChange={text => console.log(text)}
-              value=''
+            <Checkbox
+              label="Activate external tracking"
+              onChange={(trackingEnabled) => {
+                toggleTrackingEnabled({ enabled: trackingEnabled });
+                setStoreState({
+                  ...storeState,
+                  google_tracking_enabled: trackingEnabled
+                });
+              }}
+              checked={storeState.google_tracking_enabled}
             />
-            &nbsp;
-            <Button primary>Save</Button>
           </div>
         </Card.Section>
       </Card>
