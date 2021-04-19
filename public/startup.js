@@ -143,7 +143,7 @@
   };
 
   const showPopup = async (targetPage) => {
-    const { campaign, meta } = popups[targetPage];
+    const { campaign } = popups[targetPage];
     if (campaign) {
       document.body.insertAdjacentHTML('beforeend', popups[targetPage].html);
       const popup = document.querySelector(
@@ -171,38 +171,8 @@
             popup.setAttribute('product', JSON.stringify(newProduct));
           }
         };
-        // eslint-disable-next-line require-atomic-updates
-        window.Salestorm.claimOffer = async (
-          variantId,
-          strategy,
-          quantity,
-          variantNames
-        ) => {
+        window.Salestorm.claimOffer = async (variantId, strategy, quantity) => {
           document.dispatchEvent(continueOriginalClickEvent);
-          if (typeof window.gtag !== 'undefined' && meta.googleTracking) {
-            const claimedProduct = campaign.selling.products.find((product) => {
-              return product.variants.edges.some(
-                (edge) => edge.node.legacyResourceId === variantId
-              );
-            });
-            const claimedVariant = claimedProduct.variants.edges.find(
-              (edge) => edge.node.legacyResourceId === variantId
-            );
-            window.gtag('event', 'add_to_cart', {
-              currency: strategy.storeCurrencyCode,
-              items: [
-                {
-                  id: claimedProduct.legacyResourceId,
-                  name: claimedProduct.title,
-                  price: claimedVariant.node.price,
-                  quantity,
-                  variant: variantNames.join('/'),
-                },
-              ],
-              value: claimedVariant.node.price,
-            });
-          }
-
           const cart = await getCart();
           if (cart) {
             if (
@@ -296,7 +266,7 @@
   const handleProductPage = async (productPage) => {
     let productId;
     // Many shopify themes have this meta global which includes the product ID
-    if (typeof window.meta !== 'undefined' && window.meta.product) {
+    if (typeof meta !== 'undefined' && window.meta.product) {
       productId = window.meta.product.id;
     } else {
       const response = await fetch(`${productPage[0]}.js`);
