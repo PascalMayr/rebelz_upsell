@@ -4,6 +4,7 @@ const customElement = (customJS) => `
   class SalestormPopupComponent extends HTMLElement {
     countdownIntervalId;
     selectedVariant;
+    currentSelectionState;
     images;
     image;
 
@@ -206,7 +207,7 @@ const customElement = (customJS) => `
           }
           if (strategy) {
             this.showLoader(true);
-            window.Salestorm.claimOffer(variantId, strategy, quantity);
+            window.Salestorm.claimOffer(variantId, strategy, quantity, this.currentSelectionState);
           }
         }
       });
@@ -331,10 +332,12 @@ const customElement = (customJS) => `
     setSelectedProductVariant(product) {
       const sortStringArrayAlphabetically = array => array.sort((a, b) => a.length - b.length);
       const currentRenderedSelects = Array.from(this.getElements('.cloned-select .salestorm-product-select'));
-      const currentSelectionState = currentRenderedSelects.map(selectElement => selectElement.value);
+      this.currentSelectionState = currentRenderedSelects.map(selectElement => selectElement.value);
+      // TODO: Refactor
+      // We try to match by multiple items
       this.selectedVariant = product.variants.edges.find(variant => {
         const variantOptionValues = variant.node.selectedOptions.map(selectedOption => selectedOption.value);
-        return JSON.stringify(sortStringArrayAlphabetically(variantOptionValues)) === JSON.stringify(sortStringArrayAlphabetically(currentSelectionState));
+        return JSON.stringify(sortStringArrayAlphabetically(variantOptionValues)) === JSON.stringify(sortStringArrayAlphabetically(this.currentSelectionState));
       });
       if (product.hasOnlyDefaultVariant) {
         this.selectedVariant = product.variants.edges[0];

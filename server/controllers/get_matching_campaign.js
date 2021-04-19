@@ -15,7 +15,7 @@ const getMatchingCampaign = async (ctx) => {
   const requestParams = ctx.request.body;
 
   let store = await db.query(
-    `SELECT plan_limit, access_token, subscription_start FROM stores WHERE stores.domain = $1`,
+    `SELECT plan_limit, access_token, subscription_start, google_tracking_enabled FROM stores WHERE stores.domain = $1`,
     [requestParams.shop]
   );
   store = store.rows[0];
@@ -188,6 +188,9 @@ const getMatchingCampaign = async (ctx) => {
           options,
           entry: campaign.targets.entry,
           products: campaign.targets.products,
+        },
+        meta: {
+          googleTracking: store.google_tracking_enabled,
         },
       };
       ctx.status = 200;
