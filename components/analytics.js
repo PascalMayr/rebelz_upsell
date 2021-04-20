@@ -8,8 +8,7 @@ import {
   TextStyle,
   Badge,
   Icon,
-  Checkbox,
-  Button,
+  Link,
 } from '@shopify/polaris';
 import {
   ViewMajor,
@@ -23,15 +22,7 @@ import toggleTrackingEnabled from '../services/toggle_tracking_enabled';
 
 import '../styles/components/analytics.css';
 
-const Analytics = ({
-  views,
-  days,
-  campaigns,
-  currencyFormatter,
-  sales,
-  storeState,
-  setStoreState,
-}) => {
+const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
   const [sortValue, setSortValue] = useState('REVENUE');
   const [items, setItems] = useState(campaigns);
   const periodRef = useRef();
@@ -146,37 +137,19 @@ const Analytics = ({
 
   return (
     <div className="salestorm-campaigns-analytics">
-      <Card>
-        <Card.Section title="Ecommerce tracking">
-          <p className="salestorm-analytics-subheading">
-            Tracks the &quot;Add to cart&quot; event. An active Google Analytics
-            installation is required. If you don&apos;t have that yet, please
-            refer to{' '}
-            <a
-              href="https://help.shopify.com/en/manual/reports-and-analytics/google-analytics/google-analytics-setup"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              this Shopify help article
-            </a>{' '}
-            for install instructions.
-          </p>
-          <br />
-          <div className="salestorm-external-tracking-information">
-            <Checkbox
-              label="Activate external tracking"
-              onChange={(trackingEnabled) => {
-                toggleTrackingEnabled({ enabled: trackingEnabled });
-                setStoreState({
-                  ...storeState,
-                  google_tracking_enabled: trackingEnabled
-                });
-              }}
-              checked={storeState.google_tracking_enabled}
-            />
-          </div>
-        </Card.Section>
-      </Card>
+      <p className="salestorm-analytics-subheading">
+        Searching for an option to track Add to cart events ? Google Analytics is doing just that for you with a UA-XXXXXXXX-X code.{' '}
+        <Link
+          href="https://help.shopify.com/en/manual/reports-and-analytics/google-analytics/google-analytics-setup"
+          target="_blank"
+          rel="noopener noreferrer"
+          external
+        >
+          Follow this Shopify help article
+        </Link>{' '}
+        for setup instructions. Using a GA4 property already ? <Link href="mailto:support@sailstorm.cc">Get help</Link> setting it up.
+      </p>
+      <br />
       <Card>
         <Card.Section title="Views & Sales overview">
           <p className="salestorm-analytics-subheading">
