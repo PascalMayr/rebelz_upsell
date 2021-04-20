@@ -8,8 +8,7 @@ import {
   TextStyle,
   Badge,
   Icon,
-  TextField,
-  Button,
+  Link,
 } from '@shopify/polaris';
 import {
   ViewMajor,
@@ -136,25 +135,19 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
 
   return (
     <div className="salestorm-campaigns-analytics">
-      <Card>
-        <Card.Section title="External tracking">
-          <p className="salestorm-analytics-subheading">
-            Track Add to cart events.
-          </p>
-          <br />
-          <div className="salestorm-external-tracking-information">
-            {/* TODO: save this tracking id and use it onclick on the claim offer button to track the add to cart event */ }
-            <TextField
-              label="Google Analytics Tracking ID"
-              placeholder="UA-XXXXXX-Y"
-              onChange={text => console.log(text)}
-              value=''
-            />
-            &nbsp;
-            <Button primary>Save</Button>
-          </div>
-        </Card.Section>
-      </Card>
+      <p className="salestorm-analytics-subheading">
+        Searching for an option to track Add to cart events ? Google Analytics is doing just that for you with a UA-XXXXXXXX-X code.{' '}
+        <Link
+          href="https://help.shopify.com/en/manual/reports-and-analytics/google-analytics/google-analytics-setup"
+          target="_blank"
+          rel="noopener noreferrer"
+          external
+        >
+          Follow this Shopify help article
+        </Link>{' '}
+        for setup instructions. Using a GA4 property already ? <Link href="mailto:support@sailstorm.cc">Get help</Link> setting it up.
+      </p>
+      <br />
       <Card>
         <Card.Section title="Views & Sales overview">
           <p className="salestorm-analytics-subheading">

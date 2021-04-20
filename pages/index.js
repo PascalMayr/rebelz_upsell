@@ -145,14 +145,17 @@ const Index = ({
   global,
 }) => {
   const context = useContext(AppContext);
-  const [enabled, setEnabled] = useState(store.enabled);
+  const [storeState, setStoreState] = useState(store);
   const [toggleEnableLoading, setToggleEnableLoading] = useState(false);
   const toggleEnabled = async () => {
-    const nowEnabled = !enabled;
+    const nowEnabled = !storeState.enabled;
     setToggleEnableLoading(true);
     try {
       await toggleStoreEnabled(nowEnabled);
-      setEnabled(nowEnabled);
+      setStoreState({
+        ...storeState,
+        enabled: nowEnabled
+      });
     } catch (_error) {
       context.setToast({
         shown: true,
@@ -163,8 +166,8 @@ const Index = ({
       setToggleEnableLoading(false);
     }
   };
-  const enabledStatus = enabled ? 'enabled' : 'disabled';
-  const enabledButtonStatus = enabled ? 'Disable' : 'Enable';
+  const enabledStatus = storeState.enabled ? 'enabled' : 'disabled';
+  const enabledButtonStatus = storeState.enabled ? 'Disable' : 'Enable';
 
   const priceStatus = store.plan_name ? 'success' : 'new';
   const priceProgress = store.plan_name ? 'complete' : 'incomplete';
@@ -265,14 +268,14 @@ const Index = ({
         <div id="salestorm-enabled-status-inner-container">
           <Button
             onClick={toggleEnabled}
-            primary={!enabled}
+            primary={!storeState}
             loading={toggleEnableLoading}
           >
             {enabledButtonStatus}
           </Button>
           <span className="salestorm-enabled-status">
             App is{' '}
-            <strong style={{ color: enabled ? '#50b83c' : 'red' }}>
+            <strong style={{ color: storeState ? '#50b83c' : 'red' }}>
               {enabledStatus}
             </strong>
           </span>
@@ -330,7 +333,7 @@ const Index = ({
       />
       {id === 'campaigns' && (
         <Campaigns
-          enabled={enabled}
+          enabled={storeState}
           campaigns={persistedCampaigns}
           setCampaigns={(newCampaigns) => {
             setPersistedCampaigns(
@@ -392,6 +395,8 @@ const Index = ({
           sales={sales}
           campaigns={persistedCampaigns}
           currencyFormatter={currencyFormatter}
+          storeState={storeState}
+          setStoreState={setStoreState}
         />
       )}
     </Page>
