@@ -243,7 +243,7 @@
   };
 
   const addExitIntentListener = (targetPage) => {
-    if (window.innerWidth > 950) {
+    if (window.matchMedia('(pointer:fine)').matches) {
       document.addEventListener('mousemove', (event) => {
         if (event.pageY && event.pageY < 150) {
           if (!popups[targetPage].displayed) {
@@ -253,13 +253,25 @@
         }
       });
     } else {
-      setTimeout(() => {
+      history.pushState(null, document.title, window.location.href);
+      // TODO: Refactor showPopup usage
+      window.addEventListener(
+        'popstate',
+        () => {
+          if (!popups[targetPage].displayed) {
+            popups[targetPage].displayed = true;
+            showPopup(targetPage);
+          }
+        },
+        { once: true }
+      );
+      document.addEventListener('visibilitychange', function () {
         if (popups[targetPage].displayed) {
           return;
         }
         popups[targetPage].displayed = true;
         showPopup(targetPage);
-      }, 3000);
+      });
     }
   };
 
