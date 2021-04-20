@@ -134,75 +134,74 @@
 
   const showPopup = async (targetPage) => {
     const { campaign } = popups[targetPage];
-    if (campaign) {
-      document.body.insertAdjacentHTML('beforeend', popups[targetPage].html);
-      const popup = document.querySelector(
-        `#salestorm-campaign-${campaign.id}`
-      );
-      if (popup) {
-        popup.setAttribute('visible', 'true');
-        popups[targetPage].displayed = true;
-        await countView(targetPage);
-      }
-      if (window.Salestorm) {
-        document.addEventListener(window.Salestorm.hidePopup.type, () => {
-          const popupElement = document.querySelector(
-            `#salestorm-campaign-${campaign.id}`
-          );
-          popupElement.setAttribute('visible', 'false');
-          document.dispatchEvent(continueOriginalClickEvent);
-        });
-        window.Salestorm.skipOffer = (popupElement) => {
-          let currentOffer = parseInt(
-            popupElement.getAttribute('currentoffer'),
-            10
-          );
-          currentOffer += 1;
-          const newProduct = campaign.selling.products[currentOffer];
-          if (newProduct) {
-            popupElement.setAttribute('currentoffer', currentOffer);
-            popupElement.setAttribute('product', JSON.stringify(newProduct));
+    if (popups[targetPage].displayed || !campaign) {
+      return;
+    }
+    document.body.insertAdjacentHTML('beforeend', popups[targetPage].html);
+    const popup = document.querySelector(`#salestorm-campaign-${campaign.id}`);
+    if (popup) {
+      popup.setAttribute('visible', 'true');
+      popups[targetPage].displayed = true;
+      await countView(targetPage);
+    }
+    if (window.Salestorm) {
+      document.addEventListener(window.Salestorm.hidePopup.type, () => {
+        const popupElement = document.querySelector(
+          `#salestorm-campaign-${campaign.id}`
+        );
+        popupElement.setAttribute('visible', 'false');
+        document.dispatchEvent(continueOriginalClickEvent);
+      });
+      window.Salestorm.skipOffer = (popupElement) => {
+        let currentOffer = parseInt(
+          popupElement.getAttribute('currentoffer'),
+          10
+        );
+        currentOffer += 1;
+        const newProduct = campaign.selling.products[currentOffer];
+        if (newProduct) {
+          popupElement.setAttribute('currentoffer', currentOffer);
+          popupElement.setAttribute('product', JSON.stringify(newProduct));
+        }
+      };
+      window.Salestorm.claimOffer = async (variantId, strategy, quantity) => {
+        document.dispatchEvent(continueOriginalClickEvent);
+        const cart = await getCart();
+        if (cart) {
+          if (
+            campaign.options.interruptEvents &&
+            campaign.entry === 'onclick'
+          ) {
+            const cartInterval = setInterval(async () => {
+              const currentCart = await getCart();
+              if (
+                currentCart &&
+                currentCart.items &&
+                currentCart.items.length > 0
+              ) {
+                clearInterval(cartInterval);
+                createDraftOrder(
+                  variantId,
+                  strategy,
+                  quantity,
+                  currentCart,
+                  campaign.id,
+                  campaign.products
+                );
+              }
+            }, 2000);
+          } else {
+            createDraftOrder(
+              variantId,
+              strategy,
+              quantity,
+              cart,
+              campaign.id,
+              campaign.products
+            );
           }
-        };
-        window.Salestorm.claimOffer = async (variantId, strategy, quantity) => {
-          document.dispatchEvent(continueOriginalClickEvent);
-          const cart = await getCart();
-          if (cart) {
-            if (
-              campaign.options.interruptEvents &&
-              campaign.entry === 'onclick'
-            ) {
-              const cartInterval = setInterval(async () => {
-                const currentCart = await getCart();
-                if (
-                  currentCart &&
-                  currentCart.items &&
-                  currentCart.items.length > 0
-                ) {
-                  clearInterval(cartInterval);
-                  createDraftOrder(
-                    variantId,
-                    strategy,
-                    quantity,
-                    currentCart,
-                    campaign.id,
-                    campaign.products
-                  );
-                }
-              }, 2000);
-            } else {
-              createDraftOrder(
-                variantId,
-                strategy,
-                quantity,
-                cart,
-                campaign.id,
-                campaign.products
-              );
-            }
-          }
-        };
-      }
+        }
+      };
     }
   };
 
@@ -239,31 +238,19 @@
     if (window.matchMedia('(pointer:fine)').matches) {
       document.addEventListener('mousemove', (event) => {
         if (event.pageY && event.pageY < 150) {
-          if (!popups[targetPage].displayed) {
-            popups[targetPage].displayed = true;
-            showPopup(targetPage);
-          }
+          showPopup(targetPage);
         }
       });
     } else {
       history.pushState(null, document.title, window.location.href);
-      // TODO: Refactor showPopup usage
       window.addEventListener(
         'popstate',
         () => {
-          if (popups[targetPage].displayed) {
-            return;
-          }
-          popups[targetPage].displayed = true;
           showPopup(targetPage);
         },
         { once: true }
       );
-      document.addEventListener('visibilitychange', function () {
-        if (popups[targetPage].displayed) {
-          return;
-        }
-        popups[targetPage].displayed = true;
+      document.addEventListener('visibilitychange', () => {
         showPopup(targetPage);
       });
     }
@@ -392,9 +379,7 @@
         const addToCartButton = document.querySelector(addToCartButtonSelector);
         if (addToCartButton) {
           addToCartButton.addEventListener('click', () => {
-            if (!popups[targets.addToCart].displayed) {
-              showPopup(targets.addToCart);
-            }
+            showPopup(targets.addToCart);
           });
         }
       }
