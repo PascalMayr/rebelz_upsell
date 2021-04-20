@@ -256,6 +256,17 @@
     }
   };
 
+  const getRecommendations = async (productId) => {
+    let recommendation = await fetch(
+      `/recommendations/products.json?product_id=${productId}`
+    );
+    recommendation = await recommendation.json();
+    return recommendation.products.map((product) => ({
+      id: product.id,
+      price: product.price,
+    }));
+  };
+
   const handleCart = async () => {
     const checkAndHandleCartCampaign = async () => {
       const cart = await getCart();
@@ -263,15 +274,10 @@
       const totalPrice = cart.total_price / 100;
       let recommendations = [];
       await Promise.all(
-        currentItemsInCart.map(async (item) => {
-          let recommendation = await fetch(
-            `/recommendations/products.json?product_id=${item.product_id}`
+        currentItemsInCart.map(async (cartItem) => {
+          const newRecommendations = await getRecommendations(
+            cartItem.product_id
           );
-          recommendation = await recommendation.json();
-          const newRecommendations = recommendation.products.map((product) => ({
-            id: product.id,
-            price: product.price,
-          }));
           recommendations = recommendations.concat(newRecommendations);
         })
       );
@@ -335,14 +341,7 @@
       const product = await response.json();
       productId = product.id;
     }
-    let recommendations = await fetch(
-      `/recommendations/products.json?product_id=${productId}`
-    );
-    recommendations = await recommendations.json();
-    recommendations = recommendations.products.map((recommendation) => ({
-      id: recommendation.id,
-      price: recommendation.price,
-    }));
+    const recommendations = await getRecommendations(productId);
     const cart = await getCart();
     const totalPrice = cart.total_price / 100;
     popups[targets.addToCart] = await fetchCampaign(
@@ -389,26 +388,19 @@
   };
 
   const handleThankYouPage = async () => {
-    const lineItems = window.Shopify.checkout.line_items.map(
+    const lineItemProductIds = window.Shopify.checkout.line_items.map(
       (item) => item.product_id
     );
     let recommendations = [];
     await Promise.all(
-      lineItems.map(async (item) => {
-        let recommendation = await fetch(
-          `/recommendations/products.json?product_id=${item}`
-        );
-        recommendation = await recommendation.json();
-        const newRecommendations = recommendation.products.map((product) => ({
-          id: product.id,
-          price: product.price,
-        }));
+      lineItemProductIds.map(async (itemProductId) => {
+        const newRecommendations = await getRecommendations(itemProductId);
         recommendations = recommendations.concat(newRecommendations);
       })
     );
     popups[targets.thankYou] = await fetchCampaign(
       targets.thankYou,
-      lineItems,
+      lineItemProductIds,
       window.Shopify.checkout.total_price,
       recommendations
     );
