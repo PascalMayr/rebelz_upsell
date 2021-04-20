@@ -18,8 +18,6 @@ import {
 } from '@shopify/polaris-icons';
 import Chart from 'chart.js';
 
-import toggleTrackingEnabled from '../services/toggle_tracking_enabled';
-
 import '../styles/components/analytics.css';
 
 const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
