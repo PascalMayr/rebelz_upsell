@@ -57,24 +57,19 @@
   };
 
   const countView = async (targetPage) => {
-    try {
-      const { campaign } = popups[targetPage];
-      await fetch(`${publicAPI}/count-view`, {
-        credentials: 'include',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: campaign.id,
-          shop,
-          target: targetPage,
-        }),
-      });
-    } catch (error) {
-      console.error(window.Shopify);
-      throw error;
-    }
+    const { campaign } = popups[targetPage];
+    await fetch(`${publicAPI}/count-view`, {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: campaign.id,
+        shop,
+        target: targetPage,
+      }),
+    });
   };
 
   const fetchCampaign = async (
@@ -83,32 +78,27 @@
     totalPrice,
     recommendations
   ) => {
-    try {
-      const response = await fetch(`${publicAPI}/get-matching-campaign`, {
-        credentials: 'include',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          shop,
-          target: targetPage,
-          products,
-          totalPrice,
-          recommendations,
-        }),
-      });
-      if (response.ok) {
-        const campaign = await response.json();
-        eval(campaign.js);
-        return { ...campaign, displayed: false };
-      } else {
-        return targetPage;
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(window.Shopify);
-      throw error;
+    const response = await fetch(`${publicAPI}/get-matching-campaign`, {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        shop,
+        target: targetPage,
+        products,
+        totalPrice,
+        recommendations,
+      }),
+    });
+    if (response.ok) {
+      const campaign = await response.json();
+      // eslint-disable-next-line no-eval
+      eval(campaign.js);
+      return { ...campaign, displayed: false };
+    } else {
+      return targetPage;
     }
   };
 
@@ -156,19 +146,22 @@
       }
       if (window.Salestorm) {
         document.addEventListener(window.Salestorm.hidePopup.type, () => {
-          const popup = document.querySelector(
+          const popupElement = document.querySelector(
             `#salestorm-campaign-${campaign.id}`
           );
-          popup.setAttribute('visible', 'false');
+          popupElement.setAttribute('visible', 'false');
           document.dispatchEvent(continueOriginalClickEvent);
         });
-        window.Salestorm.skipOffer = (popup) => {
-          let currentOffer = parseInt(popup.getAttribute('currentoffer'), 10);
+        window.Salestorm.skipOffer = (popupElement) => {
+          let currentOffer = parseInt(
+            popupElement.getAttribute('currentoffer'),
+            10
+          );
           currentOffer += 1;
           const newProduct = campaign.selling.products[currentOffer];
           if (newProduct) {
-            popup.setAttribute('currentoffer', currentOffer);
-            popup.setAttribute('product', JSON.stringify(newProduct));
+            popupElement.setAttribute('currentoffer', currentOffer);
+            popupElement.setAttribute('product', JSON.stringify(newProduct));
           }
         };
         window.Salestorm.claimOffer = async (variantId, strategy, quantity) => {
@@ -258,10 +251,11 @@
       window.addEventListener(
         'popstate',
         () => {
-          if (!popups[targetPage].displayed) {
-            popups[targetPage].displayed = true;
-            showPopup(targetPage);
+          if (popups[targetPage].displayed) {
+            return;
           }
+          popups[targetPage].displayed = true;
+          showPopup(targetPage);
         },
         { once: true }
       );
@@ -272,70 +266,6 @@
         popups[targetPage].displayed = true;
         showPopup(targetPage);
       });
-    }
-  };
-
-  const handleProductPage = async (productPage) => {
-    let productId;
-    // Many shopify themes have this meta global which includes the product ID
-    if (typeof meta !== 'undefined' && window.meta.product) {
-      productId = window.meta.product.id;
-    } else {
-      const response = await fetch(`${productPage[0]}.js`);
-      const product = await response.json();
-      productId = product.id;
-    }
-    let recommendations = await fetch(
-      `/recommendations/products.json?product_id=${productId}`
-    );
-    recommendations = await recommendations.json();
-    recommendations = recommendations.products.map((recommendation) => ({
-      id: recommendation.id,
-      price: recommendation.price,
-    }));
-    const cart = await getCart();
-    const totalPrice = cart.total_price / 100;
-    popups[targets.addToCart] = await fetchCampaign(
-      targets.addToCart,
-      [productId],
-      totalPrice,
-      recommendations
-    );
-    const { campaign } = popups[targets.addToCart];
-    if (campaign && campaign.entry === 'onclick') {
-      const interruptEvents = campaign.options.interruptEvents;
-      if (interruptEvents) {
-        addEarlyClickListener(addToCartButtonSelector, (event) => {
-          if (!popups[targets.addToCart].displayed) {
-            showPopup(targets.addToCart);
-            event.preventDefault();
-            event.stopPropagation();
-            const handleCartDrawers = setInterval(() => {
-              if (document.querySelector(checkoutButtonSelector)) {
-                handleCart();
-                clearInterval(handleCartDrawers);
-              }
-            }, 500);
-            document.addEventListener(continueOriginalClickEvent.type, () => {
-              if (!productsAddedByXHROrFetch) {
-                event.target.click();
-              }
-            });
-          }
-          return true;
-        });
-      } else {
-        const addToCartButton = document.querySelector(addToCartButtonSelector);
-        if (addToCartButton) {
-          addToCartButton.addEventListener('click', () => {
-            if (!popups[targets.addToCart].displayed) {
-              showPopup(targets.addToCart);
-            }
-          });
-        }
-      }
-    } else {
-      addExitIntentListener(targets.addToCart);
     }
   };
 
@@ -382,15 +312,16 @@
         } else {
           const checkoutButton = document.querySelector(checkoutButtonSelector);
           checkoutButton.addEventListener('click', () => {
-            if (!popups[targets.checkout].displayed) {
-              showPopup(targets.checkout);
-              document.addEventListener(continueOriginalClickEvent.type, () => {
-                const checkoutForm = searchFormFromTarget(event.target);
-                if (checkoutForm) {
-                  checkoutForm.requestSubmit();
-                }
-              });
+            if (popups[targets.checkout].displayed) {
+              return;
             }
+            showPopup(targets.checkout);
+            document.addEventListener(continueOriginalClickEvent.type, () => {
+              const checkoutForm = searchFormFromTarget(event.target);
+              if (checkoutForm) {
+                checkoutForm.requestSubmit();
+              }
+            });
           });
         }
       } else {
@@ -405,6 +336,71 @@
         await checkAndHandleCartCampaign();
       }
     }, 3000);
+  };
+
+  const handleProductPage = async (productPage) => {
+    let productId;
+    // Many shopify themes have this meta global which includes the product ID
+    if (typeof meta !== 'undefined' && window.meta.product) {
+      productId = window.meta.product.id;
+    } else {
+      const response = await fetch(`${productPage[0]}.js`);
+      const product = await response.json();
+      productId = product.id;
+    }
+    let recommendations = await fetch(
+      `/recommendations/products.json?product_id=${productId}`
+    );
+    recommendations = await recommendations.json();
+    recommendations = recommendations.products.map((recommendation) => ({
+      id: recommendation.id,
+      price: recommendation.price,
+    }));
+    const cart = await getCart();
+    const totalPrice = cart.total_price / 100;
+    popups[targets.addToCart] = await fetchCampaign(
+      targets.addToCart,
+      [productId],
+      totalPrice,
+      recommendations
+    );
+    const { campaign } = popups[targets.addToCart];
+    if (campaign && campaign.entry === 'onclick') {
+      const interruptEvents = campaign.options.interruptEvents;
+      if (interruptEvents) {
+        addEarlyClickListener(addToCartButtonSelector, (event) => {
+          if (!popups[targets.addToCart].displayed) {
+            showPopup(targets.addToCart);
+            event.preventDefault();
+            event.stopPropagation();
+            const handleCartDrawers = setInterval(() => {
+              if (!document.querySelector(checkoutButtonSelector)) {
+                return;
+              }
+              handleCart();
+              clearInterval(handleCartDrawers);
+            }, 500);
+            document.addEventListener(continueOriginalClickEvent.type, () => {
+              if (!productsAddedByXHROrFetch) {
+                event.target.click();
+              }
+            });
+          }
+          return true;
+        });
+      } else {
+        const addToCartButton = document.querySelector(addToCartButtonSelector);
+        if (addToCartButton) {
+          addToCartButton.addEventListener('click', () => {
+            if (!popups[targets.addToCart].displayed) {
+              showPopup(targets.addToCart);
+            }
+          });
+        }
+      }
+    } else {
+      addExitIntentListener(targets.addToCart);
+    }
   };
 
   const handleThankYouPage = async () => {
@@ -447,11 +443,12 @@
           return true;
         });
       } else {
-        const continueShoppingButton = document.querySelector(
-          continueShoppingSelector
-        );
-        continueShoppingButton.addEventListener('click', () => {
-          if (!popups[targets.thankYou].displayed) {
+        document
+          .querySelector(continueShoppingSelector)
+          .addEventListener('click', () => {
+            if (popups[targets.thankYou].displayed) {
+              return;
+            }
             showPopup(targets.thankYou);
             document.addEventListener(continueOriginalClickEvent.type, () => {
               const continueShoppingButton = document.querySelector(
@@ -461,8 +458,7 @@
                 continueShoppingButton.click();
               }
             });
-          }
-        });
+          });
       }
     } else {
       addExitIntentListener(targets.thankYou);
@@ -498,13 +494,12 @@
   };
 
   const initShopifyMultiCurrencyConversionScript = () => {
-    if (
-      !(window.Currency && window.Currency.rates && window.Currency.convert)
-    ) {
-      const script = document.createElement('script');
-      script.src = 'https://cdn.shopify.com/s/javascripts/currencies.js';
-      document.head.appendChild(script);
+    if (window.Currency && window.Currency.rates && window.Currency.convert) {
+      return;
     }
+    const script = document.createElement('script');
+    script.src = 'https://cdn.shopify.com/s/javascripts/currencies.js';
+    document.head.appendChild(script);
   };
 
   const init = () => {
