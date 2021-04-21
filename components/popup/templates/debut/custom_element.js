@@ -37,7 +37,11 @@ const customElement = (customJS) => `
           }
         break;
         case 'product':
-          this.updateProduct(JSON.parse(newValue));
+          const product = JSON.parse(newValue);
+          this.updateProduct(product);
+          if (this.getAttribute('linktoproduct') === 'true') {
+            this.updateProductLink("/products/"+product.handle);
+          }
         break;
         case 'texts':
           clearInterval(this.countdownIntervalId);
