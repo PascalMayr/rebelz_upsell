@@ -30,7 +30,6 @@ import deleteCampaign from './controllers/delete_campaign';
 import publishCampaign from './controllers/publish_campaign';
 import unpublishCampaign from './controllers/unpublish_campaign';
 import enableStore from './controllers/enable_store';
-import toggleTrackingEnabled from './controllers/toggle_tracking_enabled';
 import manageSubscription from './controllers/manage_subscription';
 import processWithNext from './controllers/process_with_next';
 import duplicateCampaign from './controllers/duplicate_campaign';
@@ -80,7 +79,6 @@ app.prepare().then(() => {
     unpublishCampaign
   );
   router.patch('/api/store/enable', verifyRequest(), enableStore);
-  router.patch('/api/store/tracking', verifyRequest(), toggleTrackingEnabled);
   router.patch('/api/plan', verifyRequest(), manageSubscription);
   router.post(
     '/api/duplicate-campaign/:id',
