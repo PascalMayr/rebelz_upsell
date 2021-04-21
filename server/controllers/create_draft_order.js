@@ -90,7 +90,7 @@ const createDraftOrder = async (ctx) => {
     if (addedVariantItem) {
       const { price, applied_discount, quantity } = addedVariantItem;
       const variantPrice = parseFloat(price) * parseInt(quantity, 10);
-      const addedValue = applied_discount.amount
+      const addedValue = applied_discount && applied_discount.amount
         ? variantPrice - parseFloat(applied_discount.amount)
         : variantPrice;
       const { invoice_url, currency, total_price } = order.draft_order;
