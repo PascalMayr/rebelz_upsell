@@ -27,7 +27,7 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
       <div className="no-campaigns-image-section">
         <Image src="/imagination.svg" alt="me" width="250" height="250" />
         <Heading>
-          Welcome to Thunder Upsell & Cross Sell{' '}
+          Welcome to Thunder Upsells{' '}
           <span role="img" aria-label="storm">
             ⚡️
           </span>
