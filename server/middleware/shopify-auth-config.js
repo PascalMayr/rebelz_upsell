@@ -19,7 +19,6 @@ Shopify.Context.initialize({
 const shopifyAuthConfig = {
   async afterAuth(ctx) {
     // Auth token and shop available in session
-    // Redirect to shop upon auth
     const { shop, scope, accessToken, onlineAccessInfo } = ctx.state.shopify;
     global.ACTIVE_SHOPIFY_SHOPS[shop] = scope;
     const {
@@ -30,38 +29,46 @@ const shopifyAuthConfig = {
       account_owner: accountOwner,
       locale,
     } = onlineAccessInfo.associated_user;
-    ctx.client = await createClient(shop, accessToken);
-    const scriptid = await getScriptTagId(ctx);
-    const freePlan = config.plans.find(
-      (plan) => plan.name === config.planNames.free
-    );
-    await db.query(
-      `INSERT INTO stores${db.insertColumns(
-        'domain',
-        'scriptId',
-        'plan_limit',
-        'access_token'
-      )}
-      ON CONFLICT (domain) DO UPDATE SET
-      scriptId = $2,
-      access_token = $4
-      `,
-      [shop, scriptid, freePlan.limit, accessToken]
-    );
-    registerWebhooks(
+    let activeStore = await db.query('SELECT * FROM stores WHERE domain = $1', [
       shop,
-      accessToken,
-      'APP_SUBSCRIPTIONS_UPDATE',
-      '/webhooks/app_subscriptions/update',
-      ApiVersion.October20
-    );
-    registerWebhooks(
-      shop,
-      accessToken,
-      'DRAFT_ORDERS_UPDATE',
-      '/webhooks/draft_orders/update',
-      ApiVersion.October20
-    );
+    ]);
+    activeStore = activeStore.rows[0];
+    if (activeStore) {
+      await db.query(`UPDATE stores SET access_token = $1 WHERE domain = $2`, [
+        accessToken,
+        shop,
+      ]);
+    } else {
+      ctx.client = await createClient(shop, accessToken);
+      const scriptid = await getScriptTagId(ctx);
+      registerWebhooks(
+        shop,
+        accessToken,
+        'APP_SUBSCRIPTIONS_UPDATE',
+        '/webhooks/app_subscriptions/update',
+        ApiVersion.October20
+      );
+      registerWebhooks(
+        shop,
+        accessToken,
+        'DRAFT_ORDERS_UPDATE',
+        '/webhooks/draft_orders/update',
+        ApiVersion.October20
+      );
+
+      const freePlan = config.plans.find(
+        (plan) => plan.name === config.planNames.free
+      );
+      await db.query(
+        `INSERT INTO stores${db.insertColumns(
+          'domain',
+          'scriptId',
+          'plan_limit',
+          'access_token'
+        )}`,
+        [shop, scriptid, freePlan.limit, accessToken]
+      );
+    }
     await db.query(
       `
       INSERT INTO users${db.insertColumns(
@@ -93,6 +100,7 @@ const shopifyAuthConfig = {
         locale,
       ]
     );
+    // Redirect to shop upon auth
     ctx.redirect(`/?shop=${shop}`);
   },
 };
