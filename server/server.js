@@ -5,7 +5,7 @@ import path from 'path';
 import '@babel/polyfill';
 import dotenv from 'dotenv';
 import 'isomorphic-fetch';
-import Shopify, { ApiVersion } from '@shopify/shopify-api';
+import Shopify from '@shopify/shopify-api';
 import shopifyAuth, { verifyRequest } from '@shopify/koa-shopify-auth';
 import { receiveWebhook } from '@shopify/koa-shopify-webhooks';
 import Koa from 'koa';
@@ -49,9 +49,18 @@ const app = next({ dev: !isProduction });
 app.prepare().then(() => {
   const server = new Koa();
   const router = new Router();
+  const graphqlRouter = new Router();
   const webhook = receiveWebhook({ secret: process.env.SHOPIFY_API_SECRET });
 
   Sentry.init({ dsn: process.env.SENTRY_DSN, tracesSampleRate: 0.5 });
+
+  graphqlRouter.post(
+    '/graphql',
+    verifyRequest({ returnHeader: true }),
+    async (ctx) => {
+      await Shopify.Utils.graphqlProxy(ctx.req, ctx.res);
+    }
+  );
 
   router.post('/webhooks/customers/redact', customersRedact);
   router.post('/webhooks/shop/redact', webhook, shopRedact);
@@ -70,13 +79,7 @@ app.prepare().then(() => {
   router.post('/api/create-draft-order', createDraftOrder);
   router.post('/api/count-view', countView);
   router.get('(.*)', verifyRequest(), processWithNext(app));
-  router.post(
-    '/graphql',
-    verifyRequest({ returnHeader: true }),
-    async (ctx, next) => {
-      await Shopify.Utils.graphqlProxy(ctx.req, ctx.res);
     }
-  );
   router.post(
     '/api/save-campaign',
     verifyRequest(),
@@ -120,6 +123,8 @@ app.prepare().then(() => {
   server.use(sentryTracingMiddleware);
   server.keys = [process.env.SHOPIFY_API_SECRET];
   server.use(shopifyAuth(shopifyAuthConfig));
+  server.use(graphqlRouter.allowedMethods());
+  server.use(graphqlRouter.routes());
   server.use(bodyParser());
   server.use(Cors({ credentials: true }));
   server.use(router.allowedMethods());
