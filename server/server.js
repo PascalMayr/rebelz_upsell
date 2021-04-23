@@ -78,8 +78,10 @@ app.prepare().then(() => {
   router.post('/api/get-matching-campaign', getMatchingCampaign);
   router.post('/api/create-draft-order', createDraftOrder);
   router.post('/api/count-view', countView);
-  router.get('(.*)', verifyRequest(), processWithNext(app));
     }
+  router.get('(/_next/static/.*)', processWithNext(appHandler));
+  router.get('/_next/webpack-hmr', processWithNext(appHandler));
+  router.get('(.*)', verifyRequest(), processWithNext(appHandler));
   router.post(
     '/api/save-campaign',
     verifyRequest(),
