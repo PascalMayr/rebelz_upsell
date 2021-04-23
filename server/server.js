@@ -5,8 +5,8 @@ import path from 'path';
 import '@babel/polyfill';
 import dotenv from 'dotenv';
 import 'isomorphic-fetch';
-import createShopifyAuth, { verifyRequest } from '@shopify/koa-shopify-auth';
 import Shopify, { ApiVersion } from '@shopify/shopify-api';
+import shopifyAuth, { verifyRequest } from '@shopify/koa-shopify-auth';
 import { receiveWebhook } from '@shopify/koa-shopify-webhooks';
 import Koa from 'koa';
 import next from 'next';
@@ -20,7 +20,7 @@ import {
   sentryRequestMiddleware,
   sentryTracingMiddleware,
 } from './middleware/sentry';
-import shopifyAuth from './middleware/shopify-auth';
+import shopifyAuthConfig from './middleware/shopify-auth-config';
 import { loadSession } from './middleware/session';
 import countView from './controllers/count_view';
 import createDraftOrder from './controllers/create_draft_order';
@@ -119,7 +119,7 @@ app.prepare().then(() => {
   server.use(sentryRequestMiddleware);
   server.use(sentryTracingMiddleware);
   server.keys = [process.env.SHOPIFY_API_SECRET];
-  server.use(createShopifyAuth(shopifyAuth));
+  server.use(shopifyAuth(shopifyAuthConfig));
   server.use(bodyParser());
   server.use(Cors({ credentials: true }));
   server.use(router.allowedMethods());
