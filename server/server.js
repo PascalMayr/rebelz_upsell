@@ -6,7 +6,7 @@ import '@babel/polyfill';
 import dotenv from 'dotenv';
 import 'isomorphic-fetch';
 import createShopifyAuth, { verifyRequest } from '@shopify/koa-shopify-auth';
-import graphQLProxy, { ApiVersion } from '@shopify/koa-shopify-graphql-proxy';
+import Shopify, { ApiVersion } from '@shopify/shopify-api';
 import { receiveWebhook } from '@shopify/koa-shopify-webhooks';
 import Koa from 'koa';
 import next from 'next';
@@ -72,6 +72,13 @@ app.prepare().then(() => {
   router.post('/api/count-view', countView);
   router.get('(.*)', verifyRequest(), processWithNext(app));
   router.post(
+    '/graphql',
+    verifyRequest({ returnHeader: true }),
+    async (ctx, next) => {
+      await Shopify.Utils.graphqlProxy(ctx.req, ctx.res);
+    }
+  );
+  router.post(
     '/api/save-campaign',
     verifyRequest(),
     loadSession(),
@@ -115,7 +122,6 @@ app.prepare().then(() => {
   server.use(session({ sameSite: 'none', secure: true }, server));
   server.keys = [process.env.SHOPIFY_API_SECRET];
   server.use(createShopifyAuth(shopifyAuth));
-  server.use(graphQLProxy({ version: ApiVersion.October20 }));
   server.use(bodyParser());
   server.use(Cors({ credentials: true }));
   server.use(router.allowedMethods());

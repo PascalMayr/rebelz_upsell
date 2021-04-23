@@ -34,7 +34,6 @@
     "@shopify/app-bridge-utils": "^1.30.0",
     "@shopify/app-cli-node-generator-helper": "^1.1.2",
     "@shopify/koa-shopify-auth": "^4.1.2",
-    "@shopify/koa-shopify-graphql-proxy": "^4.1.0",
     "@shopify/koa-shopify-webhooks": "^2.3.1",
     "@shopify/polaris": "^6.2.0",
     "@shopify/polaris-icons": "^4.1.0",

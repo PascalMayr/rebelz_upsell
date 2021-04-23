@@ -1,4 +1,3 @@
-import { ApiVersion as GraphQLApiVersion } from '@shopify/koa-shopify-graphql-proxy';
 import Shopify, { ApiVersion } from '@shopify/shopify-api';
 
 import config from '../../config';
@@ -54,14 +53,14 @@ const shopifyAuthConfig = {
       accessToken,
       'APP_SUBSCRIPTIONS_UPDATE',
       '/webhooks/app_subscriptions/update',
-      GraphQLApiVersion.October20
+      ApiVersion.October20
     );
     registerWebhooks(
       shop,
       accessToken,
       'DRAFT_ORDERS_UPDATE',
       '/webhooks/draft_orders/update',
-      GraphQLApiVersion.October20
+      ApiVersion.October20
     );
     await db.query(
       `
