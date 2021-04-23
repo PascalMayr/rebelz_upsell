@@ -1,25 +1,28 @@
-import { ApiVersion } from '@shopify/koa-shopify-graphql-proxy';
+import { ApiVersion as GraphQLApiVersion } from '@shopify/koa-shopify-graphql-proxy';
+import Shopify, { ApiVersion } from '@shopify/shopify-api';
 
 import config from '../../config';
 import db from '../db';
 import { createClient, getScriptTagId, registerWebhooks } from '../handlers';
 
-const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES } = process.env;
+const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES, HOST } = process.env;
 
-const shopifyAuth = {
-  apiKey: SHOPIFY_API_KEY,
-  secret: SHOPIFY_API_SECRET,
-  scopes: [SCOPES],
+Shopify.Context.initialize({
+  API_KEY: SHOPIFY_API_KEY,
+  API_SECRET_KEY: SHOPIFY_API_SECRET,
+  SCOPES: SCOPES.split(','),
+  HOST_NAME: HOST.replace(/^https:\/\//, ''),
+  API_VERSION: ApiVersion.October20,
+  IS_EMBEDDED_APP: true,
+  SESSION_STORAGE: new Shopify.Session.MemorySessionStorage(),
+});
 
+const shopifyAuthConfig = {
   async afterAuth(ctx) {
     // Auth token and shop available in session
     // Redirect to shop upon auth
-    const {
-      shop,
-      accessToken,
-      associatedUserScope,
-      associatedUser,
-    } = ctx.session;
+    const { shop, scope, accessToken, onlineAccessInfo } = ctx.state.shopify;
+    global.ACTIVE_SHOPIFY_SHOPS[shop] = scope;
     const {
       id,
       first_name: firstName,
@@ -27,7 +30,7 @@ const shopifyAuth = {
       email,
       account_owner: accountOwner,
       locale,
-    } = associatedUser;
+    } = onlineAccessInfo.associated_user;
     ctx.client = await createClient(shop, accessToken);
     const scriptid = await getScriptTagId(ctx);
     const freePlan = config.plans.find(
@@ -51,14 +54,14 @@ const shopifyAuth = {
       accessToken,
       'APP_SUBSCRIPTIONS_UPDATE',
       '/webhooks/app_subscriptions/update',
-      ApiVersion.October20
+      GraphQLApiVersion.October20
     );
     registerWebhooks(
       shop,
       accessToken,
       'DRAFT_ORDERS_UPDATE',
       '/webhooks/draft_orders/update',
-      ApiVersion.October20
+      GraphQLApiVersion.October20
     );
     await db.query(
       `
@@ -83,7 +86,7 @@ const shopifyAuth = {
       [
         id,
         shop,
-        associatedUserScope,
+        onlineAccessInfo.associated_user_scope,
         firstName,
         lastName,
         email,
@@ -91,13 +94,8 @@ const shopifyAuth = {
         locale,
       ]
     );
-    ctx.cookies.set('shopOrigin', shop, {
-      httpOnly: false,
-      secure: true,
-      sameSite: 'none',
-    });
-    ctx.redirect('/');
+    ctx.redirect(`/?shop=${shop}`);
   },
 };
 
-export default shopifyAuth;
+export default shopifyAuthConfig;
