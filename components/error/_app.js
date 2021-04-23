@@ -7,7 +7,7 @@ const AppError = () => {
       <br />
       <br />
       <br />
-      <MessageError whileMessage="while working with our Shopify App" />
+      <MessageError whileMessage="while working with Thunder Upsells" />
     </>
   );
 };
