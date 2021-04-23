@@ -13,7 +13,6 @@ import next from 'next';
 import bodyParser from 'koa-bodyparser';
 import Router from 'koa-router';
 import Cors from '@koa/cors';
-import session from 'koa-session';
 import * as Sentry from '@sentry/node';
 
 import {
@@ -119,7 +118,6 @@ app.prepare().then(() => {
   server.on('error', sentryErrorMiddleware);
   server.use(sentryRequestMiddleware);
   server.use(sentryTracingMiddleware);
-  server.use(session({ sameSite: 'none', secure: true }, server));
   server.keys = [process.env.SHOPIFY_API_SECRET];
   server.use(createShopifyAuth(shopifyAuth));
   server.use(bodyParser());
