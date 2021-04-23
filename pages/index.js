@@ -5,27 +5,26 @@ import { useState, useContext, useCallback } from 'react';
 import { useQuery } from 'react-apollo';
 import { DateTime } from 'luxon';
 
-import toggleStoreEnabled from '../services/toggle_store_enabled';
 import db from '../server/db';
 import config from '../config';
 import Campaigns from '../components/campaigns';
 import Design from '../components/design';
 import Analytics from '../components/analytics';
-import saveCampaign from '../services/save_campaign';
 import GET_STORE_CURRENCY from '../server/handlers/queries/get_store_currency';
 import { firstDayOfCurrentBillingCycle } from '../server/utils/subscription';
+import useApi from '../components/hooks/use_api';
 
 import DefaultStateNew from './campaigns/new/defaultState';
 import { AppContext } from './_app';
 
 export async function getServerSideProps(ctx) {
   let store = await db.query('SELECT * FROM stores WHERE domain = $1', [
-    ctx.req.cookies.shopOrigin,
+    ctx.query.shop,
   ]);
   store = store.rows[0];
   const campaignsData = await db.query(
     `SELECT * FROM campaigns WHERE domain = $1 ORDER BY created DESC`,
-    [ctx.req.cookies.shopOrigin]
+    [ctx.query.shop]
   );
   const globalCampaign =
     campaignsData.rows.find(
@@ -145,17 +144,15 @@ const Index = ({
   global,
 }) => {
   const context = useContext(AppContext);
-  const [storeState, setStoreState] = useState(store);
+  const api = useApi();
+  const [enabled, setEnabled] = useState(store.enabled);
   const [toggleEnableLoading, setToggleEnableLoading] = useState(false);
   const toggleEnabled = async () => {
-    const nowEnabled = !storeState.enabled;
+    const nowEnabled = !enabled;
     setToggleEnableLoading(true);
     try {
-      await toggleStoreEnabled(nowEnabled);
-      setStoreState({
-        ...storeState,
-        enabled: nowEnabled
-      });
+      await api.patch('/api/store/enable', { enabled: nowEnabled });
+      setEnabled(nowEnabled);
     } catch (_error) {
       context.setToast({
         shown: true,
@@ -166,8 +163,8 @@ const Index = ({
       setToggleEnableLoading(false);
     }
   };
-  const enabledStatus = storeState.enabled ? 'enabled' : 'disabled';
-  const enabledButtonStatus = storeState.enabled ? 'Disable' : 'Enable';
+  const enabledStatus = enabled ? 'enabled' : 'disabled';
+  const enabledButtonStatus = enabled ? 'Disable' : 'Enable';
 
   const priceStatus = store.plan_name ? 'success' : 'new';
   const priceProgress = store.plan_name ? 'complete' : 'incomplete';
@@ -268,14 +265,14 @@ const Index = ({
         <div id="salestorm-enabled-status-inner-container">
           <Button
             onClick={toggleEnabled}
-            primary={!storeState}
+            primary={!enabled}
             loading={toggleEnableLoading}
           >
             {enabledButtonStatus}
           </Button>
           <span className="salestorm-enabled-status">
             App is{' '}
-            <strong style={{ color: storeState.enabled ? '#50b83c' : 'red' }}>
+            <strong style={{ color: enabled ? '#50b83c' : 'red' }}>
               {enabledStatus}
             </strong>
           </span>
@@ -333,7 +330,7 @@ const Index = ({
       />
       {id === 'campaigns' && (
         <Campaigns
-          enabled={storeState}
+          enabled={enabled}
           campaigns={persistedCampaigns}
           setCampaigns={(newCampaigns) => {
             setPersistedCampaigns(
@@ -352,7 +349,10 @@ const Index = ({
             onAction: async () => {
               try {
                 setSaveLoading(true);
-                const savedCampaign = await saveCampaign(globalCampaign, true);
+                const savedCampaign = await api.post(
+                  '/api/save-campaign?global=true',
+                  globalCampaign
+                );
                 context.setToast({
                   shown: true,
                   content: 'Successfully saved global design',
@@ -395,8 +395,6 @@ const Index = ({
           sales={sales}
           campaigns={persistedCampaigns}
           currencyFormatter={currencyFormatter}
-          storeState={storeState}
-          setStoreState={setStoreState}
         />
       )}
     </Page>

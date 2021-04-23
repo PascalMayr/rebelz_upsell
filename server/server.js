@@ -22,6 +22,7 @@ import {
   sentryTracingMiddleware,
 } from './middleware/sentry';
 import shopifyAuth from './middleware/shopify-auth';
+import { loadSession } from './middleware/session';
 import countView from './controllers/count_view';
 import createDraftOrder from './controllers/create_draft_order';
 import getMatchingCampaign from './controllers/get_matching_campaign';
@@ -70,19 +71,41 @@ app.prepare().then(() => {
   router.post('/api/create-draft-order', createDraftOrder);
   router.post('/api/count-view', countView);
   router.get('(.*)', verifyRequest(), processWithNext(app));
-  router.post('/api/save-campaign', verifyRequest(), saveCampaign);
-  router.delete('/api/delete-campaign/:id', verifyRequest(), deleteCampaign);
-  router.post('/api/publish-campaign/:id', verifyRequest(), publishCampaign);
+  router.post(
+    '/api/save-campaign',
+    verifyRequest(),
+    loadSession(),
+    saveCampaign
+  );
+  router.delete(
+    '/api/delete-campaign/:id',
+    verifyRequest(),
+    loadSession(),
+    deleteCampaign
+  );
+  router.post(
+    '/api/publish-campaign/:id',
+    verifyRequest(),
+    loadSession(),
+    publishCampaign
+  );
   router.delete(
     '/api/unpublish-campaign/:id',
     verifyRequest(),
+    loadSession(),
     unpublishCampaign
   );
-  router.patch('/api/store/enable', verifyRequest(), enableStore);
-  router.patch('/api/plan', verifyRequest(), manageSubscription);
+  router.patch(
+    '/api/store/enable',
+    verifyRequest(),
+    loadSession(),
+    enableStore
+  );
+  router.patch('/api/plan', verifyRequest(), loadSession(), manageSubscription);
   router.post(
     '/api/duplicate-campaign/:id',
     verifyRequest(),
+    loadSession(),
     duplicateCampaign
   );
 

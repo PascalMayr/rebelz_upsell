@@ -18,7 +18,7 @@ const saveCampaign = async (ctx) => {
       updateValues
     );
   } else {
-    requestBody.domain = ctx.session.shop;
+    requestBody.domain = ctx.state.session.shop;
     const columns = Object.keys(requestBody).map((key) => `"${key}"`);
     campaign = await db.query(
       `INSERT INTO campaigns${db.insertColumns(...columns)} RETURNING *`,
