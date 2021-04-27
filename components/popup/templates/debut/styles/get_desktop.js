@@ -287,7 +287,7 @@ const getDesktopStyles = (styles, preview) => {
     fill: ${styles.popup.color};
   }
   #salestorm-campaign-text-countdown {
-    font-size: 18px;
+    font-size: 17px;
     text-align: center;
   }
   #salestorm-progress-bar-container {
