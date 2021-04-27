@@ -42,7 +42,7 @@ import customersDataRequest from './controllers/customers_data_request';
 dotenv.config();
 
 const isProduction = process.env.NODE_ENV === 'production';
-const port = parseInt(process.env.PORT, 10) || 8081;
+const port = parseInt(process.env.PORT, 10) || 443;
 const app = next({ dev: !isProduction });
 
 // eslint-disable-next-line promise/catch-or-return
