@@ -14,29 +14,25 @@ import {
 
 import config from '../config';
 import useApi from '../components/hooks/use_api';
-import db from '../server/db';
 
 import { AppContext } from './_app';
 import '../styles/pages/pricing.css';
 
-export async function getServerSideProps(ctx) {
-  const stores = await db.query(
-    'SELECT plan_name FROM stores WHERE domain = $1',
-    [ctx.req.cookies.shopOrigin]
-  );
-  return { props: { store: stores.rows[0] } };
-}
-
-const Pricing = ({ store }) => {
+const Pricing = () => {
   const api = useApi();
   const context = useContext(AppContext);
-  const [activePlan, setActivePlan] = useState(store.plan_name);
   const [loading, setLoading] = useState(null);
+  const [activePlan, setActivePlan] = useState(null);
   const activePlanName = activePlan || config.planNames.free;
 
   useEffect(() => {
-    setActivePlan(store.plan_name);
-  }, [store.plan_name]);
+    async function fetchData() {
+      const pricingData = await api.get('/api/pages/pricing');
+      console.log(pricingData);
+      setActivePlan(pricingData.data.plan_name);
+    }
+    fetchData();
+  }, [api]);
 
   const featureList = [
     'Product Upsell Funnels',
