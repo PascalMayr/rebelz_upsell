@@ -102,8 +102,25 @@ const Design = ({
       <Card.Section title="Click to apply quick themes.">
         <div className="salestorm-themes">
           <SalestormTheme
+            theme="simple"
+            name="Simple"
+            setCampaignProperty={setCampaignProperty}
+          />
+          <SalestormTheme
+            theme="supply"
+            name="Supply blue"
+            setCampaignProperty={setCampaignProperty}
+          />
+          <SalestormTheme
             theme="debut"
             name="Debut"
+            setCampaignProperty={setCampaignProperty}
+          />
+        </div>
+        <div className="salestorm-themes">
+          <SalestormTheme
+            theme="choco"
+            name="Chocolate"
             setCampaignProperty={setCampaignProperty}
           />
           <SalestormTheme

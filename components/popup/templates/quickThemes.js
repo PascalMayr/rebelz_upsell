@@ -50,6 +50,82 @@ const Warehouse = {
   },
 };
 
+const Supply = {
+  ...DefaultStateStyle,
+  popup: {
+    ...DefaultStateStyle.popup,
+    backgroundColor: 'rgb(25, 49, 79)',
+    boxShadow: '0px 0px 0px rgb(111, 185, 217)',
+    borderRadius: '5px',
+    color: 'rgb(255, 255, 255)',
+    fontFamily: "'Montserrat', sans-serif",
+  },
+  primaryButtons: {
+    ...DefaultStateStyle.primaryButtons,
+    backgroundColor: 'rgb(76, 139, 194)',
+  },
+  secondaryButtons: {
+    ...DefaultStateStyle.secondaryButtons,
+    backgroundColor: 'rgb(50, 59, 143)',
+    fill: 'rgb(255, 255, 255)',
+  },
+  animation: {
+    ...DefaultStateStyle.animation,
+    type: 'animate__fadeIn',
+  },
+};
+
+const Simple = {
+  ...DefaultStateStyle,
+  popup: {
+    ...DefaultStateStyle.popup,
+    backgroundColor: 'rgb(255, 255, 255)',
+    boxShadow: '0px 0px 3px rgb(56, 56, 56)',
+    borderRadius: '5px',
+    color: 'rgb(56, 56, 56)',
+    fontFamily: "'Montserrat', sans-serif",
+  },
+  primaryButtons: {
+    ...DefaultStateStyle.primaryButtons,
+    backgroundColor: 'rgb(59, 59, 59)',
+  },
+  secondaryButtons: {
+    ...DefaultStateStyle.secondaryButtons,
+    backgroundColor: 'rgb(255, 255, 255)',
+    fill: 'rgb(56, 56, 56)',
+  },
+  animation: {
+    ...DefaultStateStyle.animation,
+    type: 'animate__fadeIn',
+  },
+};
+
+const Choco = {
+  ...DefaultStateStyle,
+  popup: {
+    ...DefaultStateStyle.popup,
+    backgroundColor: 'rgb(104, 63, 57)',
+    boxShadow: '0px 0px 0px rgb(56, 56, 56)',
+    borderRadius: '5px',
+    color: 'rgb(255, 255, 255)',
+    fontFamily: "'Montserrat', sans-serif",
+  },
+  primaryButtons: {
+    ...DefaultStateStyle.primaryButtons,
+    color: 'rgb(104, 63, 57)',
+    backgroundColor: 'rgb(255, 255, 255)',
+  },
+  secondaryButtons: {
+    ...DefaultStateStyle.secondaryButtons,
+    backgroundColor: 'rgba(255, 255, 255, 0)',
+    fill: 'rgb(255, 255, 255)',
+  },
+  animation: {
+    ...DefaultStateStyle.animation,
+    type: 'animate__fadeIn',
+  },
+};
+
 const GalleriaEmpire = {
   ...DefaultStateStyle,
   popup: {
@@ -57,7 +133,7 @@ const GalleriaEmpire = {
     backgroundColor: 'rgb(238, 102, 9)',
     boxShadow: '0px 0px 0px rgb(0, 0, 0)',
     borderRadius: '5px',
-    borderWidth: '3px',
+    borderWidth: '0px',
     borderColor: 'rgb(255, 255, 255)',
     color: 'rgb(255, 255, 255)',
     fontFamily: "'Lato', sans-serif",
@@ -147,6 +223,12 @@ const quickThemes = (theme) => {
       return LoftLawrence;
     case 'narrativecold':
       return NarrativeCold;
+    case 'supply':
+      return Supply;
+    case 'simple':
+      return Simple;
+    case 'choco':
+      return Choco;
     default:
       return DefaultStateStyle;
   }
