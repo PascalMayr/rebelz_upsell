@@ -236,9 +236,14 @@
 
   const addExitIntentListener = (targetPage) => {
     if (window.matchMedia('(pointer:fine)').matches) {
+      let cursorStartsFromBottom;
       document.addEventListener('mousemove', (event) => {
-        if (event.pageY && event.pageY < 150) {
-          showPopup(targetPage);
+        if (event.pageY) {
+          if (event.pageY < 150 && cursorStartsFromBottom) {
+            showPopup(targetPage);
+          } else {
+            cursorStartsFromBottom = event.pageY > 150;
+          }
         }
       });
     } else {
