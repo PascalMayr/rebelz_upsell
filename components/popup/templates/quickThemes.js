@@ -21,7 +21,7 @@ const GialloBistro = {
   },
   animation: {
     ...DefaultStateStyle.animation,
-    type: 'animate__rollIn',
+    type: 'animate__fadeIn',
   },
 };
 
