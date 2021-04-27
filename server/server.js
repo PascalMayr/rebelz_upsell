@@ -42,6 +42,7 @@ import draftOrdersUpdate from './controllers/draft_orders_update';
 import customersRedact from './controllers/customers_redact';
 import shopRedact from './controllers/shop_redact';
 import customersDataRequest from './controllers/customers_data_request';
+import homeData from './controllers/pages/home_data';
 
 dotenv.config();
 
@@ -85,6 +86,7 @@ app.prepare().then(() => {
   router.post('/api/create-draft-order', createDraftOrder);
   router.post('/api/count-view', countView);
 
+  router.get('/api/pages/home', verifyRequest(), loadSession(), homeData);
   router.get('/', rootPage);
   router.get('(.*)', processWithNext(appHandler));
   router.post(

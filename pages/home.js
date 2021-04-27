@@ -1,158 +1,74 @@
 import { Page, Button, Badge, Card, Layout, Tabs } from '@shopify/polaris';
 import '../styles/pages/index.css';
 import NextLink from 'next/link';
-import { useState, useContext, useCallback } from 'react';
+import { useState, useContext, useCallback, useEffect } from 'react';
 import { useQuery } from 'react-apollo';
-import { DateTime } from 'luxon';
 
-import db from '../server/db';
 import config from '../config';
 import Campaigns from '../components/campaigns';
 import Design from '../components/design';
 import Analytics from '../components/analytics';
 import GET_STORE_CURRENCY from '../server/handlers/queries/get_store_currency';
-import { firstDayOfCurrentBillingCycle } from '../server/utils/subscription';
 import useApi from '../components/hooks/use_api';
 
 import DefaultStateNew from './campaigns/new/defaultState';
 import { AppContext } from './_app';
 
-export async function getServerSideProps(ctx) {
-  let store = await db.query('SELECT * FROM stores WHERE domain = $1', [
-    ctx.query.shop,
-  ]);
-  store = store.rows[0];
-  const campaignsData = await db.query(
-    `SELECT * FROM campaigns WHERE domain = $1 ORDER BY created DESC`,
-    [ctx.query.shop]
-  );
-  const globalCampaign =
-    campaignsData.rows.find(
-      (campaign) => campaign.id === store.global_campaign_id
-    ) || {};
-  campaignsData.rows = campaignsData.rows.filter(
-    (campaign) => campaign.id !== store.global_campaign_id
-  );
-  const billingCycleStartDate = firstDayOfCurrentBillingCycle(
-    store.subscription_start
-  );
-  const beginningOfMonth = DateTime.now().startOf('month');
-  const views = await db.query(
-    'SELECT * FROM views WHERE domain = $1 AND view_date >= $2 ORDER BY view_date',
-    [
-      ctx.req.cookies.shopOrigin,
-      db.dateToSQL(
-        DateTime.min(billingCycleStartDate, beginningOfMonth).toJSDate()
-      ),
-    ]
-  );
-  const analyticsViews = views.rows.filter(
-    (view) => DateTime.fromJSDate(view.view_date) >= beginningOfMonth
-  );
-  const billingCycleViews = views.rows.filter(
-    (view) => DateTime.fromJSDate(view.view_date) >= billingCycleStartDate
-  );
-  const campaigns = campaignsData.rows.map((campaign) => {
-    const viewsCount = billingCycleViews
-      .filter((view) => view.campaign_id.toString() === campaign.id.toString())
-      .map((row) => parseInt(row.counter, 10))
-      .reduce((sum, counter) => sum + counter, 0);
-    return {
-      ...campaign,
-      views: viewsCount,
-      sales: 0,
-      revenue: 0,
-    };
-  });
-  const viewsCount = campaigns.reduce(
-    (sum, campaign) => sum + campaign.views,
-    0
-  );
-  const orders = await db.query(
-    `SELECT *
-    FROM orders
-    WHERE domain = $1
-    AND date_part('month', order_time) = date_part('month', (SELECT current_timestamp))
-    AND status = 'completed'`,
-    [ctx.req.cookies.shopOrigin]
-  );
-  let averageOrderPrice = 0;
-  if (orders.rows.length > 0) {
-    const totalOrderValue = orders.rows.reduce(
-      (sum, order) => sum + parseInt(order.total_price, 10),
-      0
-    );
-    averageOrderPrice = totalOrderValue / orders.rows.length;
-  }
-  const totalRevenue = orders.rows.reduce((sum, order) => {
-    const orderValue = parseFloat(order.value_added);
-    const orderCampaign = campaigns.find(
-      (campaign) => campaign.id.toString() === order.campaign_id.toString()
-    );
-    orderCampaign.sales += 1;
-    orderCampaign.revenue += orderValue;
-    return sum + orderValue;
-  }, 0);
-
-  const days = [];
-  const salesPerDay = [];
-  const viewsPerDay = [];
-  let analyticsDay = beginningOfMonth;
-  const endOfMonth = DateTime.now().endOf('month');
-  const ordersOfThisDay = (order) =>
-    DateTime.fromJSDate(order.order_time).startOf('day').toMillis() ===
-    analyticsDay.toMillis();
-  const viewsOfThisDay = (view) =>
-    DateTime.fromJSDate(view.view_date).toMillis() === analyticsDay.toMillis();
-  do {
-    days.push(analyticsDay.toJSDate());
-    salesPerDay.push(orders.rows.filter(ordersOfThisDay).length);
-    const todaysViews = analyticsViews.filter(viewsOfThisDay);
-    viewsPerDay.push(
-      todaysViews.reduce((sum, view) => sum + parseInt(view.counter, 10), 0)
-    );
-
-    analyticsDay = analyticsDay.plus({ days: 1 });
-  } while (analyticsDay <= endOfMonth);
-
-  return {
-    props: JSON.parse(
-      JSON.stringify({
-        campaigns,
-        store,
-        averageOrderPrice,
-        totalRevenue,
-        viewsCount,
-        views: viewsPerDay,
-        sales: salesPerDay,
-        days,
-        global: globalCampaign,
-      })
-    ),
-  };
-}
-
-const Index = ({
-  store,
-  campaigns,
-  viewsCount,
-  views,
-  sales,
-  days,
-  averageOrderPrice,
-  totalRevenue,
-  global,
-}) => {
+const Index = () => {
   const context = useContext(AppContext);
   const api = useApi();
-  const [enabled, setEnabled] = useState(store.enabled);
+
+  const [store, setStore] = useState(null);
   const [toggleEnableLoading, setToggleEnableLoading] = useState(false);
+  const [tab, setTab] = useState(0);
+  const [globalCampaign, setGlobalCampaign] = useState(DefaultStateNew);
+  const [saveLoading, setSaveLoading] = useState(false);
+  const [campaigns, setCampaigns] = useState(null);
+  const [analytics, setAnalytics] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      let homeData = await api.get('/api/pages/home');
+      homeData = homeData.data;
+      setStore(homeData.store);
+      setCampaigns(homeData.campaigns);
+      setAnalytics({
+        averageOrderPrice: homeData.averageOrderPrice,
+        totalRevenue: homeData.totalRevenue,
+        viewsCount: homeData.viewsCount,
+        views: homeData.views,
+        sales: homeData.sales,
+        days: homeData.days,
+      });
+      setGlobalCampaign(homeData.globalCampaign);
+    }
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const { data: currencyData } = useQuery(GET_STORE_CURRENCY);
+  const currencyCode =
+    currencyData && currencyData.shop && currencyData.shop.currencyCode;
+
+  const setGlobalCampaignProperty = useCallback(
+    (value, key, state = {}) =>
+      setGlobalCampaign({ ...globalCampaign, [key]: value, ...state }),
+    [globalCampaign]
+  );
+
+  if (!campaigns || !analytics || !store || !globalCampaign) {
+    return null;
+  }
+
   const toggleEnabled = async () => {
-    const nowEnabled = !enabled;
+    const nowEnabled = !store.enabled;
     setToggleEnableLoading(true);
     try {
       await api.patch('/api/store/enable', { enabled: nowEnabled });
-      setEnabled(nowEnabled);
+      setStore({
+        ...store,
+        enabled: nowEnabled,
+      });
     } catch (_error) {
       context.setToast({
         shown: true,
@@ -163,13 +79,11 @@ const Index = ({
       setToggleEnableLoading(false);
     }
   };
-  const enabledStatus = enabled ? 'enabled' : 'disabled';
-  const enabledButtonStatus = enabled ? 'Disable' : 'Enable';
+  const enabledStatus = store.enabled ? 'enabled' : 'disabled';
+  const enabledButtonStatus = store.enabled ? 'Disable' : 'Enable';
 
   const priceStatus = store.plan_name ? 'success' : 'new';
   const priceProgress = store.plan_name ? 'complete' : 'incomplete';
-
-  const [tab, setTab] = useState(0);
 
   const tabs = [
     {
@@ -192,10 +106,7 @@ const Index = ({
     },
   ];
 
-  const { id } = tabs[tab];
-
-  const { data } = useQuery(GET_STORE_CURRENCY);
-  const currencyCode = data && data.shop && data.shop.currencyCode;
+  const { id: tabKey } = tabs[tab];
 
   let currencyFormatter;
   if (currencyCode) {
@@ -206,26 +117,13 @@ const Index = ({
     });
   }
   const formattedTotalRevenue = currencyFormatter
-    ? currencyFormatter.format(totalRevenue)
-    : totalRevenue;
+    ? currencyFormatter.format(analytics.totalRevenue)
+    : analytics.totalRevenue;
   const formattedAverageOrderPrice = currencyFormatter
-    ? currencyFormatter.format(averageOrderPrice)
-    : averageOrderPrice;
+    ? currencyFormatter.format(analytics.averageOrderPrice)
+    : analytics.averageOrderPrice;
 
-  const [globalCampaign, setGlobalCampaign] = useState({
-    ...DefaultStateNew,
-    ...global,
-  });
-
-  const setGlobalCampaignProperty = useCallback(
-    (value, key, state = {}) =>
-      setGlobalCampaign({ ...globalCampaign, [key]: value, ...state }),
-    [globalCampaign]
-  );
-
-  const [saveLoading, setSaveLoading] = useState(false);
-  const designContainerClassName = id === 'design' ? '' : 'd-none';
-  const [persistedCampaigns, setPersistedCampaigns] = useState(campaigns);
+  const designContainerClassName = tabKey === 'design' ? '' : 'd-none';
 
   return (
     <Page
@@ -265,14 +163,14 @@ const Index = ({
         <div id="salestorm-enabled-status-inner-container">
           <Button
             onClick={toggleEnabled}
-            primary={!enabled}
+            primary={!store.enabled}
             loading={toggleEnableLoading}
           >
             {enabledButtonStatus}
           </Button>
           <span className="salestorm-enabled-status">
             App is{' '}
-            <strong style={{ color: enabled ? '#50b83c' : 'red' }}>
+            <strong style={{ color: store.enabled ? '#50b83c' : 'red' }}>
               {enabledStatus}
             </strong>
           </span>
@@ -316,7 +214,7 @@ const Index = ({
                 )}
               </p>
               <div className="salestorm-analytics-value">
-                {viewsCount} / {store.plan_limit}
+                {analytics.viewsCount} / {store.plan_limit}
               </div>
             </Card.Section>
           </Card>
@@ -328,14 +226,12 @@ const Index = ({
         onSelect={(selectedTabIndex) => setTab(selectedTabIndex)}
         fitted
       />
-      {id === 'campaigns' && (
+      {tabKey === 'campaigns' && (
         <Campaigns
-          enabled={enabled}
-          campaigns={persistedCampaigns}
+          enabled={store.enabled}
+          campaigns={campaigns}
           setCampaigns={(newCampaigns) => {
-            setPersistedCampaigns(
-              newCampaigns.filter((campaign) => !campaign.global)
-            );
+            setCampaigns(newCampaigns.filter((campaign) => !campaign.global));
           }}
         />
       )}
@@ -388,12 +284,12 @@ const Index = ({
           </Card>
         </Page>
       </div>
-      {id === 'analytics' && (
+      {tabKey === 'analytics' && (
         <Analytics
-          views={views}
-          days={days}
-          sales={sales}
-          campaigns={persistedCampaigns}
+          views={analytics.views}
+          days={analytics.days}
+          sales={analytics.sales}
+          campaigns={campaigns}
           currencyFormatter={currencyFormatter}
         />
       )}
