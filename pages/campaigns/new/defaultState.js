@@ -105,7 +105,7 @@ const DefaultStateNew = {
   texts: {
     title: 'Deal unlocked! get another for {{Discount}} off!',
     subtitle: 'Instead of <del>{{ProductPrice}}</del> pay just <strong>{{DiscountedProductPrice}}</strong>',
-    addToCartAction: '🎁  &nbsp; CLAIM OFFER !',
+    addToCartAction: 'ADD TO CART',
     addToCartUnavailable: 'Unavailable',
     seeProductDetailsAction: 'See product details',
     dismissAction: 'No thanks',

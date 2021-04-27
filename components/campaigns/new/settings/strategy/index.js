@@ -14,7 +14,7 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
       ...DefaultStateNew.texts,
       title: 'Deal unlocked! Accept this offer and get free shipping.',
       subtitle: '<center><strong>{{ProductPrice}}</strong></center>',
-      addToCartAction: '🎁  &nbsp; CLAIM OFFER !',
+      addToCartAction: 'ADD TO CART',
       addToCartUnavailable: 'Unavailable',
       seeProductDetailsAction: 'See product details',
       dismissAction: 'No thanks',
@@ -26,7 +26,7 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
       title:
         'Thanks for trusting us! You will get this additional item for free.',
       subtitle: '',
-      addToCartAction: '🎁  &nbsp; CLAIM OFFER !',
+      addToCartAction: 'ADD TO CART',
       addToCartUnavailable: 'Unavailable',
       seeProductDetailsAction: 'See product details',
       dismissAction: 'No thanks',
