@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 const GET_PRODUCT = gql`
   query Product($id: ID!) {

@@ -1,5 +1,5 @@
 import 'isomorphic-fetch';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 export function RECURRING_CREATE() {
   return gql`

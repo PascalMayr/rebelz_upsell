@@ -13,29 +13,26 @@ import {
 } from '@shopify/polaris';
 
 import config from '../config';
-import setPlan from '../services/set-plan';
-import db from '../server/db';
+import useApi from '../components/hooks/use_api';
 
 import { AppContext } from './_app';
 import '../styles/pages/pricing.css';
 
-export async function getServerSideProps(ctx) {
-  const stores = await db.query(
-    'SELECT plan_name FROM stores WHERE domain = $1',
-    [ctx.req.cookies.shopOrigin]
-  );
-  return { props: { store: stores.rows[0] } };
-}
-
-const Pricing = ({ store }) => {
+const Pricing = () => {
+  const api = useApi();
   const context = useContext(AppContext);
-  const [activePlan, setActivePlan] = useState(store.plan_name);
   const [loading, setLoading] = useState(null);
+  const [activePlan, setActivePlan] = useState(null);
   const activePlanName = activePlan || config.planNames.free;
 
   useEffect(() => {
-    setActivePlan(store.plan_name);
-  }, [store.plan_name]);
+    async function fetchData() {
+      const pricingData = await api.get('/api/pages/pricing');
+      console.log(pricingData);
+      setActivePlan(pricingData.data.plan_name);
+    }
+    fetchData();
+  }, [api]);
 
   const featureList = [
     'Product Upsell Funnels',
@@ -58,7 +55,7 @@ const Pricing = ({ store }) => {
     setLoading(name);
     if (name === activePlanName) {
       try {
-        await setPlan(name);
+        await api.patch('/api/plan', { plan: name });
         context.setToast({
           shown: true,
           content: `Successfully canceled your subscription`,
@@ -76,7 +73,7 @@ const Pricing = ({ store }) => {
       }
     } else {
       try {
-        const response = await setPlan(name);
+        const response = await api.patch('/api/plan', { plan: name });
         const { confirmationUrl } = response.data;
         window.top.location = confirmationUrl;
       } catch (e) {
@@ -94,7 +91,7 @@ const Pricing = ({ store }) => {
       title="Plans & Pricing"
       className="salestorm-pricing"
       subtitle="Choose the best plan for your needs."
-      breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
+      breadcrumbs={[{ content: 'Campaigns', url: '/home' }]}
     >
       <div className="plans-container">
         <Heading element="h1">

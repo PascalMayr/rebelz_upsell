@@ -11,14 +11,12 @@ import Image from 'next/image';
 import '../styles/pages/index.css';
 import { useCallback, useState } from 'react';
 
-import publishCampaign from '../services/publish_campaign';
-import unpublishCampaign from '../services/unpublish_campaign';
-import duplicateCampaign from '../services/duplicate_campaign';
-
 import DeleteModal from './delete_modal';
 import Campaign from './campaign';
+import useApi from './hooks/use_api';
 
 const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
+  const api = useApi();
   const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
   const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
   const [sortValue, setSortValue] = useState('CREATED_DESC');
@@ -139,7 +137,9 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
                       content: 'Duplicate',
                       icon: DuplicateMinor,
                       onAction: async () => {
-                        const duplicate = await duplicateCampaign(campaign.id);
+                        const duplicate = await api.post(
+                          `/api/duplicate-campaign/${campaign.id}`
+                        );
                         campaigns.push(duplicate.data);
                         setCampaigns(campaigns);
                       },
@@ -149,12 +149,16 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
                       icon: published ? CircleDisableMinor : ViewMajor,
                       onAction: async () => {
                         if (published) {
-                          await unpublishCampaign(campaign.id);
+                          await api.delete(
+                            `/api/unpublish-campaign/${campaign.id}`
+                          );
                           // eslint-disable-next-line require-atomic-updates
                           campaign.published = false;
                           setCampaigns(campaigns);
                         } else {
-                          await publishCampaign(campaign.id);
+                          await api.post(
+                            `/api/publish-campaign/${campaign.id}`
+                          );
                           // eslint-disable-next-line require-atomic-updates
                           campaign.published = true;
                           setCampaigns(campaigns);

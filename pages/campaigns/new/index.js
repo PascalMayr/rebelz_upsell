@@ -5,9 +5,6 @@ import { useQuery } from 'react-apollo';
 import { Modal } from '@shopify/app-bridge-react';
 
 import '../../../styles/pages/campaigns/new.css';
-import saveCampaign from '../../../services/save_campaign';
-import publishCampaign from '../../../services/publish_campaign';
-import unpublishCampaign from '../../../services/unpublish_campaign';
 import TriggerSettings from '../../../components/campaigns/new/settings/triggers';
 import StrategySettings from '../../../components/campaigns/new/settings/strategy';
 import SellingModeSettings from '../../../components/campaigns/new/settings/selling_mode';
@@ -17,6 +14,7 @@ import Design from '../../../components/design';
 import db from '../../../server/db';
 import EntrySettings from '../../../components/campaigns/new/settings/entry';
 import GET_STORE_CURRENCY from '../../../server/handlers/queries/get_store_currency';
+import useApi from '../../../components/hooks/use_api';
 
 import DefaultStateNew from './defaultState';
 
@@ -44,6 +42,7 @@ export async function getServerSideProps(ctx) {
 
 const New = (props) => {
   const context = useContext(AppContext);
+  const api = useApi();
   const [campaign, setCampaign] = useState({
     ...DefaultStateNew,
     ...props.global,
@@ -107,7 +106,7 @@ const New = (props) => {
           )}
         </>
       }
-      breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
+      breadcrumbs={[{ content: 'Campaigns', url: '/home' }]}
       primaryAction={{
         content: publishLabel,
         loading: publishLoading,
@@ -118,8 +117,13 @@ const New = (props) => {
                 return;
               }
               setPublishLoading(true);
-              const savedCampaign = await saveCampaign(campaign);
-              await unpublishCampaign(savedCampaign.data.id);
+              const savedCampaign = await api.post(
+                '/api/save-campaign',
+                campaign
+              );
+              await api.delete(
+                `/api/unpublish-campaign/${savedCampaign.data.id}`
+              );
               context.setToast({
                 shown: true,
                 content: 'Successfully unpublished campaign',
@@ -142,8 +146,11 @@ const New = (props) => {
                 return;
               }
               setPublishLoading(true);
-              const savedCampaign = await saveCampaign(campaign);
-              await publishCampaign(savedCampaign.data.id);
+              const savedCampaign = await api.post(
+                '/api/save-campaign',
+                campaign
+              );
+              await api.post(`/api/publish-campaign/${savedCampaign.data.id}`);
               context.setToast({
                 shown: true,
                 content: 'Successfully published campaign',
@@ -173,7 +180,10 @@ const New = (props) => {
                 return;
               }
               setSaveLoading(true);
-              const savedCampaign = await saveCampaign(campaign);
+              const savedCampaign = await api.post(
+                '/api/save-campaign',
+                campaign
+              );
               context.setToast({
                 shown: true,
                 content: campaign.published

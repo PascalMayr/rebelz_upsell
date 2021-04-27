@@ -1,11 +1,13 @@
 import { Modal } from '@shopify/app-bridge-react';
 import { useState, useContext } from 'react';
 
-import deleteCampaign from '../services/delete_campaign';
 import { AppContext } from '../pages/_app';
+
+import useApi from './hooks/use_api';
 
 const CampaignDeleteModal = ({ campaign, removeFromList, onClose }) => {
   const context = useContext(AppContext);
+  const api = useApi();
   const [deleteButtonLoading, setDeleteButtonLoading] = useState(false);
 
   return (
@@ -21,7 +23,7 @@ const CampaignDeleteModal = ({ campaign, removeFromList, onClose }) => {
           setDeleteButtonLoading(true);
           let toast;
           try {
-            await deleteCampaign(campaign.id);
+            await api.delete(`/api/delete-campaign/${campaign.id}`);
             removeFromList(campaign);
             toast = {
               shown: true,
