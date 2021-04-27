@@ -5,8 +5,8 @@ const GialloBistro = {
   popup: {
     ...DefaultStateStyle.popup,
     backgroundColor: 'rgb(250, 243, 236)',
-    boxShadow: '0px 0px 5px rgb(224, 181, 129)',
-    borderRadius: '15px',
+    boxShadow: '0px 0px 0px rgb(224, 181, 129)',
+    borderRadius: '5px',
     color: 'rgb(0, 0, 0)',
     fontFamily: "'Quattrocento', serif",
   },
@@ -30,8 +30,8 @@ const Warehouse = {
   popup: {
     ...DefaultStateStyle.popup,
     backgroundColor: 'rgb(39, 48, 122)',
-    boxShadow: '0px 0px 15px rgb(111, 185, 217)',
-    borderRadius: '15px',
+    boxShadow: '0px 0px 0px rgb(111, 185, 217)',
+    borderRadius: '5px',
     color: 'rgb(255, 255, 255)',
     fontFamily: "'Arial', sans-serif",
   },
@@ -55,7 +55,7 @@ const GalleriaEmpire = {
   popup: {
     ...DefaultStateStyle.popup,
     backgroundColor: 'rgb(238, 102, 9)',
-    boxShadow: '0px 0px 3px rgb(0, 0, 0)',
+    boxShadow: '0px 0px 0px rgb(0, 0, 0)',
     borderRadius: '5px',
     borderWidth: '3px',
     borderColor: 'rgb(255, 255, 255)',
