@@ -36,6 +36,7 @@ const TextFormatter = ({ styles, setStyleProperty }) => {
     { value: "'Rubrik', sans-serif", label: 'Rubrik' },
     { value: "'Open Sans', sans-serif", label: 'Open Sans' },
     { value: "'Lato', sans-serif", label: 'Lato' },
+    { value: "'Montserrat', sans-serif", label: 'Montserrat' },
   ].sort((a, b) => a.label.toUpperCase().localeCompare(b.label.toUpperCase()));
 
   return (
