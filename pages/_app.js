@@ -7,7 +7,7 @@ import { AppProvider as PolarisProvider, Frame } from '@shopify/polaris';
 import {
   Provider as ShopifyAppBridgeProvider,
   Toast,
-  Context as ShopifyAppContext,
+  useAppBridge,
 } from '@shopify/app-bridge-react';
 import React, { createContext } from 'react';
 import '@shopify/polaris/dist/styles.css';
@@ -47,25 +47,18 @@ function userLoggedInFetch(app) {
   };
 }
 
-class GraphQLProvider extends React.Component {
-  // eslint-disable-next-line @shopify/react-prefer-private-members
-  static contextType = ShopifyAppContext;
+const GraphQLProvider = (props) => {
+  const app = useAppBridge();
 
-  render() {
-    const app = this.context;
+  const client = new ApolloClient({
+    fetch: userLoggedInFetch(app),
+    fetchOptions: {
+      credentials: 'include',
+    },
+  });
 
-    const client = new ApolloClient({
-      fetch: userLoggedInFetch(app),
-      fetchOptions: {
-        credentials: 'include',
-      },
-    });
-
-    return (
-      <ApolloProvider client={client}>{this.props.children}</ApolloProvider>
-    );
-  }
-}
+  return <ApolloProvider client={client}>{props.children}</ApolloProvider>;
+};
 
 class MyApp extends App {
   constructor(props) {
