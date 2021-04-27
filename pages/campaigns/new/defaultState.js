@@ -82,7 +82,7 @@ const DefaultStateNew = {
   published: false,
   strategy: DefaultStateStrategy,
   targets: {
-    page: 'add_to_cart',
+    page: 'checkout',
     entry: 'onexit',
     products: [],
     collections: [],
@@ -103,7 +103,7 @@ const DefaultStateNew = {
     countdownTime: '05:00',
   },
   texts: {
-    title: 'Deal unlocked! get this for {{Discount}} off!',
+    title: 'Deal unlocked! Checkout now and get this item for {{Discount}} off!',
     subtitle: 'Instead of <del>{{ProductPrice}}</del> pay just <strong>{{DiscountedProductPrice}}</strong>',
     addToCartAction: 'ADD TO CART',
     addToCartUnavailable: 'Unavailable',

@@ -37,18 +37,6 @@ const TriggerSettings = ({ campaign, setCampaignProperty }) => {
       <Settings
         settings={[
           {
-            id: 'add_to_cart',
-            label: 'On the product page',
-            name: 'triggers',
-            onChange: changeTrigger,
-            image: {
-              src: '/add_to_cart.svg',
-              alt: 'Product page',
-              width: '150',
-              height: '150',
-            },
-          },
-          {
             id: 'checkout',
             label: 'Before checkout',
             name: 'triggers',
@@ -56,6 +44,18 @@ const TriggerSettings = ({ campaign, setCampaignProperty }) => {
             image: {
               src: '/before_checkout.svg',
               alt: 'Before checkout',
+              width: '150',
+              height: '150',
+            },
+          },
+          {
+            id: 'add_to_cart',
+            label: 'On the product page',
+            name: 'triggers',
+            onChange: changeTrigger,
+            image: {
+              src: '/add_to_cart.svg',
+              alt: 'Product page',
               width: '150',
               height: '150',
             },
