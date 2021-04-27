@@ -20,8 +20,12 @@ import {
   sentryRequestMiddleware,
   sentryTracingMiddleware,
 } from './middleware/sentry';
-import shopifyAuthConfig from './middleware/shopify-auth-config';
+import {
+  onlineAuthConfig,
+  offlineAuthConfig,
+} from './middleware/shopify-auth-config';
 import { loadSession } from './middleware/session';
+import rootPage from './controllers/root_page';
 import countView from './controllers/count_view';
 import createDraftOrder from './controllers/create_draft_order';
 import getMatchingCampaign from './controllers/get_matching_campaign';
@@ -44,6 +48,7 @@ dotenv.config();
 const isProduction = process.env.NODE_ENV === 'production';
 const port = parseInt(process.env.PORT, 10) || 443;
 const app = next({ dev: !isProduction });
+const appHandler = app.getRequestHandler();
 
 // eslint-disable-next-line promise/catch-or-return
 app.prepare().then(() => {
@@ -75,13 +80,13 @@ app.prepare().then(() => {
     subscriptionUpdate
   );
   router.post('/webhooks/draft_orders/update', webhook, draftOrdersUpdate);
+
   router.post('/api/get-matching-campaign', getMatchingCampaign);
   router.post('/api/create-draft-order', createDraftOrder);
   router.post('/api/count-view', countView);
-    }
-  router.get('(/_next/static/.*)', processWithNext(appHandler));
-  router.get('/_next/webpack-hmr', processWithNext(appHandler));
-  router.get('(.*)', verifyRequest(), processWithNext(appHandler));
+
+  router.get('/', rootPage);
+  router.get('(.*)', processWithNext(appHandler));
   router.post(
     '/api/save-campaign',
     verifyRequest(),
@@ -124,7 +129,8 @@ app.prepare().then(() => {
   server.use(sentryRequestMiddleware);
   server.use(sentryTracingMiddleware);
   server.keys = [process.env.SHOPIFY_API_SECRET];
-  server.use(shopifyAuth(shopifyAuthConfig));
+  server.use(shopifyAuth(offlineAuthConfig));
+  server.use(shopifyAuth(onlineAuthConfig));
   server.use(graphqlRouter.allowedMethods());
   server.use(graphqlRouter.routes());
   server.use(bodyParser());

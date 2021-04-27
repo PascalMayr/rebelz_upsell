@@ -1,8 +1,6 @@
-const processWithNext = (app) => {
-  const handle = app.getRequestHandler();
-
+const processWithNext = (appHandler) => {
   return async function (ctx) {
-    await handle(ctx.req, ctx.res);
+    await appHandler(ctx.req, ctx.res);
     ctx.respond = false;
     ctx.res.statusCode = 200;
   };

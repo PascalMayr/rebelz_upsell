@@ -16,11 +16,10 @@ Shopify.Context.initialize({
   SESSION_STORAGE: new Shopify.Session.MemorySessionStorage(),
 });
 
-const shopifyAuthConfig = {
+export const onlineAuthConfig = {
   async afterAuth(ctx) {
     // Auth token and shop available in session
-    const { shop, scope, accessToken, onlineAccessInfo } = ctx.state.shopify;
-    global.ACTIVE_SHOPIFY_SHOPS[shop] = scope;
+    const { shop, onlineAccessInfo } = ctx.state.shopify;
     const {
       id,
       first_name: firstName,
@@ -29,6 +28,48 @@ const shopifyAuthConfig = {
       account_owner: accountOwner,
       locale,
     } = onlineAccessInfo.associated_user;
+    await db.query(
+      `
+      INSERT INTO users${db.insertColumns(
+        'id',
+        'domain',
+        'associated_user_scope',
+        'first_name',
+        'last_name',
+        'email',
+        'account_owner',
+        'locale'
+      )}
+      ON CONFLICT (id) DO UPDATE SET
+      associated_user_scope = $3,
+      first_name = $4,
+      last_name = $5,
+      email = $6,
+      account_owner = $7,
+      locale = $8
+    `,
+      [
+        id,
+        shop,
+        onlineAccessInfo.associated_user_scope,
+        firstName,
+        lastName,
+        email,
+        accountOwner,
+        locale,
+      ]
+    );
+    // Redirect to shop upon auth
+    ctx.redirect(`/home?shop=${shop}`);
+  },
+};
+
+export const offlineAuthConfig = {
+  prefix: '/offline',
+  accessMode: 'offline',
+  async afterAuth(ctx) {
+    // Auth token and shop available in session
+    const { shop, accessToken } = ctx.state.shopify;
     let activeStore = await db.query('SELECT * FROM stores WHERE domain = $1', [
       shop,
     ]);
@@ -64,45 +105,13 @@ const shopifyAuthConfig = {
           'domain',
           'scriptId',
           'plan_limit',
+          'plan_name',
           'access_token'
         )}`,
-        [shop, scriptid, freePlan.limit, accessToken]
+        [shop, scriptid, freePlan.limit, config.planNames.free, accessToken]
       );
     }
-    await db.query(
-      `
-      INSERT INTO users${db.insertColumns(
-        'id',
-        'domain',
-        'associated_user_scope',
-        'first_name',
-        'last_name',
-        'email',
-        'account_owner',
-        'locale'
-      )}
-      ON CONFLICT (id) DO UPDATE SET
-      associated_user_scope = $3,
-      first_name = $4,
-      last_name = $5,
-      email = $6,
-      account_owner = $7,
-      locale = $8
-    `,
-      [
-        id,
-        shop,
-        onlineAccessInfo.associated_user_scope,
-        firstName,
-        lastName,
-        email,
-        accountOwner,
-        locale,
-      ]
-    );
-    // Redirect to shop upon auth
+    // Redirect to online auth after offline auth
     ctx.redirect(`/?shop=${shop}`);
   },
 };
-
-export default shopifyAuthConfig;
