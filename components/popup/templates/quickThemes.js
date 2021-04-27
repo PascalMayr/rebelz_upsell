@@ -33,7 +33,7 @@ const Warehouse = {
     boxShadow: '0px 0px 0px rgb(111, 185, 217)',
     borderRadius: '5px',
     color: 'rgb(255, 255, 255)',
-    fontFamily: "'Arial', sans-serif",
+    fontFamily: "'Montserrat', sans-serif",
   },
   primaryButtons: {
     ...DefaultStateStyle.primaryButtons,
@@ -46,7 +46,7 @@ const Warehouse = {
   },
   animation: {
     ...DefaultStateStyle.animation,
-    type: 'animate__jackInTheBox',
+    type: 'animate__fadeIn',
   },
 };
 
@@ -131,7 +131,7 @@ const NarrativeCold = {
   },
   animation: {
     ...DefaultStateStyle.animation,
-    type: 'animate__backInUp',
+    type: 'animate__rotateIn',
   },
 };
 
