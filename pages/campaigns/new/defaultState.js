@@ -103,7 +103,7 @@ const DefaultStateNew = {
     countdownTime: '05:00',
   },
   texts: {
-    title: 'Deal unlocked! get another for {{Discount}} off!',
+    title: 'Deal unlocked! get this for {{Discount}} off!',
     subtitle: 'Instead of <del>{{ProductPrice}}</del> pay just <strong>{{DiscountedProductPrice}}</strong>',
     addToCartAction: 'ADD TO CART',
     addToCartUnavailable: 'Unavailable',
