@@ -106,7 +106,7 @@ const New = (props) => {
           )}
         </>
       }
-      breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
+      breadcrumbs={[{ content: 'Campaigns', url: '/home' }]}
       primaryAction={{
         content: publishLabel,
         loading: publishLoading,

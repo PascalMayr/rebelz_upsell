@@ -5,7 +5,7 @@ const Tips = () => {
     <Page
       title="Useful Tips & Readings"
       subtitle="Plan your funnel campaigns with a strategy."
-      breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
+      breadcrumbs={[{ content: 'Campaigns', url: '/home' }]}
     >
       <Card>
         <Card.Section>

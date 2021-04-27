@@ -95,7 +95,7 @@ const Pricing = ({ store }) => {
       title="Plans & Pricing"
       className="salestorm-pricing"
       subtitle="Choose the best plan for your needs."
-      breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
+      breadcrumbs={[{ content: 'Campaigns', url: '/home' }]}
     >
       <div className="plans-container">
         <Heading element="h1">
