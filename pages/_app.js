@@ -17,7 +17,6 @@ import * as Sentry from '@sentry/react';
 
 import '../styles/pages/_app.css';
 import ClientRouter from '../components/client_router';
-import RoutePropagator from '../components/route_propagator';
 import AppError from '../components/error/_app';
 
 // eslint-disable-next-line no-undef
@@ -116,7 +115,6 @@ class MyApp extends App {
           }}
         >
           <ClientRouter />
-          <RoutePropagator />
           <PolarisProvider
             i18n={translations}
             features={{ newDesignLanguage: true }}
