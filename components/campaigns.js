@@ -15,9 +15,11 @@ import { useCallback, useState } from 'react';
 import DeleteModal from './delete_modal';
 import Campaign from './campaign';
 import useApi from './hooks/use_api';
+import { useRouter } from 'next/router';
 
 const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
   const api = useApi();
+  const router = useRouter();
   const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
   const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
   const [sortValue, setSortValue] = useState('CREATED_DESC');
@@ -62,7 +64,10 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
               className="stepper-checkmark"
             />
             <p id="stepper-new-cammpaign-link">
-              <NextLink href="/campaigns/new" className="salestorm-new-campaign-link">
+              <NextLink
+                href="/campaigns/new"
+                className="salestorm-new-campaign-link"
+              >
                 3. Create a campaign
               </NextLink>
             </p>
@@ -132,7 +137,7 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
                     {
                       content: 'Edit',
                       icon: EditMinor,
-                      onAction: () => (window.location.href = url),
+                      onAction: () => router.push(url),
                     },
                     {
                       content: 'Duplicate',
