@@ -257,9 +257,11 @@ const customElement = (customJS) => `
     }
 
     removeHidePopupListener() {
-      document.removeEventListener(window.Salestorm.hidePopup.type, () => {
-        this.getElement('#salestorm-overlay-container').style.display = 'none';
-      })
+      if (window.Salestorm.hidePopup) {
+        document.removeEventListener(window.Salestorm.hidePopup.type, () => {
+          this.getElement('#salestorm-overlay-container').style.display = 'none';
+        })
+      }
     }
 
     setupChangeListeners() {
