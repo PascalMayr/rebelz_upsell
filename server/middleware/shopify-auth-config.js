@@ -3,6 +3,11 @@ import Shopify, { ApiVersion } from '@shopify/shopify-api';
 import config from '../../config';
 import db from '../db';
 import { createClient, getScriptTagId, registerWebhooks } from '../handlers';
+import {
+  storeCallback,
+  loadCallback,
+  deleteCallback,
+} from '../handlers/session';
 
 const { SHOPIFY_API_SECRET, SHOPIFY_API_KEY, SCOPES, HOST } = process.env;
 
@@ -11,9 +16,13 @@ Shopify.Context.initialize({
   API_SECRET_KEY: SHOPIFY_API_SECRET,
   SCOPES: SCOPES.split(','),
   HOST_NAME: HOST.replace(/^https:\/\//, ''),
-  API_VERSION: ApiVersion.October20,
+  API_VERSION: ApiVersion.April21,
   IS_EMBEDDED_APP: true,
-  SESSION_STORAGE: new Shopify.Session.MemorySessionStorage(),
+  SESSION_STORAGE: new Shopify.Session.CustomSessionStorage(
+    storeCallback,
+    loadCallback,
+    deleteCallback
+  ),
 });
 
 export const onlineAuthConfig = {
