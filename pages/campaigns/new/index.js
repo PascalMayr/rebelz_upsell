@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext } from 'react';
+import { useState, useCallback, useContext, useEffect } from 'react';
 import { Page, Card, Layout, TextField, Badge, Select } from '@shopify/polaris';
 import { MobilePlusMajor } from '@shopify/polaris-icons';
 import { useQuery } from 'react-apollo';
@@ -12,50 +12,43 @@ import SellingModeSettings from '../../../components/campaigns/new/settings/sell
 import { AppContext } from '../../_app';
 import ResourceSelectionCampaign from '../../../components/campaigns/new/resource_selection';
 import Design from '../../../components/design';
-import db from '../../../server/db';
 import EntrySettings from '../../../components/campaigns/new/settings/entry';
 import GET_STORE_CURRENCY from '../../../server/handlers/queries/get_store_currency';
 import useApi from '../../../components/hooks/use_api';
 
 import DefaultStateNew from './defaultState';
 
-export async function getServerSideProps(ctx) {
-  let store = await db.query(
-    'SELECT global_campaign_id FROM stores WHERE domain = $1',
-    [ctx.req.cookies.shopOrigin]
-  );
-  store = store.rows[0];
-  let globalCampaign = await db.query(
-    'SELECT * FROM campaigns WHERE domain = $1 AND id = $2',
-    [ctx.req.cookies.shopOrigin, store.global_campaign_id]
-  );
-  globalCampaign = globalCampaign.rows.length > 0 ? globalCampaign.rows[0] : {};
-  if (globalCampaign.id) {
-    const { styles, texts, customJS, customCSS, options } = globalCampaign;
-    globalCampaign = { styles, texts, customJS, customCSS, options };
-  }
-  return {
-    props: {
-      global: globalCampaign,
-    },
-  };
-}
-
-const New = (props) => {
+const New = () => {
   const context = useContext(AppContext);
   const api = useApi();
   const router = useRouter();
-  const [campaign, setCampaign] = useState({
-    ...DefaultStateNew,
-    ...props.global,
-    ...props.campaign,
-  });
+
+  const [campaign, setCampaign] = useState(DefaultStateNew);
+  const [error, setError] = useState('');
+  const [publishLoading, setPublishLoading] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
+  const title = campaign.id ? 'Update campaign' : 'Create a new campaign';
+
+  useEffect(() => {
+    async function fetchData() {
+      const campaignData = await api.get('/api/pages/campaign', {
+        params: { id: router.query.id },
+      });
+      setCampaign({
+        ...campaign,
+        ...campaignData.data.globalCampaign,
+        ...campaignData.data.campaign,
+      });
+    }
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const setCampaignProperty = useCallback(
     (value, id, state = {}) =>
       setCampaign({ ...campaign, [id]: value, ...state }),
     [campaign]
   );
-  const [error, setError] = useState('');
   const checkForInputError = (campaignToCheck) => {
     let message = '';
     if (campaignToCheck.name === '') {
@@ -73,13 +66,6 @@ const New = (props) => {
       return true;
     }
   };
-  const [publishLoading, setPublishLoading] = useState(false);
-  const [saveLoading, setSaveLoading] = useState(false);
-  const updateCampaignTitle = 'Update campaign';
-  const newCampaignTitle = 'Create a new campaign';
-  const [title, setTitle] = useState(
-    props.campaign ? updateCampaignTitle : newCampaignTitle
-  );
   const badgeStatus = campaign.published ? 'success' : 'attention';
   const contentStatus = campaign.published ? 'Published' : 'Unpublished';
   const { data } = useQuery(GET_STORE_CURRENCY);
@@ -196,7 +182,6 @@ const New = (props) => {
                 isError: false,
               });
               setCampaign({ ...campaign, ...savedCampaign.data });
-              setTitle(updateCampaignTitle);
             } catch (_error) {
               context.setToast({
                 shown: true,

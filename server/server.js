@@ -44,6 +44,7 @@ import shopRedact from './controllers/shop_redact';
 import customersDataRequest from './controllers/customers_data_request';
 import pricingData from './controllers/pages/pricing_data';
 import homeData from './controllers/pages/home_data';
+import campaignData from './controllers/pages/campaign_data';
 
 dotenv.config();
 
@@ -89,6 +90,12 @@ app.prepare().then(() => {
 
   router.get('/api/pages/pricing', verifyRequest(), loadSession(), pricingData);
   router.get('/api/pages/home', verifyRequest(), loadSession(), homeData);
+  router.get(
+    '/api/pages/campaign',
+    verifyRequest(),
+    loadSession(),
+    campaignData
+  );
   router.get('/', rootPage);
   router.get('(.*)', processWithNext(appHandler));
   router.post(
