@@ -131,7 +131,7 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
               return (
                 <ResourceItem
                   id={campaign.id}
-                  url={url}
+                  onClick={() => router.push(url)}
                   accessibilityLabel={`View details for ${name}`}
                   shortcutActions={[
                     {
