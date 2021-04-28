@@ -27,7 +27,7 @@ const saveCampaign = async (ctx) => {
     if (requestQueryParams.global) {
       await db.query(
         `UPDATE stores SET global_campaign_id = $1 WHERE domain = $2`,
-        [campaign.rows[0].id, ctx.session.shop]
+        [campaign.rows[0].id, ctx.state.session.shop]
       );
     }
   }

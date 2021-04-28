@@ -8,10 +8,8 @@ import config from '../../config';
 
 const manageSubscription = async (ctx) => {
   const { plan } = ctx.request.body;
-  const { shop, accessToken } = ctx.session;
-  let store = await db.query('SELECT * FROM stores WHERE domain = $1', [
-    ctx.session.shop,
-  ]);
+  const { shop, accessToken } = ctx.state.session;
+  let store = await db.query('SELECT * FROM stores WHERE domain = $1', [shop]);
   store = store.rows[0];
   ctx.client = await createClient(shop, accessToken);
 
@@ -22,7 +20,7 @@ const manageSubscription = async (ctx) => {
     );
     await db.query(
       'UPDATE stores SET plan_name = NULL, "subscriptionId" = NULL, plan_limit = $1 WHERE domain = $2',
-      [freePlan.limit, ctx.session.shop]
+      [freePlan.limit, shop]
     );
 
     ctx.body = {};
