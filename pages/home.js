@@ -3,6 +3,7 @@ import '../styles/pages/index.css';
 import NextLink from 'next/link';
 import { useState, useContext, useCallback, useEffect } from 'react';
 import { useQuery } from 'react-apollo';
+import { useRouter } from 'next/router';
 
 import config from '../config';
 import Campaigns from '../components/campaigns';
@@ -17,6 +18,7 @@ import { AppContext } from './_app';
 const Index = () => {
   const context = useContext(AppContext);
   const api = useApi();
+  const router = useRouter();
 
   const [store, setStore] = useState(null);
   const [toggleEnableLoading, setToggleEnableLoading] = useState(false);
@@ -138,23 +140,23 @@ const Index = () => {
         </Badge>
       }
       primaryAction={
-        <a href="/campaigns/new" className="salestorm-new-campaign-link">
+        <NextLink href="/campaigns/new" className="salestorm-new-campaign-link">
           <Button primary>
             <span className="salestorm-add-campaign">+</span> New Campaign
           </Button>
-        </a>
+        </NextLink>
       }
       secondaryActions={[
         {
           content: 'Useful Tips & Readings',
           disabled: false,
-          url: '/tips',
+          onAction: () => router.push('/tips'),
           id: 'tips-readings-button',
         },
         {
           content: 'Upgrade',
           disabled: false,
-          url: '/pricing',
+          onAction: () => router.push('/pricing'),
           id: 'pricing-button',
         },
       ]}

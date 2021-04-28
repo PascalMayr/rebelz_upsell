@@ -3,6 +3,7 @@ import { Page, Card, Layout, TextField, Badge, Select } from '@shopify/polaris';
 import { MobilePlusMajor } from '@shopify/polaris-icons';
 import { useQuery } from 'react-apollo';
 import { Modal } from '@shopify/app-bridge-react';
+import { useRouter } from 'next/router';
 
 import '../../../styles/pages/campaigns/new.css';
 import TriggerSettings from '../../../components/campaigns/new/settings/triggers';
@@ -43,6 +44,7 @@ export async function getServerSideProps(ctx) {
 const New = (props) => {
   const context = useContext(AppContext);
   const api = useApi();
+  const router = useRouter();
   const [campaign, setCampaign] = useState({
     ...DefaultStateNew,
     ...props.global,
@@ -106,7 +108,9 @@ const New = (props) => {
           )}
         </>
       }
-      breadcrumbs={[{ content: 'Campaigns', url: '/home' }]}
+      breadcrumbs={[
+        { content: 'Campaigns', onAction: () => router.push('/home') },
+      ]}
       primaryAction={{
         content: publishLabel,
         loading: publishLoading,

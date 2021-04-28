@@ -11,6 +11,7 @@ import {
   TextStyle,
   Stack,
 } from '@shopify/polaris';
+import { useRouter } from 'next/router';
 
 import config from '../config';
 import useApi from '../components/hooks/use_api';
@@ -20,6 +21,7 @@ import '../styles/pages/pricing.css';
 
 const Pricing = () => {
   const api = useApi();
+  const router = useRouter();
   const context = useContext(AppContext);
   const [loading, setLoading] = useState(null);
   const [activePlan, setActivePlan] = useState(null);
@@ -90,12 +92,12 @@ const Pricing = () => {
       title="Plans & Pricing"
       className="salestorm-pricing"
       subtitle="Choose the best plan for your needs."
-      breadcrumbs={[{ content: 'Campaigns', url: '/home' }]}
+      breadcrumbs={[
+        { content: 'Campaigns', onAction: () => router.push('/home') },
+      ]}
     >
       <div className="plans-container">
-        <Heading element="h1">
-          All features included in every plan.
-        </Heading>
+        <Heading element="h1">All features included in every plan.</Heading>
         <Layout>
           <Layout.Section oneHalf>
             <List className="pricing-list" style={{ listStyle: 'none' }}>

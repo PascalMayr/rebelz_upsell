@@ -9,6 +9,7 @@ import {
 } from '@shopify/polaris-icons';
 import Image from 'next/image';
 import '../styles/pages/index.css';
+import NextLink from 'next/link';
 import { useCallback, useState } from 'react';
 
 import DeleteModal from './delete_modal';
@@ -61,9 +62,9 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
               className="stepper-checkmark"
             />
             <p id="stepper-new-cammpaign-link">
-              <a href="/campaigns/new" className="salestorm-new-campaign-link">
+              <NextLink href="/campaigns/new" className="salestorm-new-campaign-link">
                 3. Create a campaign
-              </a>
+              </NextLink>
             </p>
           </div>
         </div>
