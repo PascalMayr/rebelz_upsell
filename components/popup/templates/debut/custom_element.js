@@ -257,6 +257,7 @@ const customElement = (customJS) => `
     }
 
     removeHidePopupListener() {
+      // hidePopup needs to be defined as it can be undefined during page change
       if (window.Salestorm.hidePopup) {
         document.removeEventListener(window.Salestorm.hidePopup.type, () => {
           this.getElement('#salestorm-overlay-container').style.display = 'none';
