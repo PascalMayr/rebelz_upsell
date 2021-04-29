@@ -26,6 +26,9 @@ const customElement = (customJS) => `
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
+      if(this.shadowRoot.childElementCount === 0) {
+        this.shadowRoot.innerHTML = this.innerHTML;
+      }
       switch(name) {
         case 'visible':
           if (newValue === "true") {
@@ -254,9 +257,12 @@ const customElement = (customJS) => `
     }
 
     removeHidePopupListener() {
-      document.removeEventListener(window.Salestorm.hidePopup.type, () => {
-        this.getElement('#salestorm-overlay-container').style.display = 'none';
-      })
+      // hidePopup needs to be defined as it can be undefined during page change
+      if (window.Salestorm.hidePopup) {
+        document.removeEventListener(window.Salestorm.hidePopup.type, () => {
+          this.getElement('#salestorm-overlay-container').style.display = 'none';
+        })
+      }
     }
 
     setupChangeListeners() {
@@ -617,7 +623,7 @@ const customElement = (customJS) => `
 
     startCountdown(initialTime, offers) {
       const timeElement = this.getElement('#salestorm-campaign-countdown');
-      const time = initialTime.split(':');
+      const time = initialTime ? initialTime.split(':') : [0,0];
       const minutes = parseInt(time[0]);
       const seconds = parseInt(time[1]);
       let totalSeconds = (minutes * 60 + seconds).toFixed(3);

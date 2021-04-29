@@ -289,6 +289,9 @@ const getDesktopStyles = (styles, preview) => {
   #salestorm-campaign-text-countdown {
     font-size: 17px;
     text-align: center;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
   }
   #salestorm-progress-bar-container {
     width: 100%;

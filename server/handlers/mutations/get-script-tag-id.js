@@ -1,5 +1,5 @@
 import 'isomorphic-fetch';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 export function SCRIPT_TAG_CREATE() {
   return gql`

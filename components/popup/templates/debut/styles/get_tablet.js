@@ -75,6 +75,9 @@ const getTabletStyles = (styles) => {
     #salestorm-product-image-slider-left {
       padding-right: 2em;
     }
+    #salestorm-campaign-text-countdown {
+      display: block;
+    }
   `;
 };
 

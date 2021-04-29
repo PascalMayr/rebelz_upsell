@@ -3,7 +3,7 @@ import db from '../db';
 const duplicateCampaign = async (ctx) => {
   const existingCampaign = await db.query(
     'SELECT * FROM campaigns WHERE id = $1 AND domain = $2',
-    [ctx.params.id, ctx.session.shop]
+    [ctx.params.id, ctx.state.session.shop]
   );
   const duplicatedCampaign = existingCampaign.rows[0];
   delete duplicatedCampaign.id;

@@ -47,7 +47,7 @@
     'salestorm-continue-original-click-event'
   );
   let productsAddedByXHROrFetch = false;
-  const publicAPI = 'https://loop.salestorm.cc:8081/api';
+  const publicAPI = 'https://loop.salestorm.cc/api';
   const shop = window.Shopify.shop || window.location.host;
 
   const getCart = async () => {

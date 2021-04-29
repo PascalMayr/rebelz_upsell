@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 const PRODUCT_IN_COLLECTION = gql`
   query ProductInCollection($product: ID!, $collection: ID!) {

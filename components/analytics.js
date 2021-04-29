@@ -17,10 +17,12 @@ import {
   DeleteMajor,
 } from '@shopify/polaris-icons';
 import Chart from 'chart.js';
+import { useRouter } from 'next/router';
 
 import '../styles/components/analytics.css';
 
 const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
+  const router = useRouter();
   const [sortValue, setSortValue] = useState('REVENUE');
   const [items, setItems] = useState(campaigns);
   const periodRef = useRef();
@@ -230,7 +232,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
                       ? currencyFormatter.format(revenue)
                       : revenue;
                     return (
-                      <ResourceItem url={url}>
+                      <ResourceItem onClick={() => router.push(url)}>
                         <h3 className="salestorm-campaign-title">
                           <TextStyle>{name}</TextStyle>
                         </h3>

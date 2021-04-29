@@ -9,16 +9,17 @@ import {
 } from '@shopify/polaris-icons';
 import Image from 'next/image';
 import '../styles/pages/index.css';
+import NextLink from 'next/link';
 import { useCallback, useState } from 'react';
-
-import publishCampaign from '../services/publish_campaign';
-import unpublishCampaign from '../services/unpublish_campaign';
-import duplicateCampaign from '../services/duplicate_campaign';
 
 import DeleteModal from './delete_modal';
 import Campaign from './campaign';
+import useApi from './hooks/use_api';
+import { useRouter } from 'next/router';
 
 const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
+  const api = useApi();
+  const router = useRouter();
   const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
   const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
   const [sortValue, setSortValue] = useState('CREATED_DESC');
@@ -63,9 +64,12 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
               className="stepper-checkmark"
             />
             <p id="stepper-new-cammpaign-link">
-              <a href="/campaigns/new" className="salestorm-new-campaign-link">
+              <NextLink
+                href="/campaigns/new"
+                className="salestorm-new-campaign-link"
+              >
                 3. Create a campaign
-              </a>
+              </NextLink>
             </p>
           </div>
         </div>
@@ -127,19 +131,21 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
               return (
                 <ResourceItem
                   id={campaign.id}
-                  url={url}
+                  onClick={() => router.push(url)}
                   accessibilityLabel={`View details for ${name}`}
                   shortcutActions={[
                     {
                       content: 'Edit',
                       icon: EditMinor,
-                      onAction: () => (window.location.href = url),
+                      onAction: () => router.push(url),
                     },
                     {
                       content: 'Duplicate',
                       icon: DuplicateMinor,
                       onAction: async () => {
-                        const duplicate = await duplicateCampaign(campaign.id);
+                        const duplicate = await api.post(
+                          `/api/duplicate-campaign/${campaign.id}`
+                        );
                         campaigns.push(duplicate.data);
                         setCampaigns(campaigns);
                       },
@@ -149,12 +155,16 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
                       icon: published ? CircleDisableMinor : ViewMajor,
                       onAction: async () => {
                         if (published) {
-                          await unpublishCampaign(campaign.id);
+                          await api.delete(
+                            `/api/unpublish-campaign/${campaign.id}`
+                          );
                           // eslint-disable-next-line require-atomic-updates
                           campaign.published = false;
                           setCampaigns(campaigns);
                         } else {
-                          await publishCampaign(campaign.id);
+                          await api.post(
+                            `/api/publish-campaign/${campaign.id}`
+                          );
                           // eslint-disable-next-line require-atomic-updates
                           campaign.published = true;
                           setCampaigns(campaigns);

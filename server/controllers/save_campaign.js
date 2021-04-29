@@ -18,7 +18,7 @@ const saveCampaign = async (ctx) => {
       updateValues
     );
   } else {
-    requestBody.domain = ctx.session.shop;
+    requestBody.domain = ctx.state.session.shop;
     const columns = Object.keys(requestBody).map((key) => `"${key}"`);
     campaign = await db.query(
       `INSERT INTO campaigns${db.insertColumns(...columns)} RETURNING *`,
@@ -27,7 +27,7 @@ const saveCampaign = async (ctx) => {
     if (requestQueryParams.global) {
       await db.query(
         `UPDATE stores SET global_campaign_id = $1 WHERE domain = $2`,
-        [campaign.rows[0].id, ctx.session.shop]
+        [campaign.rows[0].id, ctx.state.session.shop]
       );
     }
   }

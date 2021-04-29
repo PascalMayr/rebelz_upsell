@@ -1,11 +1,15 @@
 import { Page, Layout, Link, Card, Heading } from '@shopify/polaris';
+import { useRouter } from 'next/router';
 
 const Tips = () => {
+  const router = useRouter();
   return (
     <Page
       title="Useful Tips & Readings"
       subtitle="Plan your funnel campaigns with a strategy."
-      breadcrumbs={[{ content: 'Campaigns', url: '/' }]}
+      breadcrumbs={[
+        { content: 'Campaigns', onAction: () => router.push('/home') },
+      ]}
     >
       <Card>
         <Card.Section>
