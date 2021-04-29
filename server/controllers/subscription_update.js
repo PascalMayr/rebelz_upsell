@@ -1,3 +1,4 @@
+import db from '../db';
 import config from '../../config';
 import sendMail, { mailTemplates } from '../handlers/mail';
 
