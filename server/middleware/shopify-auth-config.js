@@ -96,21 +96,21 @@ export const offlineAuthConfig = {
         accessToken,
         'APP_SUBSCRIPTIONS_UPDATE',
         '/webhooks/app_subscriptions/update',
-        ApiVersion.October20
+        ApiVersion.April21
       );
       registerWebhooks(
         shop,
         accessToken,
         'DRAFT_ORDERS_UPDATE',
         '/webhooks/draft_orders/update',
-        ApiVersion.October20
+        ApiVersion.April21
       );
       registerWebhooks(
         shop,
         accessToken,
         'APP_UNINSTALLED',
         '/webhooks/app/uninstalled',
-        ApiVersion.October20
+        ApiVersion.April21
       );
 
       const freePlan = config.plans.find(
