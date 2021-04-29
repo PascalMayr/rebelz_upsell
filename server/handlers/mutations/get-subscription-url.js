@@ -43,7 +43,7 @@ export const getSubscriptionUrl = async (ctx, { name, amount, currency }) => {
     mutation: RECURRING_CREATE(),
     variables: {
       url: process.env.HOST,
-      test: process.env.NODE_ENV !== 'production',
+      test: process.env.BILLING_TEST === 'true',
       name,
       amount,
       currency,
