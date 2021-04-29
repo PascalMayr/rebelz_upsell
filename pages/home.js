@@ -11,7 +11,7 @@ import Analytics from '../components/analytics';
 import GET_STORE_CURRENCY from '../server/handlers/queries/get_store_currency';
 import useApi from '../components/hooks/use_api';
 
-import DefaultStateNew from './campaigns/new/defaultState';
+import DefaultStateNew from '../components/campaigns/new/defaultState';
 import { AppContext } from './_app';
 
 const Index = () => {

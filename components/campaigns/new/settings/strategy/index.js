@@ -1,5 +1,5 @@
 import Settings from '..';
-import DefaultStateNew from '../../../../../pages/campaigns/new/defaultState';
+import DefaultStateNew from '../../defaultState';
 
 import DetailsStrategy from './details';
 

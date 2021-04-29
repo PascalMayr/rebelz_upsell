@@ -1,4 +1,4 @@
-import { DefaultStateStyle } from '../../../pages/campaigns/new/defaultState';
+import { DefaultStateStyle } from '../../campaigns/new/defaultState';
 
 const GialloBistro = {
   ...DefaultStateStyle,

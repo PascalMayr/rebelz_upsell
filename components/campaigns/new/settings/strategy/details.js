@@ -4,7 +4,7 @@ import '../../../../../styles/components/campaigns/new/settings/strategy/details
 import { useQuery } from 'react-apollo';
 
 import GET_STORE_CURRENCY from '../../../../../server/handlers/queries/get_store_currency';
-import { DefaultStateStrategy } from '../../../../../pages/campaigns/new/defaultState';
+import { DefaultStateStrategy } from '../../defaultState';
 
 const DetailsStrategy = ({
   strategy = DefaultStateStrategy,
