@@ -42,6 +42,8 @@ import draftOrdersUpdate from './controllers/draft_orders_update';
 import customersRedact from './controllers/customers_redact';
 import shopRedact from './controllers/shop_redact';
 import customersDataRequest from './controllers/customers_data_request';
+import appUninstalled from './controllers/app_uninstalled';
+
 import pricingData from './controllers/pages/pricing_data';
 import homeData from './controllers/pages/home_data';
 import campaignData from './controllers/pages/campaign_data';
@@ -82,6 +84,7 @@ app.prepare().then(() => {
     webhook,
     subscriptionUpdate
   );
+  router.post('/webhooks/app/uninstalled', webhook, appUninstalled);
   router.post('/webhooks/draft_orders/update', webhook, draftOrdersUpdate);
 
   router.post('/api/get-matching-campaign', getMatchingCampaign);

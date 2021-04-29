@@ -105,6 +105,13 @@ export const offlineAuthConfig = {
         '/webhooks/draft_orders/update',
         ApiVersion.October20
       );
+      registerWebhooks(
+        shop,
+        accessToken,
+        'APP_UNINSTALLED',
+        '/webhooks/app/uninstalled',
+        ApiVersion.October20
+      );
 
       const freePlan = config.plans.find(
         (plan) => plan.name === config.planNames.free
