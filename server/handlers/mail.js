@@ -14,7 +14,7 @@ export const mailTemplates = {
 
 const sendMail = async ({ to, template, templateData }) => {
   const message = {
-    from: 'support@salestorm.cc',
+    from: 'support@rebelzcommerce.com',
     to,
     templateId: template,
     dynamicTemplateData: templateData,

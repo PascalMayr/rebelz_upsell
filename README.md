@@ -1,4 +1,4 @@
-# Salestorm Upsell
+# Rebelz Upsell
 
 ## Getting started
 
@@ -39,7 +39,7 @@ CREATE EXTENSION citext;
 13. Open the app URL shown in the output. The first time you do this Chrome will complain about an invalid certificate, [to circumvent this type "thisisunsafe" and Chrome will remember to trust the local certificate](https://medium.com/@dblazeski/chrome-bypass-net-err-cert-invalid-for-development-daefae43eb12).
 
 ***Note:***
-If you get any problem loading the startup script or the app in the admin panel try to refresh the page or try to access https://loop.salestorm.cc and type again "thisisunsafe".
+If you get any problem loading the startup script or the app in the admin panel try to refresh the page or try to access https://loop.rebelzcommerce.com and type again "thisisunsafe".
 
 ## Development guides
 

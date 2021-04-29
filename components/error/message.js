@@ -25,8 +25,8 @@ const MessageError = ({ whileMessage = 'while loading', suggestions = [] }) => (
       </b>
     </p>
     <p>
-      <a href="mailto:support@salestorm.cc">
-        <b>support@salestorm.cc</b>
+      <a href="mailto:support@rebelzcommerce.com">
+        <b>support@rebelzcommerce.com</b>
       </a>
     </p>
   </div>

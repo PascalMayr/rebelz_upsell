@@ -176,7 +176,7 @@ const Pricing = () => {
                 />
                 <div className='salestorm-pricing-contact-us'>
                   <TextStyle>Need help or a bigger plan?</TextStyle>
-                  <a href="mailto:support@salestorm.cc?subject=Plan%20Upgrade%20Inquiry">
+                  <a href="mailto:support@rebelzcommerce.com?subject=Plan%20Upgrade%20Inquiry">
                     <Button primary>Contact us</Button>
                   </a>
                 </div>

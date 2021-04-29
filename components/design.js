@@ -157,7 +157,7 @@ const Design = ({
           <Button primary icon={ReplayMinor} onClick={replayAnimation}>
             Replay incoming animation
           </Button>
-          <a href="mailto:support@salestorm.cc?subject=Design%20Help%20Inquiry">
+          <a href="mailto:support@rebelzcommerce.com?subject=Design%20Help%20Inquiry">
             <Button icon={ComposeMajor}>Get Help Designing</Button>
           </a>
         </div>
