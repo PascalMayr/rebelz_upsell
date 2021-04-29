@@ -17,7 +17,6 @@ import config from '../config';
 import useApi from '../components/hooks/use_api';
 
 import { AppContext } from './_app';
-import '../styles/pages/pricing.css';
 
 const Pricing = () => {
   const api = useApi();

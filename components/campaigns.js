@@ -8,7 +8,6 @@ import {
   CircleDisableMinor,
 } from '@shopify/polaris-icons';
 import Image from 'next/image';
-import '../styles/pages/index.css';
 import NextLink from 'next/link';
 import { useCallback, useState } from 'react';
 

@@ -1,5 +1,4 @@
 import { Page, Button, Badge, Card, Layout, Tabs } from '@shopify/polaris';
-import '../styles/pages/index.css';
 import NextLink from 'next/link';
 import { useState, useContext, useCallback, useEffect } from 'react';
 import { useQuery } from 'react-apollo';

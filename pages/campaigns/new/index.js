@@ -5,7 +5,6 @@ import { useQuery } from 'react-apollo';
 import { Modal } from '@shopify/app-bridge-react';
 import { useRouter } from 'next/router';
 
-import '../../../styles/pages/campaigns/new.css';
 import TriggerSettings from '../../../components/campaigns/new/settings/triggers';
 import StrategySettings from '../../../components/campaigns/new/settings/strategy';
 import SellingModeSettings from '../../../components/campaigns/new/settings/selling_mode';
