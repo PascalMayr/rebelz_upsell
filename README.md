@@ -8,7 +8,7 @@
 4. Run:
 
 ```sh
-~/ $ npm install
+~/ $ yarn
 ```
 
 5. Install the [Shopify-App-CLI](https://github.com/Shopify/shopify-app-cli).
