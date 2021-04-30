@@ -1,5 +1,4 @@
 import Setting from './setting';
-import '../../../../styles/components/campaigns/new/settings/index.css';
 
 const Settings = ({ settings = [], value }) => {
   return (

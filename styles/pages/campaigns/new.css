@@ -21,3 +21,22 @@ html {
   justify-content: space-evenly;
   align-items: center;
 }
+
+.salestorm-settings {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.salestorm-setting {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.salestorm-settings-explanation {
+  color: rgb(109, 113, 117);
+  margin-bottom: 1em;
+}
