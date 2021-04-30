@@ -1,6 +1,7 @@
 {
   "name": "salestorm",
   "version": "1.0.1",
+  "private": "true",
   "description": "A Shopify app to boost sales.",
   "scripts": {
     "test": "snyk test",
