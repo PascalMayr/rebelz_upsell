@@ -685,6 +685,6 @@ const customElement = () => `
   if (!window.customElements.get('salestorm-popup')) {
     window.customElements.define('salestorm-popup', SalestormPopupComponent);
   }
-}`
+`;
 
 export default customElement;
