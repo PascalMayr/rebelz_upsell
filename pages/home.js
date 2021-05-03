@@ -41,7 +41,8 @@ const Index = () => {
         sales: homeData.sales,
         days: homeData.days,
       });
-      setGlobalCampaign(homeData.globalCampaign);
+      if (homeData.globalCampaign)
+        setGlobalCampaign(homeData.globalCampaign);
     }
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps

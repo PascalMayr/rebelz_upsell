@@ -13,8 +13,8 @@ const campaignData = async (ctx) => {
     'SELECT * FROM campaigns WHERE domain = $1 AND id = $2',
     [ctx.state.session.shop, store.global_campaign_id]
   );
-  globalCampaign = globalCampaign.rows.length > 0 ? globalCampaign.rows[0] : {};
-  if (globalCampaign.id) {
+  globalCampaign = globalCampaign.rows[0];
+  if (globalCampaign) {
     const { styles, texts, customJS, customCSS, options } = globalCampaign;
     globalCampaign = { styles, texts, customJS, customCSS, options };
   }
