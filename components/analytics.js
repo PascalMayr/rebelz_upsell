@@ -147,7 +147,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
           Follow this Shopify help article
         </Link>{' '}
         for setup instructions. Using a GA4 property already ?{' '}
-        <Link url="mailto:support@sailstorm.cc" target="_blank">
+        <Link url="mailto:support@sailstorm.cc" external>
           Get help
         </Link>{' '}
         setting it up.
