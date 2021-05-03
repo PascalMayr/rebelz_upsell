@@ -138,14 +138,19 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
   return (
     <div className="salestorm-campaigns-analytics">
       <p className="salestorm-analytics-subheading">
-        Searching for an option to track Add to cart events ? Google Analytics is doing just that for you with a UA-XXXXXXXX-X code.{' '}
+        Searching for an option to track Add to cart events ? Google Analytics
+        is doing just that for you with a UA-XXXXXXXX-X code.{' '}
         <Link
           url="https://help.shopify.com/en/manual/reports-and-analytics/google-analytics/google-analytics-setup"
           external
         >
           Follow this Shopify help article
         </Link>{' '}
-        for setup instructions. Using a GA4 property already ? <Link url="mailto:support@sailstorm.cc">Get help</Link> setting it up.
+        for setup instructions. Using a GA4 property already ?{' '}
+        <Link url="mailto:support@sailstorm.cc" target="_blank">
+          Get help
+        </Link>{' '}
+        setting it up.
       </p>
       <br />
       <Card>
