@@ -84,8 +84,12 @@ const Index = () => {
   const enabledStatus = store.enabled ? 'enabled' : 'disabled';
   const enabledButtonStatus = store.enabled ? 'Disable' : 'Enable';
 
-  const priceStatus = store.plan_name ? 'success' : 'new';
-  const priceProgress = store.plan_name ? 'complete' : 'incomplete';
+  let priceStatus = 'success';
+  let priceProgress = 'complete';
+  if (store.plan_name === config.planNames.free) {
+    priceStatus = 'new';
+    priceProgress = 'incomplete';
+  }
 
   const tabs = [
     {
