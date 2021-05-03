@@ -1,6 +1,4 @@
-import processCampaignTextsUtil from '../../utils/process_campaign_texts';
-
-const customElement = (customJS) => `
+const customElement = () => `
   class SalestormPopupComponent extends HTMLElement {
     constructor() {
       super();
@@ -687,6 +685,6 @@ const customElement = (customJS) => `
   if (!window.customElements.get('salestorm-popup')) {
     window.customElements.define('salestorm-popup', SalestormPopupComponent);
   }
-}
+}`
 
 export default customElement;
