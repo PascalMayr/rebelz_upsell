@@ -28,7 +28,7 @@ const Index = () => {
   const [analytics, setAnalytics] = useState(null);
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       let homeData = await api.get('/api/pages/home');
       homeData = homeData.data;
       setStore(homeData.store);
@@ -41,8 +41,8 @@ const Index = () => {
         sales: homeData.sales,
         days: homeData.days,
       });
-      setGlobalCampaign(homeData.globalCampaign);
-    }
+      if (homeData.globalCampaign) setGlobalCampaign(homeData.globalCampaign);
+    };
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

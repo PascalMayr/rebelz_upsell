@@ -12,10 +12,9 @@ const homeData = async (ctx) => {
     `SELECT * FROM campaigns WHERE domain = $1 ORDER BY created DESC`,
     [ctx.state.session.shop]
   );
-  const globalCampaign =
-    campaignsData.rows.find(
-      (campaign) => campaign.id === store.global_campaign_id
-    ) || {};
+  const globalCampaign = campaignsData.rows.find(
+    (campaign) => campaign.id === store.global_campaign_id
+  );
   campaignsData.rows = campaignsData.rows.filter(
     (campaign) => campaign.id !== store.global_campaign_id
   );

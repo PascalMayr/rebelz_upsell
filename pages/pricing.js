@@ -27,10 +27,10 @@ const Pricing = () => {
   const activePlanName = activePlan || config.planNames.free;
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       const pricingData = await api.get('/api/pages/pricing');
       setActivePlan(pricingData.data.plan_name);
-    }
+    };
     fetchData();
   }, [api]);
 
@@ -146,18 +146,17 @@ const Pricing = () => {
                         <Stack distribution="equalSpacing">
                           <div>
                             <TextStyle variation="strong">{name}</TextStyle>
-                            <span className='salestorm-plan-views'>
+                            <span className="salestorm-plan-views">
                               {new Intl.NumberFormat().format(limit)}
                               &nbsp;views
                             </span>
                           </div>
                           <div>
-                            {
-                              new Intl.NumberFormat([], {
-                                style: 'currency',
-                                currency: 'USD'
-                              }).format(amount)
-                            } / month
+                            {new Intl.NumberFormat([], {
+                              style: 'currency',
+                              currency: 'USD',
+                            }).format(amount)}{' '}
+                            / month
                           </div>
                           {hasButton ? (
                             <Button
@@ -168,13 +167,15 @@ const Pricing = () => {
                             >
                               {planLabel}
                             </Button>
-                          ) : (<span >{planLabel}</span>)}
+                          ) : (
+                            <span>{planLabel}</span>
+                          )}
                         </Stack>
                       </ResourceItem>
                     );
                   }}
                 />
-                <div className='salestorm-pricing-contact-us'>
+                <div className="salestorm-pricing-contact-us">
                   <TextStyle>Need help or a bigger plan?</TextStyle>
                   <a href="mailto:support@rebelzcommerce.com?subject=Plan%20Upgrade%20Inquiry">
                     <Button primary>Contact us</Button>
@@ -185,7 +186,9 @@ const Pricing = () => {
           </Layout.Section>
         </Layout>
         <br />
-        <p className="salestorm-plans-note">Cancel or change your plan anytime, no strings attached.</p>
+        <p className="salestorm-plans-note">
+          Cancel or change your plan anytime, no strings attached.
+        </p>
       </div>
     </Page>
   );

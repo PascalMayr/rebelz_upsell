@@ -29,7 +29,7 @@ const New = () => {
   const title = campaign.id ? 'Update campaign' : 'Create a new campaign';
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       const campaignData = await api.get('/api/pages/campaign', {
         params: { id: router.query.id },
       });
@@ -38,7 +38,7 @@ const New = () => {
         ...campaignData.data.globalCampaign,
         ...campaignData.data.campaign,
       });
-    }
+    };
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -80,7 +80,12 @@ const New = () => {
       ? 'Checkout'
       : 'Continue to Shopping';
   const updated = new Date(campaign.updated);
-  const formatDate = (date) => new Intl.DateTimeFormat([], { dateStyle: 'medium', timeStyle: 'long', hour12: false }).format(date)
+  const formatDate = (date) =>
+    new Intl.DateTimeFormat([], {
+      dateStyle: 'medium',
+      timeStyle: 'long',
+      hour12: false,
+    }).format(date);
   return (
     <Page
       title={title}

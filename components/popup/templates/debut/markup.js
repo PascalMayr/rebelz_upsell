@@ -39,7 +39,7 @@ const TemplateDebut = ({ campaign, preview, onStyleChange }) => {
     // initialising the
     try {
       // eslint-disable-next-line no-eval
-      eval(customElement(''));
+      eval(customElement());
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);

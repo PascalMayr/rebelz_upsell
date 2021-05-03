@@ -180,7 +180,7 @@ const getMatchingCampaign = async (ctx) => {
       );
       ctx.body = {
         html,
-        js: customElement(customJS),
+        js: `${customElement()}${customJS}`,
         campaign: {
           id,
           strategy,
