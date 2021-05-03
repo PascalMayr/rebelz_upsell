@@ -2,11 +2,6 @@ import processCampaignTextsUtil from '../../utils/process_campaign_texts';
 
 const customElement = (customJS) => `
   class SalestormPopupComponent extends HTMLElement {
-    countdownIntervalId;
-    selectedVariant;
-    images;
-    image;
-
     constructor() {
       super();
       window.Salestorm = {};
@@ -153,18 +148,18 @@ const customElement = (customJS) => `
             quantityInput.value = parseInt(quantityInput.value) - 1;
           }
           this.updatePrices(JSON.parse(product), parseInt(quantityInput.value));
-        })
+        });
         const plus = this.getElement('#salestorm-quantity-selection-plus');
         plus.addEventListener('click', () => {
           quantityInput.value = parseInt(quantityInput.value) + 1;
           this.updatePrices(JSON.parse(product), parseInt(quantityInput.value));
-        })
+        });
       }
 
       const previous = () => {
         const currentIndex = this.images.findIndex(variantImage => variantImage === this.image);
         const nextIndex = currentIndex > 0 ? currentIndex - 1 : this.images.length -1;
-        this.setImage(this.images[nextIndex])
+        this.setImage(this.images[nextIndex]);
       };
       const leftSlider = this.getElement('#salestorm-product-image-slider-left');
       leftSlider.addEventListener('click', previous);
@@ -188,7 +183,7 @@ const customElement = (customJS) => `
         }
         displayedProgressBars[currentOffer].style.width = '100%';
         window.Salestorm.skipOffer(this);
-      })
+      });
 
       const claimOfferButton = this.getElement('#salestorm-claim-offer-button');
       claimOfferButton.addEventListener('click', () => {
@@ -253,7 +248,7 @@ const customElement = (customJS) => `
     setupHidePopupListener() {
       document.addEventListener(window.Salestorm.hidePopup.type, () => {
         this.getElement('#salestorm-overlay-container').style.display = 'none';
-      })
+      });
     }
 
     removeHidePopupListener() {
@@ -261,7 +256,7 @@ const customElement = (customJS) => `
       if (window.Salestorm.hidePopup) {
         document.removeEventListener(window.Salestorm.hidePopup.type, () => {
           this.getElement('#salestorm-overlay-container').style.display = 'none';
-        })
+        });
       }
     }
 
@@ -279,7 +274,7 @@ const customElement = (customJS) => `
             event.target.setAttribute('value', newValue);
           }
           this.updatePrices(JSON.parse(product), parseInt(event.target.value));
-        })
+        });
       }
     }
 
@@ -295,7 +290,7 @@ const customElement = (customJS) => `
           else {
             event.target.setAttribute('value', newValue);
           }
-        })
+        });
       }
     }
 
@@ -394,7 +389,7 @@ const customElement = (customJS) => `
         return document.getElementById('baCurrSelector').value;
       }
       if (window.Shopify && window.Shopify.currency && window.Shopify.currency.active !== "") {
-        return Shopify.currency.active;
+        return window.Shopify.currency.active;
       }
       return null;
     }
@@ -433,7 +428,7 @@ const customElement = (customJS) => `
           const currencyFormatter = this.createCurrencyFormatter();
           const convertedProductPrice = currencyFormatter.format(this.convertPriceToCurrentCurrencyCode(discountedProductPriceValue * quantity, product.strategy.discount.type));
           discountedProductPrice.innerHTML = convertedProductPrice;
-        })
+        });
       }
     }
 
@@ -454,7 +449,7 @@ const customElement = (customJS) => `
       let convertedPriceValue = price;
       if (window.Currency && window.Currency.rates && window.Currency.convert && multiCurrencySupport && window.Salestorm && window.Salestorm.currentCurrencyCode) {
         convertedPriceValue = Math.round(window.Currency.convert(price, baseCurrencyCode, window.Salestorm.currentCurrencyCode));
-      };
+      }
       return convertedPriceValue;
     }
 
@@ -550,17 +545,30 @@ const customElement = (customJS) => `
         this.setSelectedProductVariant(product);
         this.getElements('.salestorm-product-select').forEach(selectElement => {
           selectElement.addEventListener('change', () => {
-            const selectedValue = selectElement.value;
             this.setSelectedProductVariant(product);
             this.updatePrices(product);
-          })
+          });
         });
       }
       this.updatePrices(product);
     }
 
     updateTexts(texts) {
-      ${processCampaignTextsUtil.toString()}
+      const processCampaignTextsUtil = (text) =>
+        text
+          .replace(
+            '{{Discount}}',
+            '<span class="salestorm-price salestorm-discount"></span>'
+          )
+          .replace('{{Countdown}}', '<span id="salestorm-campaign-countdown"></span>')
+          .replace(
+            '{{ProductPrice}}',
+            '<span class="salestorm-price salestorm-product-price"></span>'
+          )
+          .replace(
+            '{{DiscountedProductPrice}}',
+            '<span class="salestorm-price salestorm-product-price-discounted"></span>'
+          );
       Object.keys(texts).forEach((textKey) => {
         const campaignTextElement = this.getElement(
           "#salestorm-campaign-text-" + textKey
@@ -676,10 +684,9 @@ const customElement = (customJS) => `
     }
 
   }
-  if (!customElements.get('salestorm-popup')) {
-    customElements.define('salestorm-popup', SalestormPopupComponent);
+  if (!window.customElements.get('salestorm-popup')) {
+    window.customElements.define('salestorm-popup', SalestormPopupComponent);
   }
-  ${customJS}
-`;
+}
 
 export default customElement;

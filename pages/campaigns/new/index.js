@@ -29,7 +29,7 @@ const New = () => {
   const title = campaign.id ? 'Update campaign' : 'Create a new campaign';
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       const campaignData = await api.get('/api/pages/campaign', {
         params: { id: router.query.id },
       });

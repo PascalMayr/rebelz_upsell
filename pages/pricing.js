@@ -27,7 +27,7 @@ const Pricing = () => {
   const activePlanName = activePlan || config.planNames.free;
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       const pricingData = await api.get('/api/pages/pricing');
       setActivePlan(pricingData.data.plan_name);
     }

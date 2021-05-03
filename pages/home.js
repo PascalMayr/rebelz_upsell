@@ -28,7 +28,7 @@ const Index = () => {
   const [analytics, setAnalytics] = useState(null);
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       let homeData = await api.get('/api/pages/home');
       homeData = homeData.data;
       setStore(homeData.store);
