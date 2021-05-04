@@ -3,6 +3,7 @@ import Shopify, { ApiVersion } from '@shopify/shopify-api';
 import config from '../../config';
 import db from '../db';
 import { createClient, getScriptTagId, registerWebhooks } from '../handlers';
+import GET_SCRIPT_TAG from '../handlers/queries/get_script_tag';
 import {
   storeCallback,
   loadCallback,
@@ -28,7 +29,7 @@ Shopify.Context.initialize({
 export const onlineAuthConfig = {
   async afterAuth(ctx) {
     // Auth token and shop available in session
-    const { shop, onlineAccessInfo } = ctx.state.shopify;
+    const { shop, onlineAccessInfo, accessToken } = ctx.state.shopify;
     const {
       id,
       first_name: firstName,
@@ -37,6 +38,28 @@ export const onlineAuthConfig = {
       account_owner: accountOwner,
       locale,
     } = onlineAccessInfo.associated_user;
+    let activeStore = await db.query('SELECT * FROM stores WHERE domain = $1', [
+      shop,
+    ]);
+    activeStore = activeStore.rows[0];
+
+    const client = await createClient(shop, accessToken);
+    const scriptTagResponse = await client.query({
+      query: GET_SCRIPT_TAG,
+      variables: {
+        id: activeStore.scriptid,
+      },
+    });
+    if (scriptTagResponse.data) {
+      // This can happen on re-install
+      if (!scriptTagResponse.data.scriptTag) {
+        const scriptid = await getScriptTagId(client);
+        await db.query('UPDATE stores SET scriptid = $1 WHERE domain = $2', [scriptid, shop]);
+      }
+    } else {
+      throw new Error(`Failed to check script tag for store ${shop}`);
+    }
+
     await db.query(
       `
       INSERT INTO users${db.insertColumns(
