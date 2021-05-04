@@ -5,7 +5,7 @@
   "scripts": {
     "test": "snyk test",
     "graphile": "cd server && DOTENV_CONFIG_PATH=../.env node -r dotenv/config ../node_modules/graphile-migrate/dist/cli.js",
-    "dev": "npm run graphile migrate && cross-env NODE_ENV=development PORT=443 nodemon --inspect ./server/index.js --watch ./server/index.js & parcel watch scripts/startup.js --dist-dir public",
+    "dev": "npm run graphile migrate && cross-env NODE_ENV=development PORT=443 nodemon --inspect ./server/index.js --watch ./server/index.js & parcel watch scripts/startup.js -d public",
     "serve": "shopify serve --host https://loop.rebelzcommerce.com",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build && parcel build scripts/startup.js",
     "release": "npm run graphile migrate && node scripts/startup-to-github",
@@ -17,7 +17,7 @@
   },
   "author": "Pascal Mayr, Sascha Mayr",
   "engines": {
-    "node": ">=15.x"
+    "node": ">=14.x"
   },
   "dependencies": {
     "@babel/core": "^7.12.3",
@@ -57,7 +57,7 @@
     "next": "^10.0.5",
     "next-env": "^1.1.0",
     "node-fetch": "^2.6.1",
-    "parcel": "latest",
+    "parcel-bundler": "^1.12.5",
     "pg": "^8.5.1",
     "react": "^17.0.1",
     "react-apollo": "^3.1.3",
