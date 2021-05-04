@@ -8,7 +8,8 @@ import {
   Icon,
 } from '@shopify/polaris';
 import { MobileCancelMajor, ImageMajor } from '@shopify/polaris-icons';
-import { ApolloConsumer } from 'react-apollo';
+import { ApolloConsumer } from '@apollo/client';
+import cloneDeep from 'lodash/cloneDeep';
 
 import { AppContext } from '../../../pages/_app';
 import '../../../styles/components/campaigns/new/resource_selection.css';
@@ -159,7 +160,7 @@ const ResourceSelectionCampaign = ({
                           id: resource.id,
                         },
                       });
-                      const productData = product.data.product;
+                      const productData = cloneDeep(product.data.product);
                       productData.strategy = strategy;
 
                       return productData;
@@ -177,7 +178,7 @@ const ResourceSelectionCampaign = ({
                           id: resource.id,
                         },
                       });
-                      const collectionData = collection.data.collection;
+                      const collectionData = cloneDeep(collection.data.collection);
 
                       return collectionData;
                     })

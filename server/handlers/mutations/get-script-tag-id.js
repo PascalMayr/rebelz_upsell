@@ -21,7 +21,7 @@ export function SCRIPT_TAG_CREATE() {
   `;
 }
 
-export const getScriptTagId = async ({ client }) => {
+export const getScriptTagId = async (client) => {
   const response = await client.mutate({
     mutation: SCRIPT_TAG_CREATE(),
     variables: { input: { src: CDN_URL } },
