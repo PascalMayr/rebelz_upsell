@@ -25,3 +25,7 @@ logs
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+
+#parcel
+dist
+.cache

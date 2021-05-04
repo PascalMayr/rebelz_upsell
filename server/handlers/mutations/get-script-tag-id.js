@@ -1,7 +1,7 @@
 import 'isomorphic-fetch';
 import gql from 'graphql-tag';
 
-const CDN_URL = 'https://cdn.jsdelivr.net/gh/mayrsascha/rebelz_startup@v1/startup.js';
+const CDN_URL = 'https://cdn.jsdelivr.net/gh/mayrsascha/rebelz_startup/startup.js';
 
 export function SCRIPT_TAG_CREATE() {
   return gql`

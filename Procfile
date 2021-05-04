@@ -1,2 +1,2 @@
 web: npm start
-release: npm run graphile migrate
+release: npm run release
