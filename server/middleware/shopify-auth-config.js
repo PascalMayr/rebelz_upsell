@@ -89,8 +89,8 @@ export const offlineAuthConfig = {
         shop,
       ]);
     } else {
-      ctx.client = await createClient(shop, accessToken);
-      const scriptid = await getScriptTagId(ctx);
+      const client = await createClient(shop, accessToken);
+      const scriptid = await getScriptTagId(client);
       registerWebhooks(
         shop,
         accessToken,
