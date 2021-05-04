@@ -28,4 +28,4 @@ logs
 
 #parcel
 public/startup.js*
-.cache
+.parcel-cache
