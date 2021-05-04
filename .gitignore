@@ -27,5 +27,5 @@ logs
 .pnp.*
 
 #parcel
-dist
+public/startup.js*
 .cache

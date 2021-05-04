@@ -1,7 +1,9 @@
 import 'isomorphic-fetch';
 import gql from 'graphql-tag';
 
-const CDN_URL = 'https://cdn.jsdelivr.net/gh/mayrsascha/rebelz_startup/startup.js';
+const CDN_URL = process.env.NODE_ENV === 'production' ?
+  'https://cdn.jsdelivr.net/gh/mayrsascha/rebelz_startup/startup.js' :
+  'https://loop.rebelzcommerce.com/startup.js';
 
 export function SCRIPT_TAG_CREATE() {
   return gql`

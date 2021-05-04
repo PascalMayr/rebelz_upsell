@@ -47,7 +47,7 @@
     'salestorm-continue-original-click-event'
   );
   let productsAddedByXHROrFetch = false;
-  const publicAPI = 'https://loop.rebelzcommerce.com/api';
+  const publicAPI = `${process.env.HOST}/api`;
   const shop = window.Shopify.shop || window.location.host;
 
   const getCart = async () => {
