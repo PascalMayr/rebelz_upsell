@@ -17,7 +17,7 @@
   },
   "author": "Pascal Mayr, Sascha Mayr",
   "engines": {
-    "node": ">=14.x"
+    "node": "14.x"
   },
   "dependencies": {
     "@babel/core": "^7.12.3",
