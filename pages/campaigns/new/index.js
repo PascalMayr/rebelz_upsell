@@ -1,7 +1,7 @@
 import { useState, useCallback, useContext, useEffect } from 'react';
 import { Page, Card, Layout, TextField, Badge, Select } from '@shopify/polaris';
 import { MobilePlusMajor } from '@shopify/polaris-icons';
-import { useQuery } from 'react-apollo';
+import { useQuery } from '@apollo/client';
 import { Modal } from '@shopify/app-bridge-react';
 import { useRouter } from 'next/router';
 
