@@ -32,7 +32,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
   const viewsSum =
     views.length > 0 ? views.reduce((total, sale) => total + sale) : 0;
   const viewsColor = '#008060';
-  const orderColor = '#ff7900';
+  const orderColor = '#C83E4D';
   const formattedDays = days.map((day) => {
     return new Intl.DateTimeFormat([], {
       day: 'numeric',

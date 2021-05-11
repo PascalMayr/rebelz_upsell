@@ -175,7 +175,7 @@ const Index = () => {
           </Button>
           <span className="salestorm-enabled-status">
             App is{' '}
-            <strong style={{ color: store.enabled ? '#50b83c' : 'red' }}>
+            <strong style={{ color: store.enabled ? '#50b83c' : '#C83E4D' }}>
               {enabledStatus}
             </strong>
           </span>

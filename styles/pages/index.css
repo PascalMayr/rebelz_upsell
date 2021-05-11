@@ -68,12 +68,12 @@ html {
 }
 
 #pricing-button {
-  background: rgb(2,0,36);
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(255,121,0,1) 0%, rgba(255,147,0,1) 100%) !important;
+  background: rgb(2, 0, 36);
+  background: #c83e4d !important;
   color: #ffffff !important;
 }
 
-#tips-readings-button{
+#tips-readings-button {
   margin-right: 1em;
 }
 
@@ -90,12 +90,12 @@ html {
   }
 }
 
-.salestorm-campaigns-overview .Polaris-ResourceItem__Content{
+.salestorm-campaigns-overview .Polaris-ResourceItem__Content {
   display: flex;
   align-items: center;
 }
 
-.salestorm-campaigns-overview .Polaris-Badge{
+.salestorm-campaigns-overview .Polaris-Badge {
   margin-left: 0.5em;
   margin-right: 0.5em;
   padding-left: 0.75em;
@@ -103,16 +103,16 @@ html {
 }
 
 @media only screen and (max-width: 1040px) {
-  .salestorm-campaigns-overview .Polaris-Badge{
+  .salestorm-campaigns-overview .Polaris-Badge {
     margin-top: 0.75rem;
     margin-bottom: 0.75rem;
   }
-  .salestorm-campaigns-overview .Polaris-ResourceItem__Content{
+  .salestorm-campaigns-overview .Polaris-ResourceItem__Content {
     flex-wrap: wrap;
   }
 }
 
-.salestorm-campaigns-overview .Polaris-Badge .Polaris-Icon{
+.salestorm-campaigns-overview .Polaris-Badge .Polaris-Icon {
   margin-right: 0.5em;
   height: 1.8rem;
 }
