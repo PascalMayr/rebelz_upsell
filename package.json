@@ -28,6 +28,7 @@
     "@babel/register": "^7.6.2",
     "@koa/cors": "^3.1.0",
     "@sendgrid/mail": "^7.4.2",
+    "@sentry/browser": "^6.3.6",
     "@sentry/node": "^6.2.3",
     "@sentry/react": "^6.2.3",
     "@sentry/tracing": "^6.2.3",

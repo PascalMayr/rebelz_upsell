@@ -1,4 +1,13 @@
+import * as Sentry from '@sentry/browser';
+import { Integrations } from '@sentry/tracing';
+
 (function () {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN_FRONTEND,
+    integrations: [new Integrations.BrowserTracing()],
+    tracesSampleRate: 1.0,
+  });
+
   const target = {};
   const targets = {
     addToCart: 'add_to_cart',
