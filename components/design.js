@@ -12,7 +12,6 @@ import PreviewPopup from './popup/preview';
 import Formatter from './campaigns/new/formatter';
 import OptionsCampaign from './campaigns/new/options';
 import quickThemes from './popup/templates/quickThemes';
-import '../styles/components/design.css';
 
 const SalestormTheme = ({ theme, name, setCampaignProperty }) => {
   const setTheme = () => setCampaignProperty(quickThemes(theme), 'styles');

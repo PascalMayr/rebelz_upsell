@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { TextField, Select } from '@shopify/polaris';
-import '../../../../../styles/components/campaigns/new/settings/strategy/details.css';
 import { useQuery } from '@apollo/client';
 
 import GET_STORE_CURRENCY from '../../../../../server/handlers/queries/get_store_currency';

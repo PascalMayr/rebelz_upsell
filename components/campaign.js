@@ -1,6 +1,5 @@
 import { Badge, TextStyle, Icon } from '@shopify/polaris';
 import { ViewMajor } from '@shopify/polaris-icons';
-import '../styles/components/campaign.css';
 
 const Campaign = ({ campaign }) => {
   const publishedStatus = campaign.published ? 'success' : 'attention';

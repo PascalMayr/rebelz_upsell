@@ -1,4 +1,3 @@
-import '../../../styles/components/popup/preview/mobile_desktop_switch.css';
 import { Button } from '@shopify/polaris';
 import { DesktopMajor, TabletMajor, MobileMajor } from '@shopify/polaris-icons';
 import { useState } from 'react';

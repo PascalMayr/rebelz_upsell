@@ -3,8 +3,6 @@ import DefaultStateNew from '../../defaultState';
 
 import DetailsStrategy from './details';
 
-import '../../../../../styles/components/campaigns/new/settings/strategy/index.css';
-
 const StrategySettings = ({ campaign, setCampaignProperty }) => {
   const strategy = campaign.strategy;
   const mode = campaign.strategy.mode;

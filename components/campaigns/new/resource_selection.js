@@ -12,7 +12,6 @@ import { ApolloConsumer } from '@apollo/client';
 import cloneDeep from 'lodash/cloneDeep';
 
 import { AppContext } from '../../../pages/_app';
-import '../../../styles/components/campaigns/new/resource_selection.css';
 import GET_PRODUCT from '../../../server/handlers/queries/get_product';
 import GET_COLLECTION from '../../../server/handlers/queries/get_collection';
 

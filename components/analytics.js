@@ -19,8 +19,6 @@ import {
 import Chart from 'chart.js';
 import { useRouter } from 'next/router';
 
-import '../styles/components/analytics.css';
-
 const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
   const router = useRouter();
   const [sortValue, setSortValue] = useState('REVENUE');

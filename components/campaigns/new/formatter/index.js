@@ -4,7 +4,6 @@ import { ReplayMinor } from '@shopify/polaris-icons';
 import { startCasify } from 'casify';
 
 import SalestormColorPicker from './color_picker';
-import '../../../../styles/components/campaigns/new/formatter/index.css';
 import BackgroundFormatter from './background';
 import BorderFormatter from './border';
 import BoxShadowFormatter from './box_shadow';

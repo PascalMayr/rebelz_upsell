@@ -1,5 +1,4 @@
 import { Checkbox, TextField } from '@shopify/polaris';
-import '../../../styles/components/campaigns/new/options.css';
 
 const Options = ({ campaign, setCampaignProperty }) => {
   const options = campaign.options;
