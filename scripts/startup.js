@@ -1,13 +1,6 @@
 import * as Sentry from '@sentry/browser';
-import { Integrations } from '@sentry/tracing';
 
 (function () {
-  Sentry.init({
-    dsn: process.env.SENTRY_DSN_FRONTEND,
-    integrations: [new Integrations.BrowserTracing()],
-    tracesSampleRate: 1.0,
-  });
-
   const target = {};
   const targets = {
     addToCart: 'add_to_cart',
@@ -494,24 +487,38 @@ import { Integrations } from '@sentry/tracing';
   };
 
   const init = () => {
-    initShopifyMultiCurrencyConversionScript();
-    // These 2 monkey patches are needed so we can detect products being added on the add to cart form
-    // The issue is that if that add to cart is really a form, we don't have a way to tell if any other
-    // JS is already adding the product to the cart, so we have to monitor XHR and fetch requests.
-    initXHRMonkeyPatch();
-    initFetchMonkeyPatch();
-    const path = window.location.pathname;
-    const productPage = path.match(/\/products\/[^?/#]+/);
-    const thankYouPage = path.match(/\/thank_you/);
-    const cartPage = path.match(/\/cart/);
-    if (productPage) {
-      handleProductPage(productPage);
-    } else if (thankYouPage) {
-      handleThankYouPage();
-    } else if (cartPage) {
-      handleCart();
+    Sentry.init({
+      dsn: process.env.SENTRY_DSN_FRONTEND,
+      integrations(integrations) {
+        // Remove the global exception handler so we only get embedded errors
+        return integrations.filter(
+          (integration) => integration.name !== 'GlobalHandlers'
+        );
+      },
+      tracesSampleRate: 1.0,
+    });
+    try {
+      initShopifyMultiCurrencyConversionScript();
+      // These 2 monkey patches are needed so we can detect products being added on the add to cart form
+      // The issue is that if that add to cart is really a form, we don't have a way to tell if any other
+      // JS is already adding the product to the cart, so we have to monitor XHR and fetch requests.
+      initXHRMonkeyPatch();
+      initFetchMonkeyPatch();
+      const path = window.location.pathname;
+      const productPage = path.match(/\/products\/[^?/#]+/);
+      const thankYouPage = path.match(/\/thank_you/);
+      const cartPage = path.match(/\/cart/);
+      if (productPage) {
+        handleProductPage(productPage);
+      } else if (thankYouPage) {
+        handleThankYouPage();
+      } else if (cartPage) {
+        handleCart();
+      }
+      window.SalestormInitialized = true;
+    } catch (err) {
+      Sentry.captureException(err);
     }
-    window.SalestormInitialized = true;
   };
   if (!window.SalestormInitialized) {
     init();
