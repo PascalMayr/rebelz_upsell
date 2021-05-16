@@ -16,7 +16,8 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
       addToCartUnavailable: 'Unavailable',
       seeProductDetailsAction: 'See product details',
       dismissAction: 'No thanks',
-      checkoutAction: '<a href="/cart" style="text-decoration: none; color: inherit;">Go to cart</a>',
+      checkoutAction:
+        '<a href="/cart" style="text-decoration: none; color: inherit;">Go to cart</a>',
       countdown: 'Offer expires in {{Countdown}} minutes',
     },
     gift: {
@@ -28,7 +29,8 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
       addToCartUnavailable: 'Unavailable',
       seeProductDetailsAction: 'See product details',
       dismissAction: 'No thanks',
-      checkoutAction: '<a href="/cart" style="text-decoration: none; color: inherit;">Go to cart</a>',
+      checkoutAction:
+        '<a href="/cart" style="text-decoration: none; color: inherit;">Go to cart</a>',
       countdown: 'Offer expires in {{Countdown}} minutes',
     },
   };
@@ -43,31 +45,23 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
       selling: { ...campaign.selling, products: sellingProducts },
     });
   };
-  const targetsPage = campaign.targets.page;
-  let explanation =
-    'Offer a gift to your customers to improve your Brand Recognition.';
+  let explanation = '';
+  let settingsExplanation = '';
+  if (mode !== 'gift') {
+    settingsExplanation = `Upselling means <strong>replacing</strong> the offered product with <strong>target products</strong>. Cross Selling means <strong>adding</strong> products to your customers cart.<br><br>`;
+  }
   if (mode === 'discount') {
     explanation =
       'Set a <strong>fix</strong> or <strong>percentage</strong> discount.';
   } else if (mode === 'free_shipping') {
-    explanation = `Offer Free Shipping <strong>on the whole order.</strong> The product offered will be <strong>${
-      strategy.sellType === 'upsell' ? 'replaced in' : 'added to'
-    } the customers cart.</strong>`;
-  }
-  let settingsExplanation = '';
-  if (mode !== 'gift') {
-    settingsExplanation = `Upselling means <strong>replacing</strong> the offered product with <strong>target products</strong> while Cross Selling means <strong>adding</strong> products to your customers cart. ${
-      targetsPage === 'thank_you'
-        ? ''
-        : '<strong>To create Upselling Campaigns you need to specify Target Products in Step 1</strong>'
-    }`;
+    explanation = `Offer Free Shipping <strong>on the whole order.</strong>`;
   }
   return (
     <>
       <div
         className="salestorm-settings-explanation"
         dangerouslySetInnerHTML={{
-          __html: `${explanation} Leave the min/max order value blank or zero if you don't want to set it. ${settingsExplanation}`,
+          __html: `${settingsExplanation}${explanation} Leave the min/max order value blank or zero if you don't need it.`,
         }}
       />
       <Settings

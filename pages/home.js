@@ -243,7 +243,7 @@ const Index = () => {
       <div className={designContainerClassName}>
         <Page
           title="Create a global Design for all your campaigns."
-          subtitle="Note: Already created campaigns won't be affected."
+          subtitle="Note: This won't affect already created campaigns."
           primaryAction={{
             content: 'Save',
             loading: saveLoading,

@@ -41,7 +41,10 @@ const Tips = () => {
           </div>
           <br />
           <div>
-            <Link url="https://neilpatel.com/blog/the-art-of-ecommerce-upselling/" external>
+            <Link
+              url="https://neilpatel.com/blog/the-art-of-ecommerce-upselling/"
+              external
+            >
               The Art of E-commerce Upselling.
             </Link>
           </div>
@@ -57,21 +60,17 @@ const Tips = () => {
           <Card>
             <Card.Section title="Be tactful.">
               Harassing your customers with an offer on every page will hinder
-              your sales, not help them. To avoid upsetting your customers with
-              irrelevant offers, you should ensure that you’re promoting the
-              right items at the right time. To get it right, market commodities
-              that are compatible with what the customer is shopping.
+              your sales, not help them. Ensure that you’re promoting the right
+              items at the right time. Market commodities that are compatible
+              with what the customer is shopping.
             </Card.Section>
           </Card>
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
             <Card.Section title="Make Sure Products are Highly Relevant.">
-              For your Upselling and Cross-selling tactics to deliver positive
-              results, the recommended products must sync well with the product
-              the user is purchasing. If they are not relevant, there would not
-              be any added or expensive purchase. Instead, you will be more
-              likely to turn off the customer. Our 'AI' option offers you the
+              The recommended product(s) should harmonize with the product the
+              user is purchasing. Our &apos;AI&apos; option offers you the
               ability to use the{' '}
               <strong>
                 <Link
@@ -91,7 +90,15 @@ const Tips = () => {
               All selling starts with listening. Offers will only hit the target
               when they derive from your ability to relate to the customer’s
               situation. Make sure to read your customers reviews and try to
-              solve their problems first. You can try out <strong><Link external url="https://partnerdrift.com/referralapps/evm-testimonials-showcase?ref=PASCA15053&partner=eNortjK2UirIKFCyBlwwECsC4g..">Product Reviews & Testimonials</Link></strong>
+              solve their problems first. You can try out{' '}
+              <strong>
+                <Link
+                  external
+                  url="https://partnerdrift.com/referralapps/evm-testimonials-showcase?ref=PASCA15053&partner=eNortjK2UirIKFCyBlwwECsC4g.."
+                >
+                  Product Reviews & Testimonials
+                </Link>
+              </strong>
             </Card.Section>
           </Card>
         </Layout.Section>
@@ -103,31 +110,28 @@ const Tips = () => {
             <Card.Section title="K.I.S.S">
               <strong>K</strong>eep <strong>I</strong>t <strong>S</strong>imple{' '}
               <strong>S</strong>tupid. Although you may have some priority items
-              that you really want to sell as a business, you still need to be
-              realistic in your targets. If you go too far, you may find that
-              you start to get on your customers’ nerves. This can turn your
-              customer away from your brand for the short, or even longer term.
+              that you want to sell, you still need to be realistic in your
+              targets. If you go too far, you may find your customer turn away
+              from your brand in the short term or even longer term.
             </Card.Section>
           </Card>
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="focus everything on how the customer wins.">
-              You need to make sure, that customers are getting the best value
-              for their money. They are trusting you already just show them that
-              you can also be trusted when offering special offers.
+            <Card.Section title="focus on how the customer wins.">
+              You need to make sure that customers are getting the best value
+              for their money. Show to them that your special offers are a great
+              deal.
             </Card.Section>
           </Card>
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
             <Card.Section title="Upselling at the checkouts.">
-              The checkout process is a great time to suggest upgraded or
-              related products. Customers who are in the process of checking out
-              are already (hopefully!) mid-purchase, so it’s the ideal time to
-              catch their interest. You can use our{' '}
-              <strong>Before checkout</strong> option to achieve an upsell or
-              cross sell before checkout even starts.
+              Customers who are checking out already made their decision. This
+              is a great time to catch the customers interest. Use our{' '}
+              <strong>Before checkout</strong> option to to suggest upgraded or
+              related products.
             </Card.Section>
           </Card>
         </Layout.Section>
