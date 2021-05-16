@@ -5,7 +5,7 @@ const Tips = () => {
   const router = useRouter();
   return (
     <Page
-      title="Useful Tips & Readings"
+      title="Useful Tips and Readings"
       subtitle="Plan your funnel campaigns with a strategy."
       breadcrumbs={[
         { content: 'Campaigns', onAction: () => router.push('/home') },
@@ -58,7 +58,7 @@ const Tips = () => {
       <Layout>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="Be tactful.">
+            <Card.Section title="Be tactful">
               Harassing your customers with an offer on every page will hinder
               your sales, not help them. Ensure that you’re promoting the right
               items at the right time. Market commodities that are compatible
@@ -68,7 +68,7 @@ const Tips = () => {
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="Make Sure Products are Highly Relevant.">
+            <Card.Section title="Make Sure Products are Highly Relevant">
               The recommended product(s) should harmonize with the product the
               user is purchasing. Our &apos;AI&apos; option offers you the
               ability to use the{' '}
@@ -86,7 +86,7 @@ const Tips = () => {
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="Listen Actively to What the Customer Is Saying.">
+            <Card.Section title="Listen Actively to What the Customer Is Saying">
               All selling starts with listening. Offers will only hit the target
               when they derive from your ability to relate to the customer’s
               situation. Make sure to read your customers reviews and try to
@@ -96,7 +96,7 @@ const Tips = () => {
                   external
                   url="https://partnerdrift.com/referralapps/evm-testimonials-showcase?ref=PASCA15053&partner=eNortjK2UirIKFCyBlwwECsC4g.."
                 >
-                  Product Reviews & Testimonials
+                  Product Reviews and Testimonials
                 </Link>
               </strong>
             </Card.Section>
@@ -107,7 +107,7 @@ const Tips = () => {
       <Layout>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="K.I.S.S">
+            <Card.Section title="K.I.S.S.">
               <strong>K</strong>eep <strong>I</strong>t <strong>S</strong>imple{' '}
               <strong>S</strong>tupid. Although you may have some priority items
               that you want to sell, you still need to be realistic in your
@@ -118,7 +118,7 @@ const Tips = () => {
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="focus on how the customer wins.">
+            <Card.Section title="focus on how the customer wins">
               You need to make sure that customers are getting the best value
               for their money. Show to them that your special offers are a great
               deal.
@@ -127,7 +127,7 @@ const Tips = () => {
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="Upselling at the checkouts.">
+            <Card.Section title="Upselling at the checkouts">
               Customers who are checking out already made their decision. This
               is a great time to catch the customers interest. Use our{' '}
               <strong>Before checkout</strong> option to to suggest upgraded or
