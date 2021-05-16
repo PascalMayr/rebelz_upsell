@@ -5,7 +5,7 @@ const Tips = () => {
   const router = useRouter();
   return (
     <Page
-      title="Useful Tips and Readings"
+      title="Useful tips and readings"
       subtitle="Plan your funnel campaigns with a strategy."
       breadcrumbs={[
         { content: 'Campaigns', onAction: () => router.push('/home') },
@@ -68,7 +68,7 @@ const Tips = () => {
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="Make Sure Products are Highly Relevant">
+            <Card.Section title="Make sure products are highly relevant">
               The recommended product(s) should harmonize with the product the
               user is purchasing. Our &apos;AI&apos; option offers you the
               ability to use the{' '}
@@ -86,7 +86,7 @@ const Tips = () => {
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="Listen Actively to What the Customer Is Saying">
+            <Card.Section title="Listen actively to what the customer is saying">
               All selling starts with listening. Offers will only hit the target
               when they derive from your ability to relate to the customer’s
               situation. Make sure to read your customers reviews and try to
@@ -118,7 +118,7 @@ const Tips = () => {
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="focus on how the customer wins">
+            <Card.Section title="Focus on how the customer wins">
               You need to make sure that customers are getting the best value
               for their money. Show to them that your special offers are a great
               deal.
@@ -127,7 +127,7 @@ const Tips = () => {
         </Layout.Section>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="Upselling at the checkouts">
+            <Card.Section title="Upselling at checkout">
               Customers who are checking out already made their decision. This
               is a great time to catch the customers interest. Use our{' '}
               <strong>Before checkout</strong> option to to suggest upgraded or

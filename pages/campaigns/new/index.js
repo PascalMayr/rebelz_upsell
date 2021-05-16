@@ -415,7 +415,7 @@ const New = () => {
           <Layout>
             <Layout.Section>
               <Design
-                title="5. Check try and customize your campaign before publishing it."
+                title="5. Preview and customize your campaign before publishing"
                 setCampaignProperty={setCampaignProperty}
                 campaign={campaign}
                 subtitle={
@@ -497,7 +497,7 @@ const New = () => {
       <Modal
         open={error !== ''}
         onClose={() => setError('')}
-        title="Input Errors."
+        title="Input errors"
         message={error}
         primaryAction={{
           content: 'Close',

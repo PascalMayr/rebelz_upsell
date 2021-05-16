@@ -152,7 +152,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
       </p>
       <br />
       <Card>
-        <Card.Section title="Views and Sales overview">
+        <Card.Section title="Views and sales overview">
           <p className="salestorm-analytics-subheading">
             Total campaign Views and Sales this month.
           </p>
@@ -166,7 +166,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
       <Layout>
         <Layout.Section oneHalf>
           <Card>
-            <Card.Section title="Total Conversion Rate">
+            <Card.Section title="Total conversion rate">
               <p className="salestorm-analytics-subheading">
                 Total Sales VS Total Views this month.
               </p>
@@ -179,7 +179,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
         </Layout.Section>
         <Layout.Section oneHalf>
           <Card>
-            <Card.Section title="Campaign Performance">
+            <Card.Section title="Campaign performance">
               <p className="salestorm-analytics-subheading">
                 See the best performing campaigns this month.
               </p>

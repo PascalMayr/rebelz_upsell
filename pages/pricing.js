@@ -88,7 +88,7 @@ const Pricing = () => {
   };
   return (
     <Page
-      title="Plans & Pricing"
+      title="Plans and pricing"
       className="salestorm-pricing"
       subtitle="Choose the best plan for your needs."
       breadcrumbs={[
