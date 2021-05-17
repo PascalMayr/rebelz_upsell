@@ -127,11 +127,7 @@ html {
 
 .salestorm-pricing-badge > a {
   text-decoration: none;
-  color: black;
-}
-
-.salestorm-pricing-badge > a:visited {
-  color: black;
+  color: var(--p-text);
 }
 
 .salestorm-analytics-subheading {
