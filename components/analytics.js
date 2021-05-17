@@ -125,7 +125,10 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
       <br />
       <EmptyState
         heading="No campaigns available to analyze."
-        action={{ content: 'Create a new Campaign', url: '/campaigns/new' }}
+        action={{
+          content: 'Create a new Campaign',
+          onAction: () => router.push('/campaigns/new'),
+        }}
         image="/business_analytics.svg"
       >
         <p>Create a new upselling campaign now.</p>
