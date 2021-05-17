@@ -37,7 +37,7 @@ html {
 }
 
 .salestorm-settings-explanation {
-  color: rgb(109, 113, 117);
+  color: var(--p-text-subdued);
   margin-bottom: 1em;
 }
 
@@ -119,9 +119,9 @@ html {
   height: 55px;
   border-radius: 5px;
   border-style: dotted;
-  border-color: rgb(109, 113, 117);
+  border-color: var(--p-icon-disabled);
   border-width: 1px;
-  fill: rgb(109, 113, 117);
+  fill: var(--p-icon-disabled);
 }
 
 .salestorm-resource-item-info > span {

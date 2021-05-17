@@ -71,7 +71,7 @@ const Design = ({
     }, 200);
   };
   return (
-    <Card>
+    <Card className="salestorm-global-design">
       <Card.Section title={title}>
         {subtitle}
         <br />
