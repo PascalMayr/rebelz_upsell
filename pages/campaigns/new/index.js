@@ -497,7 +497,7 @@ const New = () => {
       <Modal
         open={error !== ''}
         onClose={() => setError('')}
-        title="Input errors"
+        title="Invalid campaign"
         message={error}
         primaryAction={{
           content: 'Close',

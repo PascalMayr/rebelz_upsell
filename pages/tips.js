@@ -59,10 +59,9 @@ const Tips = () => {
         <Layout.Section oneThird>
           <Card>
             <Card.Section title="Be tactful">
-              Harassing your customers with an offer on every page will hinder
-              your sales, not help them. Ensure that you’re promoting the right
-              items at the right time. Market commodities that are compatible
-              with what the customer is shopping.
+              Try to be selective with your targeting. Ensure that you are
+              promoting the right items at the right time. Market commodities
+              that are compatible with what the customer is shopping.
             </Card.Section>
           </Card>
         </Layout.Section>
