@@ -139,9 +139,7 @@ const Index = () => {
       titleMetadata={
         <Badge status={priceStatus} progress={priceProgress}>
           <div className="salestorm-pricing-badge">
-            <NextLink href="/pricing">
-              {`${store.plan_name || config.planNames.free.toUpperCase()} Plan`}
-            </NextLink>
+            <NextLink href="/pricing">{`${store.plan_name} Plan`}</NextLink>
           </div>
         </Badge>
       }
