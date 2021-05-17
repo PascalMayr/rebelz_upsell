@@ -1,4 +1,9 @@
-import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider } from '@apollo/client';
+import {
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+  ApolloProvider,
+} from '@apollo/client';
 import App from 'next/app';
 import { Redirect } from '@shopify/app-bridge/actions';
 import { authenticatedFetch } from '@shopify/app-bridge-utils';
@@ -59,7 +64,7 @@ const GraphQLProvider = (props) => {
       fetchOptions: {
         credentials: 'include',
       },
-    })
+    }),
   });
 
   return <ApolloProvider client={client}>{props.children}</ApolloProvider>;
