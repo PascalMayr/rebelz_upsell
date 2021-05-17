@@ -7,7 +7,7 @@
 }
 
 .plans-container .Polaris-ResourceList .Polaris-ResourceItem:hover {
-  background-color: rgb(255, 255, 255);
+  background-color: var(--p-text-on-interactive);
 }
 
 .plans-container .Polaris-Card__Section .Polaris-Heading {
@@ -41,7 +41,7 @@
 }
 
 .plans-container .salestorm-pricing-card-checkmark {
-  color: rgb(0, 128, 96);
+  color: var(--p-action-primary);
   margin-right: 0.5em;
   font-weight: bold;
 }
@@ -66,11 +66,11 @@
 .salestorm-pricing-contact-us > a {
   margin-top: 1rem;
   text-decoration: none;
-  color: rgb(255, 255, 255);
+  color: var(--p-text-on-interactive);
 }
 
 .salestorm-pricing-contact-us > a:visited {
-  color: rgb(255, 255, 255);
+  color: var(--p-text-on-interactive);
 }
 
 .plans-container .Polaris-Stack .Polaris-Stack__Item:first-child > div {
