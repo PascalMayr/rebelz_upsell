@@ -63,6 +63,14 @@ html {
   font-size: 12pt;
 }
 
+.salestorm-enabled-status-true {
+  color: var(--p-text-success);
+}
+
+.salestorm-enabled-status-false {
+  color: var(--p-text-disabled);
+}
+
 .salestorm-enabled-satus-container {
   margin-bottom: 1em;
 }

@@ -82,6 +82,9 @@ const Index = () => {
   };
   const enabledStatus = store.enabled ? 'enabled' : 'disabled';
   const enabledButtonStatus = store.enabled ? 'Disable' : 'Enable';
+  const enabledStatusClass = store.enabled
+    ? 'salestorm-enabled-status-true'
+    : 'salestorm-enabled-status-false';
 
   let priceStatus = 'success';
   let priceProgress = 'complete';
@@ -175,9 +178,7 @@ const Index = () => {
           </Button>
           <span className="salestorm-enabled-status">
             App is{' '}
-            <strong style={{ color: store.enabled ? '#50b83c' : '#C83E4D' }}>
-              {enabledStatus}
-            </strong>
+            <strong className={enabledStatusClass}>{enabledStatus}</strong>
           </span>
         </div>
       </div>
