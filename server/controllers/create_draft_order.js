@@ -42,7 +42,7 @@ const createDraftOrder = async (ctx) => {
       );
     }
     draftOrder.line_items = draftOrder.line_items.concat([campaignItem]);
-    draftOrder.tags = 'Thunder Upsells,discount';
+    draftOrder.tags = 'Rebelz Exit Intent Upsells,discount';
   } else if (mode === 'free_shipping') {
     const campaignItem = {
       variant_id: variantId,
@@ -63,7 +63,7 @@ const createDraftOrder = async (ctx) => {
       price: 0.0,
       title: 'Free Shipping',
     };
-    draftOrder.tags = 'Thunder Upsells,free_shipping';
+    draftOrder.tags = 'Rebelz Exit Intent Upsells,free_shipping';
   } else if (mode === 'gift') {
     const campaignItem = {
       variant_id: variantId,
@@ -74,7 +74,7 @@ const createDraftOrder = async (ctx) => {
       },
     };
     draftOrder.line_items = draftOrder.line_items.concat([campaignItem]);
-    draftOrder.tags = 'Thunder Upsells,gift';
+    draftOrder.tags = 'Rebelz Exit Intent Upsells,gift';
   }
   let order = await restClient(shop, 'draft_orders', accessToken, {
     method: 'POST',

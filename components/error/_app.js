@@ -7,7 +7,7 @@ const AppError = () => {
       <br />
       <br />
       <br />
-      <MessageError whileMessage="while working with Thunder Upsells" />
+      <MessageError whileMessage="while working with Rebelz Exit Intent Upsells" />
     </>
   );
 };
