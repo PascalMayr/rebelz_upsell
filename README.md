@@ -33,7 +33,7 @@ CREATE EXTENSION citext;
 12. Run:
 
 ```sh
-~/ $ npm run serve
+~/ $ yarn run serve
 ```
 
 13. Open the app URL shown in the output. The first time you do this Chrome will complain about an invalid certificate, [to circumvent this type "thisisunsafe" and Chrome will remember to trust the local certificate](https://medium.com/@dblazeski/chrome-bypass-net-err-cert-invalid-for-development-daefae43eb12).
@@ -50,19 +50,19 @@ If you get any problem loading the startup script or the app in the admin panel 
 2. To test the SQL statement run:
 
 ```sh
-~/ $ npm run graphile watch
+~/ $ yarn run graphile watch
 ```
 
 3. When finished testing your SQL statement you need to create a migration file with this command:
 
 ```sh
-~/ $ npm run graphile commit
+~/ $ yarn run graphile commit
 ```
 
 4. Run the migrations and test on shopify with:
 
 ```sh
-~/ $ npm run serve
+~/ $ yarn run serve
 ```
 
 ### Add new Animations
@@ -98,7 +98,7 @@ shopify connect
 2. Run the server again and choose 'Yes' when the cli asks to update the Application URL
 
 ```
-npm run serve
+yarn run serve
 ```
 
 3. Check the status of the shopify system:
