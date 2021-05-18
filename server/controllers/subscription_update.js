@@ -33,6 +33,7 @@ const subscriptionUpdate = async (ctx) => {
       template: subscriptionMailTemplate,
       templateData: {
         name: contact.rows[0].first_name,
+        subscription: configPlan.name,
       },
     });
   } else if (store.subscriptionId === subscriptionId) {
@@ -48,6 +49,7 @@ const subscriptionUpdate = async (ctx) => {
       template: mailTemplates.subscriptionCanceled,
       templateData: {
         name: contact.rows[0].first_name,
+        subscription: configPlan.name,
       },
     });
   }
