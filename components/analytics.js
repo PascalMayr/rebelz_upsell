@@ -171,7 +171,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
           <Card>
             <Card.Section title="Total conversion rate">
               <p className="salestorm-analytics-subheading">
-                Total Sales VS Total Views this month.
+                Total sales vs total views this month.
               </p>
               <br />
               <div className="slaestorm-analytics-chart">

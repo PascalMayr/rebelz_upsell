@@ -129,7 +129,7 @@ const Options = ({ campaign, setCampaignProperty }) => {
                 'options'
               )
             }
-            label={<span>Show the image slider.</span>}
+            label={<span>Show all product images.</span>}
           />
         </div>
       </div>
