@@ -3,6 +3,7 @@ import NextLink from 'next/link';
 import { useState, useContext, useCallback, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
+import { CircleUpMajor } from '@shopify/polaris-icons';
 
 import config from '../config';
 import Campaigns from '../components/campaigns';
@@ -10,8 +11,8 @@ import Design from '../components/design';
 import Analytics from '../components/analytics';
 import GET_STORE_CURRENCY from '../server/handlers/queries/get_store_currency';
 import useApi from '../components/hooks/use_api';
-
 import DefaultStateNew from '../components/campaigns/new/defaultState';
+
 import { AppContext } from './_app';
 
 const Index = () => {
@@ -82,6 +83,9 @@ const Index = () => {
   };
   const enabledStatus = store.enabled ? 'enabled' : 'disabled';
   const enabledButtonStatus = store.enabled ? 'Disable' : 'Enable';
+  const enabledStatusClass = store.enabled
+    ? 'salestorm-enabled-status-true'
+    : 'salestorm-enabled-status-false';
 
   let priceStatus = 'success';
   let priceProgress = 'complete';
@@ -136,9 +140,7 @@ const Index = () => {
       titleMetadata={
         <Badge status={priceStatus} progress={priceProgress}>
           <div className="salestorm-pricing-badge">
-            <NextLink href="/pricing">
-              {`${store.plan_name || config.planNames.free.toUpperCase()} Plan`}
-            </NextLink>
+            <NextLink href="/pricing">{`${store.plan_name} Plan`}</NextLink>
           </div>
         </Badge>
       }
@@ -159,8 +161,8 @@ const Index = () => {
         {
           content: 'Upgrade',
           disabled: false,
+          icon: CircleUpMajor,
           onAction: () => router.push('/pricing'),
-          id: 'pricing-button',
         },
       ]}
     >
@@ -175,9 +177,7 @@ const Index = () => {
           </Button>
           <span className="salestorm-enabled-status">
             App is{' '}
-            <strong style={{ color: store.enabled ? '#50b83c' : '#C83E4D' }}>
-              {enabledStatus}
-            </strong>
+            <strong className={enabledStatusClass}>{enabledStatus}</strong>
           </span>
         </div>
       </div>

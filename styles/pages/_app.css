@@ -101,7 +101,7 @@ html {
 
 .postimages-link {
   text-decoration: none;
-  color: rgb(0, 128, 96);
+  color: var(--p-interactive);
 }
 
 .salestorm-texts {
@@ -219,13 +219,17 @@ html {
   margin: 0 auto;
 }
 
+.salestorm-global-design {
+  --s-device-border-color: rgb(32, 34, 35, 0.1);
+}
+
 .salestorm-mobile-preview-container {
   border-right: 1em;
   border-left: 1em;
   border-top: 2em;
   border-bottom: 2em;
   border-radius: 30px;
-  border-color: rgb(32, 34, 35, 0.1);
+  border-color: var(--s-device-border-color);
   border-style: solid;
   width: 320px;
   height: 640px;
@@ -242,7 +246,7 @@ html {
   border-top: 2em;
   border-bottom: 2em;
   border-radius: 30px;
-  border-color: rgb(32, 34, 35, 0.1);
+  border-color: var(--s-device-border-color);
   border-style: solid;
   width: 600px;
   height: 800px;
@@ -250,7 +254,7 @@ html {
 }
 
 .salestorm-summary-explanation {
-  color: rgb(109, 113, 117);
+  color: var(--p-text-subdued);
   margin-bottom: 1em;
 }
 

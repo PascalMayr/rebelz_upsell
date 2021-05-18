@@ -125,7 +125,10 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
       <br />
       <EmptyState
         heading="No campaigns available to analyze."
-        action={{ content: 'Create a new Campaign', url: '/campaigns/new' }}
+        action={{
+          content: 'Create a new Campaign',
+          onAction: () => router.push('/campaigns/new'),
+        }}
         image="/business_analytics.svg"
       >
         <p>Create a new upselling campaign now.</p>
@@ -225,10 +228,10 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
                       deleted,
                     } = campaign;
                     const url = deleted ? '' : `/campaigns/${id}`;
-                    const viewsLabel = `${campaignViews} View${
+                    const viewsLabel = `${campaignViews} view${
                       campaignViews === 1 ? '' : 's'
                     }`;
-                    const salesLabel = `${campaignSales} Sale${
+                    const salesLabel = `${campaignSales} sale${
                       campaignSales === 1 ? '' : 's'
                     }`;
                     const formattedRevenue = currencyFormatter
@@ -256,7 +259,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
                         {deleted && (
                           <Badge status="critical">
                             <Icon source={DeleteMajor} />
-                            <TextStyle variation="strong">Deleted</TextStyle>
+                            <TextStyle variation="strong">deleted</TextStyle>
                           </Badge>
                         )}
                       </ResourceItem>

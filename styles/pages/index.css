@@ -37,19 +37,19 @@ html {
 .stepper-checkmark {
   height: 2em;
   width: 2em;
-  fill: rgb(109, 113, 117);
-  color: rgb(109, 113, 117);
+  fill: var(--p-icon-disabled);
+  color: var(--p-icon-disabled);
 }
 
 .stepper-checked {
-  fill: #50b83c;
-  color: #50b83c;
+  fill: var(--p-action-primary);
+  color: var(--p-action-primary);
   font-weight: bold;
 }
 
 #stepper-new-cammpaign-link > a {
   text-decoration: none;
-  color: #006fbb;
+  color: var(--p-interactive);
 }
 
 #total-revenue {
@@ -63,14 +63,16 @@ html {
   font-size: 12pt;
 }
 
-.salestorm-enabled-satus-container {
-  margin-bottom: 1em;
+.salestorm-enabled-status-true {
+  color: var(--p-text-success);
 }
 
-#pricing-button {
-  background: rgb(2, 0, 36);
-  background: #c83e4d !important;
-  color: #ffffff !important;
+.salestorm-enabled-status-false {
+  color: var(--p-text-disabled);
+}
+
+.salestorm-enabled-satus-container {
+  margin-bottom: 1em;
 }
 
 #tips-readings-button {
@@ -102,6 +104,10 @@ html {
   padding-right: 0.75em;
 }
 
+.Polaris-Button[aria-label="Toggle publish"] {
+  width: 89px;
+}
+
 @media only screen and (max-width: 1040px) {
   .salestorm-campaigns-overview .Polaris-Badge {
     margin-top: 0.75rem;
@@ -119,20 +125,16 @@ html {
 
 .salestorm-pricing-badge > a {
   text-decoration: none;
-  color: black;
-}
-
-.salestorm-pricing-badge > a:visited {
-  color: black;
+  color: var(--p-text);
 }
 
 .salestorm-analytics-subheading {
-  color: rgb(109, 113, 117);
+  color: var(--p-text-subdued);
 }
 
 .salestorm-analytics-subheading > a {
   text-decoration: none;
-  color: #006fbb;
+  color: var(--p-interactive);
 }
 
 .salestorm-analytics-value {
