@@ -5,10 +5,10 @@
   "scripts": {
     "test": "snyk test",
     "graphile": "cd server && DOTENV_CONFIG_PATH=../.env node -r dotenv/config ../node_modules/graphile-migrate/dist/cli.js",
-    "dev": "npm run graphile migrate && cross-env NODE_ENV=development PORT=443 nodemon --inspect ./server/index.js --watch ./server/index.js & parcel watch scripts/startup.js -d public",
+    "dev": "yarn run graphile migrate && cross-env NODE_ENV=development PORT=443 nodemon --inspect ./server/index.js --watch ./server/index.js & parcel watch scripts/startup.js -d public",
     "serve": "shopify serve --host https://loop.rebelzcommerce.com",
-    "build": "NEXT_TELEMETRY_DISABLED=1 next build && parcel build scripts/startup.js",
-    "release": "npm run graphile migrate && node scripts/startup-to-github",
+    "build": "NEXT_TELEMETRY_DISABLED=1 next build && parcel build scripts/startup.js --no-source-maps",
+    "release": "yarn run graphile migrate && node scripts/startup-to-github",
     "start": "cross-env NODE_ENV=production node ./server/index.js"
   },
   "repository": {

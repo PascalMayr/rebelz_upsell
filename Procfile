@@ -1,2 +1,2 @@
-web: npm start
-release: npm run release
+web: yarn start
+release: yarn run release
