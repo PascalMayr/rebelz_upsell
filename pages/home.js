@@ -153,7 +153,7 @@ const Index = () => {
       }
       secondaryActions={[
         {
-          content: 'Useful Tips & Readings',
+          content: 'Useful tips and readings',
           disabled: false,
           onAction: () => router.push('/tips'),
           id: 'tips-readings-button',
