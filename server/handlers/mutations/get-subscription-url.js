@@ -37,12 +37,12 @@ export function RECURRING_CREATE() {
   `;
 }
 
-export const getSubscriptionUrl = async (ctx, { name, amount, currency }) => {
+export const getSubscriptionUrl = async (ctx, { name, amount, currency }, storeDomain) => {
   const { client } = ctx;
   const response = await client.mutate({
     mutation: RECURRING_CREATE(),
     variables: {
-      url: process.env.HOST,
+      url: `${process.env.HOST}?shop=${storeDomain}`,
       test: process.env.BILLING_TEST === 'true',
       name,
       amount,

@@ -29,7 +29,7 @@ const manageSubscription = async (ctx) => {
     const currentPlan = config.plans.find(
       (configPlan) => configPlan.name === plan
     );
-    const { confirmationUrl } = await getSubscriptionUrl(ctx, currentPlan);
+    const { confirmationUrl } = await getSubscriptionUrl(ctx, currentPlan, shop);
 
     ctx.body = { confirmationUrl };
   }
