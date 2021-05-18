@@ -41,8 +41,8 @@ const subscriptionUpdate = async (ctx) => {
       (plan) => plan.name === config.planNames.free
     );
     await db.query(
-      'UPDATE stores SET plan_name = NULL, "subscriptionId" = NULL, subscription_start = current_timestamp, plan_limit = $1 WHERE domain = $2',
-      [freePlan.limit, shop]
+      'UPDATE stores SET plan_name = $1, "subscriptionId" = NULL, subscription_start = current_timestamp, plan_limit = $2 WHERE domain = $3',
+      [freePlan.name, freePlan.limit, shop]
     );
     await sendMail({
       to: contact.rows[0].email,
