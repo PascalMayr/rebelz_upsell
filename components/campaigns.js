@@ -9,16 +9,18 @@ import {
 } from '@shopify/polaris-icons';
 import Image from 'next/image';
 import NextLink from 'next/link';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useContext } from 'react';
+import { useRouter } from 'next/router';
 
 import DeleteModal from './delete_modal';
 import Campaign from './campaign';
 import useApi from './hooks/use_api';
-import { useRouter } from 'next/router';
+import { AppContext } from '../pages/_app';
 
 const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
   const api = useApi();
   const router = useRouter();
+  const context = useContext(AppContext);
   const [deleteModalCampaign, setDeleteModalCampaign] = useState(null);
   const closeDeleteModal = useCallback(() => setDeleteModalCampaign(null), []);
   const [sortValue, setSortValue] = useState('CREATED_DESC');
@@ -142,11 +144,24 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
                       content: 'Duplicate',
                       icon: DuplicateMinor,
                       onAction: async () => {
-                        const duplicate = await api.post(
-                          `/api/duplicate-campaign/${campaign.id}`
-                        );
-                        campaigns.push(duplicate.data);
-                        setCampaigns(campaigns);
+                        try {
+                          const duplicate = await api.post(
+                            `/api/duplicate-campaign/${campaign.id}`
+                          );
+                          campaigns.push(duplicate.data);
+                          setCampaigns(campaigns);
+                          context.setToast({
+                            shown: true,
+                            content: `Successfully duplicated ${campaign.name}`,
+                            isError: false,
+                          });
+                        } catch(err) {
+                          context.setToast({
+                            shown: true,
+                            content: `Failed to duplicate ${campaign.name}`,
+                            isError: true,
+                          });
+                        }
                       },
                     },
                     {
@@ -155,19 +170,45 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
                       accessibilityLabel: 'Toggle publish',
                       onAction: async () => {
                         if (published) {
-                          await api.delete(
-                            `/api/unpublish-campaign/${campaign.id}`
-                          );
-                          // eslint-disable-next-line require-atomic-updates
-                          campaign.published = false;
-                          setCampaigns(campaigns);
+                          try {
+                            await api.delete(
+                              `/api/unpublish-campaign/${campaign.id}`
+                            );
+                            // eslint-disable-next-line require-atomic-updates
+                            campaign.published = false;
+                            setCampaigns(campaigns);
+                            context.setToast({
+                              shown: true,
+                              content: `Successfully unpublished ${campaign.name}`,
+                              isError: false,
+                            });
+                          } catch(err) {
+                            context.setToast({
+                              shown: true,
+                              content: `Failed to unpublish ${campaign.name}`,
+                              isError: true,
+                            });
+                          }
                         } else {
-                          await api.post(
-                            `/api/publish-campaign/${campaign.id}`
-                          );
-                          // eslint-disable-next-line require-atomic-updates
-                          campaign.published = true;
-                          setCampaigns(campaigns);
+                          try {
+                            await api.post(
+                              `/api/publish-campaign/${campaign.id}`
+                            );
+                            // eslint-disable-next-line require-atomic-updates
+                            campaign.published = true;
+                            setCampaigns(campaigns);
+                            context.setToast({
+                              shown: true,
+                              content: `Successfully published ${campaign.name}`,
+                              isError: false,
+                            });
+                          } catch(err) {
+                            context.setToast({
+                              shown: true,
+                              content: `Failed to publish ${campaign.name}`,
+                              isError: true,
+                            });
+                          }
                         }
                       },
                     },
