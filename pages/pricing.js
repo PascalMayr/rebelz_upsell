@@ -29,7 +29,7 @@ const Pricing = () => {
   useEffect(() => {
     const fetchData = async () => {
       const pricingData = await api.get('/api/pages/pricing');
-      setActivePlan(pricingData.data.plan_name);
+      setActivePlan(pricingData.data);
     };
     fetchData();
   }, [api]);
