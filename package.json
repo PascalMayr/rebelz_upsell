@@ -19,6 +19,9 @@
   "engines": {
     "node": "14.x"
   },
+  "browserslist": [
+    "since 2017-06"
+  ],
   "dependencies": {
     "@apollo/client": "^3.3.16",
     "@babel/core": "^7.12.3",
