@@ -152,6 +152,7 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
                     {
                       content: published ? 'Unpublish' : 'Publish',
                       icon: published ? CircleDisableMinor : ViewMajor,
+                      accessibilityLabel: 'Toggle publish',
                       onAction: async () => {
                         if (published) {
                           await api.delete(

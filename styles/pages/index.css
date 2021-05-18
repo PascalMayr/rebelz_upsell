@@ -104,6 +104,10 @@ html {
   padding-right: 0.75em;
 }
 
+.Polaris-Button[aria-label="Toggle publish"] {
+  width: 89px;
+}
+
 @media only screen and (max-width: 1040px) {
   .salestorm-campaigns-overview .Polaris-Badge {
     margin-top: 0.75rem;

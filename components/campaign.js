@@ -1,20 +1,17 @@
 import { Badge, TextStyle, Icon } from '@shopify/polaris';
-import { ViewMajor } from '@shopify/polaris-icons';
+import { HideMinor, ViewMinor } from '@shopify/polaris-icons';
 
-const Campaign = ({ campaign }) => {
-  const publishedStatus = campaign.published ? 'success' : 'attention';
-  const publishedStatusText = campaign.published
-    ? ' Published'
-    : ' Unpublished';
-  const views = campaign.views ? campaign.views : 0;
+const Campaign = ({ campaign: { published, views, name } }) => {
+  const publishedStatus = published ? 'success' : 'attention';
+  const icon = published ? ViewMinor : HideMinor;
   return (
     <>
       <h3 className="salestorm-campaign-title">
-        <TextStyle>{campaign.name}</TextStyle>
+        <TextStyle>{name}</TextStyle>
       </h3>
       <Badge status={publishedStatus}>
-        <Icon source={ViewMajor} />
-        {publishedStatusText} {views} Views
+        <Icon source={icon} />
+        {views || 0} views
       </Badge>
     </>
   );
