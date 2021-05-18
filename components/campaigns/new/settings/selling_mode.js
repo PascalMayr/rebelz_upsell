@@ -14,7 +14,7 @@ const SellingModeSetting = ({ campaign, setCampaignProperty }) => {
   const explanation =
     sellingMode === 'auto' ? (
       <>
-        Show offers automatically. By using the{' '}
+        By using the{' '}
         <Link
           external
           url="https://shopify.dev/docs/themes/ajax-api/reference/product-recommendations"
@@ -25,12 +25,7 @@ const SellingModeSetting = ({ campaign, setCampaignProperty }) => {
         to your customers.
       </>
     ) : (
-      <>
-        Set Products to be offered to your customers. Multiple offers in one
-        campaign can be skipped by the customers or are skipped after a specific
-        time, which can be set in the{' '}
-        <strong> Advanced Settings, Styles and Texts section.</strong>
-      </>
+      <>If you define many offers, customers can skip them individually.</>
     );
   return (
     <>

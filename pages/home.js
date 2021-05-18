@@ -184,7 +184,7 @@ const Index = () => {
       <Layout>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="Total Revenue">
+            <Card.Section title="Total revenue">
               <p className="salestorm-analytics-subheading">
                 The total impact our App made on your store this month.
               </p>
@@ -242,8 +242,8 @@ const Index = () => {
       )}
       <div className={designContainerClassName}>
         <Page
-          title="Create a global Design for all your campaigns."
-          subtitle="Note: Already created campaigns won't be affected."
+          title="Create a global design for all your campaigns."
+          subtitle="Note: This won't affect already created campaigns."
           primaryAction={{
             content: 'Save',
             loading: saveLoading,

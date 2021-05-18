@@ -552,8 +552,8 @@ const customElement = () => `
     }
 
     updateTexts(texts) {
-      const processCampaignTextsUtil = (text) =>
-        text
+      const processCampaignTextsUtil = (text) => {
+        let newText = text
           .replace(
             '{{Discount}}',
             '<span class="salestorm-price salestorm-discount"></span>'
@@ -566,7 +566,14 @@ const customElement = () => `
           .replace(
             '{{DiscountedProductPrice}}',
             '<span class="salestorm-price salestorm-product-price-discounted"></span>'
-          );
+          )
+          if(this.getAttribute('preview')) {
+            newText = newText
+              .replace('<a ', '<span ')
+              .replace('</a>', '</span>');
+          }
+          return newText;
+        }
       Object.keys(texts).forEach((textKey) => {
         const campaignTextElement = this.getElement(
           "#salestorm-campaign-text-" + textKey

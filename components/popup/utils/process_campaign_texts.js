@@ -12,6 +12,8 @@ const processCampaignTextsUtil = (text) =>
     .replace(
       '{{DiscountedProductPrice}}',
       '<span class="salestorm-price salestorm-product-price-discounted"></span>'
-    );
+    )
+    .replace('<a ', '<span ')
+    .replace('</a>', '</span>');
 
 export default processCampaignTextsUtil;

@@ -14,7 +14,6 @@ import Design from '../../../components/design';
 import EntrySettings from '../../../components/campaigns/new/settings/entry';
 import GET_STORE_CURRENCY from '../../../server/handlers/queries/get_store_currency';
 import useApi from '../../../components/hooks/use_api';
-
 import DefaultStateNew from '../../../components/campaigns/new/defaultState';
 
 const New = () => {
@@ -59,6 +58,13 @@ const New = () => {
     ) {
       message +=
         'Step 4.) Please set Products to offer or choose the AI mode. ';
+    }
+    if (
+      campaignToCheck.strategy.sellType === 'upsell' &&
+      campaignToCheck.targets.products.length === 0
+    ) {
+      message +=
+        'Step 1.) Please set Target Products for Upselling Campaigns. ';
     }
     if (message !== '') {
       setError(message);
@@ -415,7 +421,7 @@ const New = () => {
           <Layout>
             <Layout.Section>
               <Design
-                title="5. Check try and customize your campaign before publishing it."
+                title="5. Preview and customize your campaign before publishing"
                 setCampaignProperty={setCampaignProperty}
                 campaign={campaign}
                 subtitle={
@@ -497,7 +503,7 @@ const New = () => {
       <Modal
         open={error !== ''}
         onClose={() => setError('')}
-        title="Input Errors."
+        title="Invalid campaign"
         message={error}
         primaryAction={{
           content: 'Close',

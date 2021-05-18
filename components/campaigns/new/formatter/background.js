@@ -19,7 +19,7 @@ const BackgroundFormatter = ({ styles, setStyleProperty }) => {
       <br />
       <h4>
         <strong>ⓘ&nbsp;</strong>
-        <span>Please use the free and reliable service of</span>
+        <span>Please use a service like</span>
         <strong>
           <a
             href="https://postimages.org/"
@@ -30,8 +30,8 @@ const BackgroundFormatter = ({ styles, setStyleProperty }) => {
             &nbsp;Postimages&nbsp;
           </a>
         </strong>
-        to upload your own background image and copy the{' '}
-        <strong>Direct Link</strong> into the input field above.
+        to upload your own background image. Copy the{' '}
+        <strong>Direct Image Link</strong> into the input field above.
       </h4>
     </>
   );

@@ -23,11 +23,7 @@ const TriggerSettings = ({ campaign, setCampaignProperty }) => {
   } else if (targetsPage === 'checkout') {
     targetsPageText = 'on the Cart page';
   }
-  const explanation = `Customers will see this campaign <strong>${targetsPageText}</strong> on the specified target products or collections. If you haven't selected products or collections than the campaign will be shown for every product in your store.${
-    targetsPage === 'thank_you'
-      ? ''
-      : '<strong> To create Upselling Campaigns you need to specify Target Products.</strong>'
-  }`;
+  const explanation = `Customers will see this campaign <strong>${targetsPageText}</strong> on the specified target products or collections.<br>If you haven't selected products or collections than the campaign will show for every product in your store.`;
   return (
     <>
       <div
