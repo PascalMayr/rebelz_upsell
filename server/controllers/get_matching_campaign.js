@@ -104,7 +104,6 @@ const getMatchingCampaign = async (ctx) => {
 
   if (campaign) {
     if (campaign.selling.mode === 'auto') {
-      console.log('auto mode');
       const filteredRecommendations = requestParams.recommendations.filter(
         (recommendation) =>
           !campaign.selling.excludeProducts.find(
@@ -112,7 +111,6 @@ const getMatchingCampaign = async (ctx) => {
               excludedProduct.legacyResourceId === recommendation.id.toString()
           )
       );
-      console.log('filtered recommendations', filteredRecommendations);
       campaign.selling.products = await Promise.all(
         filteredRecommendations.map(async (recommendation) => {
           const { price, id } = recommendation;
@@ -120,10 +118,8 @@ const getMatchingCampaign = async (ctx) => {
             price / 100 > parseFloat(campaign.strategy.maxItemValue) &&
             campaign.strategy.maxItemValue !== '0'
           ) {
-            console.log('price of ', recommendation, 'exceed max item value');
             return false;
           } else {
-            console.log('fetching recommendation data of', id);
             const response = await client.query({
               query: GET_PRODUCT,
               variables: {
@@ -131,14 +127,11 @@ const getMatchingCampaign = async (ctx) => {
               },
             });
             if (response.data && response.data.product) {
-              console.log('got data');
-              console.dir(response.data.product);
               return {
                 ...response.data.product,
                 strategy: campaign.strategy,
               };
             } else {
-              console.log('failed to get data');
               throw new Error(
                 `Failed to fetch product with id ${id} for store ${requestParams.shop} during get-matching recommendation fetching.`
               );
@@ -146,8 +139,6 @@ const getMatchingCampaign = async (ctx) => {
           }
         })
       );
-      console.log('campaigns selling products after fetch');
-      console.dir(campaign.selling.products);
       if (parseInt(campaign.strategy.maxNumberOfItems, 10) > 0) {
         campaign.selling.products = campaign.selling.products.slice(
           0,
