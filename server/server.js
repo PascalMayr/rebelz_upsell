@@ -24,6 +24,7 @@ import {
   onlineAuthConfig,
   offlineAuthConfig,
 } from './middleware/shopify-auth-config';
+import globalErrorHandler from './middleware/error';
 import { loadSession } from './middleware/session';
 import rootPage from './controllers/root_page';
 import countView from './controllers/count_view';
@@ -139,6 +140,7 @@ app.prepare().then(() => {
     duplicateCampaign
   );
 
+  server.use(globalErrorHandler);
   server.on('error', sentryErrorMiddleware);
   server.use(sentryRequestMiddleware);
   server.use(sentryTracingMiddleware);
