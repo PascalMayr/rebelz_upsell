@@ -83,34 +83,31 @@ const createDraftOrder = async (ctx) => {
     }),
   });
   order = await order.json();
-  if (order.draft_order) {
-    const addedVariantItem = order.draft_order.line_items.find(
-      (lineItem) => lineItem.variant_id === parseInt(variantId, 10)
+  ctx.assert(order.draft_order);
+
+  const addedVariantItem = order.draft_order.line_items.find(
+    (lineItem) => lineItem.variant_id === parseInt(variantId, 10)
+  );
+  if (addedVariantItem) {
+    const { price, applied_discount, quantity } = addedVariantItem;
+    const variantPrice = parseFloat(price) * parseInt(quantity, 10);
+    const addedValue = applied_discount && applied_discount.amount
+      ? variantPrice - parseFloat(applied_discount.amount)
+      : variantPrice;
+    const { invoice_url, currency, total_price } = order.draft_order;
+    await db.query(
+      `INSERT INTO orders${db.insertColumns(
+        'campaign_id',
+        'domain',
+        'draft_order_id',
+        'currency',
+        'value_added',
+        'total_price'
+      )}`,
+      [id, shop, order.draft_order.id, currency, addedValue, total_price]
     );
-    if (addedVariantItem) {
-      const { price, applied_discount, quantity } = addedVariantItem;
-      const variantPrice = parseFloat(price) * parseInt(quantity, 10);
-      const addedValue = applied_discount && applied_discount.amount
-        ? variantPrice - parseFloat(applied_discount.amount)
-        : variantPrice;
-      const { invoice_url, currency, total_price } = order.draft_order;
-      await db.query(
-        `INSERT INTO orders${db.insertColumns(
-          'campaign_id',
-          'domain',
-          'draft_order_id',
-          'currency',
-          'value_added',
-          'total_price'
-        )}`,
-        [id, shop, order.draft_order.id, currency, addedValue, total_price]
-      );
-      ctx.body = { invoiceUrl: invoice_url };
-      ctx.status = 200;
-    }
-  } else {
-    ctx.status = 500;
-    throw new Error(`Failed to create an order for ${shop}.`);
+    ctx.body = { invoiceUrl: invoice_url };
+    ctx.status = 200;
   }
 };
 

@@ -50,14 +50,11 @@ export const onlineAuthConfig = {
         id: activeStore.scriptid,
       },
     });
-    if (scriptTagResponse.data) {
-      // This can happen on re-install
-      if (!scriptTagResponse.data.scriptTag) {
-        const scriptid = await getScriptTagId(client);
-        await db.query('UPDATE stores SET scriptid = $1 WHERE domain = $2', [scriptid, shop]);
-      }
-    } else {
-      throw new Error(`Failed to check script tag for store ${shop}`);
+    ctx.assert(scriptTagResponse.data);
+    // This can happen on re-install
+    if (!scriptTagResponse.data.scriptTag) {
+      const scriptid = await getScriptTagId(client);
+      await db.query('UPDATE stores SET scriptid = $1 WHERE domain = $2', [scriptid, shop]);
     }
 
     await db.query(

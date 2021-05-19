@@ -77,13 +77,8 @@ const getMatchingCampaign = async (ctx) => {
               collection: targetCollection.id,
             },
           });
-          if (response.data) {
-            return response.data.inCollection;
-          } else {
-            throw new Error(
-              `Failed to check if the product ${product} is in collection ${targetCollection.title}(${targetCollection.id}) for store ${requestParams.shop}`
-            );
-          }
+          ctx.assert(response.data);
+          return response.data.inCollection;
         });
       });
     const matchesEverything =
@@ -115,16 +110,11 @@ const getMatchingCampaign = async (ctx) => {
                 id: getGQLProductId(id),
               },
             });
-            if (response.data && response.data.product) {
-              return {
-                ...response.data.product,
-                strategy: campaign.strategy,
-              };
-            } else {
-              throw new Error(
-                `Failed to fetch product with id ${id} for store ${requestParams.shop} during get-matching recommendation fetching.`
-              );
-            }
+            ctx.assert(response.data && response.data.product);
+            return {
+              ...response.data.product,
+              strategy: campaign.strategy,
+            };
           }
         })
       );
@@ -145,13 +135,8 @@ const getMatchingCampaign = async (ctx) => {
               id,
             },
           });
-          if (response.data && response.data.product) {
-            return { ...response.data.product, ...product };
-          } else {
-            throw new Error(
-              `Failed to fetch product ${title} with id ${id} for store ${requestParams.shop} during get-matching update.`
-            );
-          }
+          ctx.assert(response.data && response.data.product);
+          return { ...response.data.product, ...product };
         })
       );
     }

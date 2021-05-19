@@ -31,14 +31,9 @@ const draftOrdersUpdate = async (ctx) => {
         id: order_id,
       },
     });
-    if (response.data) {
-      console.dir(response.data);
-      customer_id = response.data.customer.legacyResourceId;
-    } else {
-      throw new Error(
-        `Failed to get the customer id of order ${order_id}.`
-      );
-    }
+    ctx.assert(response.data);
+    console.dir(response.data);
+    customer_id = response.data.customer.legacyResourceId;
 
     await db.query(
       'UPDATE orders SET status = $1, customer_id = $2 WHERE domain = $3 AND id = $4',
