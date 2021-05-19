@@ -1,11 +1,12 @@
 import db from '../db';
 import sendMail, { mailTemplates } from '../handlers/mail';
+import GET_ORDER from '../handlers/queries/get_order';
 
 const draftOrdersUpdate = async (ctx) => {
   const shop = ctx.request.headers['x-shopify-shop-domain'];
   console.log('draftOrdersUpdate');
   console.dir(ctx.request.body);
-  const { id, status, customer } = ctx.request.body;
+  const { id, status, customer, order_id } = ctx.request.body;
   const completedStatus = 'completed';
 
   let completedOrderCount = await db.query(
@@ -14,23 +15,46 @@ const draftOrdersUpdate = async (ctx) => {
   );
   completedOrderCount = completedOrderCount.rows[0].count;
 
-  await db.query(
-    'UPDATE orders SET status = $1, customer_id = $2 WHERE domain = $3 AND id = $4',
-    [status, customer.id, shop, id]
-  );
-
-  if (completedOrderCount === 0 && status === completedStatus) {
-    const contact = await db.query(
-      `SELECT email, first_name FROM users WHERE domain = $1 AND account_owner = TRUE`,
+  if (status === completedStatus) {
+    let customer_id;
+    let store = await db.query(
+      `SELECT access_token FROM stores WHERE domain = $1`,
       [shop]
     );
-    await sendMail({
-      to: contact.rows[0].email,
-      template: mailTemplates.firstSale,
-      templateData: {
-        name: contact.rows[0].first_name,
+    store = store.rows[0];
+    const client = await createClient(shop, store.access_token);
+    const response = await client.query({
+      query: GET_ORDER,
+      variables: {
+        id: order_id,
       },
     });
+    if (response.data) {
+      customer_id = response.data.customer.legacyResourceId;
+    } else {
+      throw new Error(
+        `Failed to get the customer id of order ${order_id}.`
+      );
+    }
+
+    await db.query(
+      'UPDATE orders SET status = $1, customer_id = $2 WHERE domain = $3 AND id = $4',
+      [status, customer_id, shop, id]
+    );
+
+    if (completedOrderCount === 0) {
+      const contact = await db.query(
+        `SELECT email, first_name FROM users WHERE domain = $1 AND account_owner = TRUE`,
+        [shop]
+      );
+      await sendMail({
+        to: contact.rows[0].email,
+        template: mailTemplates.firstSale,
+        templateData: {
+          name: contact.rows[0].first_name,
+        },
+      });
+    }
   }
 
   ctx.body = {};
