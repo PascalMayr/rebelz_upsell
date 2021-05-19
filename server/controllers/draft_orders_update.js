@@ -1,6 +1,7 @@
 import db from '../db';
 import sendMail, { mailTemplates } from '../handlers/mail';
 import GET_ORDER from '../handlers/queries/get_order';
+import { createClient } from '../handlers';
 
 const draftOrdersUpdate = async (ctx) => {
   const shop = ctx.request.headers['x-shopify-shop-domain'];
