@@ -16,12 +16,14 @@ const draftOrdersUpdate = async (ctx) => {
   completedOrderCount = completedOrderCount.rows[0].count;
 
   if (status === completedStatus) {
+    console.log('order is completed');
     let customer_id;
     let store = await db.query(
       `SELECT access_token FROM stores WHERE domain = $1`,
       [shop]
     );
     store = store.rows[0];
+    console.dir(store);
     const client = await createClient(shop, store.access_token);
     const response = await client.query({
       query: GET_ORDER,
@@ -30,6 +32,7 @@ const draftOrdersUpdate = async (ctx) => {
       },
     });
     if (response.data) {
+      console.dir(response.data);
       customer_id = response.data.customer.legacyResourceId;
     } else {
       throw new Error(
