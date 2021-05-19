@@ -19,6 +19,7 @@ const getMatchingCampaign = async (ctx) => {
     [requestParams.shop]
   );
   store = store.rows[0];
+  console.dir('store', store);
   const views = await db.query(
     'SELECT counter FROM views WHERE domain = $1 AND view_date >= $2',
     [
@@ -33,6 +34,7 @@ const getMatchingCampaign = async (ctx) => {
     .reduce((sum, counter) => sum + counter, 0);
 
   if (viewsCount >= store.plan_limit) {
+    console.log('View count over plan limit');
     ctx.status = 404;
     return;
   }
@@ -55,6 +57,9 @@ const getMatchingCampaign = async (ctx) => {
   campaigns = campaigns.rows.filter(
     (campaign) => campaign.targets.page === requestParams.target
   );
+
+  console.log('published, undeleted campaigns on the target page');
+  console.dir(campaigns);
 
   const campaign = campaigns.find((row) => {
     const targets = row.targets;
@@ -88,8 +93,14 @@ const getMatchingCampaign = async (ctx) => {
       });
     const matchesEverything =
       targets.collections.length === 0 && targets.products.length === 0;
+    console.log('matchesWhat');
+    console.log(matchesTargetProduct);
+    console.log(matchesTargetCollection);
+    console.log(matchesEverything);
     return matchesTargetProduct || matchesTargetCollection || matchesEverything;
   });
+
+  console.log('found a campaign', campaign);
 
   if (campaign) {
     if (campaign.selling.mode === 'auto') {
