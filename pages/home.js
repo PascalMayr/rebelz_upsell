@@ -211,12 +211,13 @@ const Index = () => {
             <Card.Section title="Views used">
               <p className="salestorm-analytics-subheading">
                 Views used according to your plan.{' '}
-                {!store.plan_name && (
-                  <>
-                    Need some more ?{' '}
-                    <NextLink href="/pricing">Upgrade Now</NextLink>
-                  </>
-                )}
+                {!store.plan_name &&
+                  (analytics.viewsCount / store.plan_limit) * 100 > 80 && (
+                    <>
+                      Need some more ?{' '}
+                      <NextLink href="/pricing">Upgrade Now</NextLink>
+                    </>
+                  )}
               </p>
               <div className="salestorm-analytics-value">
                 {analytics.viewsCount} / {store.plan_limit}
