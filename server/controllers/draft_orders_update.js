@@ -3,6 +3,8 @@ import sendMail, { mailTemplates } from '../handlers/mail';
 
 const draftOrdersUpdate = async (ctx) => {
   const shop = ctx.request.headers['x-shopify-shop-domain'];
+  console.log('draftOrdersUpdate');
+  console.dir(ctx.request.body);
   const { id, status, customer } = ctx.request.body;
   const completedStatus = 'completed';
 
