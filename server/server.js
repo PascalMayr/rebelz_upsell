@@ -152,9 +152,8 @@ app.prepare().then(() => {
   server.use(router.allowedMethods());
   server.use(router.routes());
 
-  const readyFunc = () => console.log(`> Ready on http://localhost:${port}`);
   if (isProduction) {
-    server.listen(port, readyFunc);
+    server.listen(port);
   } else {
     const sslKey = fs
       .readFileSync(path.resolve(process.cwd(), 'certs/key.pem'), 'utf8')
@@ -164,6 +163,6 @@ app.prepare().then(() => {
       .toString();
     https
       .createServer({ port, key: sslKey, cert: sslCert }, server.callback())
-      .listen({ port }, readyFunc);
+      .listen({ port }, () => console.log(`> Ready on https://localhost:${port}`));
   }
 });
