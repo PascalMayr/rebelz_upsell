@@ -1,13 +1,11 @@
+import Shopify from '@shopify/shopify-api';
+
 import db from '../db';
 import sendMail, { mailTemplates } from '../handlers/mail';
-import GET_ORDER from '../handlers/queries/get_order';
-import { createClient } from '../handlers';
 
 const draftOrdersUpdate = async (ctx) => {
   const shop = ctx.request.headers['x-shopify-shop-domain'];
-  console.log('draftOrdersUpdate');
-  console.dir(ctx.request.body);
-  const { id, status, customer, order_id } = ctx.request.body;
+  const { id, status, order_id } = ctx.request.body;
   const completedStatus = 'completed';
 
   let completedOrderCount = await db.query(
@@ -25,16 +23,12 @@ const draftOrdersUpdate = async (ctx) => {
     );
     store = store.rows[0];
     console.dir(store);
-    const client = await createClient(shop, store.access_token);
-    const response = await client.query({
-      query: GET_ORDER,
-      variables: {
-        id: order_id,
-      },
+    const client = new Shopify.Clients.Rest(shop, store.accessToken);
+    const response = await client.get({
+      path: `orders/${order_id}`,
     });
-    ctx.assert(response.data);
-    console.dir(response.data);
-    customer_id = response.data.customer.legacyResourceId;
+    console.dir(response);
+    const customer_id = response.order.customer.id;
 
     await db.query(
       'UPDATE orders SET status = $1, customer_id = $2 WHERE domain = $3 AND id = $4',
