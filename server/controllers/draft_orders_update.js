@@ -16,7 +16,6 @@ const draftOrdersUpdate = async (ctx) => {
 
   if (status === completedStatus) {
     console.log('order is completed');
-    let customer_id;
     let store = await db.query(
       `SELECT access_token FROM stores WHERE domain = $1`,
       [shop]
