@@ -5,6 +5,7 @@ import {
   cancelSubscription,
 } from '../handlers';
 import config from '../../config';
+import sendMail, { mailTemplates } from '../handlers/mail';
 
 const manageSubscription = async (ctx) => {
   const { plan } = ctx.request.body;
@@ -19,9 +20,21 @@ const manageSubscription = async (ctx) => {
       (configPlan) => configPlan.name === config.planNames.free
     );
     await db.query(
-      'UPDATE stores SET plan_name = NULL, "subscriptionId" = NULL, plan_limit = $1 WHERE domain = $2',
-      [freePlan.limit, shop]
+      'UPDATE stores SET plan_name = $1, "subscriptionId" = NULL, plan_limit = $2 WHERE domain = $3',
+      [freePlan.name, freePlan.limit, shop]
     );
+    const contact = await db.query(
+      `SELECT email, first_name FROM users WHERE domain = $1 AND account_owner = TRUE`,
+      [shop]
+    );
+    await sendMail({
+      to: contact.rows[0].email,
+      template: mailTemplates.subscriptionCanceled,
+      templateData: {
+        name: contact.rows[0].first_name,
+        subscription: freePlan.name,
+      },
+    });
 
     ctx.body = {};
     ctx.status = 200;
