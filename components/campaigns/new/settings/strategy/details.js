@@ -59,7 +59,7 @@ const DetailsStrategy = ({
           id="minOrderValue"
           onChange={(value) => onDiscountSettingsChange('minOrderValue', value)}
           placeholder={strategy.minOrderValue}
-          label="Min total order value"
+          label="Min cart value"
           suffix={currencyCode}
         />
       </div>
@@ -70,7 +70,7 @@ const DetailsStrategy = ({
         id="maxOrderValue"
         onChange={(value) => onDiscountSettingsChange('maxOrderValue', value)}
         placeholder={strategy.maxOrderValue}
-        label="Max total order value"
+        label="Max cart value"
         suffix={currencyCode}
       />
       {strategy.mode === 'discount' && (
