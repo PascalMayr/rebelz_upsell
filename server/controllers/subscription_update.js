@@ -10,14 +10,15 @@ const subscriptionUpdate = async (ctx) => {
     admin_graphql_api_id: subscriptionId,
     created_at: createdAt,
   } = ctx.request.body.app_subscription;
-  let store = await db.query('SELECT * FROM stores WHERE domain = $1', [shop]);
-  store = store.rows[0];
-  const configPlan = config.plans.find((plan) => plan.name === name);
-  const contact = await db.query(
-    `SELECT email, first_name FROM users WHERE domain = $1 AND account_owner = TRUE`,
-    [shop]
-  );
+
   if (status === 'ACTIVE') {
+    let store = await db.query('SELECT * FROM stores WHERE domain = $1', [shop]);
+    store = store.rows[0];
+    const configPlan = config.plans.find((plan) => plan.name === name);
+    const contact = await db.query(
+      `SELECT email, first_name FROM users WHERE domain = $1 AND account_owner = TRUE`,
+      [shop]
+    );
     let subscriptionMailTemplate;
     if (store.plan_name === config.planNames.free) {
       subscriptionMailTemplate = mailTemplates.subscriptionCreated;
@@ -31,22 +32,6 @@ const subscriptionUpdate = async (ctx) => {
     await sendMail({
       to: contact.rows[0].email,
       template: subscriptionMailTemplate,
-      templateData: {
-        name: contact.rows[0].first_name,
-        subscription: configPlan.name,
-      },
-    });
-  } else if (store.subscriptionId === subscriptionId) {
-    const freePlan = config.plans.find(
-      (plan) => plan.name === config.planNames.free
-    );
-    await db.query(
-      'UPDATE stores SET plan_name = $1, "subscriptionId" = NULL, subscription_start = current_timestamp, plan_limit = $2 WHERE domain = $3',
-      [freePlan.name, freePlan.limit, shop]
-    );
-    await sendMail({
-      to: contact.rows[0].email,
-      template: mailTemplates.subscriptionCanceled,
       templateData: {
         name: contact.rows[0].first_name,
         subscription: configPlan.name,
