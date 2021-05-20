@@ -6,7 +6,7 @@ const EntrySettings = ({ campaign, setCampaignProperty }) => {
   };
   const targetsEntry = campaign.targets.entry;
   const targetsPage = campaign.targets.page;
-  let targetPageButton = '<a href="/" style="text-decoration: none; color: inherit;">Continue shopping</a>';
+  let targetPageButton = 'Continue shopping';
   if (targetsPage === 'add_to_cart') {
     targetPageButton = 'Add to cart';
   } else if (targetsPage === 'checkout') {
