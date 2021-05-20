@@ -32,7 +32,7 @@ const manageSubscription = async (ctx) => {
       template: mailTemplates.subscriptionCanceled,
       templateData: {
         name: contact.rows[0].first_name,
-        subscription: freePlan.name,
+        subscription: store.plan_name,
       },
     });
 
