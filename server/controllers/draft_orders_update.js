@@ -22,7 +22,7 @@ const draftOrdersUpdate = async (ctx) => {
     );
     store = store.rows[0];
     console.dir(store);
-    const client = new Shopify.Clients.Rest(shop, store.accessToken);
+    const client = new Shopify.Clients.Rest(shop, store.access_token);
     const response = await client.get({
       path: `orders/${order_id}`,
     });
