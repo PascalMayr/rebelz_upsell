@@ -28,6 +28,14 @@ const subscriptionUpdate = async (ctx) => {
       'UPDATE stores SET plan_name = $1, "subscriptionId" = $2, plan_limit = $3, subscription_start = $4 WHERE domain = $5',
       [name, subscriptionId, configPlan.limit, createdAt, shop]
     );
+    console.dir({
+      to: contact.rows[0].email,
+      template: subscriptionMailTemplate,
+      templateData: {
+        name: contact.rows[0].first_name,
+        subscription: configPlan.name,
+      },
+    });
     await sendMail({
       to: contact.rows[0].email,
       template: subscriptionMailTemplate,
@@ -36,6 +44,7 @@ const subscriptionUpdate = async (ctx) => {
         subscription: configPlan.name,
       },
     });
+    console.log('after sendmail');
   } else if (store.subscriptionId === subscriptionId) {
     const freePlan = config.plans.find(
       (plan) => plan.name === config.planNames.free
@@ -44,6 +53,14 @@ const subscriptionUpdate = async (ctx) => {
       'UPDATE stores SET plan_name = $1, "subscriptionId" = NULL, subscription_start = current_timestamp, plan_limit = $2 WHERE domain = $3',
       [freePlan.name, freePlan.limit, shop]
     );
+    console.dir({
+      to: contact.rows[0].email,
+      template: mailTemplates.subscriptionCanceled,
+      templateData: {
+        name: contact.rows[0].first_name,
+        subscription: configPlan.name,
+      },
+    });
     await sendMail({
       to: contact.rows[0].email,
       template: mailTemplates.subscriptionCanceled,
@@ -52,6 +69,7 @@ const subscriptionUpdate = async (ctx) => {
         subscription: configPlan.name,
       },
     });
+    console.log('after sendmail');
   }
 
   ctx.body = {};
