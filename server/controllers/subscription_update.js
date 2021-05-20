@@ -12,6 +12,10 @@ const subscriptionUpdate = async (ctx) => {
   } = ctx.request.body.app_subscription;
   let store = await db.query('SELECT * FROM stores WHERE domain = $1', [shop]);
   store = store.rows[0];
+  console.dir(store);
+  console.dir(ctx.request.body.app_subscription)
+  console.log(subscriptionId);
+  console.log(status);
   const configPlan = config.plans.find((plan) => plan.name === name);
   const contact = await db.query(
     `SELECT email, first_name FROM users WHERE domain = $1 AND account_owner = TRUE`,
@@ -46,6 +50,7 @@ const subscriptionUpdate = async (ctx) => {
     });
     console.log('after sendmail');
   } else if (store.subscriptionId === subscriptionId) {
+    console.log('plan cancel accepted');
     const freePlan = config.plans.find(
       (plan) => plan.name === config.planNames.free
     );
