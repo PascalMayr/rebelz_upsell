@@ -54,7 +54,7 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
     explanation =
       'Set a <strong>fix</strong> or <strong>percentage</strong> discount.';
   } else if (mode === 'free_shipping') {
-    explanation = `Offer Free Shipping <strong>on the whole order.</strong>`;
+    explanation = `Offer free shipping <strong>on the whole order.</strong>`;
   }
   return (
     <>
@@ -80,12 +80,12 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
           },
           {
             id: 'free_shipping',
-            label: 'Offer Free Shipping',
+            label: 'Offer free shipping',
             name: 'strategy',
             onChange: changeStrategyMode,
             image: {
               src: '/free_shipping.svg',
-              alt: 'Free shipping',
+              alt: 'free shipping',
               width: '150',
               height: '150',
             },
