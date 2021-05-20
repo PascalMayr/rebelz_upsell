@@ -21,15 +21,13 @@ const draftOrdersUpdate = async (ctx) => {
     );
     store = store.rows[0];
     const client = new Shopify.Clients.Rest(shop, store.access_token);
-    const response = await client.get({
+    const orderData = await client.get({
       path: `orders/${order_id}`,
     });
-    console.dir(response);
-    const customer_id = response.body.order.customer.id;
 
     await db.query(
       'UPDATE orders SET status = $1, customer_id = $2 WHERE domain = $3 AND draft_order_id = $4',
-      [status, customer_id, shop, id]
+      [status, orderData.body.order.customer.id, shop, id]
     );
 
     if (completedOrderCount === 0) {
