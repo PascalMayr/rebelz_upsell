@@ -88,6 +88,12 @@ const customElement = () => `
           this.renderProgressBars(offers);
           this.renderSkipOfferButton(offers);
           break;
+        case 'enableoutofstockproducts':
+          if (newValue === "true") {
+            this.enablePurchase();
+          } else {
+            this.disablePurchase();
+          }
         default:
           console.log('attribute "' + name + '" not handled by any function');
         break;
@@ -313,11 +319,13 @@ const customElement = () => `
     }
 
     disablePurchase() {
-      const claimOfferButton = this.getElement('#salestorm-claim-offer-button');
-      claimOfferButton.setAttribute('disabled', 'true');
-      claimOfferButton.classList.add('offer-button-disabled');
-      this.getElement('#salestorm-campaign-text-addToCartAction').classList.add('d-none');
-      this.getElement('#salestorm-campaign-text-addToCartUnavailable').classList.remove('d-none');
+      if (!this.selectedVariant.node.availableForSale) {
+        const claimOfferButton = this.getElement('#salestorm-claim-offer-button');
+        claimOfferButton.setAttribute('disabled', 'true');
+        claimOfferButton.classList.add('offer-button-disabled');
+        this.getElement('#salestorm-campaign-text-addToCartAction').classList.add('d-none');
+        this.getElement('#salestorm-campaign-text-addToCartUnavailable').classList.remove('d-none');
+      }
     }
 
     enablePurchase() {
