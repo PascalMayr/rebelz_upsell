@@ -28,7 +28,7 @@ const draftOrdersUpdate = async (ctx) => {
     const customer_id = response.body.order.customer.id;
 
     await db.query(
-      'UPDATE orders SET status = $1, customer_id = $2 WHERE domain = $3 AND id = $4',
+      'UPDATE orders SET status = $1, customer_id = $2 WHERE domain = $3 AND draft_order_id = $4',
       [status, customer_id, shop, id]
     );
 
