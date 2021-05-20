@@ -184,7 +184,7 @@ const Index = () => {
       <Layout>
         <Layout.Section oneThird>
           <Card>
-            <Card.Section title="Total revenue">
+            <Card.Section title="Added revenue">
               <p className="salestorm-analytics-subheading">
                 The total impact our App made on your store this month.
               </p>
