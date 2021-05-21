@@ -11,8 +11,12 @@ const subscriptionUpdate = async (ctx) => {
     created_at: createdAt,
   } = ctx.request.body.app_subscription;
 
-  let store = await db.query('SELECT plan_name FROM stores WHERE domain = $1', [shop]);
+  let store = await db.query('SELECT plan_name FROM stores WHERE domain = $1', [
+    shop,
+  ]);
   store = store.rows[0];
+  console.dir(store);
+  console.log(subscriptionId);
   if (status === 'ACTIVE') {
     const configPlan = config.plans.find((plan) => plan.name === name);
     const contact = await db.query(
@@ -38,6 +42,7 @@ const subscriptionUpdate = async (ctx) => {
       },
     });
   } else if (store.subscriptionId === subscriptionId) {
+    console.log('going to else');
     const freePlan = config.plans.find(
       (configPlan) => configPlan.name === config.planNames.free
     );

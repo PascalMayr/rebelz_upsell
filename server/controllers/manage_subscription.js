@@ -5,7 +5,6 @@ import {
   cancelSubscription,
 } from '../handlers';
 import config from '../../config';
-import sendMail, { mailTemplates } from '../handlers/mail';
 
 const manageSubscription = async (ctx) => {
   const { plan } = ctx.request.body;
@@ -23,7 +22,11 @@ const manageSubscription = async (ctx) => {
     const currentPlan = config.plans.find(
       (configPlan) => configPlan.name === plan
     );
-    const { confirmationUrl } = await getSubscriptionUrl(ctx, currentPlan, shop);
+    const { confirmationUrl } = await getSubscriptionUrl(
+      ctx,
+      currentPlan,
+      shop
+    );
 
     ctx.body = { confirmationUrl };
   }
