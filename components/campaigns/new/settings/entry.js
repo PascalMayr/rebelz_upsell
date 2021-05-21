@@ -38,7 +38,7 @@ const EntrySettings = ({ campaign, setCampaignProperty }) => {
           },
           {
             id: 'onclick',
-            label: `When customers click the ${targetPageButton} Button`,
+            label: `When customers click the ${targetPageButton} button`,
             name: 'entry',
             onChange: changeEntry,
             image: {

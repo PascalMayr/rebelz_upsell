@@ -427,7 +427,7 @@ const New = () => {
                 subtitle={
                   <>
                     <div className="salestorm-summary-explanation">
-                      <strong>Settings Summary:</strong>
+                      <strong>Settings summary</strong>
                       <p
                         dangerouslySetInnerHTML={{
                           __html: `Your customers will see this campaign
@@ -458,7 +458,7 @@ const New = () => {
                             campaign.strategy.mode === 'discount'
                               ? `a ${campaign.strategy.discount.value} ${campaign.strategy.discount.type} discount</strong> on the claimed product unless specified else for the claimed product.`
                               : campaign.strategy.mode === 'free_shipping'
-                              ? 'Free shipping</strong> on the entire order.'
+                              ? 'free shipping</strong> on the entire order.'
                               : 'an additional gift</strong> to your order.'
                           }`,
                         }}
@@ -467,15 +467,15 @@ const New = () => {
                         dangerouslySetInnerHTML={{
                           __html:
                             campaign.selling.mode === 'auto'
-                              ? `${
+                              ? `The AI will chose a maximum of ${
                                   campaign.strategy.maxNumberOfItems !== '0'
-                                    ? `Maximum <strong>${campaign.strategy.maxNumberOfItems} Products`
-                                    : '<strong style="color: red;">0 Products </strong>'
-                                }</strong> are chosen by the Product Reccomendations from Shopify ${
+                                    ? `<strong>${campaign.strategy.maxNumberOfItems} products`
+                                    : '<strong style="color: red;">0 products </strong>'
+                                }${
                                   campaign.strategy.maxItemValue !== '0'
                                     ? ` with a maximum price of <strong>${campaign.strategy.maxItemValue} ${campaign.strategy.storeCurrencyCode}</strong>`
                                     : ''
-                                }. The product below is only for demonstration.`
+                                }. The product shown below is only for demonstration.`
                               : `<strong style="${
                                   campaign.selling.products.length === 0
                                     ? 'color: red'

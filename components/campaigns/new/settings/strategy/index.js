@@ -92,7 +92,7 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
           },
           {
             id: 'gift',
-            label: 'Offer a Gift',
+            label: 'Offer a gift',
             name: 'strategy',
             onChange: changeStrategyMode,
             image: {
