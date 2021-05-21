@@ -88,51 +88,49 @@ const getMatchingCampaign = async (ctx) => {
 
   if (campaign) {
     if (campaign.selling.mode === 'auto') {
-      const filteredRecommendations = requestParams.recommendations.filter(
+      let filteredRecommendations = requestParams.recommendations.filter(
         (recommendation) =>
           !campaign.selling.excludeProducts.find(
             (excludedProduct) =>
               excludedProduct.legacyResourceId === recommendation.id.toString()
           )
       );
+      const maxItemValue = parseFloat(campaign.strategy.maxItemValue);
+      if (maxItemValue) {
+        filteredRecommendations = filteredRecommendations.filter(
+          (recommendation) => recommendation.price / 100 > maxItemValue
+        );
+      }
       campaign.selling.products = await Promise.all(
         filteredRecommendations.map(async (recommendation) => {
-          const { price, id } = recommendation;
-          if (
-            price / 100 > parseFloat(campaign.strategy.maxItemValue) &&
-            campaign.strategy.maxItemValue !== '0'
-          ) {
-            return false;
-          } else {
-            const response = await client.query({
-              query: GET_PRODUCT,
-              variables: {
-                id: getGQLProductId(id),
-              },
-            });
-            ctx.assert(response.data && response.data.product);
-            return {
-              ...response.data.product,
-              strategy: campaign.strategy,
-            };
-          }
+          const response = await client.query({
+            query: GET_PRODUCT,
+            variables: {
+              id: getGQLProductId(recommendation.id),
+            },
+          });
+          ctx.assert(response.data && response.data.product);
+          return {
+            ...response.data.product,
+            strategy: campaign.strategy,
+          };
         })
       );
-      if (parseInt(campaign.strategy.maxNumberOfItems, 10) > 0) {
+      const maxNumberOfItems = parseInt(campaign.strategy.maxNumberOfItems, 10);
+      if (maxNumberOfItems) {
         campaign.selling.products = campaign.selling.products.slice(
           0,
-          parseInt(campaign.strategy.maxNumberOfItems, 10)
+          maxNumberOfItems
         );
       }
     } else {
       // TODO: just update if product is outdated
       campaign.selling.products = await Promise.all(
         campaign.selling.products.map(async (product) => {
-          const { id, title } = product;
           const response = await client.query({
             query: GET_PRODUCT,
             variables: {
-              id,
+              id: product.id,
             },
           });
           ctx.assert(response.data && response.data.product);
