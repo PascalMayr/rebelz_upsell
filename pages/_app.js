@@ -98,6 +98,7 @@ class MyApp extends App {
         <Head>
           <script type="text/javascript" async defer>
             window.$crisp=[];
+            window.$crisp.push(["safe", true]);
             window.CRISP_WEBSITE_ID="be5b7d93-53ac-4217-98ef-b5720a4d304c";
             d=document; s=d.createElement("script");
             s.src="https://client.crisp.chat/l.js";
