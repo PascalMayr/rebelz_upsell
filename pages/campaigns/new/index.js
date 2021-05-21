@@ -470,7 +470,7 @@ const New = () => {
                           __html:
                             campaign.selling.mode === 'auto'
                               ? `The AI will chose a maximum of <strong>${campaign.strategy.maxNumberOfItems} products</strong>${
-                                  campaign.strategy.maxItemValue !== '0' && ` with a maximum price of <strong>${campaign.strategy.maxItemValue} ${campaign.strategy.storeCurrencyCode}</strong>`
+                                  campaign.strategy.maxItemValue !== '0' ? ` with a maximum price of <strong>${campaign.strategy.maxItemValue} ${campaign.strategy.storeCurrencyCode}</strong>` : ''
                                 }. The product shown below is only for demonstration.`
                               : `<strong style="${campaign.selling.products.length === 0 && 'color: red'}">
                                   ${campaign.selling.products.length}
@@ -479,7 +479,7 @@ const New = () => {
                                       ? ''
                                       : 's'
                                   }</strong> will be offered. ${
-                                  campaign.selling.products.length === 0 && 'The product below is only for demonstration.'
+                                  campaign.selling.products.length === 0 ? 'The product below is only for demonstration.' : ''
                                 }`,
                         }}
                       />
