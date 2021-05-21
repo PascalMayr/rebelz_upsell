@@ -377,12 +377,14 @@ const New = () => {
                       min="1"
                       value={campaign.strategy.maxNumberOfItems}
                       id="maxNumberOfItems"
-                      onChange={(value) =>
+                      onChange={(value) => {
+                        const val = parseInt(value, 10);
+                        if(val < 1) { return; }
                         setCampaignProperty(
                           { ...campaign.strategy, maxNumberOfItems: value },
                           'strategy'
                         )
-                      }
+                      }}
                       label="Max number of items"
                       placeholder={campaign.strategy.maxNumberOfItems}
                     />
@@ -467,28 +469,17 @@ const New = () => {
                         dangerouslySetInnerHTML={{
                           __html:
                             campaign.selling.mode === 'auto'
-                              ? `The AI will chose a maximum of ${
-                                  campaign.strategy.maxNumberOfItems !== '0'
-                                    ? `<strong>${campaign.strategy.maxNumberOfItems} products`
-                                    : '<strong style="color: red;">0 products </strong>'
-                                }${
-                                  campaign.strategy.maxItemValue !== '0'
-                                    ? ` with a maximum price of <strong>${campaign.strategy.maxItemValue} ${campaign.strategy.storeCurrencyCode}</strong>`
-                                    : ''
+                              ? `The AI will chose a maximum of <strong>${campaign.strategy.maxNumberOfItems} products</strong>${
+                                  campaign.strategy.maxItemValue !== '0' && ` with a maximum price of <strong>${campaign.strategy.maxItemValue} ${campaign.strategy.storeCurrencyCode}</strong>`
                                 }. The product shown below is only for demonstration.`
-                              : `<strong style="${
-                                  campaign.selling.products.length === 0
-                                    ? 'color: red'
-                                    : ''
-                                }">${campaign.selling.products.length}
+                              : `<strong style="${campaign.selling.products.length === 0 && 'color: red'}">
+                                  ${campaign.selling.products.length}
                                   Product${
                                     campaign.selling.products.length === 1
                                       ? ''
                                       : 's'
                                   }</strong> will be offered. ${
-                                  campaign.selling.products.length === 0
-                                    ? 'The product below is only for demonstration.'
-                                    : ''
+                                  campaign.selling.products.length === 0 && 'The product below is only for demonstration.'
                                 }`,
                         }}
                       />
