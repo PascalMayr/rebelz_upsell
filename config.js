@@ -10,7 +10,7 @@ const plans = [
     name: planNames.free,
     amount: 0,
     currency: 'USD',
-    limit: 500,
+    limit: 250,
   },
   {
     name: planNames.plus,
