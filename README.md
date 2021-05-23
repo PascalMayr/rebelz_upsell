@@ -38,7 +38,7 @@ CREATE EXTENSION citext;
 
 13. Open the app URL shown in the output. The first time you do this Chrome will complain about an invalid certificate, [to circumvent this type "thisisunsafe" and Chrome will remember to trust the local certificate](https://medium.com/@dblazeski/chrome-bypass-net-err-cert-invalid-for-development-daefae43eb12).
 
-***Note:***
+**_Note:_**
 If you get any problem loading the startup script or the app in the admin panel try to refresh the page or try to access https://loop.rebelzcommerce.com and type again "thisisunsafe".
 
 ## Development guides
@@ -74,6 +74,7 @@ If you get any problem loading the startup script or the app in the admin panel 
 ```
 
 2.)
+
 ```sh
 ~/ $ cd animate.css/source
 ```
@@ -81,6 +82,7 @@ If you get any problem loading the startup script or the app in the admin panel 
 3.) Modify the @imports in the /source/animate.css file according to your needs;
 
 4.)
+
 ```sh
 ~/ $ cd .. && yarn start
 ```
@@ -102,8 +104,8 @@ yarn run serve
 ```
 
 3. Check the status of the shopify system:
-[shopifystatus.com](https://shopifystatus.com)
-[status.shopify.com](https://status.shopify.com)
+   [shopifystatus.com](https://shopifystatus.com)
+   [status.shopify.com](https://status.shopify.com)
 
 4. Make sure you are currently logged in into the store backend. For development stores, you have to login via the Partner dashboard.
 
@@ -131,3 +133,12 @@ window.Salestorm.currentCurrencyCode = localStorage.getItem('currentDisplayedCur
 ### Server Errors
 
 graphQLErrors.forEach is not a function : The offline accessToken of the store is missing therefore no graphql client could be created.
+
+get-matching-campaign could fail if you switch dev store.
+Run:
+
+```
+shopify connect
+```
+
+and connect to the right store.
