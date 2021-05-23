@@ -38,10 +38,10 @@ const DetailsStrategy = ({
   const sellTypeOptions =
     targets && targets.page !== 'thank_you'
       ? [
-          { label: 'Cross sell', value: 'cross_sell' },
-          { label: 'Upsell', value: 'upsell' },
+          { label: 'Cross sell', value: 'cross_sell', key: 'crossSell' },
+          { label: 'Upsell', value: 'upsell', key: 'upSell' },
         ]
-      : [{ label: 'Cross sell', value: 'cross_sell' }];
+      : [{ label: 'Cross sell', value: 'cross_sell', key: 'crossSell' }];
   return (
     <div className={salestormStrategyContainerClass}>
       {strategy.mode !== 'gift' && (
@@ -91,8 +91,8 @@ const DetailsStrategy = ({
             connectedRight={
               <Select
                 options={[
-                  { label: currencyCode, value: currencyCode },
-                  { label: '%', value: '%' },
+                  { label: currencyCode, value: currencyCode, key: 'fix' },
+                  { label: '%', value: '%', key: 'percentage' },
                 ]}
                 onChange={(value) =>
                   onDiscountSettingsChange('discount', {
