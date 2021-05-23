@@ -98,7 +98,7 @@ const getMatchingCampaign = async (ctx) => {
       const maxItemValue = parseFloat(campaign.strategy.maxItemValue);
       if (maxItemValue) {
         filteredRecommendations = filteredRecommendations.filter(
-          (recommendation) => recommendation.price / 100 > maxItemValue
+          (recommendation) => recommendation.price / 100 <= maxItemValue
         );
       }
       campaign.selling.products = await Promise.all(
