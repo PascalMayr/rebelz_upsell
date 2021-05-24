@@ -26,6 +26,9 @@ const countView = async (ctx) => {
       ),
     ]
   );
+  console.dir(views.rows);
+  const mapping = views.rows.map((row) => parseInt(row.counter, 10));
+  console.dir(mapping);
   const viewsCount = views.rows
     .map((row) => parseInt(row.counter, 10))
     .reduce((sum, counter) => sum + counter, 0);
