@@ -405,7 +405,7 @@ const customElement = () => `
         style: 'currency',
         currency: baseCurrencyCode || window.Salestorm.currentCurrencyCode,
         currencyDisplay: 'symbol',
-        maximumSignificantDigits: 3
+        minimumFractionDigits: 2
       });
       return currencyFormatter;
     }
