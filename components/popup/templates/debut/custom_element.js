@@ -312,7 +312,9 @@ const customElement = () => `
           buttonText.classList.add('d-none');
           loader.classList.remove('d-none');
         } else {
-          buttonText.classList.remove('d-none');
+          if (this.selectedVariant.node.availableForSale) {
+            buttonText.classList.remove('d-none');
+          }
           loader.classList.add('d-none');
         }
       }
