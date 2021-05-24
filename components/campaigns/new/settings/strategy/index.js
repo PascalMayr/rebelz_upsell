@@ -11,7 +11,7 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
     free_shipping: {
       ...DefaultStateNew.texts,
       title: 'Deal unlocked! Accept this offer and get free shipping.',
-      subtitle: '<center><strong>{{ProductPrice}}</strong></center>',
+      subtitle: '<strong>{{ProductPrice}}</strong>',
       addToCartAction: 'ADD TO CART',
       addToCartUnavailable: 'Unavailable',
       seeProductDetailsAction: 'See product details',
