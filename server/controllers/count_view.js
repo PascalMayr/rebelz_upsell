@@ -26,8 +26,10 @@ const countView = async (ctx) => {
       ),
     ]
   );
-  const viewRatio = (views.rows[0].count * 100) / store.plan_limit;
-  console.log('viewRatio', viewRatio);
+  const viewsCount = views.rows
+    .map((row) => parseInt(row.counter, 10))
+    .reduce((sum, counter) => sum + counter, 0);
+  const viewRatio = (viewsCount * 100) / store.plan_limit;
   if (viewRatio === 80 || viewRatio === 100) {
     const contact = await db.query(
       `SELECT email, first_name FROM users WHERE domain = $1 AND account_owner = TRUE`,
