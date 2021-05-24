@@ -156,7 +156,7 @@ const getMatchingCampaign = async (ctx) => {
     if (campaign.selling.products.length === 0) {
       ctx.status = 404;
     } else {
-      const { customJS, id, strategy, selling, options } = campaign;
+      const { customJS, id, strategy, selling, options, targets } = campaign;
       const html = await ReactDOMServer.renderToStaticMarkup(
         <AppProvider i18n={translations}>
           <Popup campaign={campaign} />
@@ -168,10 +168,9 @@ const getMatchingCampaign = async (ctx) => {
         campaign: {
           id,
           strategy,
+          targets,
           selling,
           options,
-          entry: campaign.targets.entry,
-          products: campaign.targets.products,
         },
       };
       ctx.status = 200;

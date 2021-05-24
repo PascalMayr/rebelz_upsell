@@ -51,6 +51,9 @@ import * as Sentry from '@sentry/browser';
   let productsAddedByXHROrFetch = false;
   const publicAPI = `${process.env.HOST}/api`;
   const shop = window.Shopify.shop || window.location.host;
+  const productPageRegex = /\/products\/[^?/#]+/;
+  const thankYouPageRegex = /\/thank_you/;
+  const cartPageRegex = /\/cart/;
 
   const getCart = async () => {
     const response = await fetch('/cart.js');
@@ -172,7 +175,7 @@ import * as Sentry from '@sentry/browser';
         if (cart) {
           if (
             campaign.options.interruptEvents &&
-            campaign.entry === 'onclick'
+            campaign.targets.entry === 'onclick'
           ) {
             const cartInterval = setInterval(async () => {
               const currentCart = await getCart();
@@ -188,7 +191,7 @@ import * as Sentry from '@sentry/browser';
                   quantity,
                   currentCart,
                   campaign.id,
-                  campaign.products
+                  campaign.target.products
                 );
               }
             }, 2000);
@@ -199,7 +202,7 @@ import * as Sentry from '@sentry/browser';
               quantity,
               cart,
               campaign.id,
-              campaign.products
+              campaign.target.products
             );
           }
         }
@@ -295,7 +298,7 @@ import * as Sentry from '@sentry/browser';
         recommendations
       );
       const { campaign } = popups[targets.checkout];
-      if (campaign.entry === 'onclick') {
+      if (campaign.targets.entry === 'onclick') {
         const interruptEvents = campaign.options.interruptEvents;
         if (interruptEvents) {
           addEarlyClickListener(checkoutButtonSelector, (event) => {
@@ -358,7 +361,7 @@ import * as Sentry from '@sentry/browser';
       recommendations
     );
     const { campaign } = popups[targets.addToCart];
-    if (campaign && campaign.entry === 'onclick') {
+    if (campaign && campaign.targets.entry === 'onclick') {
       const interruptEvents = campaign.options.interruptEvents;
       if (interruptEvents) {
         addEarlyClickListener(addToCartButtonSelector, (event) => {
@@ -412,7 +415,7 @@ import * as Sentry from '@sentry/browser';
       recommendations
     );
     const { campaign } = popups[targets.thankYou];
-    if (campaign && campaign.entry === 'onclick') {
+    if (campaign && campaign.targets.entry === 'onclick') {
       const interruptEvents = campaign.options.interruptEvents;
       if (interruptEvents) {
         addEarlyClickListener(continueShoppingSelector, (event) => {
@@ -505,9 +508,9 @@ import * as Sentry from '@sentry/browser';
       initXHRMonkeyPatch();
       initFetchMonkeyPatch();
       const path = window.location.pathname;
-      const productPage = path.match(/\/products\/[^?/#]+/);
-      const thankYouPage = path.match(/\/thank_you/);
-      const cartPage = path.match(/\/cart/);
+      const productPage = path.match(productPageRegex);
+      const thankYouPage = path.match(thankYouPageRegex);
+      const cartPage = path.match(cartPageRegex);
       if (productPage) {
         handleProductPage(productPage);
       } else if (thankYouPage) {
