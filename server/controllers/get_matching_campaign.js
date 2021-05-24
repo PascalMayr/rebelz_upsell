@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { AppProvider } from '@shopify/polaris';
 import translations from '@shopify/polaris/locales/en.json';
+import merge from 'lodash/merge';
 
 import Popup from '../../components/popup';
 import customElement from '../../components/popup/templates/debut/custom_element';
@@ -134,7 +135,7 @@ const getMatchingCampaign = async (ctx) => {
             },
           });
           ctx.assert(response.data && response.data.product);
-          return { ...response.data.product, ...product };
+          return merge(product, response.data.product);
         })
       );
     }
