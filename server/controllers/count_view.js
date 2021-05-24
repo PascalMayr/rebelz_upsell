@@ -18,7 +18,7 @@ const countView = async (ctx) => {
   );
   store = store.rows[0];
   const views = await db.query(
-    `SELECT COUNT(*) FROM views WHERE domain = $1 AND view_date >= $2`,
+    'SELECT counter FROM views WHERE domain = $1 AND view_date >= $2',
     [
       shop,
       db.dateToSQL(
@@ -26,9 +26,6 @@ const countView = async (ctx) => {
       ),
     ]
   );
-  console.dir(views.rows);
-  const mapping = views.rows.map((row) => parseInt(row.counter, 10));
-  console.dir(mapping);
   const viewsCount = views.rows
     .map((row) => parseInt(row.counter, 10))
     .reduce((sum, counter) => sum + counter, 0);
