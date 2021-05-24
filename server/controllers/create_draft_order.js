@@ -32,14 +32,13 @@ const createDraftOrder = async (ctx) => {
       },
     };
     if (sellType === 'upsell') {
-      draftOrder.line_items = draftOrder.line_items.filter(
-        (lineItem) =>
-          !products.find(
-            (product) =>
-              product.legacyResourceId.toString() ===
-              lineItem.product_id.toString()
-          )
-      );
+      const itemToUpsellIndex = draftOrder.line_items.findIndex((lineItem) => {
+        return (
+          lineItem.product_id.toString() === product.legacyResourceId.toString()
+        );
+      });
+      if (itemToUpsellIndex >= 0)
+        draftOrder.line_items.splice(itemToUpsellIndex, 1);
     }
     draftOrder.line_items = draftOrder.line_items.concat([campaignItem]);
     draftOrder.tags = 'Rebelz Exit Intent Upsells,discount';
