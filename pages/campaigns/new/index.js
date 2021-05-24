@@ -285,11 +285,11 @@ const New = () => {
                     {
                       value: true,
                       label:
-                        'Interrupt events when clicking - e.g. disabling showing a cart drawer after your customers click Add to cart.',
+                        'Interrupt form submissions when clicking - e.g. disabling showing a cart drawer after your customers click Add to cart.',
                     },
                     {
                       value: false,
-                      label: 'Do not interrupt events when clicking',
+                      label: 'Do not interrupt form submissions when clicking',
                     },
                   ]}
                   onChange={(value) =>
@@ -379,11 +379,13 @@ const New = () => {
                       id="maxNumberOfItems"
                       onChange={(value) => {
                         const val = parseInt(value, 10);
-                        if(val < 1) { return; }
+                        if (val < 1) {
+                          return;
+                        }
                         setCampaignProperty(
                           { ...campaign.strategy, maxNumberOfItems: value },
                           'strategy'
-                        )
+                        );
                       }}
                       label="Max number of items"
                       placeholder={campaign.strategy.maxNumberOfItems}
@@ -469,17 +471,26 @@ const New = () => {
                         dangerouslySetInnerHTML={{
                           __html:
                             campaign.selling.mode === 'auto'
-                              ? `The AI will chose a maximum of <strong>${campaign.strategy.maxNumberOfItems} products</strong>${
-                                  campaign.strategy.maxItemValue !== '0' ? ` with a maximum price of <strong>${campaign.strategy.maxItemValue} ${campaign.strategy.storeCurrencyCode}</strong>` : ''
+                              ? `The AI will chose a maximum of <strong>${
+                                  campaign.strategy.maxNumberOfItems
+                                } products</strong>${
+                                  campaign.strategy.maxItemValue !== '0'
+                                    ? ` with a maximum price of <strong>${campaign.strategy.maxItemValue} ${campaign.strategy.storeCurrencyCode}</strong>`
+                                    : ''
                                 }. The product shown below is only for demonstration.`
-                              : `<strong style="${campaign.selling.products.length === 0 && 'color: red'}">
+                              : `<strong style="${
+                                  campaign.selling.products.length === 0 &&
+                                  'color: red'
+                                }">
                                   ${campaign.selling.products.length}
                                   Product${
                                     campaign.selling.products.length === 1
                                       ? ''
                                       : 's'
                                   }</strong> will be offered. ${
-                                  campaign.selling.products.length === 0 ? 'The product below is only for demonstration.' : ''
+                                  campaign.selling.products.length === 0
+                                    ? 'The product below is only for demonstration.'
+                                    : ''
                                 }`,
                         }}
                       />
