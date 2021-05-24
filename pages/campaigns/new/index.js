@@ -57,14 +57,17 @@ const New = () => {
       campaignToCheck.selling.mode !== 'auto'
     ) {
       message +=
-        'Step 4.) Please set Products to offer or choose the AI mode. ';
+        'Step 4.) Please set products to offer or choose the AI mode. ';
     }
-    if (
-      campaignToCheck.strategy.sellType === 'upsell' &&
-      campaignToCheck.targets.products.length === 0
-    ) {
-      message +=
-        'Step 1.) Please set Target Products for Upselling Campaigns. ';
+    if (campaignToCheck.strategy.sellType === 'upsell') {
+      if (campaignToCheck.targets.products.length === 0) {
+        message +=
+          'Step 1.) Please set target products for upselling campaigns. ';
+      }
+      if (campaignToCheck.targets.collections.length > 0) {
+        message +=
+          "Step 1.) Target collections don't work for Upselling Campaigns, please specify target products instead. ";
+      }
     }
     if (message !== '') {
       setError(message);
