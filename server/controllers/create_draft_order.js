@@ -83,6 +83,7 @@ const createDraftOrder = async (ctx) => {
     }),
   });
   order = await order.json();
+  console.log(order);
   ctx.assert(order.draft_order);
 
   const addedVariantItem = order.draft_order.line_items.find(
