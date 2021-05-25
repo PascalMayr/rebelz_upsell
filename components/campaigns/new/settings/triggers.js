@@ -4,22 +4,19 @@ const TriggerSettings = ({ campaign, setCampaignProperty }) => {
   const changeTrigger = (newTrigger) => {
     let checkoutActionText =
       '<a href="/" style="text-decoration: none; color: inherit;">Continue shopping</a>';
-    let interruptEvents = false;
     if (newTrigger === 'add_to_cart') {
       checkoutActionText =
         '<a href="/cart" style="text-decoration: none; color: inherit;">Go to cart</a>';
     }
     if (newTrigger === 'checkout') {
       checkoutActionText = 'Go to checkout';
-      interruptEvents = true;
     }
     if (newTrigger === 'thank_you') {
       checkoutActionText = 'Continue shopping';
-      interruptEvents = true;
     }
     setCampaignProperty({ ...campaign.targets, page: newTrigger }, 'targets', {
       texts: { ...campaign.texts, checkoutAction: checkoutActionText },
-      options: { ...campaign.options, interruptEvents },
+      options: { ...campaign.options },
     });
   };
   const targetsPage = campaign.targets.page;
