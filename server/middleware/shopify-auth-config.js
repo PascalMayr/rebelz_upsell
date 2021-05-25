@@ -54,7 +54,10 @@ export const onlineAuthConfig = {
     // This can happen on re-install
     if (!scriptTagResponse.data.scriptTag) {
       const scriptid = await getScriptTagId(client);
-      await db.query('UPDATE stores SET scriptid = $1 WHERE domain = $2', [scriptid, shop]);
+      await db.query('UPDATE stores SET scriptid = $1 WHERE domain = $2', [
+        scriptid,
+        shop,
+      ]);
     }
 
     await db.query(
@@ -99,40 +102,20 @@ export const offlineAuthConfig = {
   async afterAuth(ctx) {
     // Auth token and shop available in session
     const { shop, accessToken } = ctx.state.shopify;
-    let activeStore = await db.query('SELECT * FROM stores WHERE domain = $1', [
-      shop,
-    ]);
-    activeStore = activeStore.rows[0];
-    if (activeStore) {
-      await db.query(`UPDATE stores SET access_token = $1 WHERE domain = $2`, [
-        accessToken,
-        shop,
-      ]);
-    } else {
-      const client = await createClient(shop, accessToken);
-      const scriptid = await getScriptTagId(client);
-      registerWebhooks(
-        shop,
-        accessToken,
-        'APP_SUBSCRIPTIONS_UPDATE',
-        '/webhooks/app_subscriptions/update',
-        ApiVersion.April21
-      );
-      registerWebhooks(
-        shop,
-        accessToken,
-        'DRAFT_ORDERS_UPDATE',
-        '/webhooks/draft_orders/update',
-        ApiVersion.April21
-      );
-      registerWebhooks(
-        shop,
-        accessToken,
-        'APP_UNINSTALLED',
-        '/webhooks/app/uninstalled',
-        ApiVersion.April21
-      );
 
+    const client = await createClient(shop, accessToken);
+    const scriptid = await getScriptTagId(client);
+    let existingStore = await db.query(
+      'SELECT * FROM stores WHERE domain = $1',
+      [shop]
+    );
+    existingStore = existingStore.rows[0];
+    if (existingStore) {
+      await db.query(
+        `UPDATE stores SET access_token = $1, scriptid = $2 WHERE domain = $3`,
+        [accessToken, scriptid, shop]
+      );
+    } else {
       const freePlan = config.plans.find(
         (plan) => plan.name === config.planNames.free
       );
@@ -147,6 +130,27 @@ export const offlineAuthConfig = {
         [shop, scriptid, freePlan.limit, config.planNames.free, accessToken]
       );
     }
+    registerWebhooks(
+      shop,
+      accessToken,
+      'APP_SUBSCRIPTIONS_UPDATE',
+      '/webhooks/app_subscriptions/update',
+      ApiVersion.April21
+    );
+    registerWebhooks(
+      shop,
+      accessToken,
+      'DRAFT_ORDERS_UPDATE',
+      '/webhooks/draft_orders/update',
+      ApiVersion.April21
+    );
+    registerWebhooks(
+      shop,
+      accessToken,
+      'APP_UNINSTALLED',
+      '/webhooks/app/uninstalled',
+      ApiVersion.April21
+    );
     // Redirect to online auth after offline auth
     ctx.redirect(`/?shop=${shop}`);
   },
