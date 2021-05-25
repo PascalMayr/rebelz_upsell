@@ -192,8 +192,9 @@ const customElement = () => `
       const claimOfferButton = this.getElement('#salestorm-claim-offer-button');
       claimOfferButton.addEventListener('click', () => {
         let variantId;
+        const enableoutofstockproducts = this.getAttribute('enableoutofstockproducts') === 'false';
         if (this.selectedVariant && this.selectedVariant.node) {
-          if (!this.selectedVariant.node.availableForSale) {
+          if (!this.selectedVariant.node.availableForSale && enableoutofstockproducts) {
             return;
           } else {
             variantId = this.selectedVariant.node.legacyResourceId;
@@ -212,7 +213,12 @@ const customElement = () => `
           }
           if (strategy) {
             this.showLoader(true);
-            window.Salestorm.claimOffer(variantId, strategy, quantity);
+            try {
+              window.Salestorm.claimOffer(variantId, strategy, quantity);
+            } catch (error) {
+              this.showLoader(false);
+              this.disablePurchase();
+            }
           }
         }
       });
