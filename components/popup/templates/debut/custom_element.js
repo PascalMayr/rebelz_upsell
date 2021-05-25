@@ -213,7 +213,11 @@ const customElement = () => `
           }
           if (strategy) {
             this.showLoader(true);
-            window.Salestorm.claimOffer(variantId, strategy, quantity);
+            try {
+              window.Salestorm.claimOffer(variantId, strategy, quantity);
+            } catch (error) {
+              this.disablePurchase();
+            }
           }
         }
       });
