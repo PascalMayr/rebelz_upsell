@@ -216,6 +216,7 @@ const customElement = () => `
             try {
               window.Salestorm.claimOffer(variantId, strategy, quantity);
             } catch (error) {
+              this.showLoader(false);
               this.disablePurchase();
             }
           }
