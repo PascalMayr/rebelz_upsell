@@ -154,6 +154,18 @@ import * as Sentry from '@sentry/browser';
     }
   };
 
+  const searchFormFromTarget = (initialTarget) => {
+    let formElement;
+    let eventTarget = initialTarget;
+    do {
+      if (eventTarget.tagName && eventTarget.tagName.toUpperCase() === 'FORM') {
+        formElement = eventTarget;
+      }
+      eventTarget = eventTarget.parentNode;
+    } while (!formElement && eventTarget.tagName !== 'BODY');
+    return formElement;
+  };
+
   const showPopup = async (targetPage) => {
     const { campaign } = popups[targetPage];
     if (popups[targetPage].displayed || !campaign) {
@@ -187,35 +199,13 @@ import * as Sentry from '@sentry/browser';
         }
       };
 
-      const searchFormFromTarget = (initialTarget) => {
-        let formElement;
-        let eventTarget = initialTarget;
-        do {
-          if (
-            eventTarget.tagName &&
-            eventTarget.tagName.toUpperCase() === 'FORM'
-          ) {
-            formElement = eventTarget;
-          }
-          eventTarget = eventTarget.parentNode;
-        } while (!formElement && eventTarget.tagName !== 'BODY');
-        return formElement;
-      };
-
       window.Salestorm.claimOffer = async (variantId, strategy, quantity) => {
-        if (
-          targetPage === targets.addToCart ||
-          targetPage === targets.checkout
-        ) {
-          let buttonInForm;
-          if (targetPage === targets.addToCart) {
-            buttonInForm = document.querySelector(addToCartButtonSelector);
-          } else {
-            buttonInForm = document.querySelector(checkoutButtonSelector);
-          }
-          const form = searchFormFromTarget(buttonInForm);
+        if (targetPage === targets.addToCart) {
           const currentProduct = await getCurrentProduct();
           const productPageProductId = currentProduct.id;
+
+          const buttonInForm = document.querySelector(addToCartButtonSelector);
+          const form = searchFormFromTarget(buttonInForm);
 
           if (campaign.entry === 'onclick' && Boolean(form)) {
             const body = new URLSearchParams(new FormData(form));
@@ -256,7 +246,7 @@ import * as Sentry from '@sentry/browser';
     }
   };
 
-  const addEarlyClickListener = (selector, callback, capture = true) => {
+  const addEarlyClickListener = (selector, callback, options = {}) => {
     const targetElement = document.querySelector(selector);
     if (targetElement) {
       document.addEventListener(
@@ -266,7 +256,7 @@ import * as Sentry from '@sentry/browser';
             callback(event);
           }
         },
-        capture
+        options
       );
       return true;
     }
@@ -333,33 +323,21 @@ import * as Sentry from '@sentry/browser';
       );
       const { campaign } = popups[targets.checkout];
       if (campaign.targets.entry === 'onclick') {
-        const interruptEvents = true;
-        if (interruptEvents) {
-          addEarlyClickListener(checkoutButtonSelector, (event) => {
-            if (!popups[targets.checkout].displayed) {
-              showPopup(targets.checkout);
-              event.preventDefault();
-              event.stopPropagation();
-              document.addEventListener(continueOriginalClickEvent.type, () => {
-                event.target.click();
-              });
-            }
-            return true;
+        const eventHandler = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          showPopup(targets.checkout);
+          document.addEventListener(continueOriginalClickEvent.type, () => {
+            e.target.dispatchEvent(e);
           });
-        } else {
-          const checkoutButton = document.querySelector(checkoutButtonSelector);
-          checkoutButton.addEventListener('click', () => {
-            if (popups[targets.checkout].displayed) {
-              return;
-            }
-            showPopup(targets.checkout);
-            document.addEventListener(continueOriginalClickEvent.type, () => {
-              const checkoutForm = searchFormFromTarget(event.target);
-              if (checkoutForm) {
-                checkoutForm.requestSubmit();
-              }
-            });
-          });
+        };
+        addEarlyClickListener(checkoutButtonSelector, eventHandler, {
+          once: true,
+        });
+        const checkoutButton = document.querySelector(checkoutButtonSelector);
+        const checkoutForm = searchFormFromTarget(checkoutButton);
+        if (checkoutForm) {
+          checkoutForm.addEventListener('submit', eventHandler, { once: true });
         }
       } else {
         addExitIntentListener(targets.checkout);
