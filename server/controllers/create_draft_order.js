@@ -9,8 +9,8 @@ const createDraftOrder = async (ctx) => {
     quantity,
     cart,
     shop,
-    id,
-    products,
+    campaignId,
+    productPageProductId,
   } = ctx.request.body;
   const { sellType, mode } = strategy;
   const store = await db.query(
@@ -21,6 +21,36 @@ const createDraftOrder = async (ctx) => {
   const draftOrder = {
     line_items: cart.items.map((item) => ({ ...item, properties: [] })),
   };
+  if (sellType === 'upsell') {
+    // Find and remove the product in the cart that is gonna be upsold
+    const campaign = await db.query(
+      'SELECT * FROM campaigns WHERE domain = $1 AND id = $2',
+      [shop, campaignId]
+    );
+    const targetPage = campaign.rows[0].targets.page;
+
+    if (targetPage === 'add_to_cart' || targetPage === 'checkout') {
+      let itemToUpsellIndex = -1;
+      if (targetPage === 'add_to_cart') {
+        itemToUpsellIndex = draftOrder.line_items.findIndex(
+          (lineItem) =>
+            productPageProductId.toString() === lineItem.product_id.toString()
+        );
+      } else if (targetPage === 'checkout') {
+        let cheapestPrice = Number.POSITIVE_INFINITY;
+        draftOrder.line_items.forEach((lineItem, index) => {
+          if (lineItem.final_price >= cheapestPrice) return;
+
+          cheapestPrice = lineItem.final_price;
+          itemToUpsellIndex = index;
+        });
+      }
+      if (itemToUpsellIndex >= 0)
+        if (draftOrder.line_items[itemToUpsellIndex].quantity === 1)
+          draftOrder.line_items.splice(itemToUpsellIndex, 1);
+        else draftOrder.line_items[itemToUpsellIndex].quantity -= 1;
+    }
+  }
   if (mode === 'discount') {
     const campaignItem = {
       variant_id: variantId,
@@ -31,15 +61,6 @@ const createDraftOrder = async (ctx) => {
           strategy.discount.type === '%' ? 'percentage' : 'fixed_amount',
       },
     };
-    if (sellType === 'upsell') {
-      const itemToUpsellIndex = draftOrder.line_items.findIndex((lineItem) => {
-        return (
-          lineItem.product_id.toString() === product.legacyResourceId.toString()
-        );
-      });
-      if (itemToUpsellIndex >= 0)
-        draftOrder.line_items.splice(itemToUpsellIndex, 1);
-    }
     draftOrder.line_items = draftOrder.line_items.concat([campaignItem]);
     draftOrder.tags = 'Rebelz Exit Intent Upsells,discount';
   } else if (mode === 'free_shipping') {
@@ -47,16 +68,6 @@ const createDraftOrder = async (ctx) => {
       variant_id: variantId,
       quantity,
     };
-    if (sellType === 'upsell') {
-      draftOrder.line_items = draftOrder.line_items.filter(
-        (lineItem) =>
-          !products.find(
-            (product) =>
-              product.legacyResourceId.toString() ===
-              lineItem.product_id.toString()
-          )
-      );
-    }
     draftOrder.line_items = draftOrder.line_items.concat([campaignItem]);
     draftOrder.shipping_line = {
       price: 0.0,
@@ -91,9 +102,10 @@ const createDraftOrder = async (ctx) => {
   if (addedVariantItem) {
     const { price, applied_discount, quantity } = addedVariantItem;
     const variantPrice = parseFloat(price) * parseInt(quantity, 10);
-    const addedValue = applied_discount && applied_discount.amount
-      ? variantPrice - parseFloat(applied_discount.amount)
-      : variantPrice;
+    const addedValue =
+      applied_discount && applied_discount.amount
+        ? variantPrice - parseFloat(applied_discount.amount)
+        : variantPrice;
     const { invoice_url, currency, total_price } = order.draft_order;
     await db.query(
       `INSERT INTO orders${db.insertColumns(
@@ -104,7 +116,14 @@ const createDraftOrder = async (ctx) => {
         'value_added',
         'total_price'
       )}`,
-      [id, shop, order.draft_order.id, currency, addedValue, total_price]
+      [
+        campaignId,
+        shop,
+        order.draft_order.id,
+        currency,
+        addedValue,
+        total_price,
+      ]
     );
     ctx.body = { invoiceUrl: invoice_url };
     ctx.status = 200;

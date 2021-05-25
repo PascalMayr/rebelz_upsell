@@ -61,6 +61,21 @@ import * as Sentry from '@sentry/browser';
     return cart;
   };
 
+  const getCurrentProduct = async () => {
+    let product;
+    const productPageMatch = window.location.pathname.match(productPageRegex);
+    if (!productPageMatch) return null;
+    // Many shopify themes have this meta global which includes the product ID
+    if (typeof meta !== 'undefined' && window.meta.product) {
+      product = window.meta.product;
+    } else {
+      const response = await fetch(`${productPageMatch[0]}.js`);
+      product = await response.json();
+    }
+
+    return product;
+  };
+
   const countView = async (targetPage) => {
     const { campaign } = popups[targetPage];
     await fetch(`${publicAPI}/count-view`, {
@@ -112,8 +127,8 @@ import * as Sentry from '@sentry/browser';
     strategy,
     quantity,
     cart,
-    id,
-    products
+    campaignId,
+    productPageProductId
   ) => {
     let response = await fetch(`${publicAPI}/create-draft-order`, {
       credentials: 'include',
@@ -127,8 +142,8 @@ import * as Sentry from '@sentry/browser';
         quantity,
         cart,
         shop,
-        id,
-        products,
+        campaignId,
+        productPageProductId,
       }),
     });
     response = await response.json();
@@ -172,6 +187,9 @@ import * as Sentry from '@sentry/browser';
       window.Salestorm.claimOffer = async (variantId, strategy, quantity) => {
         document.dispatchEvent(continueOriginalClickEvent);
         const cart = await getCart();
+        let productPageProductId;
+        const currentProduct = await getCurrentProduct();
+        if (currentProduct) productPageProductId = currentProduct.id;
         if (cart) {
           if (
             campaign.options.interruptEvents &&
@@ -191,7 +209,7 @@ import * as Sentry from '@sentry/browser';
                   quantity,
                   currentCart,
                   campaign.id,
-                  campaign.target.products
+                  productPageProductId
                 );
               }
             }, 2000);
@@ -202,7 +220,7 @@ import * as Sentry from '@sentry/browser';
               quantity,
               cart,
               campaign.id,
-              campaign.target.products
+              productPageProductId
             );
           }
         }
@@ -341,22 +359,14 @@ import * as Sentry from '@sentry/browser';
     }, 3000);
   };
 
-  const handleProductPage = async (productPage) => {
-    let productId;
-    // Many shopify themes have this meta global which includes the product ID
-    if (typeof meta !== 'undefined' && window.meta.product) {
-      productId = window.meta.product.id;
-    } else {
-      const response = await fetch(`${productPage[0]}.js`);
-      const product = await response.json();
-      productId = product.id;
-    }
-    const recommendations = await getRecommendations(productId);
+  const handleProductPage = async () => {
+    const currentProduct = await getCurrentProduct();
+    const recommendations = await getRecommendations(currentProduct.id);
     const cart = await getCart();
     const totalPrice = cart.total_price / 100;
     popups[targets.addToCart] = await fetchCampaign(
       targets.addToCart,
-      [productId],
+      [currentProduct.id],
       totalPrice,
       recommendations
     );
@@ -512,7 +522,7 @@ import * as Sentry from '@sentry/browser';
       const thankYouPage = path.match(thankYouPageRegex);
       const cartPage = path.match(cartPageRegex);
       if (productPage) {
-        handleProductPage(productPage);
+        handleProductPage();
       } else if (thankYouPage) {
         handleThankYouPage();
       } else if (cartPage) {
