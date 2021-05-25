@@ -97,7 +97,6 @@ const DefaultStateNew = {
     quantityEditable: true,
     linkToProduct: false,
     enableOutOfStockProducts: false,
-    interruptEvents: false,
     showImageSlider: true,
     showCountdown: true,
     countdownTime: '05:00',

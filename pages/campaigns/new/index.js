@@ -281,33 +281,6 @@ const New = () => {
                 setCampaignProperty={setCampaignProperty}
               />
             </Card.Section>
-            {campaign.targets.entry === 'onclick' && (
-              <Card.Section>
-                <Select
-                  options={[
-                    {
-                      value: true,
-                      label:
-                        'Interrupt form submissions when clicking - e.g. disabling showing a cart drawer after your customers click Add to cart.',
-                    },
-                    {
-                      value: false,
-                      label: 'Do not interrupt form submissions when clicking',
-                    },
-                  ]}
-                  onChange={(value) =>
-                    setCampaignProperty(
-                      {
-                        ...campaign.options,
-                        interruptEvents: value === 'true',
-                      },
-                      'options'
-                    )
-                  }
-                  value={campaign.options.interruptEvents}
-                />
-              </Card.Section>
-            )}
           </Card>
         </Card.Section>
         <Card.Section>
