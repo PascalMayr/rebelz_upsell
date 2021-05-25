@@ -2,7 +2,6 @@ import db from '../db';
 import sendMail, { mailTemplates } from '../handlers/mail';
 
 const customerDataRequest = async (ctx) => {
-  console.dir(ctx.request.body);
   const shop = ctx.request.headers['x-shopify-shop-domain'];
   const customer = ctx.request.body.customer;
   let customerOrders = await db.query(
@@ -20,7 +19,6 @@ const customerDataRequest = async (ctx) => {
     templateData: {
       customerOrders,
       customerId: customer.id,
-      dataRequestId: ctx.request.body.data_request.id,
       customerEmail: customer.email,
       name: contact.rows[0].first_name,
     },
