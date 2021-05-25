@@ -198,7 +198,7 @@ import * as Sentry from '@sentry/browser';
             formElement = eventTarget;
           }
           eventTarget = eventTarget.parentNode;
-        } while (!formElement);
+        } while (!formElement && eventTarget.tagName !== 'BODY');
         return formElement;
       };
 
