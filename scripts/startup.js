@@ -203,35 +203,27 @@ import * as Sentry from '@sentry/browser';
       };
 
       window.Salestorm.claimOffer = async (variantId, strategy, quantity) => {
-        const addToCartButton = document.querySelector(addToCartButtonSelector);
-        const productDetailsPageForm = searchFormFromTarget(addToCartButton);
-        let productPageProductId;
-        const currentProduct = await getCurrentProduct();
-        if (currentProduct) productPageProductId = currentProduct.id;
         if (
-          targetPage === targets.addToCart &&
-          campaign.options.interruptEvents &&
-          campaign.entry === 'onclick' &&
-          Boolean(productDetailsPageForm)
+          targetPage === targets.addToCart ||
+          targetPage === targets.checkout
         ) {
-          const body = new URLSearchParams(
-            new FormData(productDetailsPageForm)
-          );
-          await fetch('/cart/add', {
-            method: 'post',
-            redirect: 'manual',
-            body,
-          });
-          createDraftOrder(
-            variantId,
-            strategy,
-            quantity,
-            campaign.id,
-            productPageProductId
-          );
-        } else {
-          document.dispatchEvent(continueOriginalClickEvent);
-          if (productsAddedByXHROrFetch) {
+          let buttonInForm;
+          if (targetPage === targets.addToCart) {
+            buttonInForm = document.querySelector(addToCartButtonSelector);
+          } else {
+            buttonInForm = document.querySelector(checkoutButtonSelector);
+          }
+          const form = searchFormFromTarget(buttonInForm);
+          const currentProduct = await getCurrentProduct();
+          const productPageProductId = currentProduct.id;
+
+          if (campaign.entry === 'onclick' && Boolean(form)) {
+            const body = new URLSearchParams(new FormData(form));
+            await fetch('/cart/add', {
+              method: 'post',
+              redirect: 'manual',
+              body,
+            });
             createDraftOrder(
               variantId,
               strategy,
@@ -239,7 +231,26 @@ import * as Sentry from '@sentry/browser';
               campaign.id,
               productPageProductId
             );
+          } else {
+            document.dispatchEvent(continueOriginalClickEvent);
+            if (productsAddedByXHROrFetch) {
+              createDraftOrder(
+                variantId,
+                strategy,
+                quantity,
+                campaign.id,
+                productPageProductId
+              );
+            }
           }
+        } else {
+          await createDraftOrder(
+            variantId,
+            strategy,
+            quantity,
+            campaign.id,
+            null
+          );
         }
       };
     }
@@ -322,7 +333,7 @@ import * as Sentry from '@sentry/browser';
       );
       const { campaign } = popups[targets.checkout];
       if (campaign.targets.entry === 'onclick') {
-        const interruptEvents = campaign.options.interruptEvents;
+        const interruptEvents = true;
         if (interruptEvents) {
           addEarlyClickListener(checkoutButtonSelector, (event) => {
             if (!popups[targets.checkout].displayed) {
@@ -430,38 +441,19 @@ import * as Sentry from '@sentry/browser';
       recommendations
     );
     const { campaign } = popups[targets.thankYou];
-    if (campaign && campaign.targets.entry === 'onclick') {
-      const interruptEvents = campaign.options.interruptEvents;
-      if (interruptEvents) {
-        addEarlyClickListener(continueShoppingSelector, (event) => {
-          if (!popups[targets.thankYou].displayed) {
-            showPopup(targets.thankYou);
-            event.preventDefault();
-            event.stopPropagation();
-            document.addEventListener(continueOriginalClickEvent.type, () => {
-              event.target.click();
-            });
-          }
-          return true;
+    if (!campaign) {
+      return;
+    }
+    if (campaign.targets.entry === 'onclick') {
+      addEarlyClickListener(continueShoppingSelector, (event) => {
+        showPopup(targets.thankYou);
+        event.preventDefault();
+        event.stopPropagation();
+        document.addEventListener(continueOriginalClickEvent.type, () => {
+          document.dispatchEvent(event);
         });
-      } else {
-        document
-          .querySelector(continueShoppingSelector)
-          .addEventListener('click', () => {
-            if (popups[targets.thankYou].displayed) {
-              return;
-            }
-            showPopup(targets.thankYou);
-            document.addEventListener(continueOriginalClickEvent.type, () => {
-              const continueShoppingButton = document.querySelector(
-                continueShoppingSelector
-              );
-              if (continueShoppingButton) {
-                continueShoppingButton.click();
-              }
-            });
-          });
-      }
+        return true;
+      });
     } else {
       addExitIntentListener(targets.thankYou);
     }
