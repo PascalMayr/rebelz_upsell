@@ -126,29 +126,31 @@ import * as Sentry from '@sentry/browser';
     variantId,
     strategy,
     quantity,
-    cart,
     campaignId,
     productPageProductId
   ) => {
-    let response = await fetch(`${publicAPI}/create-draft-order`, {
-      credentials: 'include',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        variantId,
-        strategy,
-        quantity,
-        cart,
-        shop,
-        campaignId,
-        productPageProductId,
-      }),
-    });
-    response = await response.json();
-    if (response.invoiceUrl) {
-      window.location.href = response.invoiceUrl;
+    const cart = await getCart();
+    if (cart) {
+      let response = await fetch(`${publicAPI}/create-draft-order`, {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          variantId,
+          strategy,
+          quantity,
+          cart,
+          shop,
+          campaignId,
+          productPageProductId,
+        }),
+      });
+      response = await response.json();
+      if (response.invoiceUrl) {
+        window.location.href = response.invoiceUrl;
+      }
     }
   };
 
@@ -184,41 +186,56 @@ import * as Sentry from '@sentry/browser';
           popupElement.setAttribute('product', JSON.stringify(newProduct));
         }
       };
+
+      const searchFormFromTarget = (initialTarget) => {
+        let formElement;
+        let eventTarget = initialTarget;
+        do {
+          if (
+            eventTarget.tagName &&
+            eventTarget.tagName.toUpperCase() === 'FORM'
+          ) {
+            formElement = eventTarget;
+          }
+          eventTarget = eventTarget.parentNode;
+        } while (!formElement);
+        return formElement;
+      };
+
       window.Salestorm.claimOffer = async (variantId, strategy, quantity) => {
-        document.dispatchEvent(continueOriginalClickEvent);
-        const cart = await getCart();
+        const addToCartButton = document.querySelector(addToCartButtonSelector);
+        const productDetailsPageForm = searchFormFromTarget(addToCartButton);
         let productPageProductId;
         const currentProduct = await getCurrentProduct();
         if (currentProduct) productPageProductId = currentProduct.id;
-        if (cart) {
-          if (
-            campaign.options.interruptEvents &&
-            campaign.targets.entry === 'onclick'
-          ) {
-            const cartInterval = setInterval(async () => {
-              const currentCart = await getCart();
-              if (
-                currentCart &&
-                currentCart.items &&
-                currentCart.items.length > 0
-              ) {
-                clearInterval(cartInterval);
-                createDraftOrder(
-                  variantId,
-                  strategy,
-                  quantity,
-                  currentCart,
-                  campaign.id,
-                  productPageProductId
-                );
-              }
-            }, 2000);
-          } else {
+        if (
+          targetPage === targets.addToCart &&
+          campaign.options.interruptEvents &&
+          campaign.entry === 'onclick' &&
+          Boolean(productDetailsPageForm)
+        ) {
+          const body = new URLSearchParams(
+            new FormData(productDetailsPageForm)
+          );
+          await fetch('/cart/add', {
+            method: 'post',
+            redirect: 'manual',
+            body,
+          });
+          createDraftOrder(
+            variantId,
+            strategy,
+            quantity,
+            campaign.id,
+            productPageProductId
+          );
+        } else {
+          document.dispatchEvent(continueOriginalClickEvent);
+          if (productsAddedByXHROrFetch) {
             createDraftOrder(
               variantId,
               strategy,
               quantity,
-              cart,
               campaign.id,
               productPageProductId
             );
@@ -226,18 +243,6 @@ import * as Sentry from '@sentry/browser';
         }
       };
     }
-  };
-
-  const searchFormFromTarget = (initialTarget) => {
-    let formElement;
-    let eventTarget = initialTarget;
-    do {
-      if (eventTarget.tagName && eventTarget.tagName.toUpperCase() === 'FORM') {
-        formElement = eventTarget;
-      }
-      eventTarget = eventTarget.parentNode;
-    } while (!formElement);
-    return formElement;
   };
 
   const addEarlyClickListener = (selector, callback, capture = true) => {
