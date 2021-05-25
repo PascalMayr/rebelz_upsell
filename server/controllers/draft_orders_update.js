@@ -12,8 +12,13 @@ const draftOrdersUpdate = async (ctx) => {
     'SELECT COUNT(*) FROM orders WHERE domain = $1 AND status = $2;',
     [shop, completedStatus]
   );
-  console.dir(completedOrderCount);
   completedOrderCount = completedOrderCount.rows[0].count;
+  console.dir(completedOrderCount);
+  const testorders = await db.query(
+    'SELECT 846608957611 FROM orders WHERE domain = $1 AND status = $2;',
+    [shop, completedStatus]
+  );
+  console.dir(testorders.rows);
 
   if (status === completedStatus) {
     let store = await db.query(
