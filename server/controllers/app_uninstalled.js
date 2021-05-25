@@ -1,4 +1,5 @@
 import db from '../db';
+import config from '../../config';
 
 const appUninstalled = async (ctx) => {
   const shop = ctx.request.headers['x-shopify-shop-domain'];
