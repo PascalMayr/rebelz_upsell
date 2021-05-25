@@ -7,7 +7,7 @@ const appUninstalled = async (ctx) => {
     (configPlan) => configPlan.name === config.planNames.free
   );
   await db.query(
-    'UPDATE stores SET enabled = false, plan_name = $1, "subscriptionId" = NULL, access_token = NULL, plan_limit = $2 WHERE domain = $1',
+    'UPDATE stores SET enabled = false, plan_name = $1, "subscriptionId" = NULL, access_token = NULL, plan_limit = $2 WHERE domain = $3',
     [freePlan.name, freePlan.limit, shop]
   );
 
