@@ -15,8 +15,6 @@ const subscriptionUpdate = async (ctx) => {
     shop,
   ]);
   store = store.rows[0];
-  console.dir(store);
-  console.log(subscriptionId);
   if (status === 'ACTIVE') {
     const configPlan = config.plans.find((plan) => plan.name === name);
     const contact = await db.query(
@@ -42,7 +40,6 @@ const subscriptionUpdate = async (ctx) => {
       },
     });
   } else if (store.subscriptionId === subscriptionId) {
-    console.log('going to else');
     const freePlan = config.plans.find(
       (configPlan) => configPlan.name === config.planNames.free
     );

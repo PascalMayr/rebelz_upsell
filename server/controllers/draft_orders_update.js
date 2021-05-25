@@ -12,13 +12,7 @@ const draftOrdersUpdate = async (ctx) => {
     'SELECT COUNT(*) FROM orders WHERE domain = $1 AND status = $2;',
     [shop, completedStatus]
   );
-  completedOrderCount = completedOrderCount.rows[0].count;
-  console.dir(completedOrderCount);
-  const testorders = await db.query(
-    'SELECT 846608957611 FROM orders WHERE domain = $1 AND status = $2;',
-    [shop, completedStatus]
-  );
-  console.dir(testorders.rows);
+  completedOrderCount = parseInt(completedOrderCount.rows[0].count, 10);
 
   if (status === completedStatus) {
     let store = await db.query(
@@ -37,18 +31,10 @@ const draftOrdersUpdate = async (ctx) => {
     );
 
     if (completedOrderCount === 0) {
-      console.log('if completed order count 0');
       const contact = await db.query(
         `SELECT email, first_name FROM users WHERE domain = $1 AND account_owner = TRUE`,
         [shop]
       );
-      console.dir({
-        to: contact.rows[0].email,
-        template: mailTemplates.firstSale,
-        templateData: {
-          name: contact.rows[0].first_name,
-        },
-      });
       await sendMail({
         to: contact.rows[0].email,
         template: mailTemplates.firstSale,
