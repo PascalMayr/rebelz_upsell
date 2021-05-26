@@ -80,7 +80,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
         data: {
           datasets: [
             {
-              data: [viewsSum, salesSum],
+              data: [viewsSum - salesSum, salesSum],
               backgroundColor: [viewsColor, orderColor],
             },
           ],
