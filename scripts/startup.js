@@ -49,6 +49,7 @@ import * as Sentry from '@sentry/browser';
     'salestorm-continue-original-click-event'
   );
   let productsAddedByXHROrFetch = false;
+  // eslint-disable-next-line no-undef
   const publicAPI = `${process.env.HOST}/api`;
   const shop = window.Shopify.shop || window.location.host;
   const productPageRegex = /\/products\/[^?/#]+/;
@@ -326,19 +327,15 @@ import * as Sentry from '@sentry/browser';
         const eventHandler = (e) => {
           e.preventDefault();
           e.stopPropagation();
+          const clonedEvent = new MouseEvent('click', e);
           showPopup(targets.checkout);
           document.addEventListener(continueOriginalClickEvent.type, () => {
-            e.target.dispatchEvent(e);
+            e.target.dispatchEvent(clonedEvent);
           });
         };
         addEarlyClickListener(checkoutButtonSelector, eventHandler, {
           once: true,
         });
-        const checkoutButton = document.querySelector(checkoutButtonSelector);
-        const checkoutForm = searchFormFromTarget(checkoutButton);
-        if (checkoutForm) {
-          checkoutForm.addEventListener('submit', eventHandler, { once: true });
-        }
       } else {
         addExitIntentListener(targets.checkout);
       }
@@ -476,6 +473,7 @@ import * as Sentry from '@sentry/browser';
 
   const init = () => {
     Sentry.init({
+      // eslint-disable-next-line no-undef
       dsn: process.env.SENTRY_DSN_FRONTEND,
       integrations(integrations) {
         // Remove the global exception handler so we only get embedded errors
