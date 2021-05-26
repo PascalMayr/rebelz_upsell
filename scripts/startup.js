@@ -450,7 +450,14 @@ import * as Sentry from '@sentry/browser';
         event.preventDefault();
         event.stopPropagation();
         document.addEventListener(continueOriginalClickEvent.type, () => {
-          document.dispatchEvent(event);
+          const continueShoppingButton = document.querySelector(
+            continueShoppingSelector
+          );
+          const shop =
+            continueShoppingButton && continueShoppingButton.tagName === 'A'
+              ? continueShoppingButton.href
+              : window.Shopify && window.Shopify.shop;
+          window.location.replace(shop);
         });
         return true;
       });
