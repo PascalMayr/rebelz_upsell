@@ -434,7 +434,7 @@ import * as Sentry from '@sentry/browser';
           const shop =
             continueShoppingButton && continueShoppingButton.tagName === 'A'
               ? continueShoppingButton.href
-              : window.Shopify && window.Shopify.shop;
+              : `https://${shop}`;
           window.location.replace(shop);
         });
         return true;
