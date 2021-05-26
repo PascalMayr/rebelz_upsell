@@ -413,22 +413,19 @@ import * as Sentry from '@sentry/browser';
       return;
     }
     if (campaign.targets.entry === 'onclick') {
-      addEarlyClickListener(continueShoppingSelector, (event) => {
-        showPopup(targets.thankYou);
-        event.preventDefault();
-        event.stopPropagation();
-        document.addEventListener(continueOriginalClickEvent.type, () => {
-          const continueShoppingButton = document.querySelector(
-            continueShoppingSelector
-          );
-          const shop =
-            continueShoppingButton && continueShoppingButton.tagName === 'A'
-              ? continueShoppingButton.href
-              : `https://${shop}`;
-          window.location.replace(shop);
-        });
-        return true;
-      });
+      addEarlyClickListener(
+        continueShoppingSelector,
+        (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          const clonedEvent = new MouseEvent('click', event);
+          showPopup(targets.thankYou);
+          document.addEventListener(continueOriginalClickEvent.type, () => {
+            event.target.dispatchEvent(clonedEvent);
+          });
+        },
+        { once: true }
+      );
     } else {
       addExitIntentListener(targets.thankYou);
     }
