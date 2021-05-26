@@ -370,13 +370,6 @@ import * as Sentry from '@sentry/browser';
             showPopup(targets.addToCart);
             event.preventDefault();
             event.stopPropagation();
-            const handleCartDrawers = setInterval(() => {
-              if (!document.querySelector(checkoutButtonSelector)) {
-                return;
-              }
-              handleCart();
-              clearInterval(handleCartDrawers);
-            }, 500);
             document.addEventListener(continueOriginalClickEvent.type, () => {
               if (!productsAddedByXHROrFetch) {
                 event.target.click();
@@ -425,7 +418,14 @@ import * as Sentry from '@sentry/browser';
         event.preventDefault();
         event.stopPropagation();
         document.addEventListener(continueOriginalClickEvent.type, () => {
-          document.dispatchEvent(event);
+          const continueShoppingButton = document.querySelector(
+            continueShoppingSelector
+          );
+          const shop =
+            continueShoppingButton && continueShoppingButton.tagName === 'A'
+              ? continueShoppingButton.href
+              : `https://${shop}`;
+          window.location.replace(shop);
         });
         return true;
       });
@@ -494,6 +494,13 @@ import * as Sentry from '@sentry/browser';
       const productPage = path.match(productPageRegex);
       const thankYouPage = path.match(thankYouPageRegex);
       const cartPage = path.match(cartPageRegex);
+      const handleCartDrawers = setInterval(() => {
+        if (!document.querySelector(checkoutButtonSelector)) {
+          return;
+        }
+        handleCart();
+        clearInterval(handleCartDrawers);
+      }, 1000);
       if (productPage) {
         handleProductPage();
       } else if (thankYouPage) {
