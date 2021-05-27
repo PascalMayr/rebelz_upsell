@@ -208,7 +208,7 @@ import * as Sentry from '@sentry/browser';
           const buttonInForm = document.querySelector(addToCartButtonSelector);
           const form = searchFormFromTarget(buttonInForm);
 
-          if (campaign.entry === 'onclick' && Boolean(form)) {
+          if (campaign.targets.entry === 'onclick' && Boolean(form)) {
             const body = new URLSearchParams(new FormData(form));
             await fetch('/cart/add', {
               method: 'post',
@@ -224,15 +224,13 @@ import * as Sentry from '@sentry/browser';
             );
           } else {
             document.dispatchEvent(continueOriginalClickEvent);
-            if (productsAddedByXHROrFetch) {
-              createDraftOrder(
-                variantId,
-                strategy,
-                quantity,
-                campaign.id,
-                productPageProductId
-              );
-            }
+            createDraftOrder(
+              variantId,
+              strategy,
+              quantity,
+              campaign.id,
+              productPageProductId
+            );
           }
         } else {
           await createDraftOrder(
@@ -363,29 +361,20 @@ import * as Sentry from '@sentry/browser';
     );
     const { campaign } = popups[targets.addToCart];
     if (campaign && campaign.targets.entry === 'onclick') {
-      const interruptEvents = campaign.options.interruptEvents;
-      if (interruptEvents) {
-        addEarlyClickListener(addToCartButtonSelector, (event) => {
-          if (!popups[targets.addToCart].displayed) {
-            showPopup(targets.addToCart);
-            event.preventDefault();
-            event.stopPropagation();
-            document.addEventListener(continueOriginalClickEvent.type, () => {
-              if (!productsAddedByXHROrFetch) {
-                event.target.click();
-              }
-            });
-          }
-          return true;
-        });
-      } else {
-        const addToCartButton = document.querySelector(addToCartButtonSelector);
-        if (addToCartButton) {
-          addToCartButton.addEventListener('click', () => {
-            showPopup(targets.addToCart);
+      addEarlyClickListener(
+        addToCartButtonSelector,
+        (event) => {
+          showPopup(targets.addToCart);
+          event.preventDefault();
+          event.stopPropagation();
+          document.addEventListener(continueOriginalClickEvent.type, () => {
+            if (!productsAddedByXHROrFetch) {
+              event.target.click();
+            }
           });
-        }
-      }
+        },
+        { once: true }
+      );
     } else {
       addExitIntentListener(targets.addToCart);
     }
