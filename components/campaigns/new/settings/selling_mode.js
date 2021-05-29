@@ -23,6 +23,11 @@ const SellingModeSetting = ({ campaign, setCampaignProperty }) => {
         </Link>{' '}
         from Shopify, we ensure <strong>just showing relevant products</strong>{' '}
         to your customers.
+        <br />
+        <strong>
+          Note: New stores do not show any recommendations. Recommendations will
+          generate in time.
+        </strong>
       </>
     ) : (
       <>If you define many offers, customers can skip them individually.</>
