@@ -205,16 +205,7 @@ import * as Sentry from '@sentry/browser';
           const currentProduct = await getCurrentProduct();
           const productPageProductId = currentProduct.id;
 
-          const buttonInForm = document.querySelector(addToCartButtonSelector);
-          const form = searchFormFromTarget(buttonInForm);
-
-          if (campaign.entry === 'onclick' && Boolean(form)) {
-            const body = new URLSearchParams(new FormData(form));
-            await fetch('/cart/add', {
-              method: 'post',
-              redirect: 'manual',
-              body,
-            });
+          if (campaign.targets.entry === 'onexit') {
             createDraftOrder(
               variantId,
               strategy,
@@ -223,8 +214,26 @@ import * as Sentry from '@sentry/browser';
               productPageProductId
             );
           } else {
-            document.dispatchEvent(continueOriginalClickEvent);
+            const buttonInForm = document.querySelector(
+              addToCartButtonSelector
+            );
+            const form = searchFormFromTarget(buttonInForm);
             if (productsAddedByXHROrFetch) {
+              createDraftOrder(
+                variantId,
+                strategy,
+                quantity,
+                campaign.id,
+                productPageProductId
+              );
+            } else if (form) {
+              // The original item didn't get added to the cart yet, it must be a normal HTML form without JS logic
+              const body = new URLSearchParams(new FormData(form));
+              await fetch('/cart/add', {
+                method: 'post',
+                redirect: 'manual',
+                body,
+              });
               createDraftOrder(
                 variantId,
                 strategy,
@@ -318,6 +327,9 @@ import * as Sentry from '@sentry/browser';
         recommendations
       );
       const { campaign } = popups[targets.checkout];
+      if (!campaign) {
+        return;
+      }
       if (campaign.targets.entry === 'onclick') {
         const eventHandler = (e) => {
           e.preventDefault();
@@ -357,30 +369,23 @@ import * as Sentry from '@sentry/browser';
       recommendations
     );
     const { campaign } = popups[targets.addToCart];
-    if (campaign && campaign.targets.entry === 'onclick') {
-      const interruptEvents = campaign.options.interruptEvents;
-      if (interruptEvents) {
-        addEarlyClickListener(addToCartButtonSelector, (event) => {
-          if (!popups[targets.addToCart].displayed) {
-            showPopup(targets.addToCart);
-            event.preventDefault();
-            event.stopPropagation();
-            document.addEventListener(continueOriginalClickEvent.type, () => {
-              if (!productsAddedByXHROrFetch) {
-                event.target.click();
-              }
-            });
-          }
-          return true;
-        });
-      } else {
-        const addToCartButton = document.querySelector(addToCartButtonSelector);
-        if (addToCartButton) {
-          addToCartButton.addEventListener('click', () => {
-            showPopup(targets.addToCart);
+    if (!campaign) {
+      return;
+    }
+    if (campaign.targets.entry === 'onclick') {
+      addEarlyClickListener(
+        addToCartButtonSelector,
+        (event) => {
+          showPopup(targets.addToCart);
+          event.preventDefault();
+          document.addEventListener(continueOriginalClickEvent.type, () => {
+            if (!productsAddedByXHROrFetch) {
+              event.target.click();
+            }
           });
-        }
-      }
+        },
+        { once: true }
+      );
     } else {
       addExitIntentListener(targets.addToCart);
     }
