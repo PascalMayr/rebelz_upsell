@@ -29,7 +29,7 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
       <div className="no-campaigns-image-section">
         <Image src="/imagination.svg" alt="me" width="250" height="250" />
         <Heading>
-          Welcome to Rebelz Exit Intent Upsells{' '}
+          Welcome to Rebelz Kickstart Upsells{' '}
           <span role="img" aria-label="storm">
             ⚡️
           </span>
@@ -155,7 +155,7 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
                             content: `Successfully duplicated ${campaign.name}`,
                             isError: false,
                           });
-                        } catch(err) {
+                        } catch (err) {
                           context.setToast({
                             shown: true,
                             content: `Failed to duplicate ${campaign.name}`,
@@ -182,7 +182,7 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
                               content: `Successfully unpublished ${campaign.name}`,
                               isError: false,
                             });
-                          } catch(err) {
+                          } catch (err) {
                             context.setToast({
                               shown: true,
                               content: `Failed to unpublish ${campaign.name}`,
@@ -202,7 +202,7 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
                               content: `Successfully published ${campaign.name}`,
                               isError: false,
                             });
-                          } catch(err) {
+                          } catch (err) {
                             context.setToast({
                               shown: true,
                               content: `Failed to publish ${campaign.name}`,
