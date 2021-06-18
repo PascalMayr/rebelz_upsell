@@ -44,7 +44,6 @@
     "@shopify/polaris": "^6.2.0",
     "@shopify/polaris-icons": "^4.1.0",
     "@shopify/shopify-api": "^1.2.1",
-    "@zeit/next-css": "^1.0.1",
     "axios": "^0.21.1",
     "casify": "^2.0.0",
     "chart.js": "^2.9.4",
