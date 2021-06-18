@@ -137,8 +137,8 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
   );
 
   return (
-    <div className="salestorm-campaigns-analytics">
-      <p className="salestorm-analytics-subheading">
+    <div className="campaigns-analytics">
+      <p className="analytics-subheading">
         Searching for an option to track Add to cart events ? Google Analytics
         is doing just that for you with a UA-XXXXXXXX-X code.{' '}
         <Link
@@ -156,7 +156,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
       <br />
       <Card>
         <Card.Section title="Views and sales overview">
-          <p className="salestorm-analytics-subheading">
+          <p className="analytics-subheading">
             Total campaign views and sales this month.
           </p>
           <br />
@@ -170,7 +170,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
         <Layout.Section oneHalf>
           <Card>
             <Card.Section title="Total conversion rate">
-              <p className="salestorm-analytics-subheading">
+              <p className="analytics-subheading">
                 Total sales vs total views this month.
               </p>
               <br />
@@ -183,10 +183,10 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
         <Layout.Section oneHalf>
           <Card>
             <Card.Section title="Campaign performance">
-              <p className="salestorm-analytics-subheading">
+              <p className="analytics-subheading">
                 See the best performing campaigns this month.
               </p>
-              <div className="salestorm-campaigns-overview">
+              <div className="campaigns-overview">
                 <ResourceList
                   resourceName={{ singular: 'campaign', plural: 'campaigns' }}
                   emptyState={emptyStateCampaignMarkup}

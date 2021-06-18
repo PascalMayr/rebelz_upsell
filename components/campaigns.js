@@ -65,12 +65,7 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
               className="stepper-checkmark"
             />
             <p id="stepper-new-cammpaign-link">
-              <NextLink
-                href="/campaigns/new"
-                className="salestorm-new-campaign-link"
-              >
-                3. Create a campaign
-              </NextLink>
+              <NextLink href="/campaigns/new">3. Create a campaign</NextLink>
             </p>
           </div>
         </div>
@@ -81,7 +76,7 @@ const Campaigns = ({ enabled, campaigns, setCampaigns }) => {
   return (
     <>
       <Card>
-        <div className="salestorm-campaigns-overview">
+        <div className="campaigns-overview">
           <ResourceList
             resourceName={{ singular: 'campaign', plural: 'campaigns' }}
             emptyState={emptyStateMarkup}

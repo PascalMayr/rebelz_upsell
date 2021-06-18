@@ -84,8 +84,8 @@ const Index = () => {
   const enabledStatus = store.enabled ? 'enabled' : 'disabled';
   const enabledButtonStatus = store.enabled ? 'Disable' : 'Enable';
   const enabledStatusClass = store.enabled
-    ? 'salestorm-enabled-status-true'
-    : 'salestorm-enabled-status-false';
+    ? 'enabled-status-true'
+    : 'enabled-status-false';
 
   let priceStatus = 'success';
   let priceProgress = 'complete';
@@ -135,171 +135,173 @@ const Index = () => {
   const designContainerClassName = tabKey === 'design' ? '' : 'd-none';
 
   return (
-    <Page
-      fullWidth
-      titleMetadata={
-        <Badge status={priceStatus} progress={priceProgress}>
-          <div className="salestorm-pricing-badge">
-            <NextLink href="/pricing">{`${store.plan_name} Plan`}</NextLink>
+    <div className="home">
+      <Page
+        fullWidth
+        titleMetadata={
+          <Badge status={priceStatus} progress={priceProgress}>
+            <div className="pricing-badge">
+              <NextLink href="/pricing">{`${store.plan_name} Plan`}</NextLink>
+            </div>
+          </Badge>
+        }
+        primaryAction={
+          <NextLink href="/campaigns/new">
+            <Button primary>
+              <span className="add-campaign">+</span> New Campaign
+            </Button>
+          </NextLink>
+        }
+        secondaryActions={[
+          {
+            content: 'Useful tips and readings',
+            disabled: false,
+            onAction: () => router.push('/tips'),
+            id: 'tips-readings-button',
+          },
+          {
+            content: 'Upgrade',
+            disabled: false,
+            icon: CircleUpMajor,
+            onAction: () => router.push('/pricing'),
+          },
+        ]}
+      >
+        <div className="enabled-status-container">
+          <div id="enabled-status-inner-container">
+            <Button
+              onClick={toggleEnabled}
+              primary={!store.enabled}
+              loading={toggleEnableLoading}
+            >
+              {enabledButtonStatus}
+            </Button>
+            <span className="enabled-status">
+              App is{' '}
+              <strong className={enabledStatusClass}>{enabledStatus}</strong>
+            </span>
           </div>
-        </Badge>
-      }
-      primaryAction={
-        <NextLink href="/campaigns/new" className="salestorm-new-campaign-link">
-          <Button primary>
-            <span className="salestorm-add-campaign">+</span> New Campaign
-          </Button>
-        </NextLink>
-      }
-      secondaryActions={[
-        {
-          content: 'Useful tips and readings',
-          disabled: false,
-          onAction: () => router.push('/tips'),
-          id: 'tips-readings-button',
-        },
-        {
-          content: 'Upgrade',
-          disabled: false,
-          icon: CircleUpMajor,
-          onAction: () => router.push('/pricing'),
-        },
-      ]}
-    >
-      <div className="salestorm-enabled-satus-container">
-        <div id="salestorm-enabled-status-inner-container">
-          <Button
-            onClick={toggleEnabled}
-            primary={!store.enabled}
-            loading={toggleEnableLoading}
-          >
-            {enabledButtonStatus}
-          </Button>
-          <span className="salestorm-enabled-status">
-            App is{' '}
-            <strong className={enabledStatusClass}>{enabledStatus}</strong>
-          </span>
         </div>
-      </div>
-      <Layout>
-        <Layout.Section oneThird>
-          <Card>
-            <Card.Section title="Added revenue">
-              <p className="salestorm-analytics-subheading">
-                The total impact our App made on your store this month.
-              </p>
-              <div className="salestorm-analytics-value">
-                {formattedTotalRevenue}
-              </div>
-            </Card.Section>
-          </Card>
-        </Layout.Section>
-        <Layout.Section oneThird>
-          <Card>
-            <Card.Section title="Upsell AOV">
-              <p className="salestorm-analytics-subheading">
-                The Average Order Value through our App this month.
-              </p>
-              <div className="salestorm-analytics-value">
-                {formattedAverageOrderPrice}
-              </div>
-            </Card.Section>
-          </Card>
-        </Layout.Section>
-        <Layout.Section oneThird>
-          <Card>
-            <Card.Section title="Views used">
-              <p className="salestorm-analytics-subheading">
-                Views used according to your plan.{' '}
-                {!store.plan_name &&
-                  (analytics.viewsCount / store.plan_limit) * 100 > 80 && (
-                    <>
-                      Need some more ?{' '}
-                      <NextLink href="/pricing">Upgrade Now</NextLink>
-                    </>
-                  )}
-              </p>
-              <div className="salestorm-analytics-value">
-                {analytics.viewsCount} / {store.plan_limit}
-              </div>
-            </Card.Section>
-          </Card>
-        </Layout.Section>
-      </Layout>
-      <Tabs
-        tabs={tabs}
-        selected={tab}
-        onSelect={(selectedTabIndex) => setTab(selectedTabIndex)}
-        fitted
-      />
-      {tabKey === 'campaigns' && (
-        <Campaigns
-          enabled={store.enabled}
-          campaigns={campaigns}
-          setCampaigns={(newCampaigns) => {
-            setCampaigns(newCampaigns.filter((campaign) => !campaign.global));
-          }}
+        <Layout>
+          <Layout.Section oneThird>
+            <Card>
+              <Card.Section title="Added revenue">
+                <p className="analytics-subheading">
+                  The total impact our App made on your store this month.
+                </p>
+                <div className="analytics-value">
+                  {formattedTotalRevenue}
+                </div>
+              </Card.Section>
+            </Card>
+          </Layout.Section>
+          <Layout.Section oneThird>
+            <Card>
+              <Card.Section title="Upsell AOV">
+                <p className="analytics-subheading">
+                  The Average Order Value through our App this month.
+                </p>
+                <div className="analytics-value">
+                  {formattedAverageOrderPrice}
+                </div>
+              </Card.Section>
+            </Card>
+          </Layout.Section>
+          <Layout.Section oneThird>
+            <Card>
+              <Card.Section title="Views used">
+                <p className="analytics-subheading">
+                  Views used according to your plan.{' '}
+                  {!store.plan_name &&
+                    (analytics.viewsCount / store.plan_limit) * 100 > 80 && (
+                      <>
+                        Need some more ?{' '}
+                        <NextLink href="/pricing">Upgrade Now</NextLink>
+                      </>
+                    )}
+                </p>
+                <div className="analytics-value">
+                  {analytics.viewsCount} / {store.plan_limit}
+                </div>
+              </Card.Section>
+            </Card>
+          </Layout.Section>
+        </Layout>
+        <Tabs
+          tabs={tabs}
+          selected={tab}
+          onSelect={(selectedTabIndex) => setTab(selectedTabIndex)}
+          fitted
         />
-      )}
-      <div className={designContainerClassName}>
-        <Page
-          title="Create a global design for all your campaigns."
-          subtitle="Note: This won't affect already created campaigns."
-          primaryAction={{
-            content: 'Save',
-            loading: saveLoading,
-            onAction: async () => {
-              try {
-                setSaveLoading(true);
-                const savedCampaign = await api.post(
-                  '/api/save-campaign?global=true',
-                  globalCampaign
-                );
-                context.setToast({
-                  shown: true,
-                  content: 'Successfully saved global design',
-                  isError: false,
-                });
-                setGlobalCampaign({
-                  ...globalCampaign,
-                  ...savedCampaign.data,
-                });
-              } catch (_error) {
-                context.setToast({
-                  shown: true,
-                  content: 'Global design saving failed',
-                  isError: true,
-                });
-              } finally {
-                setSaveLoading(false);
-              }
-            },
-          }}
-        >
-          <Card>
-            <Card.Section>
-              <Layout>
-                <Layout.Section>
-                  <Design
-                    campaign={globalCampaign}
-                    setCampaignProperty={setGlobalCampaignProperty}
-                  />
-                </Layout.Section>
-              </Layout>
-            </Card.Section>
-          </Card>
-        </Page>
-      </div>
-      {tabKey === 'analytics' && (
-        <Analytics
-          views={analytics.views}
-          days={analytics.days}
-          sales={analytics.sales}
-          campaigns={campaigns}
-          currencyFormatter={currencyFormatter}
-        />
-      )}
-    </Page>
+        {tabKey === 'campaigns' && (
+          <Campaigns
+            enabled={store.enabled}
+            campaigns={campaigns}
+            setCampaigns={(newCampaigns) => {
+              setCampaigns(newCampaigns.filter((campaign) => !campaign.global));
+            }}
+          />
+        )}
+        <div className={designContainerClassName}>
+          <Page
+            title="Create a global design for all your campaigns."
+            subtitle="Note: This won't affect already created campaigns."
+            primaryAction={{
+              content: 'Save',
+              loading: saveLoading,
+              onAction: async () => {
+                try {
+                  setSaveLoading(true);
+                  const savedCampaign = await api.post(
+                    '/api/save-campaign?global=true',
+                    globalCampaign
+                  );
+                  context.setToast({
+                    shown: true,
+                    content: 'Successfully saved global design',
+                    isError: false,
+                  });
+                  setGlobalCampaign({
+                    ...globalCampaign,
+                    ...savedCampaign.data,
+                  });
+                } catch (_error) {
+                  context.setToast({
+                    shown: true,
+                    content: 'Global design saving failed',
+                    isError: true,
+                  });
+                } finally {
+                  setSaveLoading(false);
+                }
+              },
+            }}
+          >
+            <Card>
+              <Card.Section>
+                <Layout>
+                  <Layout.Section>
+                    <Design
+                      campaign={globalCampaign}
+                      setCampaignProperty={setGlobalCampaignProperty}
+                    />
+                  </Layout.Section>
+                </Layout>
+              </Card.Section>
+            </Card>
+          </Page>
+        </div>
+        {tabKey === 'analytics' && (
+          <Analytics
+            views={analytics.views}
+            days={analytics.days}
+            sales={analytics.sales}
+            campaigns={campaigns}
+            currencyFormatter={currencyFormatter}
+          />
+        )}
+      </Page>
+    </div>
   );
 };
 
