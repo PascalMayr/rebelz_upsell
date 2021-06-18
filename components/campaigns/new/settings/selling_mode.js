@@ -34,7 +34,7 @@ const SellingModeSetting = ({ campaign, setCampaignProperty }) => {
     );
   return (
     <>
-      <div className="salestorm-settings-explanation">{explanation}</div>
+      <div className="settings-explanation">{explanation}</div>
       <Settings
         settings={[
           {

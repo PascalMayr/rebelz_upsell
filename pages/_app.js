@@ -22,7 +22,7 @@ import * as Sentry from '@sentry/react';
 import '../styles/pages/_app.scss';
 import '../styles/pages/pricing.scss';
 import '../styles/pages/index.scss';
-import '../styles/pages/campaigns/new.css';
+import '../styles/pages/campaigns/new.scss';
 
 import ClientRouter from '../components/client_router';
 import AppError from '../components/error/_app';

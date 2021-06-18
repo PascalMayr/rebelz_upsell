@@ -96,212 +96,135 @@ const New = () => {
       hour12: false,
     }).format(date);
   return (
-    <Page
-      title={title}
-      titleMetadata={
-        <>
-          <Badge status={badgeStatus}>{contentStatus}</Badge>
-          &nbsp;
-          {campaign.updated && (
-            <Badge status="info">Last updated: {formatDate(updated)}</Badge>
-          )}
-        </>
-      }
-      breadcrumbs={[
-        { content: 'Campaigns', onAction: () => router.push('/home') },
-      ]}
-      primaryAction={{
-        content: publishLabel,
-        loading: publishLoading,
-        onAction: async () => {
-          if (campaign.published) {
-            try {
-              if (checkForInputError(campaign)) {
-                return;
-              }
-              setPublishLoading(true);
-              const savedCampaign = await api.post(
-                '/api/save-campaign',
-                campaign
-              );
-              await api.delete(
-                `/api/unpublish-campaign/${savedCampaign.data.id}`
-              );
-              context.setToast({
-                shown: true,
-                content: 'Successfully unpublished campaign',
-                isError: false,
-              });
-              setCampaign({ ...savedCampaign.data, published: false });
-            } catch (_error) {
-              context.setToast({
-                shown: true,
-                content: 'Campaign unpublishing failed',
-                isError: true,
-              });
-              setCampaign({ ...campaign, published: true });
-            } finally {
-              setPublishLoading(false);
-            }
-          } else {
-            try {
-              if (checkForInputError(campaign)) {
-                return;
-              }
-              setPublishLoading(true);
-              const savedCampaign = await api.post(
-                '/api/save-campaign',
-                campaign
-              );
-              await api.post(`/api/publish-campaign/${savedCampaign.data.id}`);
-              context.setToast({
-                shown: true,
-                content: 'Successfully published campaign',
-                isError: false,
-              });
-              setCampaign({ ...savedCampaign.data, published: true });
-            } catch (_error) {
-              context.setToast({
-                shown: true,
-                content: 'Campaign publishing failed',
-                isError: true,
-              });
-              setCampaign({ ...campaign, published: false });
-            } finally {
-              setPublishLoading(false);
-            }
-          }
-        },
-      }}
-      secondaryActions={[
-        {
-          content: saveLabel,
-          loading: saveLoading,
+    <div className="new">
+      <Page
+        title={title}
+        titleMetadata={
+          <>
+            <Badge status={badgeStatus}>{contentStatus}</Badge>
+            &nbsp;
+            {campaign.updated && (
+              <Badge status="info">Last updated: {formatDate(updated)}</Badge>
+            )}
+          </>
+        }
+        breadcrumbs={[
+          { content: 'Campaigns', onAction: () => router.push('/home') },
+        ]}
+        primaryAction={{
+          content: publishLabel,
+          loading: publishLoading,
           onAction: async () => {
-            try {
-              if (checkForInputError(campaign)) {
-                return;
+            if (campaign.published) {
+              try {
+                if (checkForInputError(campaign)) {
+                  return;
+                }
+                setPublishLoading(true);
+                const savedCampaign = await api.post(
+                  '/api/save-campaign',
+                  campaign
+                );
+                await api.delete(
+                  `/api/unpublish-campaign/${savedCampaign.data.id}`
+                );
+                context.setToast({
+                  shown: true,
+                  content: 'Successfully unpublished campaign',
+                  isError: false,
+                });
+                setCampaign({ ...savedCampaign.data, published: false });
+              } catch (_error) {
+                context.setToast({
+                  shown: true,
+                  content: 'Campaign unpublishing failed',
+                  isError: true,
+                });
+                setCampaign({ ...campaign, published: true });
+              } finally {
+                setPublishLoading(false);
               }
-              setSaveLoading(true);
-              const savedCampaign = await api.post(
-                '/api/save-campaign',
-                campaign
-              );
-              context.setToast({
-                shown: true,
-                content: campaign.published
-                  ? 'Successfully saved campaign'
-                  : 'Successfully saved draft campaign',
-                isError: false,
-              });
-              setCampaign({ ...campaign, ...savedCampaign.data });
-            } catch (_error) {
-              context.setToast({
-                shown: true,
-                content: 'Draft campaign saving failed',
-                isError: true,
-              });
-            } finally {
-              setSaveLoading(false);
+            } else {
+              try {
+                if (checkForInputError(campaign)) {
+                  return;
+                }
+                setPublishLoading(true);
+                const savedCampaign = await api.post(
+                  '/api/save-campaign',
+                  campaign
+                );
+                await api.post(`/api/publish-campaign/${savedCampaign.data.id}`);
+                context.setToast({
+                  shown: true,
+                  content: 'Successfully published campaign',
+                  isError: false,
+                });
+                setCampaign({ ...savedCampaign.data, published: true });
+              } catch (_error) {
+                context.setToast({
+                  shown: true,
+                  content: 'Campaign publishing failed',
+                  isError: true,
+                });
+                setCampaign({ ...campaign, published: false });
+              } finally {
+                setPublishLoading(false);
+              }
             }
           },
-        },
-      ]}
-    >
-      <Card>
-        <Card.Section>
-          <TextField
-            placeholder="Campaign name"
-            onChange={(value) => setCampaignProperty(value, 'name')}
-            value={campaign.name}
-          />
-        </Card.Section>
-        <Card.Section>
-          <Card>
-            <Card.Section title="1.) Where would you like to sell more?">
-              <TriggerSettings
-                campaign={campaign}
-                setCampaignProperty={setCampaignProperty}
-              />
-            </Card.Section>
-            <Card.Section>
-              <ResourceSelectionCampaign
-                resourcePickerProps={{
-                  resourceType: 'Product',
-                  selectMultiple: true,
-                  showVariants: false,
-                  showDraftBadge: true,
-                  showArchivedBadge: true,
-                }}
-                buttonProps={{
-                  primary: true,
-                  icon: MobilePlusMajor,
-                  label: 'Add target Products',
-                }}
-                onResourceMutation={(resources) =>
-                  setCampaignProperty(
-                    { ...campaign.targets, products: resources },
-                    'targets'
-                  )
+        }}
+        secondaryActions={[
+          {
+            content: saveLabel,
+            loading: saveLoading,
+            onAction: async () => {
+              try {
+                if (checkForInputError(campaign)) {
+                  return;
                 }
-                targets={campaign.targets}
-                strategy={campaign.strategy}
-                resources={campaign.targets.products}
-              />
-            </Card.Section>
-            <Card.Section>
-              <ResourceSelectionCampaign
-                resourcePickerProps={{
-                  resourceType: 'Collection',
-                  selectMultiple: true,
-                  showDraftBadge: true,
-                  showArchivedBadge: true,
-                }}
-                buttonProps={{
-                  primary: true,
-                  icon: MobilePlusMajor,
-                  label: 'Add target Collections',
-                }}
-                onResourceMutation={(resources) =>
-                  setCampaignProperty(
-                    { ...campaign.targets, collections: resources },
-                    'targets'
-                  )
-                }
-                resources={campaign.targets.collections}
-              />
-            </Card.Section>
-          </Card>
-        </Card.Section>
-        <Card.Section>
-          <Card>
-            <Card.Section title="2.) When would you like to interact with your customers?">
-              <EntrySettings
-                campaign={campaign}
-                setCampaignProperty={setCampaignProperty}
-              />
-            </Card.Section>
-          </Card>
-        </Card.Section>
-        <Card.Section>
-          <Card>
-            <Card.Section title="3.) What type of offer would you like to make?">
-              <StrategySettings
-                campaign={campaign}
-                setCampaignProperty={setCampaignProperty}
-              />
-            </Card.Section>
-          </Card>
-        </Card.Section>
-        <Card.Section>
-          <Card>
-            <Card.Section title="4.) What would you like to offer?">
-              <SellingModeSettings
-                campaign={campaign}
-                setCampaignProperty={setCampaignProperty}
-              />
-            </Card.Section>
-            {campaign.selling.mode === 'manual' && (
+                setSaveLoading(true);
+                const savedCampaign = await api.post(
+                  '/api/save-campaign',
+                  campaign
+                );
+                context.setToast({
+                  shown: true,
+                  content: campaign.published
+                    ? 'Successfully saved campaign'
+                    : 'Successfully saved draft campaign',
+                  isError: false,
+                });
+                setCampaign({ ...campaign, ...savedCampaign.data });
+              } catch (_error) {
+                context.setToast({
+                  shown: true,
+                  content: 'Draft campaign saving failed',
+                  isError: true,
+                });
+              } finally {
+                setSaveLoading(false);
+              }
+            },
+          },
+        ]}
+      >
+        <Card>
+          <Card.Section>
+            <TextField
+              placeholder="Campaign name"
+              onChange={(value) => setCampaignProperty(value, 'name')}
+              value={campaign.name}
+            />
+          </Card.Section>
+          <Card.Section>
+            <Card>
+              <Card.Section title="1.) Where would you like to sell more?">
+                <TriggerSettings
+                  campaign={campaign}
+                  setCampaignProperty={setCampaignProperty}
+                />
+              </Card.Section>
               <Card.Section>
                 <ResourceSelectionCampaign
                   resourcePickerProps={{
@@ -314,183 +237,262 @@ const New = () => {
                   buttonProps={{
                     primary: true,
                     icon: MobilePlusMajor,
-                    label: 'Set Products for this campaign',
+                    label: 'Add target Products',
                   }}
                   onResourceMutation={(resources) =>
                     setCampaignProperty(
-                      { ...campaign.selling, products: resources },
-                      'selling'
+                      { ...campaign.targets, products: resources },
+                      'targets'
                     )
                   }
-                  resources={campaign.selling.products}
-                  strategy={campaign.strategy}
                   targets={campaign.targets}
-                  showStrategyDetails
+                  strategy={campaign.strategy}
+                  resources={campaign.targets.products}
                 />
               </Card.Section>
-            )}
-            {campaign.selling.mode === 'auto' && (
-              <>
+              <Card.Section>
+                <ResourceSelectionCampaign
+                  resourcePickerProps={{
+                    resourceType: 'Collection',
+                    selectMultiple: true,
+                    showDraftBadge: true,
+                    showArchivedBadge: true,
+                  }}
+                  buttonProps={{
+                    primary: true,
+                    icon: MobilePlusMajor,
+                    label: 'Add target Collections',
+                  }}
+                  onResourceMutation={(resources) =>
+                    setCampaignProperty(
+                      { ...campaign.targets, collections: resources },
+                      'targets'
+                    )
+                  }
+                  resources={campaign.targets.collections}
+                />
+              </Card.Section>
+            </Card>
+          </Card.Section>
+          <Card.Section>
+            <Card>
+              <Card.Section title="2.) When would you like to interact with your customers?">
+                <EntrySettings
+                  campaign={campaign}
+                  setCampaignProperty={setCampaignProperty}
+                />
+              </Card.Section>
+            </Card>
+          </Card.Section>
+          <Card.Section>
+            <Card>
+              <Card.Section title="3.) What type of offer would you like to make?">
+                <StrategySettings
+                  campaign={campaign}
+                  setCampaignProperty={setCampaignProperty}
+                />
+              </Card.Section>
+            </Card>
+          </Card.Section>
+          <Card.Section>
+            <Card>
+              <Card.Section title="4.) What would you like to offer?">
+                <SellingModeSettings
+                  campaign={campaign}
+                  setCampaignProperty={setCampaignProperty}
+                />
+              </Card.Section>
+              {campaign.selling.mode === 'manual' && (
                 <Card.Section>
-                  <div className="salestorm-auto-selling-settings">
-                    <TextField
-                      type="number"
-                      min="0"
-                      value={campaign.strategy.maxItemValue}
-                      id="maxItemValue"
-                      onChange={(value) =>
-                        setCampaignProperty(
-                          { ...campaign.strategy, maxItemValue: value },
-                          'strategy'
-                        )
-                      }
-                      label="Max item value"
-                      placeholder={campaign.strategy.maxItemValue}
-                      suffix={currencyCode}
-                    />
-                    <TextField
-                      type="number"
-                      min="1"
-                      value={campaign.strategy.maxNumberOfItems}
-                      id="maxNumberOfItems"
-                      onChange={(value) => {
-                        const val = parseInt(value, 10);
-                        if (val < 1) {
-                          return;
+                  <ResourceSelectionCampaign
+                    resourcePickerProps={{
+                      resourceType: 'Product',
+                      selectMultiple: true,
+                      showVariants: false,
+                      showDraftBadge: true,
+                      showArchivedBadge: true,
+                    }}
+                    buttonProps={{
+                      primary: true,
+                      icon: MobilePlusMajor,
+                      label: 'Set Products for this campaign',
+                    }}
+                    onResourceMutation={(resources) =>
+                      setCampaignProperty(
+                        { ...campaign.selling, products: resources },
+                        'selling'
+                      )
+                    }
+                    resources={campaign.selling.products}
+                    strategy={campaign.strategy}
+                    targets={campaign.targets}
+                    showStrategyDetails
+                  />
+                </Card.Section>
+              )}
+              {campaign.selling.mode === 'auto' && (
+                <>
+                  <Card.Section>
+                    <div className="auto-selling-settings">
+                      <TextField
+                        type="number"
+                        min="0"
+                        value={campaign.strategy.maxItemValue}
+                        id="maxItemValue"
+                        onChange={(value) =>
+                          setCampaignProperty(
+                            { ...campaign.strategy, maxItemValue: value },
+                            'strategy'
+                          )
                         }
-                        setCampaignProperty(
-                          { ...campaign.strategy, maxNumberOfItems: value },
-                          'strategy'
-                        );
-                      }}
-                      label="Max number of items"
-                      placeholder={campaign.strategy.maxNumberOfItems}
-                    />
-                  </div>
-                </Card.Section>
-                <Card.Section>
-                  {campaign.selling.mode === 'auto' && (
-                    <ResourceSelectionCampaign
-                      resourcePickerProps={{
-                        resourceType: 'Product',
-                        selectMultiple: true,
-                        showVariants: false,
-                      }}
-                      buttonProps={{
-                        primary: true,
-                        icon: MobilePlusMajor,
-                        label: 'Exclude Products from this campaign',
-                      }}
-                      onResourceMutation={(resources) =>
-                        setCampaignProperty(
-                          { ...campaign.selling, excludeProducts: resources },
-                          'selling'
-                        )
-                      }
-                      resources={campaign.selling.excludeProducts}
-                      strategy={campaign.strategy}
-                      targets={campaign.targets}
-                    />
-                  )}
-                </Card.Section>
-              </>
-            )}
-          </Card>
-        </Card.Section>
-        <Card.Section>
-          <Layout>
-            <Layout.Section>
-              <Design
-                title="5. Preview and customize your campaign before publishing"
-                setCampaignProperty={setCampaignProperty}
-                campaign={campaign}
-                subtitle={
-                  <>
-                    <div className="summary-explanation">
-                      <strong>Settings summary</strong>
-                      <p
-                        dangerouslySetInnerHTML={{
-                          __html: `Your customers will see this campaign
-                    ${
-                      campaign.targets.entry === 'onexit'
-                        ? 'when leaving '
-                        : `when clicking the <strong>${targetButton} Button</strong> on`
-                    }
-                    the <strong>${
-                      campaign.targets.page === 'add_to_cart'
-                        ? 'Product page'
-                        : campaign.targets.page === 'checkout'
-                        ? 'Cart page'
-                        : 'Thank you page'
-                    }</strong>.
-                    <br />
-                    ${
-                      campaign.targets.entry === 'onexit'
-                        ? '<strong>Attention: We will also show this campaign with no items in your customers cart.</strong>'
-                        : ''
-                    }
-                    `,
-                        }}
+                        label="Max item value"
+                        placeholder={campaign.strategy.maxItemValue}
+                        suffix={currencyCode}
                       />
-                      <p
-                        dangerouslySetInnerHTML={{
-                          __html: `Offered will be <strong>${
-                            campaign.strategy.mode === 'discount'
-                              ? `a ${campaign.strategy.discount.value} ${campaign.strategy.discount.type} discount</strong> on the claimed product unless specified else for the claimed product.`
-                              : campaign.strategy.mode === 'free_shipping'
-                              ? 'free shipping</strong> on the entire order.'
-                              : 'an additional gift</strong> to your order.'
-                          }`,
+                      <TextField
+                        type="number"
+                        min="1"
+                        value={campaign.strategy.maxNumberOfItems}
+                        id="maxNumberOfItems"
+                        onChange={(value) => {
+                          const val = parseInt(value, 10);
+                          if (val < 1) {
+                            return;
+                          }
+                          setCampaignProperty(
+                            { ...campaign.strategy, maxNumberOfItems: value },
+                            'strategy'
+                          );
                         }}
-                      />
-                      <p
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            campaign.selling.mode === 'auto'
-                              ? `The AI will chose a maximum of <strong>${
-                                  campaign.strategy.maxNumberOfItems
-                                } products</strong>${
-                                  campaign.strategy.maxItemValue !== '0'
-                                    ? ` with a maximum price of <strong>${campaign.strategy.maxItemValue} ${campaign.strategy.storeCurrencyCode}</strong>`
-                                    : ''
-                                }. The product shown below is only for demonstration.`
-                              : `<strong style="${
-                                  campaign.selling.products.length === 0 &&
-                                  'color: red'
-                                }">
-                                  ${campaign.selling.products.length}
-                                  Product${
-                                    campaign.selling.products.length === 1
-                                      ? ''
-                                      : 's'
-                                  }</strong> will be offered. ${
-                                  campaign.selling.products.length === 0
-                                    ? 'The product below is only for demonstration.'
-                                    : ''
-                                }`,
-                        }}
+                        label="Max number of items"
+                        placeholder={campaign.strategy.maxNumberOfItems}
                       />
                     </div>
-                  </>
-                }
-              />
-            </Layout.Section>
-          </Layout>
-        </Card.Section>
-      </Card>
-      <Modal
-        open={error !== ''}
-        onClose={() => setError('')}
-        title="Invalid campaign"
-        message={error}
-        primaryAction={{
-          content: 'Close',
-          onAction: () => setError(''),
-        }}
-      >
-        <div>test</div>
-      </Modal>
-    </Page>
+                  </Card.Section>
+                  <Card.Section>
+                    {campaign.selling.mode === 'auto' && (
+                      <ResourceSelectionCampaign
+                        resourcePickerProps={{
+                          resourceType: 'Product',
+                          selectMultiple: true,
+                          showVariants: false,
+                        }}
+                        buttonProps={{
+                          primary: true,
+                          icon: MobilePlusMajor,
+                          label: 'Exclude Products from this campaign',
+                        }}
+                        onResourceMutation={(resources) =>
+                          setCampaignProperty(
+                            { ...campaign.selling, excludeProducts: resources },
+                            'selling'
+                          )
+                        }
+                        resources={campaign.selling.excludeProducts}
+                        strategy={campaign.strategy}
+                        targets={campaign.targets}
+                      />
+                    )}
+                  </Card.Section>
+                </>
+              )}
+            </Card>
+          </Card.Section>
+          <Card.Section>
+            <Layout>
+              <Layout.Section>
+                <Design
+                  title="5. Preview and customize your campaign before publishing"
+                  setCampaignProperty={setCampaignProperty}
+                  campaign={campaign}
+                  subtitle={
+                    <>
+                      <div className="summary-explanation">
+                        <strong>Settings summary</strong>
+                        <p
+                          dangerouslySetInnerHTML={{
+                            __html: `Your customers will see this campaign
+                      ${
+                        campaign.targets.entry === 'onexit'
+                          ? 'when leaving '
+                          : `when clicking the <strong>${targetButton} Button</strong> on`
+                      }
+                      the <strong>${
+                        campaign.targets.page === 'add_to_cart'
+                          ? 'Product page'
+                          : campaign.targets.page === 'checkout'
+                          ? 'Cart page'
+                          : 'Thank you page'
+                      }</strong>.
+                      <br />
+                      ${
+                        campaign.targets.entry === 'onexit'
+                          ? '<strong>Attention: We will also show this campaign with no items in your customers cart.</strong>'
+                          : ''
+                      }
+                      `,
+                          }}
+                        />
+                        <p
+                          dangerouslySetInnerHTML={{
+                            __html: `Offered will be <strong>${
+                              campaign.strategy.mode === 'discount'
+                                ? `a ${campaign.strategy.discount.value} ${campaign.strategy.discount.type} discount</strong> on the claimed product unless specified else for the claimed product.`
+                                : campaign.strategy.mode === 'free_shipping'
+                                ? 'free shipping</strong> on the entire order.'
+                                : 'an additional gift</strong> to your order.'
+                            }`,
+                          }}
+                        />
+                        <p
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              campaign.selling.mode === 'auto'
+                                ? `The AI will chose a maximum of <strong>${
+                                    campaign.strategy.maxNumberOfItems
+                                  } products</strong>${
+                                    campaign.strategy.maxItemValue !== '0'
+                                      ? ` with a maximum price of <strong>${campaign.strategy.maxItemValue} ${campaign.strategy.storeCurrencyCode}</strong>`
+                                      : ''
+                                  }. The product shown below is only for demonstration.`
+                                : `<strong style="${
+                                    campaign.selling.products.length === 0 &&
+                                    'color: red'
+                                  }">
+                                    ${campaign.selling.products.length}
+                                    Product${
+                                      campaign.selling.products.length === 1
+                                        ? ''
+                                        : 's'
+                                    }</strong> will be offered. ${
+                                    campaign.selling.products.length === 0
+                                      ? 'The product below is only for demonstration.'
+                                      : ''
+                                  }`,
+                          }}
+                        />
+                      </div>
+                    </>
+                  }
+                />
+              </Layout.Section>
+            </Layout>
+          </Card.Section>
+        </Card>
+        <Modal
+          open={error !== ''}
+          onClose={() => setError('')}
+          title="Invalid campaign"
+          message={error}
+          primaryAction={{
+            content: 'Close',
+            onAction: () => setError(''),
+          }}
+        >
+          <div>test</div>
+        </Modal>
+      </Page>
+    </div>
   );
 };
 

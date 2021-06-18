@@ -59,7 +59,7 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
   return (
     <>
       <div
-        className="salestorm-settings-explanation"
+        className="settings-explanation"
         dangerouslySetInnerHTML={{
           __html: `${settingsExplanation}${explanation} Leave the min/max order value blank or zero if you don't need it.`,
         }}
@@ -107,7 +107,7 @@ const StrategySettings = ({ campaign, setCampaignProperty }) => {
       />
       <br />
       <br />
-      <div className="salestorm-general-strategy-settings">
+      <div>
         <DetailsStrategy
           strategy={campaign.strategy}
           targets={campaign.targets}

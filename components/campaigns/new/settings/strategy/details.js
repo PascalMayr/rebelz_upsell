@@ -25,14 +25,14 @@ const DetailsStrategy = ({
   switch (strategy.mode) {
     case 'free_shipping':
       salestormStrategyContainerClass =
-        'salestorm-strategy-settings salestorm-free-shipping-strategy';
+        'strategy-settings free-shipping-strategy';
       break;
     case 'gift':
       salestormStrategyContainerClass =
-        'salestorm-strategy-settings salestorm-free-shipping-strategy';
+        'strategy-settings free-shipping-strategy';
       break;
     default:
-      salestormStrategyContainerClass = 'salestorm-strategy-settings';
+      salestormStrategyContainerClass = 'strategy-settings';
       break;
   }
   const sellTypeOptions =
@@ -74,7 +74,7 @@ const DetailsStrategy = ({
         suffix={currencyCode}
       />
       {strategy.mode === 'discount' && (
-        <div className="salestorm-discount">
+        <div className="discount">
           <TextField
             type="number"
             min="1"

@@ -30,7 +30,7 @@ const TriggerSettings = ({ campaign, setCampaignProperty }) => {
   return (
     <>
       <div
-        className="salestorm-settings-explanation"
+        className="settings-explanation"
         dangerouslySetInnerHTML={{ __html: explanation }}
       />
       <Settings

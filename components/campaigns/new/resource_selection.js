@@ -59,14 +59,14 @@ const ResourceSelectionCampaign = ({
   };
   return (
     <>
-      <div className="salestorm-resources">
+      <div className="resources">
         <ResourceList
           items={resources}
           renderItem={(resource) => {
             const { title, id } = resource;
             let thumbnail;
             const ThumbnailPlaceholder = () => (
-              <div className="salestorm-resource-image-placeholder">
+              <div className="resource-image-placeholder">
                 <Icon source={ImageMajor} />
               </div>
             );
@@ -95,15 +95,15 @@ const ResourceSelectionCampaign = ({
                 accessibilityLabel={`View details for ${title}`}
                 key={`${id}-resource`}
               >
-                <div className="salestorm-resource-item-container">
-                  <div className="salestorm-resource-item">
-                    <div className="salestorm-resource-item-info">
+                <div className="resource-item-container">
+                  <div className="resource-item">
+                    <div className="resource-item-info">
                       {thumbnail}
                       <TextStyle variation="strong">{title}</TextStyle>
                     </div>
-                    <div className="salestorm-resource-actions">
+                    <div className="resource-actions">
                       <div
-                        className="salestorm-resource-remove"
+                        className="resource-remove"
                         onClick={() => removeResource(id)}
                         onKeyDown={() => removeResource(id)}
                       >
@@ -200,7 +200,7 @@ const ResourceSelectionCampaign = ({
         )}
       </ApolloConsumer>
       <div
-        className="salestorm-add-resource-button-container"
+        className="add-resource-button-container"
         style={{
           display:
             !resourcePickerProps.selectMultiple && resources.length === 1

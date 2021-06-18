@@ -5,7 +5,7 @@ const Setting = ({ id, image, label, name, value, onChange }) => {
   const onSettingChange = () => onChange(id);
   return (
     <div
-      className="salestorm-setting"
+      className="setting"
       onClick={onSettingChange}
       onKeyDown={onSettingChange}
     >
