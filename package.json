@@ -22,7 +22,9 @@
   "browserslist": [
     "since 2017-06"
   ],
-  "cacheDirectories": [".next/cache"],
+  "cacheDirectories": [
+    ".next/cache"
+  ],
   "dependencies": {
     "@apollo/client": "^3.3.16",
     "@babel/core": "^7.12.3",
