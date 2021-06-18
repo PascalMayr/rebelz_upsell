@@ -20,7 +20,7 @@ import Head from 'next/head';
 import * as Sentry from '@sentry/react';
 
 import '../styles/pages/_app.css';
-import '../styles/pages/pricing.css';
+import '../styles/pages/pricing.scss';
 import '../styles/pages/index.css';
 import '../styles/pages/campaigns/new.css';
 

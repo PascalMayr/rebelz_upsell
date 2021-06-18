@@ -1,0 +1,116 @@
+.pricing {
+  .plans-container {
+    .Polaris-Layout {
+      align-items: center;
+    }
+
+    .Polaris-ResourceList .Polaris-ResourceItem {
+      cursor: auto;
+    }
+
+    .Polaris-ResourceList .Polaris-ResourceItem:hover {
+      background-color: var(--p-text-on-interactive);
+    }
+
+    .Polaris-Card__Section .Polaris-Heading {
+      text-align: center;
+      font-size: 2.3rem;
+      padding-top: 1rem;
+      padding-bottom: 2rem;
+      text-align: center;
+    }
+
+    & > .Polaris-Heading {
+      text-align: center;
+      font-size: 3rem;
+      padding-top: 4rem;
+      padding-bottom: 6rem;
+    }
+
+    .Polaris-List {
+      list-style: none;
+      padding: 0px !important;
+      margin: 0px !important;
+      padding-left: 3rem !important;
+    }
+
+    .Polaris-List__Item {
+      font-size: 1.6rem;
+    }
+
+    .Polaris-ResourceItem__Container {
+      padding: 2rem 0.6rem;
+    }
+
+    .pricing-card-checkmark {
+      color: var(--p-action-primary);
+      margin-right: 0.5em;
+      font-weight: bold;
+    }
+
+    .Polaris-Stack {
+      .Polaris-Stack__Item:first-child > div {
+        flex-direction: column;
+        display: flex;
+        width: 100px;
+      }
+
+      .Polaris-Stack__Item:nth-child(3) {
+        width: 120px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+      }
+
+      .Polaris-Stack__Item .Polaris-TextStyle--variationStrong {
+        font-size: 1.55rem;
+      }
+
+      .Polaris-Stack__Item:nth-child(2) {
+        width: 120px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+      }
+
+      .Polaris-Stack__Item:nth-child(3) > span {
+        width: 100%;
+      }
+
+      .Polaris-Stack__Item:nth-child(3) > button {
+        max-width: 106px;
+      }
+    }
+  }
+
+  .plan-views {
+    font-size: 1.5rem;
+  }
+
+  .plans-note {
+    text-align: center;
+    margin-top: 4rem;
+  }
+
+  .pricing-contact-us {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 3rem;
+
+    & > a {
+      margin-top: 1rem;
+      text-decoration: none;
+      color: var(--p-text-on-interactive);
+    }
+
+    & > a:visited {
+      color: var(--p-text-on-interactive);
+    }
+  }
+}

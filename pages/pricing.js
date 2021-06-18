@@ -87,113 +87,114 @@ const Pricing = () => {
     }
   };
   return (
-    <Page
-      title="Plans and pricing"
-      className="salestorm-pricing"
-      subtitle="Choose the best plan for your needs."
-      breadcrumbs={[
-        { content: 'Campaigns', onAction: () => router.push('/home') },
-      ]}
-    >
-      <div className="plans-container">
-        <Heading element="h1">All features included in every plan.</Heading>
-        <Layout>
-          <Layout.Section oneHalf>
-            <List className="pricing-list" style={{ listStyle: 'none' }}>
-              {featureList.map((listItem) => (
-                <List.Item key={listItem}>
-                  <span className="salestorm-pricing-card-checkmark">✓</span>
-                  {listItem}
-                </List.Item>
-              ))}
-            </List>
-          </Layout.Section>
-          <Layout.Section oneHalf>
-            <Card>
-              <Card.Section>
-                <Heading element="h1">Choose your monthly plan</Heading>
-                <ResourceList
-                  resourceName={{ singular: 'plan', plural: 'plans' }}
-                  items={config.plans}
-                  renderItem={(plan) => {
-                    const { name, limit, amount } = plan;
-                    const isThisPlanActive = activePlanName === name;
-                    const isThisTheFreePlan = config.planNames.free === name;
-                    let planLabel;
-                    let hasButton = true;
-                    if (
-                      activePlanName === config.planNames.free &&
-                      isThisTheFreePlan
-                    ) {
-                      planLabel = 'Your Plan';
-                      hasButton = false;
-                    } else if (activePlanName === config.planNames.free) {
-                      planLabel = 'Select Plan';
-                    } else if (isThisPlanActive) {
-                      planLabel = 'Cancel subscription';
-                    } else if (isThisTheFreePlan) {
-                      planLabel = '';
-                      hasButton = false;
-                    } else {
-                      planLabel = 'Select Plan';
-                    }
+    <div className="pricing">
+      <Page
+        title="Plans and pricing"
+        subtitle="Choose the best plan for your needs."
+        breadcrumbs={[
+          { content: 'Campaigns', onAction: () => router.push('/home') },
+        ]}
+      >
+        <div className="plans-container">
+          <Heading element="h1">All features included in every plan.</Heading>
+          <Layout>
+            <Layout.Section oneHalf>
+              <List className="pricing-list" style={{ listStyle: 'none' }}>
+                {featureList.map((listItem) => (
+                  <List.Item key={listItem}>
+                    <span className="pricing-card-checkmark">✓</span>
+                    {listItem}
+                  </List.Item>
+                ))}
+              </List>
+            </Layout.Section>
+            <Layout.Section oneHalf>
+              <Card>
+                <Card.Section>
+                  <Heading element="h1">Choose your monthly plan</Heading>
+                  <ResourceList
+                    resourceName={{ singular: 'plan', plural: 'plans' }}
+                    items={config.plans}
+                    renderItem={(plan) => {
+                      const { name, limit, amount } = plan;
+                      const isThisPlanActive = activePlanName === name;
+                      const isThisTheFreePlan = config.planNames.free === name;
+                      let planLabel;
+                      let hasButton = true;
+                      if (
+                        activePlanName === config.planNames.free &&
+                        isThisTheFreePlan
+                      ) {
+                        planLabel = 'Your Plan';
+                        hasButton = false;
+                      } else if (activePlanName === config.planNames.free) {
+                        planLabel = 'Select Plan';
+                      } else if (isThisPlanActive) {
+                        planLabel = 'Cancel subscription';
+                      } else if (isThisTheFreePlan) {
+                        planLabel = '';
+                        hasButton = false;
+                      } else {
+                        planLabel = 'Select Plan';
+                      }
 
-                    return (
-                      <ResourceItem
-                        id={name}
-                        accessibilityLabel={`View details for ${name}`}
-                      >
-                        <Stack distribution="equalSpacing">
-                          <div>
-                            <TextStyle variation="strong">{name}</TextStyle>
-                            <span className="salestorm-plan-views">
-                              {new Intl.NumberFormat().format(limit)}
-                              &nbsp;views
-                            </span>
-                          </div>
-                          <div>
-                            {new Intl.NumberFormat([], {
-                              style: 'currency',
-                              currency: 'USD',
-                            }).format(amount)}{' '}
-                            / month
-                          </div>
-                          {hasButton ? (
-                            <Button
-                              primary
-                              disabled={Boolean(loading)}
-                              loading={loading === name}
-                              onClick={() => onPlanSelect(name)}
-                            >
-                              {planLabel}
-                            </Button>
-                          ) : (
-                            <span>{planLabel}</span>
-                          )}
-                        </Stack>
-                      </ResourceItem>
-                    );
-                  }}
-                />
-                <div className="salestorm-pricing-contact-us">
-                  <TextStyle>Need help or a bigger plan?</TextStyle>
-                  <a
-                    target="_blank"
-                    href="mailto:support@rebelzcommerce.com?subject=Plan%20Upgrade%20Inquiry"
-                  >
-                    <Button primary>Contact us</Button>
-                  </a>
-                </div>
-              </Card.Section>
-            </Card>
-          </Layout.Section>
-        </Layout>
-        <br />
-        <p className="salestorm-plans-note">
-          Cancel or change your plan anytime, no strings attached.
-        </p>
-      </div>
-    </Page>
+                      return (
+                        <ResourceItem
+                          id={name}
+                          accessibilityLabel={`View details for ${name}`}
+                        >
+                          <Stack distribution="equalSpacing">
+                            <div>
+                              <TextStyle variation="strong">{name}</TextStyle>
+                              <span className="plan-views">
+                                {new Intl.NumberFormat().format(limit)}
+                                &nbsp;views
+                              </span>
+                            </div>
+                            <div>
+                              {new Intl.NumberFormat([], {
+                                style: 'currency',
+                                currency: 'USD',
+                              }).format(amount)}{' '}
+                              / month
+                            </div>
+                            {hasButton ? (
+                              <Button
+                                primary
+                                disabled={Boolean(loading)}
+                                loading={loading === name}
+                                onClick={() => onPlanSelect(name)}
+                              >
+                                {planLabel}
+                              </Button>
+                            ) : (
+                              <span>{planLabel}</span>
+                            )}
+                          </Stack>
+                        </ResourceItem>
+                      );
+                    }}
+                  />
+                  <div className="pricing-contact-us">
+                    <TextStyle>Need help or a bigger plan?</TextStyle>
+                    <a
+                      target="_blank"
+                      href="mailto:support@rebelzcommerce.com?subject=Plan%20Upgrade%20Inquiry"
+                    >
+                      <Button primary>Contact us</Button>
+                    </a>
+                  </div>
+                </Card.Section>
+              </Card>
+            </Layout.Section>
+          </Layout>
+          <br />
+          <p className="plans-note">
+            Cancel or change your plan anytime, no strings attached.
+          </p>
+        </div>
+      </Page>
+    </div>
   );
 };
 
