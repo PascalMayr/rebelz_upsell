@@ -406,7 +406,7 @@ const New = () => {
                 campaign={campaign}
                 subtitle={
                   <>
-                    <div className="salestorm-summary-explanation">
+                    <div className="summary-explanation">
                       <strong>Settings summary</strong>
                       <p
                         dangerouslySetInnerHTML={{

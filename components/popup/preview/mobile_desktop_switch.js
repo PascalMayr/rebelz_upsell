@@ -9,7 +9,7 @@ const MobileDesktopSwitchPreview = ({ onSwitch }) => {
     onSwitch(value);
   };
   return (
-    <div className="salestorm-preview-switch">
+    <div className="preview-switch">
       <Button
         icon={DesktopMajor}
         primary={selected === 'desktop'}

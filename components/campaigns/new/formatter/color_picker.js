@@ -26,7 +26,7 @@ const ColorPickerFormatter = ({
   const { h, s, l, a } = tinycolor(color).toHsl();
   const colorForPicker = { hue: h, saturation: s, brightness: l, alpha: a };
   return (
-    <div className="salestorm-color-picker" {...props}>
+    <div className="color-picker" {...props}>
       <ColorPicker
         onChange={(value) => {
           onChange(getColorFromColorPicker(value, colorMode));
@@ -36,7 +36,7 @@ const ColorPickerFormatter = ({
         id={id}
       />
       <div
-        className="salestorm-picked-color"
+        className="picked-color"
         style={{
           backgroundColor: getColorFromColorPicker(colorForPicker, colorMode),
         }}

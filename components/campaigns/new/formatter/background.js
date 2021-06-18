@@ -25,7 +25,7 @@ const BackgroundFormatter = ({ styles, setStyleProperty }) => {
             href="https://postimages.org/"
             target="_blank"
             rel="noopener noreferrer"
-            className="postimages-link text-decoration-underline"
+            className="postimages-link"
           >
             &nbsp;Postimages&nbsp;
           </a>

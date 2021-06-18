@@ -160,7 +160,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
             Total campaign views and sales this month.
           </p>
           <br />
-          <div className="slaestorm-analytics-chart">
+          <div className="analytics-chart">
             <canvas ref={periodRef} />
           </div>
         </Card.Section>
@@ -174,7 +174,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
                 Total sales vs total views this month.
               </p>
               <br />
-              <div className="slaestorm-analytics-chart">
+              <div className="analytics-chart">
                 <canvas ref={ordersPieRef} />
               </div>
             </Card.Section>
@@ -239,7 +239,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
                       : revenue;
                     return (
                       <ResourceItem onClick={() => router.push(url)}>
-                        <h3 className="salestorm-campaign-title">
+                        <h3 className="campaign-title">
                           <TextStyle>{name}</TextStyle>
                         </h3>
                         <Badge status="success">

@@ -19,7 +19,7 @@ const SalestormTheme = ({ theme, name, setCampaignProperty }) => {
     <div
       onClick={setTheme}
       onKeyDown={setTheme}
-      className="salestorm-theme"
+      className="theme"
       style={{
         backgroundColor: quickThemes(theme).popup.backgroundColor,
         color: quickThemes(theme).popup.color,
@@ -45,7 +45,7 @@ const Design = ({
   const [options, setOptions] = useState(advanced);
   const [formatter, setFormatter] = useState(false);
   const previewContainerClass =
-    preview && !rerenderButton ? `salestorm-${preview}-preview-container` : '';
+    preview && !rerenderButton ? `${preview}-preview-container` : '';
   const disclosure = options ? 'down' : 'up';
   useEffect(() => {
     if (window.Salestorm && window.Salestorm.hidePopup) {
@@ -71,12 +71,12 @@ const Design = ({
     }, 200);
   };
   return (
-    <Card className="salestorm-global-design">
+    <Card className="global-design">
       <Card.Section title={title}>
         {subtitle}
         <br />
         {rerenderButton && (
-          <div className="salestorm-rerender-container">
+          <div className="rerender-container">
             <Button
               onClick={() => {
                 setRerenderButton(false);
@@ -99,7 +99,7 @@ const Design = ({
         <MobileDesktopSwitchPreview onSwitch={(value) => setPreview(value)} />
       </Card.Section>
       <Card.Section title="Click to apply quick themes.">
-        <div className="salestorm-themes">
+        <div className="themes">
           <SalestormTheme
             theme="simple"
             name="Simple"
@@ -116,7 +116,7 @@ const Design = ({
             setCampaignProperty={setCampaignProperty}
           />
         </div>
-        <div className="salestorm-themes">
+        <div className="themes">
           <SalestormTheme
             theme="choco"
             name="Chocolate"
@@ -133,7 +133,7 @@ const Design = ({
             setCampaignProperty={setCampaignProperty}
           />
         </div>
-        <div className="salestorm-themes">
+        <div className="themes">
           <SalestormTheme
             theme="galleriaempire"
             name="Galleria Empire"
@@ -152,7 +152,7 @@ const Design = ({
         </div>
       </Card.Section>
       <Card.Section>
-        <div className="salestorm-design-help">
+        <div className="design-help">
           <Button primary icon={ReplayMinor} onClick={replayAnimation}>
             Replay incoming animation
           </Button>
@@ -165,7 +165,7 @@ const Design = ({
         </div>
       </Card.Section>
       <Card.Section>
-        <div className="salestorm-advanced-formatter-settings-toggle">
+        <div className="advanced-formatter-settings-toggle">
           <Button
             icon={ToolsMajor}
             onClick={() => {

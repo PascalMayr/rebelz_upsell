@@ -65,7 +65,7 @@ const TextFormatter = ({ styles, setStyleProperty }) => {
             href="https://fonts.google.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="postimages-link text-decoration-underline"
+            className="postimages-link"
           >
             &nbsp;Google Fonts&nbsp;
           </a>

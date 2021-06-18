@@ -6,7 +6,7 @@ const Campaign = ({ campaign: { published, views, name } }) => {
   const icon = published ? ViewMinor : HideMinor;
   return (
     <>
-      <h3 className="salestorm-campaign-title">
+      <h3 className="campaign-title">
         <TextStyle>{name}</TextStyle>
       </h3>
       <Badge status={publishedStatus}>

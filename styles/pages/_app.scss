@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Lalezar&family=Lato&family=Quattrocento&family=Quattrocento+Sans&family=Yatra+One&family=Montserrat&display=swap');
+
+html {
+  scroll-behavior: smooth;
+}
+
+#__next-prerender-indicator {
+  display: none;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-decoration-underline {
+  text-decoration: underline;
+}
+
+.banner-border-sides {
+  display: flex;
+  margin-top: 1em;
+}
+
+#formatter {
+  margin-top: 1em;
+  min-height: 240px;
+
+  .range:not(:first-child) {
+    margin-top: 1em;
+  }
+
+  .styles-animation {
+    display: flex;
+    margin-bottom: 1em;
+    margin-top: 1em;
+
+    & > div {
+      flex: 1;
+    }
+
+    & > div:not(:first-child) {
+      margin-left: 2em;
+    }
+  }
+
+  .styles-animation-container {
+    margin-bottom: 5em;
+  }
+
+  .styles-animation-repeat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .colors > div:first-child {
+    margin-right: 1em;
+  }
+
+  .color-picker .Polaris-ColorPicker {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  .picked-color {
+    width: 100%;
+    border-radius: 0.25em;
+    text-align: center;
+    padding: 1em;
+    box-shadow: -0.5px -0.5px 4px black;
+  }
+
+  .colors {
+    display: flex;
+    flex-wrap: wrap;
+
+    & > div:not(:first-child) {
+      margin-left: 2em;
+    }
+  }
+
+  .styles {
+    flex: 4;
+  }
+}
+
+.postimages-link {
+  text-decoration: none;
+  color: var(--p-interactive);
+}
+
+.texts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.text {
+  width: 30%;
+  margin-top: 1em;
+  margin-left: 1em;
+}
+
+.options {
+  display: flex;
+
+  & > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    justify-content: space-around;
+
+    & > * {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+    }
+  }
+}
+
+.countdown-time {
+  display: flex;
+
+  & > div:first-child {
+    margin-right: 5px;
+  }
+}
+
+.preview-switch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5em;
+
+  & > button {
+    width: 150px;
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+}
+
+.Polaris-EmptyState__ImageContainer > img {
+  width: 300px !important;
+}
+
+.analytics-chart {
+  height: 400px;
+}
+
+.campaign-title {
+  display: inline-block;
+  margin-right: 1em;
+  font-size: 1.2em;
+}
+
+.themes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.theme {
+  flex: 1;
+  margin: 1em;
+  cursor: pointer;
+  height: 3.7em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  border-width: 3px;
+  border-style: solid;
+  font-size: 15px;
+}
+
+.advanced-formatter-settings-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rerender-container {
+  min-height: 500px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .Polaris-Button {
+    margin: 0 auto;
+  }
+}
+
+.global-design {
+  --s-device-border-color: rgb(32, 34, 35, 0.1);
+}
+
+.mobile-preview-container {
+  border-right: 1em;
+  border-left: 1em;
+  border-top: 2em;
+  border-bottom: 2em;
+  border-radius: 30px;
+  border-color: var(--s-device-border-color);
+  border-style: solid;
+  width: 320px;
+  height: 640px;
+  margin: 0 auto;
+}
+
+.desktop-preview-container #salestorm-overlay-container {
+  padding: 3em;
+}
+
+.tablet-preview-container {
+  border-right: 1em;
+  border-left: 1em;
+  border-top: 2em;
+  border-bottom: 2em;
+  border-radius: 30px;
+  border-color: var(--s-device-border-color);
+  border-style: solid;
+  width: 600px;
+  height: 800px;
+  margin: 0 auto;
+}
+
+.summary-explanation {
+  color: var(--p-text-subdued);
+  margin-bottom: 1em;
+}
+
+.design-help {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+
+  a {
+    text-decoration: none;
+  }
+}

@@ -193,15 +193,15 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
   return (
     <>
       <Tabs tabs={tabs} selected={tab} onSelect={handleTabChange} fitted>
-        <div id="salestorm-formatter">
+        <div id="formatter">
           {id === 'texts' && (
-            <div className="salestorm-texts">
+            <div className="texts">
               {Object.keys(campaign.texts).map((textKey) => {
                 const label = Object.keys(
                   startCasify({ [textKey]: textKey })
                 )[0];
                 return (
-                  <div key={textKey} className="salestorm-text">
+                  <div key={textKey} className="text">
                     <TextField
                       key={textKey}
                       label={label}
@@ -240,8 +240,8 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
             />
           )}
           {id === 'animation' && (
-            <div className="salestorm-formatter-styles-animation-container">
-              <div className="salestorm-formatter-styles-animation">
+            <div className="styles-animation-container">
+              <div className="styles-animation">
                 <Select
                   label="Incoming Animation"
                   options={animationTypes}
@@ -261,7 +261,7 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
                   value={`${campaign.styles.animation.delay}`}
                 />
               </div>
-              <div className="salestorm-formatter-styles-animation">
+              <div className="styles-animation">
                 <Select
                   label="Animation Speed"
                   options={animationSpeeds}
@@ -270,7 +270,7 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
                   }}
                   value={campaign.styles.animation.speed}
                 />
-                <div className="salestorm-formatter-styles-animation-repeat">
+                <div className="styles-animation-repeat">
                   <Button icon={ReplayMinor} primary onClick={replayAnimation}>
                     Replay incoming Animation
                   </Button>
@@ -279,8 +279,8 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
             </div>
           )}
           {styleChoices.length > 0 && (
-            <div className="salestorm-formatter-colors">
-              <div className="salestorm-formatter-choces">
+            <div className="colors">
+              <div>
                 {styleChoices.length > 1 && (
                   <ChoiceList
                     choices={styleChoices}
@@ -305,7 +305,7 @@ const Formatter = ({ campaign, setCampaignProperty }) => {
                   allowAlpha
                 />
               )}
-              <div className="salestorm-formatter-styles">
+              <div className="styles">
                 {styleChoice.value === 'background' && (
                   <BackgroundFormatter
                     styles={styles}

@@ -30,7 +30,7 @@ const BorderFormatter = ({ setStyleProperty, styles }) => {
 
   return (
     <>
-      <div className="salestorm-formatter-range">
+      <div className="range">
         <RangeSlider
           label="Border Radius in px"
           value={parseInt(styles.borderRadius, 10)}
@@ -38,7 +38,7 @@ const BorderFormatter = ({ setStyleProperty, styles }) => {
           output
         />
       </div>
-      <div className="salestorm-formatter-range">
+      <div className="range">
         <RangeSlider
           label="Border width in px"
           value={parseInt(getCommonBorderWidth(), 10)}
@@ -51,8 +51,8 @@ const BorderFormatter = ({ setStyleProperty, styles }) => {
           output
         />
       </div>
-      <div className="salestormm-banner-formatter-border-sides">
-        <div className="salestorm-popup-formatter-left-right-sides">
+      <div className="banner-border-sides">
+        <div>
           <Checkbox
             label="Apply to the left"
             checked={getSideBorderWidth('left') !== '0px'}
@@ -77,7 +77,7 @@ const BorderFormatter = ({ setStyleProperty, styles }) => {
             }}
           />
         </div>
-        <div className="salestorm-popup-formatter-top-bottom-sides">
+        <div>
           <Checkbox
             label="Apply to the top"
             checked={getSideBorderWidth('top') !== '0px'}
