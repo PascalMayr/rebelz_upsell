@@ -349,13 +349,7 @@ import * as Sentry from '@sentry/browser';
       }
     };
     await checkAndHandleCartCampaign();
-    const checkAndHandleCartCampaignInterval = setInterval(async () => {
-      if (popups[targets.checkout].campaign) {
-        clearInterval(checkAndHandleCartCampaignInterval);
-      } else {
-        await checkAndHandleCartCampaign();
-      }
-    }, 3000);
+    document.addEventListener(cartChangedEvent.type, checkAndHandleCartCampaign);
   };
 
   const handleProductPage = async () => {
