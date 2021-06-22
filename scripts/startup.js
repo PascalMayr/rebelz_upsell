@@ -48,6 +48,7 @@ import * as Sentry from '@sentry/browser';
   const continueOriginalClickEvent = new Event(
     'salestorm-continue-original-click-event'
   );
+  const cartChangedEvent = new Event('salestorm-cart-changed-event');
   let productsAddedByXHROrFetch = false;
   // eslint-disable-next-line no-undef
   const publicAPI = `${process.env.HOST}/api`;
@@ -437,6 +438,20 @@ import * as Sentry from '@sentry/browser';
     }
   };
 
+  const checkForCartChange = (url) => {
+    if (!url) {
+      return;
+    }
+    if (
+      url.match(/cart\/add/) ||
+      url.match(/cart\/update/) ||
+      url.match(/cart\/change/) ||
+      url.match(/cart\/clear/)
+    ) {
+      document.dispatchEvent(cartChangedEvent);
+    }
+  };
+
   const initXHRMonkeyPatch = () => {
     const oldOpen = window.XMLHttpRequest.prototype.open;
     window.XMLHttpRequest.prototype.open = function (
@@ -447,15 +462,28 @@ import * as Sentry from '@sentry/browser';
       password
     ) {
       checkForProductAdd(url);
+      this.addEventListener('load', function() {
+        checkForCartChange(url);
+        // do something with the response text
+        // console.log('load: ' + this.responseText);
+      });
       return oldOpen.apply(this, [method, url, async, user, password]);
     };
   };
 
   const initFetchMonkeyPatch = () => {
-    const oldFetch = window.fetch;
-    window.fetch = (url, options) => {
+    const { fetch: origFetch } = window;
+    window.fetch = async (url, options) => {
       checkForProductAdd(url);
-      return oldFetch(url, options);
+      const response = await origFetch(url, options);
+      checkForCartChange(url);
+      // response
+      //   .clone()
+      //   .json()
+      //   .then(body => console.log("intercepted response:", body))
+      //   .catch(err => console.error(err))
+      // ;
+      return response;
     };
   };
 
