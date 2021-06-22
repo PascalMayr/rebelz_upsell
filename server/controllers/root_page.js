@@ -8,9 +8,9 @@ const rootPage = async (ctx) => {
   );
   store = store.rows[0];
   if (store) {
-    ctx.redirect(`/auth?shop=${shop}`);
+    ctx.redirect(`/auth?shop=${shop}&host=${ctx.query.host}`);
   } else {
-    ctx.redirect(`/offline/auth?shop=${shop}`);
+    ctx.redirect(`/offline/auth?shop=${shop}&host=${ctx.query.host}`);
   }
 };
 

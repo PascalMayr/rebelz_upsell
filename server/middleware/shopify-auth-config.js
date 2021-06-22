@@ -92,7 +92,7 @@ export const onlineAuthConfig = {
       ]
     );
     // Redirect to shop upon auth
-    ctx.redirect(`/home?shop=${shop}`);
+    ctx.redirect(`/home?shop=${shop}&host=${ctx.query.host}`);
   },
 };
 
@@ -152,6 +152,6 @@ export const offlineAuthConfig = {
       ApiVersion.April21
     );
     // Redirect to online auth after offline auth
-    ctx.redirect(`/?shop=${shop}`);
+    ctx.redirect(`/?shop=${shop}&host=${ctx.query.host}`);
   },
 };
