@@ -349,7 +349,10 @@ import * as Sentry from '@sentry/browser';
       }
     };
     await checkAndHandleCartCampaign();
-    document.addEventListener(cartChangedEvent.type, checkAndHandleCartCampaign);
+    document.addEventListener(
+      cartChangedEvent.type,
+      checkAndHandleCartCampaign
+    );
   };
 
   const handleProductPage = async () => {
@@ -456,7 +459,7 @@ import * as Sentry from '@sentry/browser';
       password
     ) {
       checkForProductAdd(url);
-      this.addEventListener('load', function() {
+      this.addEventListener('load', function () {
         checkForCartChange(url);
         // do something with the response text
         // console.log('load: ' + this.responseText);
