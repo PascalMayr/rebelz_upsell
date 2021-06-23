@@ -3217,30 +3217,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/app-bridge-react@npm:^1.15.0":
-  version: 1.28.0
-  resolution: "@shopify/app-bridge-react@npm:1.28.0"
+"@shopify/app-bridge-react@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "@shopify/app-bridge-react@npm:2.0.3"
   dependencies:
-    "@shopify/app-bridge": ^1.28.0
+    "@shopify/app-bridge": ^2.0.3
   peerDependencies:
     react: ^16.0.0
-  checksum: 38b49a9bf0bb25ab0b8a1cf098b578d32ff4160cefa64170d6c87772637b1d796cb1c299e5fa7c43756cc846661757be079f414a39afe49914c7f5375e5ef447
+  checksum: 5cc95e185385bf3494245ae27bffdcfd70468966099a918ee5ea435b11d8302de9a464170387caa884a59a9f148f40fb06f4ea072dd978a97352281e91954dfe
   languageName: node
   linkType: hard
 
-"@shopify/app-bridge-utils@npm:^1.30.0":
-  version: 1.30.0
-  resolution: "@shopify/app-bridge-utils@npm:1.30.0"
+"@shopify/app-bridge-utils@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "@shopify/app-bridge-utils@npm:2.0.3"
   dependencies:
-    "@shopify/app-bridge": ^1.30.0
-  checksum: f5687a26eb6df9950509893145b92775f6a5cb474a4cf761d5b1c2ff1a52b2a71630bc9126c9a42cabd23496b017cfa00b16642910fbeeac02a9d50c6eac94f8
+    "@shopify/app-bridge": ^2.0.3
+  checksum: 1d8ef105e60ec7f62e856d16fd2185fcb4cdf604da7dbb4366fe0f5bb6fee05b6941e36929068c27d014aa4ef8344b953e7a6fdb8c93e1d22aace98f18fb2d84
   languageName: node
   linkType: hard
 
-"@shopify/app-bridge@npm:^1.28.0, @shopify/app-bridge@npm:^1.30.0":
-  version: 1.30.0
-  resolution: "@shopify/app-bridge@npm:1.30.0"
-  checksum: 630ee115c352ca75547fdf7b7db2fb4bcdfabd5ba3c97d5d2e25aae2224778018354223ce52f0a7116489d7f9abb1e24c56d3dfe2254d7d94578f437d260478d
+"@shopify/app-bridge@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "@shopify/app-bridge@npm:2.0.3"
+  dependencies:
+    base64url: ^3.0.1
+  checksum: 092d54a5aa5cca0f54edbcd12238531a4797f444fabb1d6354e1aad59c928a24fbb692c74450efb77cda7c7e11cd0875cef64a04d24f39c8c609f012c1908137
   languageName: node
   linkType: hard
 
@@ -5330,6 +5332,13 @@ __metadata:
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: c1b41a26ddc6620eb7f1ee6c29c812f5942a4e328e74263f995872cfb8ca3aee08542beb25cd10fd7ef16e4f16603e25c35a26e776c01fd55277e5035e829e0e
+  languageName: node
+  linkType: hard
+
+"base64url@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "base64url@npm:3.0.1"
+  checksum: e7c3424af4c711e1fbfe6b6e7e3976af684a5a080aa7c17a3d1fd375a029ff5f831ada40223571a8032d7c45f91d48266a9c367467a5f0c995cfb69de90cbdd3
   languageName: node
   linkType: hard
 
@@ -15912,9 +15921,9 @@ resolve@^2.0.0-next.3:
     "@sentry/node": ^6.2.3
     "@sentry/react": ^6.2.3
     "@sentry/tracing": ^6.2.3
-    "@shopify/app-bridge": ^1.30.0
-    "@shopify/app-bridge-react": ^1.15.0
-    "@shopify/app-bridge-utils": ^1.30.0
+    "@shopify/app-bridge": ^2.0.3
+    "@shopify/app-bridge-react": ^2.0.3
+    "@shopify/app-bridge-utils": ^2.0.3
     "@shopify/app-cli-node-generator-helper": ^1.1.2
     "@shopify/eslint-plugin": ^39.0.3
     "@shopify/koa-shopify-auth": ^4.1.2
