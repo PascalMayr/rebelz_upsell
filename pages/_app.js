@@ -73,11 +73,12 @@ const GraphQLProvider = (props) => {
 class MyApp extends App {
   constructor(props) {
     super(props);
-    let shop;
+    let host;
     if (typeof window === 'undefined') {
-      shop = this.props.router.query.shop;
+      host = this.props.router.query.host;
     } else {
-      shop = new URLSearchParams(window.location.search).get('shop');
+      const params = new URLSearchParams(window.location.search);
+      host = params.get('host');
     }
 
     this.state = {
@@ -87,7 +88,7 @@ class MyApp extends App {
         isError: false,
       },
       setToast: (toast) => this.setState((state) => ({ ...state, toast })),
-      shop,
+      host,
     };
   }
 
@@ -122,7 +123,7 @@ class MyApp extends App {
           config={{
             // eslint-disable-next-line no-undef
             apiKey: API_KEY,
-            shopOrigin: this.state.shop,
+            host: this.state.host,
             forceRedirect: true,
           }}
         >

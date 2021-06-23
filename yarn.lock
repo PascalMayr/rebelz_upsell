@@ -5,20 +5,20 @@ __metadata:
   version: 4
   cacheKey: 7
 
-"@apollo/client@npm:^3.3.16":
-  version: 3.3.16
-  resolution: "@apollo/client@npm:3.3.16"
+"@apollo/client@npm:^3.3.20":
+  version: 3.3.20
+  resolution: "@apollo/client@npm:3.3.20"
   dependencies:
     "@graphql-typed-document-node/core": ^3.0.0
     "@types/zen-observable": ^0.8.0
     "@wry/context": ^0.6.0
-    "@wry/equality": ^0.4.0
+    "@wry/equality": ^0.5.0
     fast-json-stable-stringify: ^2.0.0
     graphql-tag: ^2.12.0
     hoist-non-react-statics: ^3.3.2
-    optimism: ^0.15.0
+    optimism: ^0.16.0
     prop-types: ^15.7.2
-    symbol-observable: ^2.0.0
+    symbol-observable: ^4.0.0
     ts-invariant: ^0.7.0
     tslib: ^1.10.0
     zen-observable: ^0.8.14
@@ -31,7 +31,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: 5eaccf99ed298b8e6516210888c82ef3ccda42c7d8aa72054aff4bb34a9fddb6029124a9e435fb868ec0b259996a0f67d10e80b2a7823355b5f01b75a2fc96f7
+  checksum: ba1e0d92a96e1278d014ccf5f9d7f0082355d2de12e4d4527ea3f5e1f3da5b7b0b274fdc7d18741c4d287bcb00194456cd8276282602962a7ac52fbe773fea26
   languageName: node
   linkType: hard
 
@@ -3217,30 +3217,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/app-bridge-react@npm:^1.15.0":
-  version: 1.28.0
-  resolution: "@shopify/app-bridge-react@npm:1.28.0"
+"@shopify/app-bridge-react@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "@shopify/app-bridge-react@npm:2.0.3"
   dependencies:
-    "@shopify/app-bridge": ^1.28.0
+    "@shopify/app-bridge": ^2.0.3
   peerDependencies:
     react: ^16.0.0
-  checksum: 38b49a9bf0bb25ab0b8a1cf098b578d32ff4160cefa64170d6c87772637b1d796cb1c299e5fa7c43756cc846661757be079f414a39afe49914c7f5375e5ef447
+  checksum: 5cc95e185385bf3494245ae27bffdcfd70468966099a918ee5ea435b11d8302de9a464170387caa884a59a9f148f40fb06f4ea072dd978a97352281e91954dfe
   languageName: node
   linkType: hard
 
-"@shopify/app-bridge-utils@npm:^1.30.0":
-  version: 1.30.0
-  resolution: "@shopify/app-bridge-utils@npm:1.30.0"
+"@shopify/app-bridge-utils@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "@shopify/app-bridge-utils@npm:2.0.3"
   dependencies:
-    "@shopify/app-bridge": ^1.30.0
-  checksum: f5687a26eb6df9950509893145b92775f6a5cb474a4cf761d5b1c2ff1a52b2a71630bc9126c9a42cabd23496b017cfa00b16642910fbeeac02a9d50c6eac94f8
+    "@shopify/app-bridge": ^2.0.3
+  checksum: 1d8ef105e60ec7f62e856d16fd2185fcb4cdf604da7dbb4366fe0f5bb6fee05b6941e36929068c27d014aa4ef8344b953e7a6fdb8c93e1d22aace98f18fb2d84
   languageName: node
   linkType: hard
 
-"@shopify/app-bridge@npm:^1.28.0, @shopify/app-bridge@npm:^1.30.0":
-  version: 1.30.0
-  resolution: "@shopify/app-bridge@npm:1.30.0"
-  checksum: 630ee115c352ca75547fdf7b7db2fb4bcdfabd5ba3c97d5d2e25aae2224778018354223ce52f0a7116489d7f9abb1e24c56d3dfe2254d7d94578f437d260478d
+"@shopify/app-bridge@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "@shopify/app-bridge@npm:2.0.3"
+  dependencies:
+    base64url: ^3.0.1
+  checksum: 092d54a5aa5cca0f54edbcd12238531a4797f444fabb1d6354e1aad59c928a24fbb692c74450efb77cda7c7e11cd0875cef64a04d24f39c8c609f012c1908137
   languageName: node
   linkType: hard
 
@@ -4345,12 +4347,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wry/equality@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "@wry/equality@npm:0.4.0"
+"@wry/equality@npm:^0.5.0":
+  version: 0.5.1
+  resolution: "@wry/equality@npm:0.5.1"
   dependencies:
     tslib: ^2.1.0
-  checksum: 87c2b705edf0cc81e8b034367765762f3d2a1a0bfd9163b70389398bc0fc0338e1f8d68b2eaa70b0f5101c455bf5d419ae4a4f03f7f7697803e34adb9ca86b72
+  checksum: 9338248846ff40aa682c75d4bd5c78ccbda39342cea1246f21c018973b88635e19c8cd4180af57d3dd3f2317da8d269ce50b909be865d43d69815ed9a4afd092
   languageName: node
   linkType: hard
 
@@ -5330,6 +5332,13 @@ __metadata:
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: c1b41a26ddc6620eb7f1ee6c29c812f5942a4e328e74263f995872cfb8ca3aee08542beb25cd10fd7ef16e4f16603e25c35a26e776c01fd55277e5035e829e0e
+  languageName: node
+  linkType: hard
+
+"base64url@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "base64url@npm:3.0.1"
+  checksum: e7c3424af4c711e1fbfe6b6e7e3976af684a5a080aa7c17a3d1fd375a029ff5f831ada40223571a8032d7c45f91d48266a9c367467a5f0c995cfb69de90cbdd3
   languageName: node
   linkType: hard
 
@@ -13427,13 +13436,13 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"optimism@npm:^0.15.0":
-  version: 0.15.0
-  resolution: "optimism@npm:0.15.0"
+"optimism@npm:^0.16.0":
+  version: 0.16.1
+  resolution: "optimism@npm:0.16.1"
   dependencies:
     "@wry/context": ^0.6.0
     "@wry/trie": ^0.3.0
-  checksum: a9152e33a27be9b2b4a441387061a7e8aff9877872169eba49c11c07fee19b7369efd48f7530f5a65e142f46b63ba3c8a56c9b893eaa696e143f1fdff33760a2
+  checksum: 760b1295525ba86592edf245736ed704670330a8997d91144c1b45bc9f76e392b53c170fb1eb3b265f67584a4f7e205bc777d0c8ed97774326dba9fbfe899e27
   languageName: node
   linkType: hard
 
@@ -15898,7 +15907,7 @@ resolve@^2.0.0-next.3:
   version: 0.0.0-use.local
   resolution: "salestorm@workspace:."
   dependencies:
-    "@apollo/client": ^3.3.16
+    "@apollo/client": ^3.3.20
     "@babel/core": ^7.12.3
     "@babel/plugin-transform-runtime": ^7.6.2
     "@babel/polyfill": ^7.6.0
@@ -15912,9 +15921,9 @@ resolve@^2.0.0-next.3:
     "@sentry/node": ^6.2.3
     "@sentry/react": ^6.2.3
     "@sentry/tracing": ^6.2.3
-    "@shopify/app-bridge": ^1.30.0
-    "@shopify/app-bridge-react": ^1.15.0
-    "@shopify/app-bridge-utils": ^1.30.0
+    "@shopify/app-bridge": ^2.0.3
+    "@shopify/app-bridge-react": ^2.0.3
+    "@shopify/app-bridge-utils": ^2.0.3
     "@shopify/app-cli-node-generator-helper": ^1.1.2
     "@shopify/eslint-plugin": ^39.0.3
     "@shopify/koa-shopify-auth": ^4.1.2
@@ -17564,10 +17573,10 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"symbol-observable@npm:^2.0.0":
-  version: 2.0.3
-  resolution: "symbol-observable@npm:2.0.3"
-  checksum: c022177891e0aa3169bbaaed68d928ff7a2b5f5b1b2bf655b99804ecfabe280a6f1042dd3bda609475e637c57141d39b33e692b6f6b5fdb29ce7f61cf77be57f
+"symbol-observable@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "symbol-observable@npm:4.0.0"
+  checksum: 6d184cd370270ab53279d2737c6880d64bbe854dbdf3d759600efbc11bba3d006a9f805070c81c84fae949067c069cd001a1440295ca3b36f705b05293bf8e1e
   languageName: node
   linkType: hard
 
