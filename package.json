@@ -6,7 +6,7 @@
     "test": "snyk test",
     "graphile": "cd server && DOTENV_CONFIG_PATH=../.env node -r dotenv/config ../node_modules/graphile-migrate/dist/cli.js",
     "dev": "yarn run graphile migrate && cross-env NODE_ENV=development PORT=443 nodemon --inspect ./server/index.js --watch ./server/index.js & parcel watch scripts/startup.js -d public",
-    "serve": "shopify serve --host https://loop.rebelzcommerce.com",
+    "serve": "shopify node serve --host https://loop.rebelzcommerce.com",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build && parcel build scripts/startup.js --no-source-maps",
     "release": "yarn run graphile migrate && node scripts/startup-to-github",
     "start": "cross-env NODE_ENV=production node ./server/index.js"
@@ -46,7 +46,7 @@
     "@shopify/koa-shopify-webhooks": "2.6.4",
     "@shopify/polaris": "6.5.0",
     "@shopify/polaris-icons": "4.5.0",
-    "@shopify/shopify-api": "1.2.1",
+    "@shopify/shopify-api": "^1.4.1",
     "axios": "0.21.4",
     "casify": "2.0.0",
     "chart.js": "2.9.4",
