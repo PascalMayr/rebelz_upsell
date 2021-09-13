@@ -5,23 +5,22 @@ __metadata:
   version: 4
   cacheKey: 7
 
-"@apollo/client@npm:3.3.20":
-  version: 3.3.20
-  resolution: "@apollo/client@npm:3.3.20"
+"@apollo/client@npm:3.4.11":
+  version: 3.4.11
+  resolution: "@apollo/client@npm:3.4.11"
   dependencies:
     "@graphql-typed-document-node/core": ^3.0.0
-    "@types/zen-observable": ^0.8.0
     "@wry/context": ^0.6.0
     "@wry/equality": ^0.5.0
-    fast-json-stable-stringify: ^2.0.0
-    graphql-tag: ^2.12.0
+    "@wry/trie": ^0.3.0
+    graphql-tag: ^2.12.3
     hoist-non-react-statics: ^3.3.2
-    optimism: ^0.16.0
+    optimism: ^0.16.1
     prop-types: ^15.7.2
     symbol-observable: ^4.0.0
-    ts-invariant: ^0.7.0
-    tslib: ^1.10.0
-    zen-observable: ^0.8.14
+    ts-invariant: ^0.9.0
+    tslib: ^2.3.0
+    zen-observable-ts: ~1.1.0
   peerDependencies:
     graphql: ^14.0.0 || ^15.0.0
     react: ^16.8.0 || ^17.0.0
@@ -31,7 +30,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: ba1e0d92a96e1278d014ccf5f9d7f0082355d2de12e4d4527ea3f5e1f3da5b7b0b274fdc7d18741c4d287bcb00194456cd8276282602962a7ac52fbe773fea26
+  checksum: 9eec5e9cf722519f3b639b99a3fdbd00ff0e9298657974e88332c389809baa806067095bec0efefe08843195cd8ccaeb93f2a40919bebf458bc0240187c11ce4
   languageName: node
   linkType: hard
 
@@ -2418,7 +2417,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/shopify-api@npm:^1.2.1, @shopify/shopify-api@npm:^1.4.1":
+"@shopify/shopify-api@npm:1.4.1, @shopify/shopify-api@npm:^1.2.1":
   version: 1.4.1
   resolution: "@shopify/shopify-api@npm:1.4.1"
   dependencies:
@@ -3313,7 +3312,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/zen-observable@npm:^0.8.0":
+"@types/zen-observable@npm:0.8.3":
   version: 0.8.3
   resolution: "@types/zen-observable@npm:0.8.3"
   checksum: ec75e17c7737e509e5b580fbeda853d8d54392281fba614be0fb86c97c517dc148ef8473b4cd45e547f2492af1c5104ce27fbd58dbded6e6e205122148e344d7
@@ -7478,9 +7477,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:3.4.0":
-  version: 3.4.0
-  resolution: "eslint-plugin-prettier@npm:3.4.0"
+"eslint-plugin-prettier@npm:3.4.1":
+  version: 3.4.1
+  resolution: "eslint-plugin-prettier@npm:3.4.1"
   dependencies:
     prettier-linter-helpers: ^1.0.0
   peerDependencies:
@@ -7489,7 +7488,7 @@ __metadata:
   peerDependenciesMeta:
     eslint-config-prettier:
       optional: true
-  checksum: 322be1af8c7a6b7f1c718d912090722b65da072fda05bbc0a9d94523e6c3dfda49a7f62fd411126f1909c12bbc63e827ee6459163b2ce3458adb292541decf66
+  checksum: 191173e52fafb168af6ac65a9b882f2fc1b2dc979d7c893cec26637c612c7b62dc69df22faf4e80d4e17e5320ba061fc627b59d29512e5ddb42dedcd72966613
   languageName: node
   linkType: hard
 
@@ -8676,18 +8675,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"graphql-tag@npm:2.12.4":
-  version: 2.12.4
-  resolution: "graphql-tag@npm:2.12.4"
-  dependencies:
-    tslib: ^2.1.0
-  peerDependencies:
-    graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
-  checksum: 01623ede3509a46becd80cdcff81b63248f3bc5dc44b4e7df54730b5c77101c5b44d49ed7d1fbb83a5de0ad21fda59fca33f0f2d9ea5c0d95884aba6d15aeab9
-  languageName: node
-  linkType: hard
-
-"graphql-tag@npm:^2.12.0":
+"graphql-tag@npm:2.12.5, graphql-tag@npm:^2.12.3":
   version: 2.12.5
   resolution: "graphql-tag@npm:2.12.5"
   dependencies:
@@ -8707,10 +8695,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"graphql@npm:15.5.1":
-  version: 15.5.1
-  resolution: "graphql@npm:15.5.1"
-  checksum: 509cdc2fc072e7cd1b5a25cf3fe13838d41892b035434f02419c209608f89e323f5234ca7e2bde77e9371e629339cbd8435f1dbc8c250910e4e9ac0babfa6c64
+"graphql@npm:15.5.3":
+  version: 15.5.3
+  resolution: "graphql@npm:15.5.3"
+  checksum: 2538efd61b5e1317cfaba796685412aa45f97504002af823a0d0682f8a60f4698343f8ba2793c83c276c76a6b14d8301e58b9f8ad7b61191c380d48e274e6b4d
   languageName: node
   linkType: hard
 
@@ -11897,7 +11885,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.1":
+"node-fetch@npm:2.6.2, node-fetch@npm:^2.6.1":
   version: 2.6.2
   resolution: "node-fetch@npm:2.6.2"
   checksum: f48d84c89c861ae7ff6d0a363a6c85fb7159e51165b1b97819c1b750f1fbbe27765d7bbda37c7a0e453a736db25a396d3ec22057d257d3403a79e722710a97f7
@@ -11995,9 +11983,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"nodemon@npm:2.0.7":
-  version: 2.0.7
-  resolution: "nodemon@npm:2.0.7"
+"nodemon@npm:2.0.12":
+  version: 2.0.12
+  resolution: "nodemon@npm:2.0.12"
   dependencies:
     chokidar: ^3.2.2
     debug: ^3.2.6
@@ -12011,7 +11999,7 @@ fsevents@^1.2.7:
     update-notifier: ^4.1.0
   bin:
     nodemon: bin/nodemon.js
-  checksum: e1e8acb584120579714c29d7e12b4efca2188b73ea537a560b1a66ec995dccbd8c0742af2c25f1a18df7e7bb8448477e80063824708466cda491dfc52ab6e233
+  checksum: 8a866e2a25043e88615c223ccd601092e181f9c4edbe2027f0e59fc881647ffb2be9fac280f5d2d851564242cd8aa55a288fb1ae8c6609a0013d375b5647b656
   languageName: node
   linkType: hard
 
@@ -12364,7 +12352,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"optimism@npm:^0.16.0":
+"optimism@npm:^0.16.1":
   version: 0.16.1
   resolution: "optimism@npm:0.16.1"
   dependencies:
@@ -14789,7 +14777,7 @@ resolve@^2.0.0-next.3:
   version: 0.0.0-use.local
   resolution: "salestorm@workspace:."
   dependencies:
-    "@apollo/client": 3.3.20
+    "@apollo/client": 3.4.11
     "@babel/core": 7.14.6
     "@babel/plugin-transform-runtime": 7.14.5
     "@babel/polyfill": 7.12.1
@@ -14812,7 +14800,7 @@ resolve@^2.0.0-next.3:
     "@shopify/koa-shopify-webhooks": 2.6.4
     "@shopify/polaris": 6.5.0
     "@shopify/polaris-icons": 4.5.0
-    "@shopify/shopify-api": ^1.4.1
+    "@shopify/shopify-api": 1.4.1
     axios: 0.21.4
     babel-register: 6.26.0
     casify: 2.0.0
@@ -14827,13 +14815,13 @@ resolve@^2.0.0-next.3:
     eslint-plugin-eslint-comments: 3.2.0
     eslint-plugin-import: 2.23.4
     eslint-plugin-jsx-a11y: 6.4.1
-    eslint-plugin-prettier: 3.4.0
+    eslint-plugin-prettier: 3.4.1
     eslint-plugin-react: 7.24.0
     eslint-plugin-react-hooks: 4.2.0
     eslint-plugin-sort-class-members: 1.11.0
     graphile-migrate: 1.2.0
-    graphql: 15.5.1
-    graphql-tag: 2.12.4
+    graphql: 15.5.3
+    graphql-tag: 2.12.5
     husky: 6.0.0
     isomorphic-fetch: 3.0.0
     koa: 2.13.1
@@ -14844,8 +14832,8 @@ resolve@^2.0.0-next.3:
     luxon: 1.27.0
     next: 11.1.1
     next-env: 1.1.1
-    node-fetch: 2.6.1
-    nodemon: 2.0.7
+    node-fetch: 2.6.2
+    nodemon: 2.0.12
     parcel-bundler: 1.12.5
     pg: 8.6.0
     prettier: 2.3.1
@@ -16749,12 +16737,12 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-invariant@npm:^0.7.0":
-  version: 0.7.5
-  resolution: "ts-invariant@npm:0.7.5"
+"ts-invariant@npm:^0.9.0":
+  version: 0.9.3
+  resolution: "ts-invariant@npm:0.9.3"
   dependencies:
     tslib: ^2.1.0
-  checksum: c0bf00844e3ef3486323944d1e24e7c06ccfe175e78311832b5cc57a632a4fef8cc1caa86a084ae1708e3150610f824efdb190ae87f39f2abb3f0270281a1f96
+  checksum: c3f21931f9deae9492d7033d5d3fae1fc6dc9f981ede8636b66f5954854539b78683d2e2d1f6f9fd7cc185d354e1cf5aefdbabd017a2abcce19fad01d08da8c8
   languageName: node
   linkType: hard
 
@@ -17857,7 +17845,17 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"zen-observable@npm:^0.8.14":
+"zen-observable-ts@npm:~1.1.0":
+  version: 1.1.0
+  resolution: "zen-observable-ts@npm:1.1.0"
+  dependencies:
+    "@types/zen-observable": 0.8.3
+    zen-observable: 0.8.15
+  checksum: daae0a5afd658f699e0dca8ede85caad61a5aa42f39f8053beb940bd17dd60c0e63ffc90435ccea1bcd243a65aa3780d115482a3e025a9dd64bf18ee8eea52a7
+  languageName: node
+  linkType: hard
+
+"zen-observable@npm:0.8.15":
   version: 0.8.15
   resolution: "zen-observable@npm:0.8.15"
   checksum: 7d155f8a75b9314f9f31e70a31edcd897b0e8a1313737502ab84a573e49d2c333b738e415c156334a6e910c363ce546b59fa7921eff61440285caa99c843df74
