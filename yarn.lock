@@ -3236,7 +3236,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:6.7.2, @sentry/browser@npm:^6.7.2":
+"@sentry/browser@npm:6.7.2":
   version: 6.7.2
   resolution: "@sentry/browser@npm:6.7.2"
   dependencies:
@@ -3283,7 +3283,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^6.7.2":
+"@sentry/node@npm:6.7.2":
   version: 6.7.2
   resolution: "@sentry/node@npm:6.7.2"
   dependencies:
@@ -3300,7 +3300,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/react@npm:^6.7.2":
+"@sentry/react@npm:6.7.2":
   version: 6.7.2
   resolution: "@sentry/react@npm:6.7.2"
   dependencies:
@@ -3316,7 +3316,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/tracing@npm:6.7.2, @sentry/tracing@npm:^6.7.2":
+"@sentry/tracing@npm:6.7.2":
   version: 6.7.2
   resolution: "@sentry/tracing@npm:6.7.2"
   dependencies:
@@ -16438,10 +16438,10 @@ resolve@^2.0.0-next.3:
     "@babel/register": ^7.14.5
     "@koa/cors": ^3.1.0
     "@sendgrid/mail": ^7.4.5
-    "@sentry/browser": ^6.7.2
-    "@sentry/node": ^6.7.2
-    "@sentry/react": ^6.7.2
-    "@sentry/tracing": ^6.7.2
+    "@sentry/browser": 6.7.2
+    "@sentry/node": 6.7.2
+    "@sentry/react": 6.7.2
+    "@sentry/tracing": 6.7.2
     "@shopify/app-bridge": ^2.0.3
     "@shopify/app-bridge-react": ^2.0.3
     "@shopify/app-bridge-utils": ^2.0.3
