@@ -65,7 +65,7 @@
     "next-env": "1.1.1",
     "node-fetch": "2.6.2",
     "parcel-bundler": "1.12.5",
-    "pg": "8.6.0",
+    "pg": "8.7.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "sass": "1.35.1",
