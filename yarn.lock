@@ -3013,7 +3013,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@koa/cors@npm:^3.1.0":
+"@koa/cors@npm:3.1.0":
   version: 3.1.0
   resolution: "@koa/cors@npm:3.1.0"
   dependencies:
@@ -3226,7 +3226,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sendgrid/mail@npm:^7.4.5":
+"@sendgrid/mail@npm:7.4.5":
   version: 7.4.5
   resolution: "@sendgrid/mail@npm:7.4.5"
   dependencies:
@@ -3375,7 +3375,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/app-cli-node-generator-helper@npm:^1.2.2":
+"@shopify/app-cli-node-generator-helper@npm:1.2.2":
   version: 1.2.2
   resolution: "@shopify/app-cli-node-generator-helper@npm:1.2.2"
   dependencies:
@@ -3389,7 +3389,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/eslint-plugin@npm:^40.2.3":
+"@shopify/eslint-plugin@npm:40.2.3":
   version: 40.2.3
   resolution: "@shopify/eslint-plugin@npm:40.2.3"
   dependencies:
@@ -3422,7 +3422,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/koa-shopify-auth@npm:^4.1.3":
+"@shopify/koa-shopify-auth@npm:4.1.3":
   version: 4.1.3
   resolution: "@shopify/koa-shopify-auth@npm:4.1.3"
   dependencies:
@@ -3435,7 +3435,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/koa-shopify-webhooks@npm:^2.3.1":
+"@shopify/koa-shopify-webhooks@npm:2.6.4":
   version: 2.6.4
   resolution: "@shopify/koa-shopify-webhooks@npm:2.6.4"
   dependencies:
@@ -3467,17 +3467,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@shopify/polaris-icons@npm:4.5.0":
+  version: 4.5.0
+  resolution: "@shopify/polaris-icons@npm:4.5.0"
+  checksum: eddf0b73dfecdd5181a08dae876aba41dfff10017a712ff20d140cab9b5e0ccf8cf88573bb9d90a997a3b69c87269aa6d4f0eb12adedc787bc8944e87436f40e
+  languageName: node
+  linkType: hard
+
 "@shopify/polaris-icons@npm:^4.1.0":
   version: 4.1.0
   resolution: "@shopify/polaris-icons@npm:4.1.0"
   checksum: 3734ea3d07f757aaad4be1b16f70949ff9b146627513973d930db7a829226f2941783d7b72d70a8dc2d695af517cb6eefa6f3abc7c395c5c65e30fe824a6df66
-  languageName: node
-  linkType: hard
-
-"@shopify/polaris-icons@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "@shopify/polaris-icons@npm:4.5.0"
-  checksum: eddf0b73dfecdd5181a08dae876aba41dfff10017a712ff20d140cab9b5e0ccf8cf88573bb9d90a997a3b69c87269aa6d4f0eb12adedc787bc8944e87436f40e
   languageName: node
   linkType: hard
 
@@ -3491,7 +3491,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/polaris@npm:^6.5.0":
+"@shopify/polaris@npm:6.5.0":
   version: 6.5.0
   resolution: "@shopify/polaris@npm:6.5.0"
   dependencies:
@@ -3510,7 +3510,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/shopify-api@npm:^1.2.1":
+"@shopify/shopify-api@npm:1.2.1, @shopify/shopify-api@npm:^1.2.1":
   version: 1.2.1
   resolution: "@shopify/shopify-api@npm:1.2.1"
   dependencies:
@@ -5330,7 +5330,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.21.1":
+"axios@npm:0.21.1, axios@npm:^0.21.1":
   version: 0.21.1
   resolution: "axios@npm:0.21.1"
   dependencies:
@@ -6282,7 +6282,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"casify@npm:^2.0.0":
+"casify@npm:2.0.0":
   version: 2.0.0
   resolution: "casify@npm:2.0.0"
   dependencies:
@@ -6390,7 +6390,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chart.js@npm:^2.9.4":
+"chart.js@npm:2.9.4":
   version: 2.9.4
   resolution: "chart.js@npm:2.9.4"
   dependencies:
@@ -7125,7 +7125,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-env@npm:^7.0.3":
+"cross-env@npm:7.0.3":
   version: 7.0.3
   resolution: "cross-env@npm:7.0.3"
   dependencies:
@@ -8019,7 +8019,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^10.0.0":
+"dotenv@npm:10.0.0":
   version: 10.0.0
   resolution: "dotenv@npm:10.0.0"
   checksum: 9c45712e213de63bdb646b8e5344749b7566e25a67bbd3f03711d54e40eff10066c1f23eff0081d0949fda7c8efcc6e9e8bf18d0f023a8274f55f5d5f97bb6db
@@ -8617,7 +8617,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-babel@npm:5.3.1, eslint-plugin-babel@npm:^5.3.1":
+"eslint-plugin-babel@npm:5.3.1":
   version: 5.3.1
   resolution: "eslint-plugin-babel@npm:5.3.1"
   dependencies:
@@ -8640,7 +8640,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-eslint-comments@npm:3.2.0, eslint-plugin-eslint-comments@npm:^3.2.0":
+"eslint-plugin-eslint-comments@npm:3.2.0":
   version: 3.2.0
   resolution: "eslint-plugin-eslint-comments@npm:3.2.0"
   dependencies:
@@ -8689,7 +8689,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:^2.23.4":
+"eslint-plugin-import@npm:2.23.4":
   version: 2.23.4
   resolution: "eslint-plugin-import@npm:2.23.4"
   dependencies:
@@ -8786,7 +8786,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:^3.4.0":
+"eslint-plugin-prettier@npm:3.4.0":
   version: 3.4.0
   resolution: "eslint-plugin-prettier@npm:3.4.0"
   dependencies:
@@ -8838,7 +8838,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:^7.23.1, eslint-plugin-react@npm:^7.24.0":
+"eslint-plugin-react@npm:7.24.0, eslint-plugin-react@npm:^7.23.1":
   version: 7.24.0
   resolution: "eslint-plugin-react@npm:7.24.0"
   dependencies:
@@ -8860,21 +8860,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-sort-class-members@npm:1.11.0":
+  version: 1.11.0
+  resolution: "eslint-plugin-sort-class-members@npm:1.11.0"
+  peerDependencies:
+    eslint: ">=0.8.0"
+  checksum: 75c64a82501140c741d0bc4971c377f90f04be5d543cbb815cb767321e16fd75d07f3b39e5213fcdf8df761a28e40dadcc9bdd690d03839eb15ab07dcb55a470
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-sort-class-members@npm:1.9.0":
   version: 1.9.0
   resolution: "eslint-plugin-sort-class-members@npm:1.9.0"
   peerDependencies:
     eslint: ">=0.8.0"
   checksum: 7d7ce49129c3329e5fa2687e327b4911a490128306a63e020755ce79a0b4f9013ddb17a5284c35f31da05e8ec23ce75f3a58aa8763e302c838928641e2ac97a0
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-sort-class-members@npm:^1.11.0":
-  version: 1.11.0
-  resolution: "eslint-plugin-sort-class-members@npm:1.11.0"
-  peerDependencies:
-    eslint: ">=0.8.0"
-  checksum: 75c64a82501140c741d0bc4971c377f90f04be5d543cbb815cb767321e16fd75d07f3b39e5213fcdf8df761a28e40dadcc9bdd690d03839eb15ab07dcb55a470
   languageName: node
   linkType: hard
 
@@ -8929,7 +8929,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^7.29.0":
+"eslint@npm:7.29.0":
   version: 7.29.0
   resolution: "eslint@npm:7.29.0"
   dependencies:
@@ -9995,7 +9995,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"graphile-migrate@npm:^1.2.0":
+"graphile-migrate@npm:1.2.0":
   version: 1.2.0
   resolution: "graphile-migrate@npm:1.2.0"
   dependencies:
@@ -10074,7 +10074,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"graphql@npm:^15.5.1":
+"graphql@npm:15.5.1":
   version: 15.5.1
   resolution: "graphql@npm:15.5.1"
   checksum: 509cdc2fc072e7cd1b5a25cf3fe13838d41892b035434f02419c209608f89e323f5234ca7e2bde77e9371e629339cbd8435f1dbc8c250910e4e9ac0babfa6c64
@@ -10517,7 +10517,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"husky@npm:^6.0.0":
+"husky@npm:6.0.0":
   version: 6.0.0
   resolution: "husky@npm:6.0.0"
   bin:
@@ -11429,7 +11429,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"isomorphic-fetch@npm:^3.0.0":
+"isomorphic-fetch@npm:3.0.0":
   version: 3.0.0
   resolution: "isomorphic-fetch@npm:3.0.0"
   dependencies:
@@ -11831,7 +11831,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"koa-bodyparser@npm:^4.2.1, koa-bodyparser@npm:^4.3.0":
+"koa-bodyparser@npm:4.3.0, koa-bodyparser@npm:^4.2.1":
   version: 4.3.0
   resolution: "koa-bodyparser@npm:4.3.0"
   dependencies:
@@ -11877,7 +11877,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"koa-router@npm:^10.0.0":
+"koa-router@npm:10.0.0":
   version: 10.0.0
   resolution: "koa-router@npm:10.0.0"
   dependencies:
@@ -11890,7 +11890,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"koa@npm:^2.13.1":
+"koa@npm:2.13.1":
   version: 2.13.1
   resolution: "koa@npm:2.13.1"
   dependencies:
@@ -11982,7 +11982,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^11.0.0":
+"lint-staged@npm:11.0.0":
   version: 11.0.0
   resolution: "lint-staged@npm:11.0.0"
   dependencies:
@@ -12615,7 +12615,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"luxon@npm:^1.27.0":
+"luxon@npm:1.27.0":
   version: 1.27.0
   resolution: "luxon@npm:1.27.0"
   checksum: c60f73b6b94bdd4e43c731133aa746388b907a26a5a426478c2520b263bec1dae4dc6e269a3410374789551309c65af5d245fae4cef61b72c3ad64a4c3e8b2b9
@@ -13186,7 +13186,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"next-env@npm:^1.1.1":
+"next-env@npm:1.1.1":
   version: 1.1.1
   resolution: "next-env@npm:1.1.1"
   peerDependencies:
@@ -13392,7 +13392,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"nodemon@npm:^2.0.7":
+"nodemon@npm:2.0.7":
   version: 2.0.7
   resolution: "nodemon@npm:2.0.7"
   dependencies:
@@ -14110,7 +14110,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"parcel-bundler@npm:^1.12.5":
+"parcel-bundler@npm:1.12.5":
   version: 1.12.5
   resolution: "parcel-bundler@npm:1.12.5"
   dependencies:
@@ -14490,6 +14490,26 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"pg@npm:8.6.0":
+  version: 8.6.0
+  resolution: "pg@npm:8.6.0"
+  dependencies:
+    buffer-writer: 2.0.0
+    packet-reader: 1.0.0
+    pg-connection-string: ^2.5.0
+    pg-pool: ^3.3.0
+    pg-protocol: ^1.5.0
+    pg-types: ^2.1.0
+    pgpass: 1.x
+  peerDependencies:
+    pg-native: ">=2.0.0"
+  peerDependenciesMeta:
+    pg-native:
+      optional: true
+  checksum: 06bec69854081161b3563f2bc0a3b09a20ebbff87e137914816de0970d70a0a4b282917434783f99841ec650a0650c0919fade96cb25e636d1b4a0cebb672922
+  languageName: node
+  linkType: hard
+
 "pg@npm:>=6.5 <9":
   version: 8.5.1
   resolution: "pg@npm:8.5.1"
@@ -14507,26 +14527,6 @@ fsevents@~2.1.2:
     pg-native:
       optional: true
   checksum: b8eed3cd3831ea8cce051fcc58a56f39e7c24545c18466c89e64e4f90c8c2d386e3c51c33e22b0d2e39bf51156bdd4d5ade16c6e0edad1fbff97bd89f2bd86f2
-  languageName: node
-  linkType: hard
-
-"pg@npm:^8.6.0":
-  version: 8.6.0
-  resolution: "pg@npm:8.6.0"
-  dependencies:
-    buffer-writer: 2.0.0
-    packet-reader: 1.0.0
-    pg-connection-string: ^2.5.0
-    pg-pool: ^3.3.0
-    pg-protocol: ^1.5.0
-    pg-types: ^2.1.0
-    pgpass: 1.x
-  peerDependencies:
-    pg-native: ">=2.0.0"
-  peerDependenciesMeta:
-    pg-native:
-      optional: true
-  checksum: 06bec69854081161b3563f2bc0a3b09a20ebbff87e137914816de0970d70a0a4b282917434783f99841ec650a0650c0919fade96cb25e636d1b4a0cebb672922
   languageName: node
   linkType: hard
 
@@ -15237,21 +15237,21 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"prettier@npm:2.3.1":
+  version: 2.3.1
+  resolution: "prettier@npm:2.3.1"
+  bin:
+    prettier: bin-prettier.js
+  checksum: 9b4a695b87ce5f510fc20feec01cce7371f0fa0b92ffe79d543f6be52e2004c532861629de4d7ab1c577e1f649dce3cfccd62cb2ca6526b1da8d9c63eb84bf36
+  languageName: node
+  linkType: hard
+
 "prettier@npm:^1.19.1":
   version: 1.19.1
   resolution: "prettier@npm:1.19.1"
   bin:
     prettier: ./bin-prettier.js
   checksum: e5fcdfe5e159ef5c5480245353cf8fb5bbd1b8afff266f31f281641825238f8a645e58472f77cd75a09ccc45d44c335466e8d901ec138c2bda05e1bd6ea1077c
-  languageName: node
-  linkType: hard
-
-"prettier@npm:^2.3.1":
-  version: 2.3.1
-  resolution: "prettier@npm:2.3.1"
-  bin:
-    prettier: bin-prettier.js
-  checksum: 9b4a695b87ce5f510fc20feec01cce7371f0fa0b92ffe79d543f6be52e2004c532861629de4d7ab1c577e1f649dce3cfccd62cb2ca6526b1da8d9c63eb84bf36
   languageName: node
   linkType: hard
 
@@ -16436,8 +16436,8 @@ resolve@^2.0.0-next.3:
     "@babel/preset-react": ^7.14.5
     "@babel/preset-stage-3": ^7.8.3
     "@babel/register": ^7.14.5
-    "@koa/cors": ^3.1.0
-    "@sendgrid/mail": ^7.4.5
+    "@koa/cors": 3.1.0
+    "@sendgrid/mail": 7.4.5
     "@sentry/browser": ^6.7.2
     "@sentry/node": ^6.7.2
     "@sentry/react": ^6.7.2
@@ -16445,59 +16445,59 @@ resolve@^2.0.0-next.3:
     "@shopify/app-bridge": ^2.0.3
     "@shopify/app-bridge-react": ^2.0.3
     "@shopify/app-bridge-utils": ^2.0.3
-    "@shopify/app-cli-node-generator-helper": ^1.2.2
-    "@shopify/eslint-plugin": ^40.2.3
-    "@shopify/koa-shopify-auth": ^4.1.3
-    "@shopify/koa-shopify-webhooks": ^2.3.1
-    "@shopify/polaris": ^6.5.0
-    "@shopify/polaris-icons": ^4.5.0
-    "@shopify/shopify-api": ^1.2.1
-    axios: ^0.21.1
+    "@shopify/app-cli-node-generator-helper": 1.2.2
+    "@shopify/eslint-plugin": 40.2.3
+    "@shopify/koa-shopify-auth": 4.1.3
+    "@shopify/koa-shopify-webhooks": 2.6.4
+    "@shopify/polaris": 6.5.0
+    "@shopify/polaris-icons": 4.5.0
+    "@shopify/shopify-api": 1.2.1
+    axios: 0.21.1
     babel-register: ^6.26.0
-    casify: ^2.0.0
-    chart.js: ^2.9.4
-    cross-env: ^7.0.3
-    dotenv: ^10.0.0
+    casify: 2.0.0
+    chart.js: 2.9.4
+    cross-env: 7.0.3
+    dotenv: 10.0.0
     enzyme: 3.11.0
     enzyme-adapter-react-16: 1.15.6
-    eslint: ^7.29.0
+    eslint: 7.29.0
     eslint-config-next: ^11.0.1
-    eslint-plugin-babel: ^5.3.1
-    eslint-plugin-eslint-comments: ^3.2.0
-    eslint-plugin-import: ^2.23.4
-    eslint-plugin-jsx-a11y: ^6.4.1
-    eslint-plugin-prettier: ^3.4.0
-    eslint-plugin-react: ^7.24.0
+    eslint-plugin-babel: 5.3.1
+    eslint-plugin-eslint-comments: 3.2.0
+    eslint-plugin-import: 2.23.4
+    eslint-plugin-jsx-a11y: 6.4.1
+    eslint-plugin-prettier: 3.4.0
+    eslint-plugin-react: 7.24.0
     eslint-plugin-react-hooks: ^4.2.0
-    eslint-plugin-sort-class-members: ^1.11.0
-    graphile-migrate: ^1.2.0
-    graphql: ^15.5.1
+    eslint-plugin-sort-class-members: 1.11.0
+    graphile-migrate: 1.2.0
+    graphql: 15.5.1
     graphql-tag: 2.12.4
-    husky: ^6.0.0
-    isomorphic-fetch: ^3.0.0
-    koa: ^2.13.1
-    koa-bodyparser: ^4.3.0
-    koa-router: ^10.0.0
-    lint-staged: ^11.0.0
+    husky: 6.0.0
+    isomorphic-fetch: 3.0.0
+    koa: 2.13.1
+    koa-bodyparser: 4.3.0
+    koa-router: 10.0.0
+    lint-staged: 11.0.0
     lodash: ^4.17.21
-    luxon: ^1.27.0
+    luxon: 1.27.0
     next: ^11.0.1
-    next-env: ^1.1.1
-    node-fetch: ^2.6.1
-    nodemon: ^2.0.7
-    parcel-bundler: ^1.12.5
-    pg: ^8.6.0
-    prettier: ^2.3.1
+    next-env: 1.1.1
+    node-fetch: 2.6.1
+    nodemon: 2.0.7
+    parcel-bundler: 1.12.5
+    pg: 8.6.0
+    prettier: 2.3.1
     react: ^17.0.2
     react-dom: ^17.0.2
-    sass: ^1.35.1
-    shopify: ^0.1.0
-    snyk: ^1.642.0
-    tinycolor2: ^1.4.2
+    sass: 1.35.1
+    shopify: 0.1.0
+    snyk: 1.642.0
+    tinycolor2: 1.4.2
   languageName: unknown
   linkType: soft
 
-"sass@npm:^1.35.1":
+"sass@npm:1.35.1":
   version: 1.35.1
   resolution: "sass@npm:1.35.1"
   dependencies:
@@ -16792,7 +16792,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"shopify@npm:^0.1.0":
+"shopify@npm:0.1.0":
   version: 0.1.0
   resolution: "shopify@npm:0.1.0"
   checksum: 791ab3e54318e3979cf33f4075fba5eb36251d47dcfcaab18d8d7910ce1366489139f77742edaf78134016d60f836ff60e5b44a1199af1c4761aa25c5f50c8fe
@@ -17243,7 +17243,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"snyk@npm:^1.642.0":
+"snyk@npm:1.642.0":
   version: 1.642.0
   resolution: "snyk@npm:1.642.0"
   dependencies:
@@ -18267,7 +18267,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tinycolor2@npm:^1.4.2":
+"tinycolor2@npm:1.4.2":
   version: 1.4.2
   resolution: "tinycolor2@npm:1.4.2"
   checksum: cf33d084cb378d2988fad1b214e62f38be75ba1a9a6df98d4dadf77c31f82796d40822100e6d3e1973c9233ddf0ddbbbfdcac40e2288c958bca3c6d310e2ccb4
