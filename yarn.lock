@@ -6280,7 +6280,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"data-uri-to-buffer@npm:3.0.1":
+"data-uri-to-buffer@npm:3.0.1, data-uri-to-buffer@npm:^3.0.1":
   version: 3.0.1
   resolution: "data-uri-to-buffer@npm:3.0.1"
   checksum: 9f28217ba76eaca400a75f4b1a1d0f55058082c8152a3d88ad5feeec5e54b8c7b6d8a7bb210206bfa552a927c1b942b6102ddbb2feaa557321ea94762c4f14e2
@@ -8016,6 +8016,15 @@ __metadata:
   dependencies:
     reusify: ^1.0.4
   checksum: 2dd6a9dbab06bdd0463abaa78e4868f642a292e041abbd01a55b20cce03539a6866ef8f4f25f62dae4bb6de57bc1832d34c6bd8ae6c43428946ecf073d6741ae
+  languageName: node
+  linkType: hard
+
+"fetch-blob@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "fetch-blob@npm:3.1.2"
+  dependencies:
+    web-streams-polyfill: ^3.0.3
+  checksum: cbaf7334d2b21f7d05fcaf84b6cf369d57c8b052c8eaf8a1d8014a9d114cbd58c82e9a7cb365a74d140eebaf053aa2f6edef5916fb21d86da926d6dc5b42bf03
   languageName: node
   linkType: hard
 
@@ -11920,7 +11929,17 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:2.6.2, node-fetch@npm:^2.6.1":
+"node-fetch@npm:3.0.0":
+  version: 3.0.0
+  resolution: "node-fetch@npm:3.0.0"
+  dependencies:
+    data-uri-to-buffer: ^3.0.1
+    fetch-blob: ^3.1.2
+  checksum: eb79c19a3047c99c121a5bcb826698fd6d8e6073cc0322dccdd1dbeb4237ca710c7d251ef166d37e244fa9d1dc91b752232733cd44f43a807148a2b4e07b569f
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:^2.6.1":
   version: 2.6.2
   resolution: "node-fetch@npm:2.6.2"
   checksum: f48d84c89c861ae7ff6d0a363a6c85fb7159e51165b1b97819c1b750f1fbbe27765d7bbda37c7a0e453a736db25a396d3ec22057d257d3403a79e722710a97f7
@@ -14866,7 +14885,7 @@ resolve@^2.0.0-next.3:
     luxon: 1.28.0
     next: 11.1.1
     next-env: 1.1.1
-    node-fetch: 2.6.2
+    node-fetch: 3.0.0
     nodemon: 2.0.12
     parcel-bundler: 1.12.5
     pg: 8.7.1
@@ -17551,6 +17570,13 @@ resolve@^2.0.0-next.3:
   dependencies:
     defaults: ^1.0.3
   checksum: abf8ba432dd19a95af63895de6af932900a9451e175745551aeca0fd2d46604bc72ff80aa83adc3f67fb8389191329340e2864aefcf20655ffe91f0dbee5d953
+  languageName: node
+  linkType: hard
+
+"web-streams-polyfill@npm:^3.0.3":
+  version: 3.1.1
+  resolution: "web-streams-polyfill@npm:3.1.1"
+  checksum: 73f7cb030182b34751f20c596df4888985ae3bc5b6bcc1b204436b3f95c77bf25aba329c450c95c1721a7b3868ae1c5b9dae144e5f1853b55405243a537bedfa
   languageName: node
   linkType: hard
 
