@@ -14892,21 +14892,21 @@ resolve@^2.0.0-next.3:
     prettier: 2.3.1
     react: 17.0.2
     react-dom: 17.0.2
-    sass: 1.35.1
+    sass: 1.40.1
     shopify: 0.1.0
     snyk: 1.642.0
     tinycolor2: 1.4.2
   languageName: unknown
   linkType: soft
 
-"sass@npm:1.35.1":
-  version: 1.35.1
-  resolution: "sass@npm:1.35.1"
+"sass@npm:1.40.1":
+  version: 1.40.1
+  resolution: "sass@npm:1.40.1"
   dependencies:
     chokidar: ">=3.0.0 <4.0.0"
   bin:
     sass: sass.js
-  checksum: ceeb2ebd09f8c058e71ce9b35b7dc0af8800ff2a87d52d9efe8d0f10e6649200065b7526f07326b52d6946c0d57997e13d96985fa826926edf8b1e31a839c000
+  checksum: 7187ba78f530a88be3d1e64276be534f569a1f168ce315a72c15926a0fdda44020b40b8a3dab4257e062be41aa3b63c48e4f6ec639fc25a25bf6a4cbec6d8273
   languageName: node
   linkType: hard
 
