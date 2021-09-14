@@ -12982,7 +12982,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"pg-pool@npm:^3.3.0, pg-pool@npm:^3.4.1":
+"pg-pool@npm:^3.4.1":
   version: 3.4.1
   resolution: "pg-pool@npm:3.4.1"
   peerDependencies:
@@ -13011,27 +13011,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"pg@npm:8.6.0":
-  version: 8.6.0
-  resolution: "pg@npm:8.6.0"
-  dependencies:
-    buffer-writer: 2.0.0
-    packet-reader: 1.0.0
-    pg-connection-string: ^2.5.0
-    pg-pool: ^3.3.0
-    pg-protocol: ^1.5.0
-    pg-types: ^2.1.0
-    pgpass: 1.x
-  peerDependencies:
-    pg-native: ">=2.0.0"
-  peerDependenciesMeta:
-    pg-native:
-      optional: true
-  checksum: 06bec69854081161b3563f2bc0a3b09a20ebbff87e137914816de0970d70a0a4b282917434783f99841ec650a0650c0919fade96cb25e636d1b4a0cebb672922
-  languageName: node
-  linkType: hard
-
-"pg@npm:>=6.5 <9":
+"pg@npm:8.7.1, pg@npm:>=6.5 <9":
   version: 8.7.1
   resolution: "pg@npm:8.7.1"
   dependencies:
@@ -14889,7 +14869,7 @@ resolve@^2.0.0-next.3:
     node-fetch: 2.6.2
     nodemon: 2.0.12
     parcel-bundler: 1.12.5
-    pg: 8.6.0
+    pg: 8.7.1
     prettier: 2.3.1
     react: 17.0.2
     react-dom: 17.0.2
