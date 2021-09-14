@@ -10462,16 +10462,16 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"koa-router@npm:10.0.0":
-  version: 10.0.0
-  resolution: "koa-router@npm:10.0.0"
+"koa-router@npm:10.1.1":
+  version: 10.1.1
+  resolution: "koa-router@npm:10.1.1"
   dependencies:
     debug: ^4.1.1
     http-errors: ^1.7.3
     koa-compose: ^4.1.0
     methods: ^1.1.2
     path-to-regexp: ^6.1.0
-  checksum: f9cb48ab8587987c4d223a639e1483344a62a69cbf15c7ec1a7c6745909232180095a46f94df75111e3ed4509710cc5438a364a552003ee999864ff2b3fa0111
+  checksum: bb188c7c93a420782a5d65c23dd463328512b6ca419f10d012e01e7a3ea1295970893440192b2a388a8a67fc90a459b1f5042464cf11542e2712cfc1352e4db1
   languageName: node
   linkType: hard
 
@@ -14880,7 +14880,7 @@ resolve@^2.0.0-next.3:
     isomorphic-fetch: 3.0.0
     koa: 2.13.1
     koa-bodyparser: 4.3.0
-    koa-router: 10.0.0
+    koa-router: 10.1.1
     lint-staged: 11.0.0
     lodash: 4.17.21
     luxon: 1.27.0
