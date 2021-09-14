@@ -89,7 +89,7 @@
     "eslint-plugin-react": "7.24.0",
     "eslint-plugin-react-hooks": "4.2.0",
     "eslint-plugin-sort-class-members": "1.11.0",
-    "husky": "6.0.0",
+    "husky": "7.0.2",
     "lint-staged": "11.0.0",
     "nodemon": "2.0.12",
     "prettier": "2.3.1",
