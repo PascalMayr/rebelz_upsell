@@ -8022,15 +8022,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"husky@npm:7.0.2":
-  version: 7.0.2
-  resolution: "husky@npm:7.0.2"
-  bin:
-    husky: lib/bin.js
-  checksum: 3d1573d9ee5406e864e8170912bfadffde211535277c49f7f5da1b543a7b8e6c8ac8bae9f9cdd6b5be21ef39bb2929ca62001a7c50841d93c36454659bd3e017
-  languageName: node
-  linkType: hard
-
 "iconv-lite@npm:0.4.24":
   version: 0.4.24
   resolution: "iconv-lite@npm:0.4.24"
@@ -13044,7 +13035,6 @@ resolve@^2.0.0-next.3:
     graphile-migrate: 1.2.0
     graphql: 15.5.3
     graphql-tag: 2.12.5
-    husky: 7.0.2
     isomorphic-fetch: 3.0.0
     koa: 2.13.1
     koa-bodyparser: 4.3.0
