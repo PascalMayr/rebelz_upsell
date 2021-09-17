@@ -6520,7 +6520,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:7.25.1, eslint-plugin-react@npm:^7.23.1":
+"eslint-plugin-react@npm:7.25.2":
+  version: 7.25.2
+  resolution: "eslint-plugin-react@npm:7.25.2"
+  dependencies:
+    array-includes: ^3.1.3
+    array.prototype.flatmap: ^1.2.4
+    doctrine: ^2.1.0
+    estraverse: ^5.2.0
+    has: ^1.0.3
+    jsx-ast-utils: ^2.4.1 || ^3.0.0
+    minimatch: ^3.0.4
+    object.entries: ^1.1.4
+    object.fromentries: ^2.0.4
+    object.values: ^1.1.4
+    prop-types: ^15.7.2
+    resolve: ^2.0.0-next.3
+    string.prototype.matchall: ^4.0.5
+  peerDependencies:
+    eslint: ^3 || ^4 || ^5 || ^6 || ^7
+  checksum: 91aa9c7782aa1747abf5ba87bcf629b49aa406cdacfc9d674019eb3a9eed9590ee12d839ad6bf1040d3cfe9bb7a9630207800a1b93bde6d1f8788ae014cbc8da
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-react@npm:^7.23.1":
   version: 7.25.1
   resolution: "eslint-plugin-react@npm:7.25.1"
   dependencies:
@@ -13029,7 +13052,7 @@ resolve@^2.0.0-next.3:
     eslint-plugin-import: 2.24.2
     eslint-plugin-jsx-a11y: 6.4.1
     eslint-plugin-prettier: 4.0.0
-    eslint-plugin-react: 7.25.1
+    eslint-plugin-react: 7.25.2
     eslint-plugin-react-hooks: 4.2.0
     eslint-plugin-sort-class-members: 1.11.0
     graphile-migrate: 1.2.0
