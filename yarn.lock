@@ -5,9 +5,9 @@ __metadata:
   version: 4
   cacheKey: 7
 
-"@apollo/client@npm:3.4.12":
-  version: 3.4.12
-  resolution: "@apollo/client@npm:3.4.12"
+"@apollo/client@npm:3.4.13":
+  version: 3.4.13
+  resolution: "@apollo/client@npm:3.4.13"
   dependencies:
     "@graphql-typed-document-node/core": ^3.0.0
     "@wry/context": ^0.6.0
@@ -30,7 +30,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: 408a344ff9de687577906d7bf6b31644e6301917c7922d1bbf81fb3f55d91f789ac3cfe55f04a6f9fb3d3cc6378cd06c4b6d4d20ccc9d6e392e28cf046586ede
+  checksum: 9c291783814feef6251a39fcc4b4f0ab745eeb54267910d8f4f3818cd97058e12610d3f2d22e3b2a7ac8ac5beca365ce1b6f52a5ab48c85a8c9dfb5d20277048
   languageName: node
   linkType: hard
 
@@ -13018,7 +13018,7 @@ resolve@^2.0.0-next.3:
   version: 0.0.0-use.local
   resolution: "salestorm@workspace:."
   dependencies:
-    "@apollo/client": 3.4.12
+    "@apollo/client": 3.4.13
     "@babel/core": 7.15.5
     "@babel/plugin-transform-runtime": 7.15.0
     "@babel/polyfill": 7.12.1
