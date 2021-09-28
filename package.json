@@ -3,7 +3,6 @@
   "version": "1.0.1",
   "description": "A Shopify app to boost sales.",
   "scripts": {
-    "test": "snyk test",
     "graphile": "cd server && DOTENV_CONFIG_PATH=../.env node -r dotenv/config ../node_modules/graphile-migrate/dist/cli.js",
     "dev": "yarn run graphile migrate && cross-env NODE_ENV=development PORT=443 nodemon --inspect ./server/index.js --watch ./server/index.js & parcel watch scripts/startup.js -d public",
     "serve": "shopify node serve --host https://loop.rebelzcommerce.com",
@@ -91,7 +90,6 @@
     "eslint-plugin-sort-class-members": "1.11.0",
     "lint-staged": "11.1.2",
     "nodemon": "2.0.13",
-    "prettier": "2.4.1",
-    "snyk": "1.722.0"
+    "prettier": "2.4.1"
   }
 }
