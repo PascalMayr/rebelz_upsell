@@ -13092,7 +13092,7 @@ resolve@^2.0.0-next.3:
     react-dom: 17.0.2
     sass: 1.42.1
     shopify: 0.1.0
-    snyk: 1.723.0
+    snyk: 1.725.0
     tinycolor2: 1.4.2
   languageName: unknown
   linkType: soft
@@ -13514,12 +13514,12 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"snyk@npm:1.723.0":
-  version: 1.723.0
-  resolution: "snyk@npm:1.723.0"
+"snyk@npm:1.725.0":
+  version: 1.725.0
+  resolution: "snyk@npm:1.725.0"
   bin:
     snyk: bin/snyk
-  checksum: e04e1419a4181eafd25cacb1ff26be3a0f41ca6bbe986f01483d27b6cb8eb6b2ffb94c85ee6afd350e2dc4e496e6c4b17c1be793d8831ee5ec0218202c1238b0
+  checksum: 121f5a82d759530ab0721a4432737fc292bde2fbd3241c038e2238d891fdf11c64c6f1dab3a17597454a7f791d957bbe2d5cb5a6db2e4075e164bd31bab9ca1b
   languageName: node
   linkType: hard
 
