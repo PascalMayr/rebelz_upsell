@@ -9525,9 +9525,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:11.2.2":
-  version: 11.2.2
-  resolution: "lint-staged@npm:11.2.2"
+"lint-staged@npm:11.2.3":
+  version: 11.2.3
+  resolution: "lint-staged@npm:11.2.3"
   dependencies:
     cli-truncate: 2.1.0
     colorette: ^1.4.0
@@ -9545,7 +9545,7 @@ fsevents@^1.2.7:
     supports-color: 8.1.1
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: a8e6167ef8c30ba5436b19b8b687ef74c1d8043d8cd36a1d8c89c614f3303e2919790ededda01b972f42e6109bece03512039ec16fe6656b361bf2d62443eac4
+  checksum: 62a81623b6d30341d01f58cf908827b67dcfaabf7231e4517f856a2b42e895a88a82b5488ee5d15c9f32a56bb054d87f1d5c1a9bcecddf97a000ab7e38b8795b
   languageName: node
   linkType: hard
 
@@ -13309,7 +13309,7 @@ resolve@^2.0.0-next.3:
     koa: 2.13.3
     koa-bodyparser: 4.3.0
     koa-router: 10.1.1
-    lint-staged: 11.2.2
+    lint-staged: 11.2.3
     lodash: 4.17.21
     luxon: 2.0.2
     next: 11.1.2
