@@ -2187,32 +2187,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sendgrid/client@npm:^7.4.7":
-  version: 7.4.7
-  resolution: "@sendgrid/client@npm:7.4.7"
+"@sendgrid/client@npm:^7.5.0":
+  version: 7.5.0
+  resolution: "@sendgrid/client@npm:7.5.0"
   dependencies:
-    "@sendgrid/helpers": ^7.4.6
+    "@sendgrid/helpers": ^7.5.0
     axios: ^0.21.4
-  checksum: c2c4567ae00b8e7d0299b2621723a3577fd905cc659018981ff4c518dadf8f3883553334d02ae6ad95490792c16bfc5f8ea161e95443956b5d8159295647d706
+  checksum: 23e991a2356db015df0da21fd1bbd30e6c4f830afb1f187c074664218acba4309b705fb0a0ebbb470949d26a62e1f9ba80eab5fce6bc4343722c0be97835736a
   languageName: node
   linkType: hard
 
-"@sendgrid/helpers@npm:^7.4.6":
-  version: 7.4.6
-  resolution: "@sendgrid/helpers@npm:7.4.6"
+"@sendgrid/helpers@npm:^7.5.0":
+  version: 7.5.0
+  resolution: "@sendgrid/helpers@npm:7.5.0"
   dependencies:
     deepmerge: ^4.2.2
-  checksum: ec0e8ee01f796f9bde3b6519a063f6cbc226fcd0d64b5d14e7587a6ebd1e93cd011d74f5ddcadee7e65bb43ce6b1b3714fb7bb44a52c66df2d95d30ab34d41e2
+  checksum: 30caee4a240aa7d64f7676b7f34f6e77ac13c023e3ae3ca67a09a4a49ab655abf440f450ce1eddf7db9187c83b072f22caa5a4cf33e099a39cca28ea70fb099e
   languageName: node
   linkType: hard
 
-"@sendgrid/mail@npm:7.4.7":
-  version: 7.4.7
-  resolution: "@sendgrid/mail@npm:7.4.7"
+"@sendgrid/mail@npm:7.5.0":
+  version: 7.5.0
+  resolution: "@sendgrid/mail@npm:7.5.0"
   dependencies:
-    "@sendgrid/client": ^7.4.7
-    "@sendgrid/helpers": ^7.4.6
-  checksum: 06ce4c84ff8ef222ac88f0fe580c758333d21b8f18c009768f0d491649551a8733dbb2463e1bc9c5f32d52367bb0859089116bcebba72c640bbe5b6bb61e5aaf
+    "@sendgrid/client": ^7.5.0
+    "@sendgrid/helpers": ^7.5.0
+  checksum: 4f9b43d127b0daf56eb0cb8335240f917a7f6edd65e49c5a8ab23190a26ec057fcfd62de1bc9048f49cf0f99e8cf970b7282df811112d1f045fff3caa1646515
   languageName: node
   linkType: hard
 
@@ -13400,7 +13400,7 @@ resolve@^2.0.0-next.3:
     "@babel/preset-stage-3": 7.8.3
     "@babel/register": 7.15.3
     "@koa/cors": 3.1.0
-    "@sendgrid/mail": 7.4.7
+    "@sendgrid/mail": 7.5.0
     "@sentry/browser": 6.13.3
     "@sentry/node": 6.13.3
     "@sentry/react": 6.13.3
