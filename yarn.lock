@@ -10803,9 +10803,9 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"nodemon@npm:2.0.13":
-  version: 2.0.13
-  resolution: "nodemon@npm:2.0.13"
+"nodemon@npm:2.0.14":
+  version: 2.0.14
+  resolution: "nodemon@npm:2.0.14"
   dependencies:
     chokidar: ^3.2.2
     debug: ^3.2.6
@@ -10819,7 +10819,7 @@ fsevents@^1.2.7:
     update-notifier: ^5.1.0
   bin:
     nodemon: bin/nodemon.js
-  checksum: 0c6a423c48dd747ca98746786905a9330ce18e00401d4365bd8b1183adb04f49d2678a8089534791774c912d248cf3efee0ac611370f0588e5e14e2f2127014b
+  checksum: b6ea4f97792f90cac40abda93a81ef582a5ef4eaf2695a77044ec18473eac831d6d49f2dab2f7a2230e05d044163ba967d7a022666f47497255e6c4a0d50e2a9
   languageName: node
   linkType: hard
 
@@ -13455,7 +13455,7 @@ resolve@^2.0.0-next.3:
     next: 11.1.2
     next-env: 1.1.1
     node-fetch: 3.0.0
-    nodemon: 2.0.13
+    nodemon: 2.0.14
     parcel-bundler: 1.12.5
     pg: 8.7.1
     prettier: 2.4.1
