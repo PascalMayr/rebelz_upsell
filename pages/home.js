@@ -159,12 +159,15 @@ const Index = () => {
             onAction: () => router.push('/tips'),
             id: 'tips-readings-button',
           },
+
+          /*
           {
             content: 'Upgrade',
             disabled: false,
             icon: CircleUpMajor,
             onAction: () => router.push('/pricing'),
           },
+          */
         ]}
       >
         <div className="enabled-status-container">
