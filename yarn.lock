@@ -3361,23 +3361,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/shopify-api@npm:1.4.3":
-  version: 1.4.3
-  resolution: "@shopify/shopify-api@npm:1.4.3"
-  dependencies:
-    "@shopify/network": ^1.5.1
-    "@types/jsonwebtoken": ^8.5.0
-    "@types/node-fetch": ^2.5.7
-    "@types/supertest": ^2.0.10
-    cookies: ^0.8.0
-    jsonwebtoken: ^8.5.1
-    node-fetch: ^2.6.1
-    tslib: ^2.0.3
-    uuid: ^8.3.1
-  checksum: 01141a5208e88183d4242be057a74173270ec61a8c45ae13bd10d511eddc40cc1d00caf472c751b25e9ea3e5a9f719c359e9ff50127680b463f3d20d1ac13eef
-  languageName: node
-  linkType: hard
-
 "@shopify/shopify-api@npm:^1.2.1":
   version: 1.4.1
   resolution: "@shopify/shopify-api@npm:1.4.1"
@@ -14349,7 +14332,6 @@ resolve@^2.0.0-next.3:
     "@shopify/koa-shopify-webhooks": 2.6.4
     "@shopify/polaris": 6.6.0
     "@shopify/polaris-icons": 4.9.0
-    "@shopify/shopify-api": 1.4.3
     axios: 0.21.4
     babel-register: 6.26.0
     casify: 2.0.0
