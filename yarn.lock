@@ -8858,7 +8858,18 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"graphql-tag@npm:2.12.5, graphql-tag@npm:^2.12.3":
+"graphql-tag@npm:2.12.6":
+  version: 2.12.6
+  resolution: "graphql-tag@npm:2.12.6"
+  dependencies:
+    tslib: ^2.1.0
+  peerDependencies:
+    graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+  checksum: c16d72fb7862aad149cf24d077de39da27de66242e340ff9ea48f9cffb8fc5160ad96220f656c791b85baabde02d54d261d09b0b0c6d1bd278f4d07785687572
+  languageName: node
+  linkType: hard
+
+"graphql-tag@npm:^2.12.3":
   version: 2.12.5
   resolution: "graphql-tag@npm:2.12.5"
   dependencies:
@@ -14352,7 +14363,7 @@ resolve@^2.0.0-next.3:
     eslint-plugin-sort-class-members: 1.14.0
     graphile-migrate: 1.2.0
     graphql: 15.7.2
-    graphql-tag: 2.12.5
+    graphql-tag: 2.12.6
     isomorphic-fetch: 3.0.0
     koa: 2.13.4
     koa-bodyparser: 4.3.0
