@@ -10974,10 +10974,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"luxon@npm:2.0.2":
-  version: 2.0.2
-  resolution: "luxon@npm:2.0.2"
-  checksum: ea82fa2034e9d2e3b508f26bcf648771cacb8c988f6f9ff09f542efc6d6883251caab30e867019882cfb073a57da8d707ea515c7a3cd62ef50b25787a91d8697
+"luxon@npm:2.1.0":
+  version: 2.1.0
+  resolution: "luxon@npm:2.1.0"
+  checksum: 40809991aa5618b1866d32c0f874f4e87a0691229cfd7cae95b4057438cbe5044ff3497ab5275b9b97161b982ae2507c9d2446adc765503a5e692c030b70c035
   languageName: node
   linkType: hard
 
@@ -14370,7 +14370,7 @@ resolve@^2.0.0-next.3:
     koa-router: 10.1.1
     lint-staged: 11.2.6
     lodash: 4.17.21
-    luxon: 2.0.2
+    luxon: 2.1.0
     next: 11.1.2
     next-env: 1.1.1
     node-fetch: 3.0.0
