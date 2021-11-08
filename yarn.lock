@@ -6578,10 +6578,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"data-uri-to-buffer@npm:3.0.1, data-uri-to-buffer@npm:^3.0.1":
+"data-uri-to-buffer@npm:3.0.1":
   version: 3.0.1
   resolution: "data-uri-to-buffer@npm:3.0.1"
   checksum: 9f28217ba76eaca400a75f4b1a1d0f55058082c8152a3d88ad5feeec5e54b8c7b6d8a7bb210206bfa552a927c1b942b6102ddbb2feaa557321ea94762c4f14e2
+  languageName: node
+  linkType: hard
+
+"data-uri-to-buffer@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "data-uri-to-buffer@npm:4.0.0"
+  checksum: 51e8ba73a4a01a71e7df0c6fc60c85b281211642a1d888c6a9bfefc598769f484630697ccb1d977ff825f80848d9736445c666c8bf933e2eb6bddf164b55f38b
   languageName: node
   linkType: hard
 
@@ -8444,6 +8451,15 @@ __metadata:
     combined-stream: ^1.0.6
     mime-types: ^2.1.12
   checksum: 862e686b105634222db77138d5f5ae08ba85f88c04925de5be86b2b9d03cf671d86566ad10f1dd5217634c0f1634069dfc1a663a1cc13e8fbac0ce8f670ad070
+  languageName: node
+  linkType: hard
+
+"formdata-polyfill@npm:^4.0.10":
+  version: 4.0.10
+  resolution: "formdata-polyfill@npm:4.0.10"
+  dependencies:
+    fetch-blob: ^3.1.2
+  checksum: 525e045498be835665b7721f8a4b5b0fee10dc221247de977e89c20e4a91df8637f917d299bc30bd4b1dc2ff26e9d61f0aad75d1e7cb40e24eb9388e2c1fe903
   languageName: node
   linkType: hard
 
@@ -11618,13 +11634,14 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:3.0.0":
-  version: 3.0.0
-  resolution: "node-fetch@npm:3.0.0"
+"node-fetch@npm:3.1.0":
+  version: 3.1.0
+  resolution: "node-fetch@npm:3.1.0"
   dependencies:
-    data-uri-to-buffer: ^3.0.1
+    data-uri-to-buffer: ^4.0.0
     fetch-blob: ^3.1.2
-  checksum: eb79c19a3047c99c121a5bcb826698fd6d8e6073cc0322dccdd1dbeb4237ca710c7d251ef166d37e244fa9d1dc91b752232733cd44f43a807148a2b4e07b569f
+    formdata-polyfill: ^4.0.10
+  checksum: 250fd3057ed0a142003789ca18f7b3227ee3c4fccaf6f4a0beab4b6538ce253550b5811fe5fea34a34d927b182038741ef0a72bbb58c3ade27c451aeecddf0b5
   languageName: node
   linkType: hard
 
@@ -14373,7 +14390,7 @@ resolve@^2.0.0-next.3:
     luxon: 2.1.0
     next: 11.1.2
     next-env: 1.1.1
-    node-fetch: 3.0.0
+    node-fetch: 3.1.0
     nodemon: 2.0.14
     parcel-bundler: 1.12.5
     pg: 8.7.1
