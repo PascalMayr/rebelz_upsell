@@ -7908,7 +7908,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-sort-class-members@npm:1.14.0, eslint-plugin-sort-class-members@npm:^1.11.0":
+"eslint-plugin-sort-class-members@npm:1.14.1":
+  version: 1.14.1
+  resolution: "eslint-plugin-sort-class-members@npm:1.14.1"
+  peerDependencies:
+    eslint: ">=0.8.0"
+  checksum: a7d104cda653dda960728cce0cedccf20543ef18ab1c34f080e072dd9087f8efaae09d4f6198030a855acfdf3011df22c012fe37fb23c72530d167e12c3a0f17
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-sort-class-members@npm:^1.11.0":
   version: 1.14.0
   resolution: "eslint-plugin-sort-class-members@npm:1.14.0"
   peerDependencies:
@@ -14514,7 +14523,7 @@ resolve@^2.0.0-next.3:
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-react: 7.27.1
     eslint-plugin-react-hooks: 4.3.0
-    eslint-plugin-sort-class-members: 1.14.0
+    eslint-plugin-sort-class-members: 1.14.1
     graphile-migrate: 1.2.0
     graphql: 15.7.2
     graphql-tag: 2.12.6
