@@ -5,9 +5,9 @@ __metadata:
   version: 4
   cacheKey: 7
 
-"@apollo/client@npm:3.5.5":
-  version: 3.5.5
-  resolution: "@apollo/client@npm:3.5.5"
+"@apollo/client@npm:3.5.6":
+  version: 3.5.6
+  resolution: "@apollo/client@npm:3.5.6"
   dependencies:
     "@graphql-typed-document-node/core": ^3.0.0
     "@wry/context": ^0.6.0
@@ -18,7 +18,7 @@ __metadata:
     optimism: ^0.16.1
     prop-types: ^15.7.2
     symbol-observable: ^4.0.0
-    ts-invariant: ^0.9.0
+    ts-invariant: ^0.9.4
     tslib: ^2.3.0
     zen-observable-ts: ^1.2.0
   peerDependencies:
@@ -30,7 +30,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: 25fd7ee73d510a706c17bd4b37fa98080c9d01e0059bdd32689d30618a643a9694a29ac612e957445e6db33fa25aa54c6b2d6cf723817505e7c90907e6854811
+  checksum: 3469092d87721611429ca5467f63a559271dcca37d96270b3e111d677cbd7f30961ab87186564fb182b4ba18592c2bc53066ebaa34eddfa83a014f889b12fa94
   languageName: node
   linkType: hard
 
@@ -14483,7 +14483,7 @@ resolve@^2.0.0-next.3:
   version: 0.0.0-use.local
   resolution: "salestorm@workspace:."
   dependencies:
-    "@apollo/client": 3.5.5
+    "@apollo/client": 3.5.6
     "@babel/core": 7.16.0
     "@babel/plugin-transform-runtime": 7.16.4
     "@babel/polyfill": 7.12.1
@@ -15923,12 +15923,12 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-invariant@npm:^0.9.0":
-  version: 0.9.3
-  resolution: "ts-invariant@npm:0.9.3"
+"ts-invariant@npm:^0.9.4":
+  version: 0.9.4
+  resolution: "ts-invariant@npm:0.9.4"
   dependencies:
     tslib: ^2.1.0
-  checksum: c3f21931f9deae9492d7033d5d3fae1fc6dc9f981ede8636b66f5954854539b78683d2e2d1f6f9fd7cc185d354e1cf5aefdbabd017a2abcce19fad01d08da8c8
+  checksum: 33e9d8e61e75743c6d974afa3f1af5c09a6fa396e1a4722436253b88b0119cb3fe089ce4b1bfde4b90b93375bc7e44e24f792751635340898b23a32531d0eccf
   languageName: node
   linkType: hard
 
