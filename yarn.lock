@@ -5568,32 +5568,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chart.js@npm:2.9.4":
-  version: 2.9.4
-  resolution: "chart.js@npm:2.9.4"
-  dependencies:
-    chartjs-color: ^2.1.0
-    moment: ^2.10.2
-  checksum: 4551932943bc5e42d25ae5632d91878fb89e22937095a2742e23c4d0d0bde405bed6be2cb8480694ba599d6dbb9882c8bce6bac1e4667c820eb24c38416380aa
-  languageName: node
-  linkType: hard
-
-"chartjs-color-string@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "chartjs-color-string@npm:0.6.0"
-  dependencies:
-    color-name: ^1.0.0
-  checksum: 29f7ef3ebf5af1a76034da3148e1f230eee0c0f6df497ab7072ce5fb9c11ff37f5f030d2a2a5f1fd9230895d9aa294b455c5dd0f0e04f38688c69d0ccbdca7dd
-  languageName: node
-  linkType: hard
-
-"chartjs-color@npm:^2.1.0":
-  version: 2.4.1
-  resolution: "chartjs-color@npm:2.4.1"
-  dependencies:
-    chartjs-color-string: ^0.6.0
-    color-convert: ^1.9.3
-  checksum: 850408dfcda057ef0115018d5c83b88f5539cf93bbae8389bd3c5caa405a18e1f1d89b22a26107e1559248206a4ad6243294a820d50f042c6782a1d9d09fb3de
+"chart.js@npm:3.7.0":
+  version: 3.7.0
+  resolution: "chart.js@npm:3.7.0"
+  checksum: e52ac630155bcc7f1c15ac3c5b8e091e8f6f6c97e717017d75e8b92a4a9d2ad9ce2b8be3189d3378ec11fcac8977e413bc558deb80d054242a9a51e87833c44e
   languageName: node
   linkType: hard
 
@@ -11511,13 +11489,6 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.10.2":
-  version: 2.29.1
-  resolution: "moment@npm:2.29.1"
-  checksum: 86729013febf7160de5b93da69273dd304d674b0224f9544b3abd09a87671ddd2cdd57598261ce57588910d63747ffd5590965e83c790d8bf327083c0e0a06e0
-  languageName: node
-  linkType: hard
-
 "moo@npm:^0.5.0":
   version: 0.5.1
   resolution: "moo@npm:0.5.1"
@@ -14509,7 +14480,7 @@ resolve@^2.0.0-next.3:
     axios: 0.21.4
     babel-register: 6.26.0
     casify: 2.0.0
-    chart.js: 2.9.4
+    chart.js: 3.7.0
     cross-env: 7.0.3
     dotenv: 10.0.0
     enzyme: 3.11.0
