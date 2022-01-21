@@ -14610,21 +14610,22 @@ resolve@^2.0.0-next.3:
     prettier: 2.5.1
     react: 17.0.2
     react-dom: 17.0.2
-    sass: 1.44.0
+    sass: 1.49.0
     shopify: 0.1.0
     tinycolor2: 1.4.2
   languageName: unknown
   linkType: soft
 
-"sass@npm:1.44.0":
-  version: 1.44.0
-  resolution: "sass@npm:1.44.0"
+"sass@npm:1.49.0":
+  version: 1.49.0
+  resolution: "sass@npm:1.49.0"
   dependencies:
     chokidar: ">=3.0.0 <4.0.0"
     immutable: ^4.0.0
+    source-map-js: ">=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 7638e94e7f6d39d755fdc9719d04f7522800c7e2085ddee3136780257487ea646ad6771660772cbc3896a7276834ad1e20286725bf7b3472a93ca6700ee6806c
+  checksum: f7c5b50b00eec9b21faa9df6c3fa4f8966e391436f176069df56a83bfed66f2f4a325695b86e9765dbc3eb1797a79cab845b5bae04abe2680378ad651ae5a790
   languageName: node
   linkType: hard
 
@@ -15052,6 +15053,13 @@ resolve@^2.0.0-next.3:
     ip: ^1.1.5
     smart-buffer: ^4.1.0
   checksum: 9a5735cf9be6f756006b4c5ed23f17c15ffbfc0afb04b5d1b49516b7a27818c807a6a5b5419a65a140a1964149ec9ebb6cd8f0e06d7c60282912204d781371db
+  languageName: node
+  linkType: hard
+
+"source-map-js@npm:>=0.6.2 <2.0.0":
+  version: 1.0.2
+  resolution: "source-map-js@npm:1.0.2"
+  checksum: 3bb232796ad9b71bad151cb30c7fc1a2afdaf5bcfd4aa7806f56a2d4ff4824e1481e960436c5e9ec26e8c1ae129aee8107df0859c15b1ccada31a9a7ef254abc
   languageName: node
   linkType: hard
 
