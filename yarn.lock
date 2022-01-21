@@ -8419,7 +8419,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fetch-blob@npm:^3.1.3":
+"fetch-blob@npm:^3.1.4":
   version: 3.1.4
   resolution: "fetch-blob@npm:3.1.4"
   dependencies:
@@ -11825,14 +11825,14 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:3.1.1":
-  version: 3.1.1
-  resolution: "node-fetch@npm:3.1.1"
+"node-fetch@npm:3.2.0":
+  version: 3.2.0
+  resolution: "node-fetch@npm:3.2.0"
   dependencies:
     data-uri-to-buffer: ^4.0.0
-    fetch-blob: ^3.1.3
+    fetch-blob: ^3.1.4
     formdata-polyfill: ^4.0.10
-  checksum: ac50b98fdcd21f819694aceb63348273cced706e57fc1181c906bc36571514d8c72781f75969064fde9c206473b96503dd98adbd856496a009aa4bf0ba8b2d33
+  checksum: 5a96c2226d955a3e428439dc0c7aeae1b3ed8308c9ce22ade8d65eae12563d69e405922c928a3d29aa25d3563c30d23ecb7e6332fe6ede4dafcde25c6d9ed98e
   languageName: node
   linkType: hard
 
@@ -14603,7 +14603,7 @@ resolve@^2.0.0-next.3:
     luxon: 2.3.0
     next: 11.1.3
     next-env: 1.1.1
-    node-fetch: 3.1.1
+    node-fetch: 3.2.0
     nodemon: 2.0.15
     parcel-bundler: 1.12.5
     pg: 8.7.1
