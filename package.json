@@ -74,7 +74,7 @@
   "devDependencies": {
     "@babel/plugin-transform-runtime": "7.16.4",
     "@babel/preset-stage-3": "7.8.3",
-    "@shopify/eslint-plugin": "40.5.0",
+    "@shopify/eslint-plugin": "41.0.1",
     "babel-register": "6.26.0",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.6",
