@@ -3373,26 +3373,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/koa-shopify-webhooks@npm:2.6.4":
-  version: 2.6.4
-  resolution: "@shopify/koa-shopify-webhooks@npm:2.6.4"
+"@shopify/koa-shopify-webhooks@npm:4.3.0":
+  version: 4.3.0
+  resolution: "@shopify/koa-shopify-webhooks@npm:4.3.0"
   dependencies:
-    "@shopify/network": ^1.6.4
+    "@shopify/network": ^2.0.4
     "@types/koa": ^2.0.0
-    koa-bodyparser: ^4.2.1
-    koa-compose: ">=3.0.0 <4.0.0"
+    koa-bodyparser: ">=4.0.0 <5.0.0"
+    koa-compose: ">=4.0.0 <5.0.0"
     koa-mount: ^4.0.0
     safe-compare: ^1.1.3
   peerDependencies:
     koa: ">=2.0.0"
-  checksum: cd1cc9d4d3b61c99fd839c59296fbf425ce5c901ba123e640fb61a018e11cd421fca9d128a2f795ecc21d957c42ad3388904451e32dca6d66fc41105a9578645
+  checksum: cdb1012956822d47944df260b2a68e98a2a4a5a46f5798f5b1fa24495eefe6697dfcd70a09e83a542d8319054b99f4de9a0f5a7f77cb72e9f092e29baf17504c
   languageName: node
   linkType: hard
 
-"@shopify/network@npm:^1.5.0, @shopify/network@npm:^1.5.1, @shopify/network@npm:^1.6.4":
+"@shopify/network@npm:^1.5.0, @shopify/network@npm:^1.5.1":
   version: 1.6.4
   resolution: "@shopify/network@npm:1.6.4"
   checksum: c99e064950d5a76c6f20aae980c3138cb3185781556bcc3f90ad4b1aca0ae7d25c8bcd376a8349e469bf9255ff2aa66d1e6a73493538ae8858dfffce88e7751b
+  languageName: node
+  linkType: hard
+
+"@shopify/network@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "@shopify/network@npm:2.0.4"
+  checksum: 7889f6acd5df284ddfca11bac92fb9762bffed6ab852b6bd7046517b150eeb1f34355e430db89a690b6f4f2f41106633a6481bb055678f6ce7368c7f2eb6fbf8
   languageName: node
   linkType: hard
 
@@ -10632,7 +10639,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"koa-bodyparser@npm:4.3.0, koa-bodyparser@npm:^4.2.1":
+"koa-bodyparser@npm:4.3.0, koa-bodyparser@npm:>=4.0.0 <5.0.0":
   version: 4.3.0
   resolution: "koa-bodyparser@npm:4.3.0"
   dependencies:
@@ -10651,7 +10658,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"koa-compose@npm:^4.1.0":
+"koa-compose@npm:>=4.0.0 <5.0.0, koa-compose@npm:^4.1.0":
   version: 4.1.0
   resolution: "koa-compose@npm:4.1.0"
   checksum: 53a9b90f2167c63483a36c254b49f63510de4bfed2a1f54389f2fa0e20d0824f2e92c677bb654fc40d6c03df01d414bf4c777ce23dd08e563fbe5b632938478b
@@ -14570,7 +14577,7 @@ resolve@^2.0.0-next.3:
     "@shopify/app-cli-node-generator-helper": 1.2.2
     "@shopify/eslint-plugin": 40.5.0
     "@shopify/koa-shopify-auth": 4.1.4
-    "@shopify/koa-shopify-webhooks": 2.6.4
+    "@shopify/koa-shopify-webhooks": 4.3.0
     "@shopify/polaris": 6.6.0
     "@shopify/polaris-icons": 4.14.0
     axios: 0.21.4
