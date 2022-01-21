@@ -26,7 +26,7 @@ CREATE EXTENSION citext;
 10. Run:
 
 ```sh
-~/ $ shopify connect
+~/ $ shopify app connect
 ```
 
 11. Select your account and your dev store.
