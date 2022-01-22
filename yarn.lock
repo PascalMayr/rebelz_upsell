@@ -7097,10 +7097,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:10.0.0":
-  version: 10.0.0
-  resolution: "dotenv@npm:10.0.0"
-  checksum: 9c45712e213de63bdb646b8e5344749b7566e25a67bbd3f03711d54e40eff10066c1f23eff0081d0949fda7c8efcc6e9e8bf18d0f023a8274f55f5d5f97bb6db
+"dotenv@npm:14.2.0":
+  version: 14.2.0
+  resolution: "dotenv@npm:14.2.0"
+  checksum: b356a65124f180eecf860d9522906af6fedfb13e125882206244e57cf36871d10515b525b5df63bb1248a81e68b02df08f618510d14fa69082518a64be7d7ad3
   languageName: node
   linkType: hard
 
@@ -14406,7 +14406,7 @@ resolve@^2.0.0-next.3:
     casify: 2.0.0
     chart.js: 3.7.0
     cross-env: 7.0.3
-    dotenv: 10.0.0
+    dotenv: 14.2.0
     enzyme: 3.11.0
     enzyme-adapter-react-16: 1.15.6
     eslint: 8.7.0
