@@ -9144,10 +9144,10 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"graphql@npm:15.8.0":
-  version: 15.8.0
-  resolution: "graphql@npm:15.8.0"
-  checksum: 51bf37d7182f34dd95b3d8a2a502dab7942f848580ac60f89cdbcaa662a492b1ccae3beb166fb177b5aefdaa4313a8168a4e340d8242e21921d593cefe936861
+"graphql@npm:16.2.0":
+  version: 16.2.0
+  resolution: "graphql@npm:16.2.0"
+  checksum: a2a5a3e5750aa200b976e42e8bc40b3309325bfa3a5aba9cfafe5ef2577249bfb49bf8cb8ca2fad07e13b4f04ca76c5d1ba81eedcc38b569924e106b39e276b2
   languageName: node
   linkType: hard
 
@@ -14690,7 +14690,7 @@ resolve@^2.0.0-next.3:
     eslint-plugin-react-hooks: 4.3.0
     eslint-plugin-sort-class-members: 1.14.1
     graphile-migrate: 1.2.0
-    graphql: 15.8.0
+    graphql: 16.2.0
     graphql-tag: 2.12.6
     isomorphic-fetch: 3.0.0
     koa: 2.13.4
