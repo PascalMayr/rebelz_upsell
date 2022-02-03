@@ -44,7 +44,7 @@
     "@shopify/koa-shopify-auth": "4.1.4",
     "@shopify/koa-shopify-webhooks": "2.6.4",
     "@shopify/polaris": "6.6.0",
-    "@shopify/polaris-icons": "4.16.0",
+    "@shopify/polaris-icons": "4.17.0",
     "axios": "0.21.4",
     "casify": "2.0.0",
     "chart.js": "2.9.4",
