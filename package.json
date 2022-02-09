@@ -32,7 +32,7 @@
     "@babel/preset-react": "7.16.7",
     "@babel/register": "7.17.0",
     "@koa/cors": "3.1.0",
-    "@sendgrid/mail": "7.6.0",
+    "@sendgrid/mail": "7.6.1",
     "@sentry/browser": "6.17.6",
     "@sentry/node": "6.17.6",
     "@sentry/react": "6.17.6",

@@ -3220,13 +3220,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sendgrid/client@npm:^7.6.0":
-  version: 7.6.0
-  resolution: "@sendgrid/client@npm:7.6.0"
+"@sendgrid/client@npm:^7.6.1":
+  version: 7.6.1
+  resolution: "@sendgrid/client@npm:7.6.1"
   dependencies:
     "@sendgrid/helpers": ^7.6.0
     axios: ^0.21.4
-  checksum: d5f63043e8d884690118ca2035440dbdaa70b49e26767b06ae4c5b645b8fd22ae4b3d296e3ce6adb932b9b57d89c5c09c1e060a2c2f4daf5b361514d2e64064f
+  checksum: f99b4e7a939fc6c524b5caf98bca7c2e53cc03f5f940a60e031e5c9ee9fe544e8a1ecb6a11314b6ed12664dbed31d071288b6adc03f1af4dc2d9dce9455bd281
   languageName: node
   linkType: hard
 
@@ -3239,13 +3239,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sendgrid/mail@npm:7.6.0":
-  version: 7.6.0
-  resolution: "@sendgrid/mail@npm:7.6.0"
+"@sendgrid/mail@npm:7.6.1":
+  version: 7.6.1
+  resolution: "@sendgrid/mail@npm:7.6.1"
   dependencies:
-    "@sendgrid/client": ^7.6.0
+    "@sendgrid/client": ^7.6.1
     "@sendgrid/helpers": ^7.6.0
-  checksum: df04e4c970eb33ce20a53211c97c1aa247d8638c89eb9c829a97dee66fe6b81d95ef2995b9e73c3774226c3948f63fa1cb2789cbc026c470805370166c30f4ff
+  checksum: 4d2e7aa5db8ea3935ae005d3d68ccc0f405e6de22c38c716f332338e313b69bbb50d9d81b0fa60bb3fff510ced91fcefe9a69c2d36b61f8acbdff35c9336e31a
   languageName: node
   linkType: hard
 
@@ -14669,7 +14669,7 @@ resolve@^2.0.0-next.3:
     "@babel/preset-stage-3": 7.8.3
     "@babel/register": 7.17.0
     "@koa/cors": 3.1.0
-    "@sendgrid/mail": 7.6.0
+    "@sendgrid/mail": 7.6.1
     "@sentry/browser": 6.17.6
     "@sentry/node": 6.17.6
     "@sentry/react": 6.17.6
