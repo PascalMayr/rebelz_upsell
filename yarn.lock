@@ -3479,16 +3479,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/koa-shopify-auth@npm:4.1.4":
-  version: 4.1.4
-  resolution: "@shopify/koa-shopify-auth@npm:4.1.4"
+"@shopify/koa-shopify-auth@npm:4.1.5":
+  version: 4.1.5
+  resolution: "@shopify/koa-shopify-auth@npm:4.1.5"
   dependencies:
     "@shopify/network": ^1.5.0
     "@shopify/shopify-api": ^1.2.1
     koa-compose: ">=3.0.0 <4.0.0"
     nonce: ^1.0.4
     tslib: ^1.9.3
-  checksum: aeba7811d0d4d884210751fed2893e1e768a8e52801908f3de7c8faa8ae6ece2d77001aa18a9a7547d806b393bafb2f78beca63ea0b90b461fe09835b8f58c6d
+  checksum: 16f1898237cc7d48002eaa5693440cc2475a68255a47fe40beb8b23a7058426981216948cfa479669246f8d1ba6335c5ebbd3f83b66263ac30c2cec5822778a0
   languageName: node
   linkType: hard
 
@@ -14722,7 +14722,7 @@ resolve@^2.0.0-next.3:
     "@shopify/app-bridge-utils": 2.0.9
     "@shopify/app-cli-node-generator-helper": 1.2.2
     "@shopify/eslint-plugin": 40.5.0
-    "@shopify/koa-shopify-auth": 4.1.4
+    "@shopify/koa-shopify-auth": 4.1.5
     "@shopify/koa-shopify-webhooks": 2.6.4
     "@shopify/polaris": 6.6.0
     "@shopify/polaris-icons": 4.17.0
