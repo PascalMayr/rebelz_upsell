@@ -3359,32 +3359,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/app-bridge-react@npm:2.0.8":
-  version: 2.0.8
-  resolution: "@shopify/app-bridge-react@npm:2.0.8"
+"@shopify/app-bridge-react@npm:2.0.9":
+  version: 2.0.9
+  resolution: "@shopify/app-bridge-react@npm:2.0.9"
   dependencies:
-    "@shopify/app-bridge": ^2.0.8
+    "@shopify/app-bridge": ^2.0.9
   peerDependencies:
     react: ^16.0.0 || ^17.0.0
-  checksum: 02027620b402d515e666aac810a9210a8b7dec815aed17ac47727983c183e066d5d4883c340c08a400b190ae1f041f18ce11a5e07bd99ae76aa1fcaa8603e0b0
+  checksum: 7702873d397bc2c6e3f5e17229e9d8b813b254f07741fa9ff065c1bf262e90b406cc6bb5a43da60bea755a52c428f960286a8dcd899b1a52b735581a82dfc797
   languageName: node
   linkType: hard
 
-"@shopify/app-bridge-utils@npm:2.0.8":
-  version: 2.0.8
-  resolution: "@shopify/app-bridge-utils@npm:2.0.8"
+"@shopify/app-bridge-utils@npm:2.0.9":
+  version: 2.0.9
+  resolution: "@shopify/app-bridge-utils@npm:2.0.9"
   dependencies:
-    "@shopify/app-bridge": ^2.0.8
-  checksum: 8751818cd6321442daaf96c5061e69c57c78cd79d8e834d9b7ffc3771086ac9174e6f16bffdaa596004d5b06e255cce41b6b9a40b32d16037cb8db2f83b1616f
+    "@shopify/app-bridge": ^2.0.9
+  checksum: 5efa8f247a07880fb1484a5247a53dcf8fd2e0d7e6fee2b7c85deb1450d4631ac491c91a1140558762d6b9caa6f3fa88927f59c7f72f58b4af740d30c7fc4155
   languageName: node
   linkType: hard
 
-"@shopify/app-bridge@npm:2.0.8, @shopify/app-bridge@npm:^2.0.8":
-  version: 2.0.8
-  resolution: "@shopify/app-bridge@npm:2.0.8"
+"@shopify/app-bridge@npm:2.0.9, @shopify/app-bridge@npm:^2.0.9":
+  version: 2.0.9
+  resolution: "@shopify/app-bridge@npm:2.0.9"
   dependencies:
     base64url: ^3.0.1
-  checksum: be34d73a719d0a3b720cd69288c08d8a3a8a8c6303904548d4fd0c34029adba593168d4b4be9cfa1839b736badb69e56fb1ad9b6a7b3b58b0541b107aca5d731
+  checksum: b3ed8c568c62b4e0870ceb5a01c883288a3c58c1fe8199346c4ba66c2b760eaee8fdfb3d26b50410eea94e9f602d6d65eafb8124bf6c32e69c9d27541229ff8e
   languageName: node
   linkType: hard
 
@@ -14674,9 +14674,9 @@ resolve@^2.0.0-next.3:
     "@sentry/node": 6.17.8
     "@sentry/react": 6.17.8
     "@sentry/tracing": 6.17.8
-    "@shopify/app-bridge": 2.0.8
-    "@shopify/app-bridge-react": 2.0.8
-    "@shopify/app-bridge-utils": 2.0.8
+    "@shopify/app-bridge": 2.0.9
+    "@shopify/app-bridge-react": 2.0.9
+    "@shopify/app-bridge-utils": 2.0.9
     "@shopify/app-cli-node-generator-helper": 1.2.2
     "@shopify/eslint-plugin": 40.5.0
     "@shopify/koa-shopify-auth": 4.1.4
