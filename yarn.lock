@@ -3413,12 +3413,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/app-bridge-utils@npm:2.0.11":
-  version: 2.0.11
-  resolution: "@shopify/app-bridge-utils@npm:2.0.11"
+"@shopify/app-bridge-utils@npm:2.0.12":
+  version: 2.0.12
+  resolution: "@shopify/app-bridge-utils@npm:2.0.12"
   dependencies:
-    "@shopify/app-bridge": ^2.0.11
-  checksum: ecb946e2c3ab6d8dc78738173be2c8fb6edecf3dd6b6d76de568fa50e34330b0fed2f686a2bcec3222a2afbbf78f49bc6b649e8653521734d02c05230f307dfb
+    "@shopify/app-bridge": ^2.0.12
+  checksum: 28719b5413afa173b61a8b9f8f9a0cf6011038020bb31075bee7777f85c480de3e0872af9567d35f970bea9fedd2b73490ba4a6c77523ecdc0dcb897a1720e19
   languageName: node
   linkType: hard
 
@@ -3428,6 +3428,15 @@ __metadata:
   dependencies:
     base64url: ^3.0.1
   checksum: 813dead37ae13ed2f6061b4a3d4fa6caeae4cd75362b106b308118cfe1fb3944b8b80bd778fdff92347bcd393eedb5cbdebc0a01dc9d58e75ffcd42d30b3a7a1
+  languageName: node
+  linkType: hard
+
+"@shopify/app-bridge@npm:^2.0.12":
+  version: 2.0.12
+  resolution: "@shopify/app-bridge@npm:2.0.12"
+  dependencies:
+    base64url: ^3.0.1
+  checksum: 2c963b0ca6fc01bea004214209fa631b88557cf0dd8d21a48e446839bc5ac8e4b358bfa5da064e8067fe92b200d934673df8a7196c70ccaf28b8f0b9fa6a443e
   languageName: node
   linkType: hard
 
@@ -14719,7 +14728,7 @@ resolve@^2.0.0-next.3:
     "@sentry/tracing": 6.17.9
     "@shopify/app-bridge": 2.0.11
     "@shopify/app-bridge-react": 2.0.11
-    "@shopify/app-bridge-utils": 2.0.11
+    "@shopify/app-bridge-utils": 2.0.12
     "@shopify/app-cli-node-generator-helper": 1.2.2
     "@shopify/eslint-plugin": 40.5.0
     "@shopify/koa-shopify-auth": 4.1.5
