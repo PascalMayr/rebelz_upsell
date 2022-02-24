@@ -3479,16 +3479,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/koa-shopify-auth@npm:4.1.5":
-  version: 4.1.5
-  resolution: "@shopify/koa-shopify-auth@npm:4.1.5"
+"@shopify/koa-shopify-auth@npm:5.0.3":
+  version: 5.0.3
+  resolution: "@shopify/koa-shopify-auth@npm:5.0.3"
   dependencies:
     "@shopify/network": ^1.5.0
-    "@shopify/shopify-api": ^1.2.1
+    "@shopify/shopify-api": ^2.1.0
     koa-compose: ">=3.0.0 <4.0.0"
     nonce: ^1.0.4
     tslib: ^1.9.3
-  checksum: 16f1898237cc7d48002eaa5693440cc2475a68255a47fe40beb8b23a7058426981216948cfa479669246f8d1ba6335c5ebbd3f83b66263ac30c2cec5822778a0
+  checksum: c8fa853787b317dbb6cbe364aab125d8ce02aeaadc27daee275a24ff2cf6b7434ad7e48be8653a0fc29b6192e3724075da7694994a2f448f928065d3b1710a83
   languageName: node
   linkType: hard
 
@@ -3559,9 +3559,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/shopify-api@npm:^1.2.1":
-  version: 1.4.1
-  resolution: "@shopify/shopify-api@npm:1.4.1"
+"@shopify/shopify-api@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@shopify/shopify-api@npm:2.1.0"
   dependencies:
     "@shopify/network": ^1.5.1
     "@types/jsonwebtoken": ^8.5.0
@@ -3572,7 +3572,7 @@ __metadata:
     node-fetch: ^2.6.1
     tslib: ^2.0.3
     uuid: ^8.3.1
-  checksum: 431186ddddc700889759bfd12082a7043f3772a496b16af3f238f062e5907461d92136fba83705d6d476d9f6bd15a5020b18ad4f9e72755b766f276e2f458346
+  checksum: 4ef4d707e8cf07538805ab84377f7d7f0a825b912183ea510c13e5061a2eb5045f6bc17346eb2fdb4d0af4c098b37e742d8f7dd58ca71628b4bf61b50c7928d9
   languageName: node
   linkType: hard
 
@@ -14722,7 +14722,7 @@ resolve@^2.0.0-next.3:
     "@shopify/app-bridge-utils": 2.0.12
     "@shopify/app-cli-node-generator-helper": 1.2.2
     "@shopify/eslint-plugin": 40.5.0
-    "@shopify/koa-shopify-auth": 4.1.5
+    "@shopify/koa-shopify-auth": 5.0.3
     "@shopify/koa-shopify-webhooks": 2.6.4
     "@shopify/polaris": 6.6.0
     "@shopify/polaris-icons": 4.17.0
