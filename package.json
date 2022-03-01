@@ -61,7 +61,7 @@
     "luxon": "2.3.1",
     "next": "11.1.4",
     "next-env": "1.1.1",
-    "node-fetch": "3.2.0",
+    "node-fetch": "3.2.1",
     "parcel-bundler": "1.12.5",
     "pg": "8.7.3",
     "react": "17.0.2",
