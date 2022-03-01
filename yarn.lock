@@ -14,9 +14,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:3.5.9":
-  version: 3.5.9
-  resolution: "@apollo/client@npm:3.5.9"
+"@apollo/client@npm:3.5.10":
+  version: 3.5.10
+  resolution: "@apollo/client@npm:3.5.10"
   dependencies:
     "@graphql-typed-document-node/core": ^3.0.0
     "@wry/context": ^0.6.0
@@ -32,14 +32,17 @@ __metadata:
     zen-observable-ts: ^1.2.0
   peerDependencies:
     graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+    graphql-ws: ^5.5.5
     react: ^16.8.0 || ^17.0.0
     subscriptions-transport-ws: ^0.9.0 || ^0.11.0
   peerDependenciesMeta:
+    graphql-ws:
+      optional: true
     react:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: b63829441054728c36d04926c1c123fa786578c435add6d4a55c3ca64019cc82ae295b751471f8a298851382bfc8e3b1439df53877fd48469579080e2b0fd3fe
+  checksum: c694a607aa900c924c8c15de8706456640c06db0fc3f4e9c0dada7c8c3a1228a59f7443019e9fbe84e74d9daf1195fc7d10b7bbad7c18851b4fea09f85ac0d24
   languageName: node
   linkType: hard
 
@@ -14723,7 +14726,7 @@ resolve@^2.0.0-next.3:
   version: 0.0.0-use.local
   resolution: "salestorm@workspace:."
   dependencies:
-    "@apollo/client": 3.5.9
+    "@apollo/client": 3.5.10
     "@babel/core": 7.17.5
     "@babel/plugin-transform-runtime": 7.17.0
     "@babel/polyfill": 7.12.1
