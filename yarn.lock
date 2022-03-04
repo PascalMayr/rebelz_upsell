@@ -8009,9 +8009,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:7.29.2":
-  version: 7.29.2
-  resolution: "eslint-plugin-react@npm:7.29.2"
+"eslint-plugin-react@npm:7.29.3":
+  version: 7.29.3
+  resolution: "eslint-plugin-react@npm:7.29.3"
   dependencies:
     array-includes: ^3.1.4
     array.prototype.flatmap: ^1.2.5
@@ -8029,7 +8029,7 @@ __metadata:
     string.prototype.matchall: ^4.0.6
   peerDependencies:
     eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
-  checksum: d413a2202dd811311446055ceb5f00d25324f970598355712bf7ed32e66ccddd05743be9a75ece7086ca2316306da741a1e98e3c36008377d336ac5444ececde
+  checksum: e2ae8ed8769574449eeb2f3784ee3dbc3c169b46d2b2d6d7d97f3673e6f43014f5cb2de7eb492e072c2413d551c91b774fc1f93525030ce59322bc427f76d4d9
   languageName: node
   linkType: hard
 
@@ -14764,7 +14764,7 @@ resolve@^2.0.0-next.3:
     eslint-plugin-import: 2.25.4
     eslint-plugin-jsx-a11y: 6.5.1
     eslint-plugin-prettier: 4.0.0
-    eslint-plugin-react: 7.29.2
+    eslint-plugin-react: 7.29.3
     eslint-plugin-react-hooks: 4.3.0
     eslint-plugin-sort-class-members: 1.14.1
     graphile-migrate: 1.2.0
