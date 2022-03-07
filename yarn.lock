@@ -11970,14 +11970,14 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:3.2.1":
-  version: 3.2.1
-  resolution: "node-fetch@npm:3.2.1"
+"node-fetch@npm:3.2.2":
+  version: 3.2.2
+  resolution: "node-fetch@npm:3.2.2"
   dependencies:
     data-uri-to-buffer: ^4.0.0
     fetch-blob: ^3.1.4
     formdata-polyfill: ^4.0.10
-  checksum: ce067e89e751f178e74046531bd4de3d6ac59b2dc8b38cf876ea00d6a96e809f306c0e17f2788d9520fc5eff8b6635d1c585aa7ba44ed20fb9783c8bd18b984f
+  checksum: ae4ced49575ccc5e23d85ba1589927fb522cad651d7490a3149606f765b39ed6bf50520bb3390152a8e6da486af2aec4cd58f70a546bcc14a1125932f3443ba8
   languageName: node
   linkType: hard
 
@@ -14779,7 +14779,7 @@ resolve@^2.0.0-next.3:
     luxon: 2.3.1
     next: 11.1.4
     next-env: 1.1.1
-    node-fetch: 3.2.1
+    node-fetch: 3.2.2
     nodemon: 2.0.15
     parcel-bundler: 1.12.5
     pg: 8.7.3
