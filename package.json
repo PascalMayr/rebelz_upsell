@@ -49,7 +49,7 @@
     "casify": "2.0.0",
     "chart.js": "2.9.4",
     "cross-env": "7.0.3",
-    "dotenv": "10.0.0",
+    "dotenv": "16.0.0",
     "graphile-migrate": "1.3.0",
     "graphql": "15.8.0",
     "graphql-tag": "2.12.6",
