@@ -3026,12 +3026,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@koa/cors@npm:3.1.0":
-  version: 3.1.0
-  resolution: "@koa/cors@npm:3.1.0"
+"@koa/cors@npm:3.2.0":
+  version: 3.2.0
+  resolution: "@koa/cors@npm:3.2.0"
   dependencies:
     vary: ^1.1.2
-  checksum: 066c440bce48588a7fb182b6a3a811213443ca103d7694a80917d1300fc72034d79cf22b49d1761376d56a8c78ffc156b96f0465e399a4d39161456469a963aa
+  checksum: be5d13298bcb089fcf8e2d152ace6f49c554fa122b5e71241d05c516fb6ee7edff0b3d047174bce4acbd4a5c91b947e7e3a009bbd27e8a4e39db92ea9341ec35
   languageName: node
   linkType: hard
 
@@ -14752,7 +14752,7 @@ resolve@^2.0.0-next.3:
     "@babel/preset-react": 7.16.7
     "@babel/preset-stage-3": 7.8.3
     "@babel/register": 7.17.0
-    "@koa/cors": 3.1.0
+    "@koa/cors": 3.2.0
     "@sendgrid/mail": 7.6.2
     "@sentry/browser": 6.18.2
     "@sentry/node": 6.18.2
