@@ -141,7 +141,7 @@ const Index = () => {
         titleMetadata={
           <Badge status={priceStatus} progress={priceProgress}>
             <div className="pricing-badge">
-              <NextLink href="/pricing">{`${store.plan_name} Plan`}</NextLink>
+              <div>{`${store.plan_name} Plan`}</div>
             </div>
           </Badge>
         }
@@ -215,13 +215,17 @@ const Index = () => {
               <Card.Section title="Views used">
                 <p className="analytics-subheading">
                   Views used according to your plan.{' '}
-                  {!store.plan_name &&
+                  {
+                  /*
+                  !store.plan_name &&
                     (analytics.viewsCount / store.plan_limit) * 100 > 80 && (
                       <>
                         Need some more ?{' '}
-                        <NextLink href="/pricing">Upgrade Now</NextLink>
+                        <div>Upgrade Now</div>
                       </>
-                    )}
+                    )
+                  */
+                  }
                 </p>
                 <div className="analytics-value">
                   {analytics.viewsCount} / {store.plan_limit}
