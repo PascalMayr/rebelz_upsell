@@ -241,31 +241,35 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
                       ? currencyFormatter.format(revenue)
                       : revenue;
                     return (
+                      <div className='analytics-performance-list-item'>
                       <ResourceItem onClick={() => router.push(url)}>
                         <h3 className="campaign-title">
                           <TextStyle>{name}</TextStyle>
                         </h3>
-                        <Badge status="success">
-                          <Icon source={ViewMajor} />
-                          <TextStyle variation="strong">{viewsLabel}</TextStyle>
-                        </Badge>
-                        <Badge status="warning">
-                          <Icon source={OrdersMajor} />
-                          <TextStyle variation="strong">{salesLabel}</TextStyle>
-                        </Badge>
-                        <Badge status="attention">
-                          <Icon source={CashDollarMajor} />
-                          <TextStyle variation="strong">
-                            {formattedRevenue} generated
-                          </TextStyle>
-                        </Badge>
-                        {deleted && (
-                          <Badge status="critical">
-                            <Icon source={DeleteMajor} />
-                            <TextStyle variation="strong">deleted</TextStyle>
+                        <div className='analytics-performance-props'>
+                          <Badge status="success">
+                            <Icon source={ViewMajor} />
+                            <TextStyle variation="strong">{viewsLabel}</TextStyle>
                           </Badge>
-                        )}
+                          <Badge status="warning">
+                            <Icon source={OrdersMajor} />
+                            <TextStyle variation="strong">{salesLabel}</TextStyle>
+                          </Badge>
+                          <Badge status="attention">
+                            <Icon source={CashDollarMajor} />
+                            <TextStyle variation="strong">
+                              {formattedRevenue} generated
+                            </TextStyle>
+                          </Badge>
+                          {deleted && (
+                            <Badge status="critical">
+                              <Icon source={DeleteMajor} />
+                              <TextStyle variation="strong">deleted</TextStyle>
+                            </Badge>
+                          )}
+                        </div>
                       </ResourceItem>
+                      </div>
                     );
                   }}
                 />

@@ -95,8 +95,6 @@
   }
 
   .campaigns-overview .Polaris-Badge {
-    margin-left: 0.5em;
-    margin-right: 0.5em;
     padding-left: 0.75em;
     padding-right: 0.75em;
   }
@@ -128,6 +126,21 @@
   .analytics-subheading {
     color: var(--p-text-subdued);
     min-height: 2.6563rem;
+  }
+
+  .analytics-performance-list-item {
+    .Polaris-ResourceItem__Content {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .analytics-performance-props {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
   }
 
   .analytics-subheading > a {
