@@ -127,6 +127,7 @@
 
   .analytics-subheading {
     color: var(--p-text-subdued);
+    min-height: 2.6563rem;
   }
 
   .analytics-subheading > a {
@@ -142,5 +143,25 @@
 
   .d-none {
     display: none !important;
+  }
+
+  .campaign-status {
+    .campaign-title {
+      display: inline-block;
+      margin-right: 1em;
+      font-size: 1.2em;
+    }
+  }
+
+  .Polaris-ResourceItem__Actions {
+    margin-top: 0.3125rem !important;
+  }
+
+  .Polaris-ResourceItem__Content {
+    .Polaris-Icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }

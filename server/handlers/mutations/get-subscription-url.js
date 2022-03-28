@@ -37,7 +37,11 @@ export function RECURRING_CREATE() {
   `;
 }
 
-export const getSubscriptionUrl = async (ctx, { name, amount, currency }, storeDomain) => {
+export const getSubscriptionUrl = async (
+  ctx,
+  { name, amount, currency },
+  storeDomain
+) => {
   const { client } = ctx;
   const response = await client.mutate({
     mutation: RECURRING_CREATE(),

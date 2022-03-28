@@ -16,7 +16,7 @@ import {
   CashDollarMajor,
   DeleteMajor,
 } from '@shopify/polaris-icons';
-import Chart from 'chart.js';
+import { Chart, registerables } from 'chart.js';
 import { useRouter } from 'next/router';
 
 const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
@@ -40,6 +40,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
   });
   useEffect(() => {
     if (periodRef.current) {
+      Chart.register(...registerables);
       // eslint-disable-next-line no-new
       new Chart(periodRef.current, {
         type: 'bar',
@@ -96,9 +97,9 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
         plugins: [
           {
             beforeDraw(chart) {
-              const width = chart.chart.width;
-              const height = chart.chart.height;
-              const ctx = chart.chart.ctx;
+              const width = chart.width;
+              const height = chart.height;
+              const ctx = chart.ctx;
 
               ctx.restore();
               ctx.font = '25pt Arial';
@@ -118,7 +119,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
         ],
       });
     }
-  }, [days, views, sales, salesSum]);
+  }, [days, views, sales, salesSum, Chart]);
 
   const emptyStateCampaignMarkup = (
     <>
@@ -161,7 +162,7 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
           </p>
           <br />
           <div className="analytics-chart">
-            <canvas ref={periodRef} />
+            <canvas aria-label="total-campaign-views" ref={periodRef} />
           </div>
         </Card.Section>
       </Card>
@@ -175,7 +176,10 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
               </p>
               <br />
               <div className="analytics-chart">
-                <canvas ref={ordersPieRef} />
+                <canvas
+                  aria-label="total-sales-vs-total-views"
+                  ref={ordersPieRef}
+                />
               </div>
             </Card.Section>
           </Card>
