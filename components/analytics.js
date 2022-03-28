@@ -90,10 +90,6 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
         options: {
           maintainAspectRatio: false,
         },
-        centerText: `${(
-          (salesSum / (viewsSum > 0 ? viewsSum : 1)) *
-          100
-        ).toFixed(2)}%`,
         plugins: [
           {
             beforeDraw(chart) {
@@ -106,7 +102,10 @@ const Analytics = ({ views, days, campaigns, currencyFormatter, sales }) => {
               ctx.textBaseline = 'top';
               ctx.fillStyle = 'grey';
 
-              const text = chart.config.centerText;
+              const text = `${(
+                (salesSum / (viewsSum > 0 ? viewsSum : 1)) *
+                100
+              ).toFixed(2)}%`;
               const textX = Math.round(
                 (width - ctx.measureText(text).width) / 1.97
               );
