@@ -2294,7 +2294,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/polaris-icons@npm:^4.17.0, @shopify/polaris-icons@npm:^4.18.2":
+"@shopify/polaris-icons@npm:4.18.3":
+  version: 4.18.3
+  resolution: "@shopify/polaris-icons@npm:4.18.3"
+  checksum: c495eafdaba3d543164bdb37c75f08eca54f3f1e6da063ee90af52a2d70f221fffea664a40a099185ca2faf3de77fbd54583f8fc5f3b1d204c68d849c19c09e0
+  languageName: node
+  linkType: hard
+
+"@shopify/polaris-icons@npm:^4.17.0":
   version: 4.18.2
   resolution: "@shopify/polaris-icons@npm:4.18.2"
   checksum: b7361653a817a659803382feff5a80bfe9d11d95d9b22f5a4ff8d23146a976ad772a6c298cca7a70dcab39479e0d40966605ec8d8460d5e358a6dd011b7b17e5
@@ -12327,7 +12334,7 @@ resolve@^2.0.0-next.3:
     "@shopify/koa-shopify-auth": ^5.0.3
     "@shopify/koa-shopify-webhooks": ^4.4.4
     "@shopify/polaris": ^9.2.3
-    "@shopify/polaris-icons": ^4.18.2
+    "@shopify/polaris-icons": 4.18.3
     axios: ^0.26.1
     babel-register: 6.26.0
     casify: 2.0.0
