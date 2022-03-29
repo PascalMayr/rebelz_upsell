@@ -6251,6 +6251,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-react-hooks@npm:4.4.0":
+  version: 4.4.0
+  resolution: "eslint-plugin-react-hooks@npm:4.4.0"
+  peerDependencies:
+    eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
+  checksum: 289f42b2066023672775c102b277f7b0296b4d5e6831a9a531fd639af1be7e0becd856a8ff9a00d4621cf9c5ba08b82b6714e07a1b420651ab11bcfe25062603
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-react@npm:7.29.1":
   version: 7.29.1
   resolution: "eslint-plugin-react@npm:7.29.1"
@@ -12351,7 +12360,7 @@ resolve@^2.0.0-next.3:
     eslint-plugin-jsx-a11y: 6.5.1
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-react: ^7.29.4
-    eslint-plugin-react-hooks: 4.3.0
+    eslint-plugin-react-hooks: 4.4.0
     eslint-plugin-sort-class-members: 1.14.1
     graphile-migrate: ^1.3.0
     graphql: ^16.3.0
