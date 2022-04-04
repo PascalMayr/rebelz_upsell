@@ -2218,9 +2218,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/eslint-plugin@npm:^41.2.0":
-  version: 41.2.0
-  resolution: "@shopify/eslint-plugin@npm:41.2.0"
+"@shopify/eslint-plugin@npm:41.2.1":
+  version: 41.2.1
+  resolution: "@shopify/eslint-plugin@npm:41.2.1"
   dependencies:
     "@babel/eslint-parser": ^7.16.3
     "@babel/eslint-plugin": ^7.14.5
@@ -2247,7 +2247,7 @@ __metadata:
     pluralize: ^8.0.0
   peerDependencies:
     eslint: ^8.3.0
-  checksum: 565676c4932863c07c4bae8c59cc85206f9c4523f02176ef70bade105ac5eca5765614c9e2a7febdf7fbbc057383c2d0231dcd949c0bb9e467fe4ebba24049d2
+  checksum: f8937ed53da1bc0e2e750ee9ae9e9bdfa053bb794c5b8b7a2cf06b908ebfcad0821fc42425c6af83afa046b7b0cb45115901c8d094e78777786ef9518d8728dc
   languageName: node
   linkType: hard
 
@@ -12338,7 +12338,7 @@ resolve@^2.0.0-next.3:
     "@shopify/app-bridge-react": 2.0.22
     "@shopify/app-bridge-utils": 2.0.22
     "@shopify/app-cli-node-generator-helper": 1.2.2
-    "@shopify/eslint-plugin": ^41.2.0
+    "@shopify/eslint-plugin": 41.2.1
     "@shopify/koa-shopify-auth": ^5.0.3
     "@shopify/koa-shopify-webhooks": ^4.4.4
     "@shopify/polaris": ^9.2.3
