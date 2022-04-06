@@ -2376,25 +2376,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/polaris-icons@npm:4.18.4":
+"@shopify/polaris-icons@npm:4.18.4, @shopify/polaris-icons@npm:^4.18.2":
   version: 4.18.4
   resolution: "@shopify/polaris-icons@npm:4.18.4"
   checksum: cdc6f10bdcb4eca6d26368380ea64c756c1fcf411dd17a5363ac70b388b6772aff03dd6f8025c1cbdd6c0ed554e6e71c742c717219b4649cb4ee7068c522f0af
   languageName: node
   linkType: hard
 
-"@shopify/polaris-icons@npm:^4.17.0":
-  version: 4.18.2
-  resolution: "@shopify/polaris-icons@npm:4.18.2"
-  checksum: b7361653a817a659803382feff5a80bfe9d11d95d9b22f5a4ff8d23146a976ad772a6c298cca7a70dcab39479e0d40966605ec8d8460d5e358a6dd011b7b17e5
-  languageName: node
-  linkType: hard
-
-"@shopify/polaris@npm:^9.2.3":
-  version: 9.2.3
-  resolution: "@shopify/polaris@npm:9.2.3"
+"@shopify/polaris@npm:9.3.0":
+  version: 9.3.0
+  resolution: "@shopify/polaris@npm:9.3.0"
   dependencies:
-    "@shopify/polaris-icons": ^4.17.0
+    "@shopify/polaris-icons": ^4.18.2
     "@types/react": ^17.0.19
     "@types/react-dom": ^17.0.9
     "@types/react-transition-group": ^4.4.2
@@ -2404,7 +2397,7 @@ __metadata:
   peerDependencies:
     react: ^16.14.0 || ^17.0.0
     react-dom: ^16.14.0 || ^17.0.0
-  checksum: 65aa5ea6baf9cdd2fbc4ffd1de80e815b91635c1050df9940635641211cf65f3e4bcaeb0f71d76a0e3948ceb2659bb8ee3923035da1c6736defbb02c54f32d68
+  checksum: a85883fed98a41e10efd9e36c0e70b3800a4046979b7163b86b7a40eb66cac5e6ecbe3f5696870b0a2da61e3339c64d0d159c684b7495cfe9fe027707b85c3d3
   languageName: node
   linkType: hard
 
@@ -12446,7 +12439,7 @@ resolve@^2.0.0-next.3:
     "@shopify/eslint-plugin": 41.2.1
     "@shopify/koa-shopify-auth": ^5.0.3
     "@shopify/koa-shopify-webhooks": ^4.4.4
-    "@shopify/polaris": ^9.2.3
+    "@shopify/polaris": 9.3.0
     "@shopify/polaris-icons": 4.18.4
     axios: ^0.26.1
     babel-register: 6.26.0
