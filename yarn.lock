@@ -12479,22 +12479,22 @@ resolve@^2.0.0-next.3:
     prettier: 2.6.2
     react: 17.0.2
     react-dom: 17.0.2
-    sass: 1.49.11
+    sass: 1.50.0
     shopify: 0.1.0
     tinycolor2: 1.4.2
   languageName: unknown
   linkType: soft
 
-"sass@npm:1.49.11":
-  version: 1.49.11
-  resolution: "sass@npm:1.49.11"
+"sass@npm:1.50.0":
+  version: 1.50.0
+  resolution: "sass@npm:1.50.0"
   dependencies:
     chokidar: ">=3.0.0 <4.0.0"
     immutable: ^4.0.0
     source-map-js: ">=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: dccbaee03abb04c304b91dd5b9a6ee23c266ce4bb50be35bea3d9e0937ac96b85cb43a465dce410fae041641fa9de99e503c53198a73cea2e7c64996b718c53d
+  checksum: 2f3373fd6df35b2c4ca5d74b4bb19b4e0411baa3ba9b00a1d47c85b47d95c2c64386b5ce5085116cfb28823404f807affbcde7d8389be8b07359efb9d6ac9896
   languageName: node
   linkType: hard
 
