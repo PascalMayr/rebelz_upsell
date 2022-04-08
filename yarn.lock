@@ -2257,32 +2257,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/app-bridge-react@npm:2.0.23":
-  version: 2.0.23
-  resolution: "@shopify/app-bridge-react@npm:2.0.23"
+"@shopify/app-bridge-react@npm:2.0.24":
+  version: 2.0.24
+  resolution: "@shopify/app-bridge-react@npm:2.0.24"
   dependencies:
-    "@shopify/app-bridge": ^2.0.23
+    "@shopify/app-bridge": ^2.0.24
   peerDependencies:
     react: ^16.0.0 || ^17.0.0
-  checksum: 84640bc221a9100677cddf01f46287c3d54662433c158beb251321236735d7a97e3e7a4f858ad97b78f903d3f25f4a4e88128cf9401a4d05f3f7e7d9224e6ce8
+  checksum: b8ceac4b07fec0d6417eefdeceb6d498ba5038d8fb0236ef21821dcfea05f46c90b637a2d1283e0061be9b3980eacb9a2812a9cac1dbd1c8054a905aa598fd84
   languageName: node
   linkType: hard
 
-"@shopify/app-bridge-utils@npm:2.0.23":
-  version: 2.0.23
-  resolution: "@shopify/app-bridge-utils@npm:2.0.23"
+"@shopify/app-bridge-utils@npm:2.0.24":
+  version: 2.0.24
+  resolution: "@shopify/app-bridge-utils@npm:2.0.24"
   dependencies:
-    "@shopify/app-bridge": ^2.0.23
-  checksum: e00c7e40f5fad6eb14bb620b88d5573fb8f388960d5bdbdeef0c6546b27a0a035c01df13d427bf184713ad38d6e402312399a1e3eb049f9b1c406059cd2b1bc1
+    "@shopify/app-bridge": ^2.0.24
+  checksum: 044c9bec57b860a26e752164a3249079b8f4aef567747bea104dd968e0582b7bcc3cf2815b724bc7a09f8d1d8ad6bdc6388a73c123f46ddf398b724bd5ed6e65
   languageName: node
   linkType: hard
 
-"@shopify/app-bridge@npm:2.0.23, @shopify/app-bridge@npm:^2.0.23":
-  version: 2.0.23
-  resolution: "@shopify/app-bridge@npm:2.0.23"
+"@shopify/app-bridge@npm:2.0.24, @shopify/app-bridge@npm:^2.0.24":
+  version: 2.0.24
+  resolution: "@shopify/app-bridge@npm:2.0.24"
   dependencies:
     base64url: ^3.0.1
-  checksum: 428e86ae1737285cad349fed87d1e63549fd015e3126e408a6729a9ae0138a8f32fa22792389d57811a9cad9902b012684bde91dd902853e934703a78fb827ab
+  checksum: 53dd315f302419daa81267802f5912452c0c3ef522fc81e2d5eff3324db5b331ceaceac72e1c18c7fd5d3af61755f64912690e8da21d6b4f294e75162e95f872
   languageName: node
   linkType: hard
 
@@ -12432,9 +12432,9 @@ resolve@^2.0.0-next.3:
     "@sentry/node": 6.19.6
     "@sentry/react": 6.19.6
     "@sentry/tracing": 6.19.6
-    "@shopify/app-bridge": 2.0.23
-    "@shopify/app-bridge-react": 2.0.23
-    "@shopify/app-bridge-utils": 2.0.23
+    "@shopify/app-bridge": 2.0.24
+    "@shopify/app-bridge-react": 2.0.24
+    "@shopify/app-bridge-utils": 2.0.24
     "@shopify/app-cli-node-generator-helper": 1.2.2
     "@shopify/eslint-plugin": 41.2.1
     "@shopify/koa-shopify-auth": ^5.0.3
