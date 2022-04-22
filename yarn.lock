@@ -2390,9 +2390,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/polaris@npm:9.4.0":
-  version: 9.4.0
-  resolution: "@shopify/polaris@npm:9.4.0"
+"@shopify/polaris@npm:9.5.0":
+  version: 9.5.0
+  resolution: "@shopify/polaris@npm:9.5.0"
   dependencies:
     "@shopify/polaris-icons": ^4.18.2
     "@types/react": ^17.0.19
@@ -2404,7 +2404,7 @@ __metadata:
   peerDependencies:
     react: ^16.14.0 || ^17.0.0
     react-dom: ^16.14.0 || ^17.0.0
-  checksum: c9bb26c94a6219831447073136bfeb34e8d8710176c0a27912affdca402af1fce67880ca4ee500adbc83ba2472cff36a24b0e7e62e173259fe82befc5ddc57ba
+  checksum: 9a57c2245364eb4cdeecf89db5057e959a9a09ca582db4fc670e65fd5bf2d74eb9529728302a89c54152028d9cd18708022843bba52986f3fbb90ccf5b9c48ea
   languageName: node
   linkType: hard
 
@@ -12446,7 +12446,7 @@ resolve@^2.0.0-next.3:
     "@shopify/eslint-plugin": 41.2.1
     "@shopify/koa-shopify-auth": ^5.0.3
     "@shopify/koa-shopify-webhooks": ^4.4.4
-    "@shopify/polaris": 9.4.0
+    "@shopify/polaris": 9.5.0
     "@shopify/polaris-icons": 4.19.0
     axios: ^0.26.1
     babel-register: 6.26.0
