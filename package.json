@@ -89,7 +89,7 @@
     "eslint-plugin-react-hooks": "4.5.0",
     "eslint-plugin-sort-class-members": "1.14.1",
     "lint-staged": "12.4.1",
-    "nodemon": "2.0.15",
+    "nodemon": "2.0.16",
     "prettier": "2.6.2"
   }
 }
