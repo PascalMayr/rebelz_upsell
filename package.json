@@ -1,6 +1,6 @@
 {
   "name": "salestorm",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A Shopify app to boost sales.",
   "scripts": {
     "graphile": "cd server && DOTENV_CONFIG_PATH=../.env node -r dotenv/config ../node_modules/graphile-migrate/dist/cli.js",
